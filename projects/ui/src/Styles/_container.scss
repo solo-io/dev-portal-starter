@@ -1,0 +1,15 @@
+//
+// Responsive content container
+//
+.page-container-wrapper {
+  display: flex;
+  justify-content: center;
+}
+.app.is-desktop .page-container {
+  max-width: 500px;
+  padding: 1rem;
+}
+.app.is-mobile .page-container {
+  width: 100%;
+  padding: 0.5rem;
+}

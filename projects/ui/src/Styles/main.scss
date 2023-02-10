@@ -1,0 +1,10 @@
+@use "./background";
+@use "./container";
+@use "./green-theme";
+
+//
+// Makes code snippets visible in dark mode
+//
+[data-theme="dark"] .token {
+  color: white !important;
+}
