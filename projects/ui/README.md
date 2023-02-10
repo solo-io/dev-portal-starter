@@ -9,7 +9,7 @@ This project is meant to be used with Gloo Platform API Portals. It may be used 
 Paste the following into a terminal to get started. Node 16+ is required. In this code snippet, [tmplr](https://github.com/loreanvictor/tmplr) is used to download and initialize the latest commit of this repository's main branch, and [yarn](https://yarnpkg.com/) is used as the package manager.
 
 ```
-mkdir portal-test && cd portal-test && npx tmplr charlesthebird/portal-test#main && yarn && open http://localhost:4000 && yarn run dev
+mkdir portal-test && cd portal-test && npx tmplr solo-io/dev-portal-starter#main && open http://localhost:4000 && make run-ui
 ```
 
 ## Technology
