@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import StoplightDemo from "./StoplightDemo";
 
 function ApiDetails() {
@@ -8,7 +8,8 @@ function ApiDetails() {
   // URL for the API
   //
   const [url, setUrl] = useState(
-    "https://api.apis.guru/v2/specs/github.com/1.1.4/openapi.yaml"
+    // "https://api.apis.guru/v2/specs/github.com/1.1.4/openapi.yaml"
+    "http://localhost:4000/example_openapi.yaml"
   );
   const [urlToDisplay, setUrlToDisplay] = useState(url);
   useEffect(() => {
@@ -46,12 +47,39 @@ function ApiDetails() {
             }}
             className="sl-pl-3"
           >
-            <a href={`/usage-plans/${apiId}`}>Usage Plans</a>
+            {/* <a href={`/usage-plans/${apiId}`}>Usage Plans</a> */}
+            <Link to={`/usage-plans/${apiId}`}>Usage Plans</Link>
           </p>
         </div>
       </div>
-      <div>
-        <StoplightDemo url={url} />
+      <div style={{ position: "relative" }}>
+        {/* <div
+          style={{
+            position: "absolute",
+            top: "0px",
+            left: "0px",
+            right: "0px",
+            bottom: "300px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 0,
+          }}
+        >
+          <Oval
+            height={80}
+            width={80}
+            color="var(--color-primary)"
+            visible={true}
+            ariaLabel="oval-loading"
+            secondaryColor="var(--color-primary-dark)"
+            strokeWidth={5}
+            strokeWidthSecondary={5}
+          />
+        </div> */}
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <StoplightDemo url={url} />
+        </div>
       </div>
       {/* <API apiDescriptionUrl="https://raw.githubusercontent.com/stoplightio/Public-APIs/master/reference/zoom/openapi.yaml" /> */}
     </div>

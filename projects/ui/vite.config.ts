@@ -6,7 +6,9 @@ export default defineConfig({
   plugins: [react()],
   define: {
     process: {
-      env: {},
+      env: {
+        UI_VERSION: "ui-version",
+      },
     },
     global: {},
   },
