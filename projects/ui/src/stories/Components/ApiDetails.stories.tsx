@@ -1,5 +1,4 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { within } from "@storybook/testing-library";
 import { MemoryRouter } from "react-router-dom";
 import ApiDetails from "../../Components/ApiDetails/ApiDetails";
 
@@ -20,8 +19,8 @@ const MainStory: ComponentStory<typeof ApiDetails> = () => {
 
 export const DefaultApiDetails = MainStory.bind({});
 DefaultApiDetails.args = {};
-DefaultApiDetails.play = async ({ canvasElement }) => {
-  const canvas = within(canvasElement);
-  const methodBubble = canvas.queryByTestId("solo-tag");
-  // expect(methodBubble).not.toBeNull();
-};
+// DefaultApiDetails.play = async ({ canvasElement }) => {
+//   const canvas = within(canvasElement);
+//   const methodBubble = canvas.queryByTestId("solo-tag");
+//   expect(methodBubble).not.toBeNull();
+// };
