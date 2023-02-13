@@ -10,13 +10,12 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "lint": "eslint . --ext .ts,.tsx",
-    "tsc": "tsc",
     "prepare": "cd ../../ && husky install projects/ui/.husky"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint",
-      "tsc",
+      "yarn eslint",
+      "bash -c tsc --noEmit",
       "prettier --write --ignore-unknown"
     ]
   },
