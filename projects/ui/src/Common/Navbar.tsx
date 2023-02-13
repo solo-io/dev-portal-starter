@@ -5,6 +5,7 @@ import Button from "./Button";
 function Navbar() {
   const appCtx = useContext(AppContext);
   const { isDarkMode, setIsDarkMode, isGreenTheme, setIsGreenTheme } = appCtx;
+
   //
   // Render
   //
