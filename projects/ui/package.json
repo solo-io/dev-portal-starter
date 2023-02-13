@@ -9,7 +9,17 @@
     "preview": "vite preview",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "lint": "eslint . --ext .ts,.tsx"
+    "lint": "eslint . --ext .ts,.tsx",
+    "prepare": "cd ../../ && husky install projects/ui/.husky"
+  },
+  "lint-staged": {
+    "*.(ts|tsx)": [
+      "eslint",
+      "prettier --write"
+    ],
+    "*.(js|jsx|html|css)": [
+      "prettier --write --ignore-unknown"
+    ]
   },
   "dependencies": {
     "@emotion/eslint-plugin": "^11.10.0",
@@ -39,6 +49,8 @@
     "babel-loader": "^8.3.0",
     "eslint": "^8.34.0",
     "eslint-config-react-app": "^7.0.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.2",
     "sass": "^1.56.2",
     "typescript": "^4.9.3",
     "vite": "^4.0.0",
