@@ -13,11 +13,9 @@
     "prepare": "cd ../../ && husky install projects/ui/.husky"
   },
   "lint-staged": {
-    "*.(ts|tsx)": [
-      "eslint",
-      "prettier --write"
-    ],
-    "*.(js|jsx|html|css)": [
+    "*.{js,jsx,ts,tsx}": [
+      "yarn eslint",
+      "bash -c tsc --noEmit",
       "prettier --write --ignore-unknown"
     ]
   },
