@@ -7,7 +7,7 @@ interface AppProviderProps {
   children?: any;
 }
 interface IAppContext extends AppProviderProps {
-  isMobileView: boolean;
+  isMobileView: string;
   isDarkMode: boolean;
   isGreenTheme: boolean;
   setIsDarkMode: (isDarkMode: boolean) => void;
