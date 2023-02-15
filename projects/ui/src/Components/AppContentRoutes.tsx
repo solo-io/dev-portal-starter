@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-import ApiDetails from "./Components/ApiDetails/ApiDetails";
-import Apis from "./Components/Apis/Apis";
-import Home from "./Components/Home/Home";
-import UsagePlans from "./Components/UsagePlans/UsagePlans";
+import ApiDetails from "./ApiDetails/ApiDetails";
+import Apis from "./Apis/Apis";
+import Home from "./Home/Home";
+import UsagePlans from "./UsagePlans/UsagePlans";
 
 function AppContentRoutes() {
   return (

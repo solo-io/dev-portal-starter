@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@emotion/eslint-plugin": "^11.10.0",
+    "@reduxjs/toolkit": "^1.9.2",
     "@stoplight/elements": "^7.7.7",
     "@storybook/addon-a11y": "^6.5.16",
     "@typescript-eslint/eslint-plugin": "^5.51.0",
@@ -29,6 +30,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-loader-spinner": "^5.3.4",
+    "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.5",
     "sb": "^6.5.16"
   },

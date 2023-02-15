@@ -1,7 +1,7 @@
 import { useContext } from "react";
+import Navbar from "../Common/Navbar";
+import { AppContext } from "../Context/AppContext";
 import AppContentRoutes from "./AppContentRoutes";
-import Navbar from "./Common/Navbar";
-import { AppContext } from "./Context/AppContext";
 
 function AppContent() {
   const appCtx = useContext(AppContext);
