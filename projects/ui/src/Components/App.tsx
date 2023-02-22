@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { AppContextProvider } from "../Context/AppContext";
-import { useGetPokemonByNameQuery } from "../redux/services/api";
+import { useGetPokemonByNameQuery } from "../services/api";
 import AppContent from "./AppContent";
 
 function App() {
