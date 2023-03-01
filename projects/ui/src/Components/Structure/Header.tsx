@@ -1,29 +1,28 @@
 import { useContext } from "react";
-import { AppContext } from "../Context/AppContext";
-import Button from "./Button";
+import { AppContext } from "../../Context/AppContext";
+import Button from "../Common/Button";
+import { ReactComponent as Logo } from "../../Assets/logo.svg";
 
-function Navbar() {
+export function Header() {
   const appCtx = useContext(AppContext);
   const { isDarkMode, setIsDarkMode, isGreenTheme, setIsGreenTheme } = appCtx;
 
-  //
-  // Render
-  //
   return (
-    <div className="sl-prose sl-py-2 sl-px-2 sl-flex sl-flex-wrap sl-justify-between sl-inverted sl-bg-canvas-100">
-      <p style={{ marginBottom: "0px" }}>
-        <a className="sl-mr-5" href="/">
-          Logo/Landing
-        </a>
-        <a className="sl-mr-5" href="/apis">
-          Apis
-        </a>
-        <a className="sl-mr-5" href="/api-details/my-api">
-          My-Api-Details
-        </a>
-        <a href="/usage-plans">Usage-Plans</a>
-      </p>
+    <>
+      <header aria-label="Site top level menus" className="topNav">
+        <nav className="navContent">
+          <a href="/" aria-hidden="true">
+            <Logo />
+          </a>
+          <div>
+            <a href="/">Home</a>
+            <a href="/apis">APIs</a>
+            <a href="/apis">USER AREA</a>
+          </div>
+        </nav>
+      </header>
       <div className="float-right">
+        <a href="/usage-plans">Usage-Plans</a>
         {isDarkMode ? (
           <Button onClick={() => setIsDarkMode(false)}>Light Mode</Button>
         ) : (
@@ -35,8 +34,6 @@ function Navbar() {
           <Button onClick={() => setIsGreenTheme(true)}>Green Theme</Button>
         )}
       </div>
-    </div>
+    </>
   );
 }
-
-export default Navbar;

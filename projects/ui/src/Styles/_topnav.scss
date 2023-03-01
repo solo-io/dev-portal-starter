@@ -1,0 +1,40 @@
+@use "./constants";
+
+.topNav {
+  grid-area: "header";
+
+  width: 100vw;
+  height: 90px;
+  padding: 0 30px;
+
+  background: white;
+  box-shadow: #253e580b 0px 2px 8px;
+}
+
+.navContent {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  height: 100%;
+  @include constants.contentWidth;
+}
+
+.footer {
+  grid-area: "footer";
+
+  width: 100vw;
+  height: 40px;
+
+  background: #e9eef3;
+  color: #8693a5;
+}
+.footerContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  height: 100%;
+  @include constants.contentWidth;
+}

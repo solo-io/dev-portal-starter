@@ -1,7 +1,8 @@
 import { useContext } from "react";
-import Navbar from "../Common/Navbar";
 import { AppContext } from "../Context/AppContext";
 import AppContentRoutes from "./AppContentRoutes";
+import { Header } from "./Structure/Header";
+import Banner from "../Assets/banner.png";
 
 function AppContent() {
   const appCtx = useContext(AppContext);
@@ -9,12 +10,12 @@ function AppContent() {
 
   return (
     <div
-      className={`app ${isMobileView ? "is-mobile" : "is-desktop"}`}
       data-theme={isDarkMode ? "dark" : "light"}
       data-color={isGreenTheme ? "green" : "blue"}
+      className={`AppContainer ${isMobileView ? "is-mobile" : "is-desktop"}`}
     >
-      <Navbar />
-      <div className="background" />
+      <img src={Banner} alt="" className="background" role="banner" />
+      <Header />
       <AppContentRoutes />
     </div>
   );

@@ -13,8 +13,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { API, APIKey, UsagePlan, User } from "./api-types";
 
-async function fetchJson<T>(input: RequestInfo | URL): Promise<T> {
-  const response = await fetch(input);
+async function fetchJson<T>(
+  input: RequestInfo | URL,
+  fetchOptions?: { method?: string; body?: string }
+): Promise<T> {
+  const response = await fetch(input, fetchOptions);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -22,10 +25,10 @@ async function fetchJson<T>(input: RequestInfo | URL): Promise<T> {
 }
 
 function soloUseQuery<T>(apiCallString: string) {
-  return useQuery({
+  return 3; /*useQuery({
     queryKey: [apiCallString],
-    queryFn: () => fetchJson<T>(/*SOME REST ENDPOINT + */ apiCallString),
-  });
+    queryFn: () => fetchJson<T>(/*SOME REST ENDPOINT +  apiCallString),
+  });*/
 }
 
 export function useGetCurrentUser() {
@@ -58,7 +61,7 @@ export function useListApiKeys(apis?: string[], usagePlans?: string[]) {
   );
 }
 
-export function useCreateApiKey(apiId: strng, usagePlan: string) {
+export function useCreateApiKey(apiId: string, usagePlan: string) {
   // Any calls to this may want to make use of the following in the `onSettled` case
   //  queryClient.invalidateQueries("api-keys");
 
@@ -66,16 +69,12 @@ export function useCreateApiKey(apiId: strng, usagePlan: string) {
     mutationFn: () =>
       fetchJson<APIKey>("api-keys", {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({ usagePlan, apiId }),
       }),
   });
 }
 
-export function useCreateApiKey(apiId: strng) {
+export function useCreateApiKey(apiId: string) {
   // Any calls to this may want to make use of the following in the `onSettled` case
   //  queryClient.invalidateQueries("api-keys");
 
@@ -85,10 +84,6 @@ export function useCreateApiKey(apiId: strng) {
         `api-keys/${apiId}`,
         {
           method: "DELETE",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
         }
       ),
   });

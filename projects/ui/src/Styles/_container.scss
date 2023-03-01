@@ -1,15 +1,47 @@
+@use "./constants";
+
 //
 // Responsive content container
 //
 .page-container-wrapper {
   display: flex;
   justify-content: center;
+
+  @include constants.contentWidth;
 }
-.app.is-desktop .page-container {
+
+.AppContainer {
+  position: relative;
+
+  display: grid;
+  grid-template-rows: 90px 1fr;
+  grid-template-areas:
+    "header"
+    "contentcontainer";
+
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #f8fafb;
+}
+
+.MainContentContainer {
+  grid-area: contentcontainer;
+
+  display: grid;
+  grid-template-rows: 1fr 40px;
+  grid-template-areas:
+    "content"
+    "footer";
+
+  min-height: 100%;
+}
+
+.AppContainer.is-desktop .page-container {
   max-width: 500px;
   padding: 1rem;
 }
-.app.is-mobile .page-container {
+.AppContainer.is-mobile .page-container {
   width: 100%;
   padding: 0.5rem;
 }

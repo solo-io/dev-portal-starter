@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import StoplightDemo from "./StoplightDemo";
 
-function ApiDetails() {
+export function ApiDetails() {
   const { apiId } = useParams();
   //
   // URL for the API
@@ -77,13 +77,11 @@ function ApiDetails() {
             strokeWidthSecondary={5}
           />
         </div> */}
-        <div style={{ position: "relative", zIndex: 1 }}>
+        <main style={{ position: "relative", zIndex: 1 }}>
           <StoplightDemo url={url} />
-        </div>
+        </main>
       </div>
       {/* <API apiDescriptionUrl="https://raw.githubusercontent.com/stoplightio/Public-APIs/master/reference/zoom/openapi.yaml" /> */}
     </div>
   );
 }
-
-export default ApiDetails;
