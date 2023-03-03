@@ -7,6 +7,29 @@ import {
 } from "../Common/Banner/BannerHeading";
 import { Icon } from "../../Assets/Icons";
 
+function HeaderSummary({
+  apiYaml,
+  type,
+}: {
+  apiYaml: { [key: string]: any };
+  type: any;
+}) {
+  // parse yaml for operations
+  // something like 1. find path at top level, 2. check # of direct children of path, 3. ?? check # of ops per child??
+  const endpointsCount = 4;
+
+  return (
+    <div className="apiDetailsHeaderAddition">
+      <div>
+        <Icon.HtmlTag /> {endpointsCount} Operations
+      </div>
+      <div>
+        <Icon.OpenApiIcon /> {type}
+      </div>
+    </div>
+  );
+}
+
 export function ApiDetails() {
   const { apiId } = useParams();
   //
@@ -36,18 +59,7 @@ export function ApiDetails() {
         description={
           "Browse the list of APIs and documentation in this portal. From here you can get the information you need to make API calls."
         }
-        additionalContent={
-          <div
-            style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}
-          >
-            <div style={{ display: "flex" }}>
-              <Icon.HtmlTag /> {4} Operations
-            </div>
-            <div style={{ display: "flex" }}>
-              <Icon.OpenApiIcon /> {"OpenAPI"}
-            </div>
-          </div>
-        }
+        additionalContent={<HeaderSummary apiYaml={{}} type={"OpenAPI"} />}
       />
 
       <main className="page-container-wrapper">

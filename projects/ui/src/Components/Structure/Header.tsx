@@ -1,19 +1,17 @@
-import { useContext, useEffect, useState } from "react";
-import { AppContext } from "../../Context/AppContext";
-import Button from "../Common/Button";
+import { useEffect, useState } from "react";
 import { ReactComponent as Logo } from "../../Assets/logo.svg";
 import { NavLink, useLocation } from "react-router-dom";
 
 export function Header() {
   const routerLocation = useLocation();
-  const appCtx = useContext(AppContext);
+  //const appCtx = useContext(AppContext);
 
   const [inAPIsArea, setInAPIsArea] = useState(
     routerLocation.pathname.includes("/api") ||
       routerLocation.pathname.includes("/api-details/")
   );
 
-  const { isDarkMode, setIsDarkMode, isGreenTheme, setIsGreenTheme } = appCtx;
+  //const { isDarkMode, setIsDarkMode, isGreenTheme, setIsGreenTheme } = appCtx;
 
   useEffect(() => {
     setInAPIsArea(
