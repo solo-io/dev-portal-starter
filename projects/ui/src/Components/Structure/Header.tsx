@@ -1,11 +1,26 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../Context/AppContext";
 import Button from "../Common/Button";
 import { ReactComponent as Logo } from "../../Assets/logo.svg";
+import { NavLink, useLocation } from "react-router-dom";
 
 export function Header() {
+  const routerLocation = useLocation();
   const appCtx = useContext(AppContext);
+
+  const [inAPIsArea, setInAPIsArea] = useState(
+    routerLocation.pathname.includes("/api") ||
+      routerLocation.pathname.includes("/api-details/")
+  );
+
   const { isDarkMode, setIsDarkMode, isGreenTheme, setIsGreenTheme } = appCtx;
+
+  useEffect(() => {
+    setInAPIsArea(
+      routerLocation.pathname.includes("/apis/") ||
+        routerLocation.pathname.includes("/api-details/")
+    );
+  }, [routerLocation.pathname]);
 
   return (
     <>
@@ -14,14 +29,17 @@ export function Header() {
           <a href="/" aria-hidden="true">
             <Logo />
           </a>
-          <div>
-            <a href="/">Home</a>
-            <a href="/apis">APIs</a>
+          <div className="siteNavigating">
+            <NavLink to={"/"}>Home</NavLink>
+            <NavLink to={"/apis"} className={inAPIsArea ? "active" : ""}>
+              APIs
+            </NavLink>
+            <div className="divider" />
             <a href="/apis">USER AREA</a>
           </div>
         </nav>
       </header>
-      <div className="float-right">
+      {/*<div className="float-right">
         <a href="/usage-plans">Usage-Plans</a>
         {isDarkMode ? (
           <Button onClick={() => setIsDarkMode(false)}>Light Mode</Button>
@@ -33,7 +51,7 @@ export function Header() {
         ) : (
           <Button onClick={() => setIsGreenTheme(true)}>Green Theme</Button>
         )}
-      </div>
+        </div>*/}
     </>
   );
 }

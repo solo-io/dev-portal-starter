@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+  <g id="list-view-icon-gray" transform="translate(-1196.965 -3583.84)">
+    <rect id="Rectangle_10243" data-name="Rectangle 10243" width="22" height="22" transform="translate(1196.965 3583.84)" fill="#8693a5" opacity="0"/>
+    <g id="Group_40573" data-name="Group 40573" transform="translate(1198.607 3587.849)">
+      <g id="Group_40569" data-name="Group 40569" transform="translate(0 0)">
+        <path id="Path_105105" data-name="Path 105105" d="M.764,4.962A.764.764,0,0,1,0,4.2V.764a.764.764,0,1,1,1.528,0V4.2A.764.764,0,0,1,.764,4.962Z" transform="translate(4.962) rotate(90)" fill="#8693a5"/>
+        <path id="Path_107606" data-name="Path 107606" d="M.764,12.84A.764.764,0,0,1,0,12.076V.764a.764.764,0,0,1,1.528,0V12.076A.764.764,0,0,1,.764,12.84Z" transform="translate(18.95) rotate(90)" fill="#8693a5"/>
+      </g>
+      <g id="Group_40570" data-name="Group 40570" transform="translate(0 4.074)">
+        <path id="Path_105105-2" data-name="Path 105105" d="M.764,4.962A.764.764,0,0,1,0,4.2V.764a.764.764,0,1,1,1.528,0V4.2A.764.764,0,0,1,.764,4.962Z" transform="translate(4.962 0) rotate(90)" fill="#8693a5"/>
+        <path id="Path_107606-2" data-name="Path 107606" d="M.764,12.84A.764.764,0,0,1,0,12.076V.764a.764.764,0,0,1,1.528,0V12.076A.764.764,0,0,1,.764,12.84Z" transform="translate(18.95 0) rotate(90)" fill="#8693a5"/>
+      </g>
+      <g id="Group_40571" data-name="Group 40571" transform="translate(0 8.147)">
+        <path id="Path_105105-3" data-name="Path 105105" d="M.764,4.962A.764.764,0,0,1,0,4.2V.764a.764.764,0,1,1,1.528,0V4.2A.764.764,0,0,1,.764,4.962Z" transform="translate(4.962 0) rotate(90)" fill="#8693a5"/>
+        <path id="Path_107606-3" data-name="Path 107606" d="M.764,12.84A.764.764,0,0,1,0,12.076V.764a.764.764,0,0,1,1.528,0V12.076A.764.764,0,0,1,.764,12.84Z" transform="translate(18.95 0) rotate(90)" fill="#8693a5"/>
+      </g>
+      <g id="Group_40572" data-name="Group 40572" transform="translate(0 12.221)">
+        <path id="Path_105105-4" data-name="Path 105105" d="M.764,4.962A.764.764,0,0,1,0,4.2V.764a.764.764,0,1,1,1.528,0V4.2A.764.764,0,0,1,.764,4.962Z" transform="translate(4.962 0) rotate(90)" fill="#8693a5"/>
+        <path id="Path_107606-4" data-name="Path 107606" d="M.764,12.84A.764.764,0,0,1,0,12.076V.764a.764.764,0,0,1,1.528,0V12.076A.764.764,0,0,1,.764,12.84Z" transform="translate(18.95 0) rotate(90)" fill="#8693a5"/>
+      </g>
+    </g>
+  </g>
+</svg>

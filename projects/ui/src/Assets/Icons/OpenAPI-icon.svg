@@ -1,0 +1,18 @@
+<svg id="OpenAPI-icon-blue" xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34">
+  <rect id="Rectangle_10243" data-name="Rectangle 10243" width="34" height="34" fill="#158bc2" opacity="0"/>
+  <g id="Group_40566" data-name="Group 40566" transform="translate(1.771 1.768)">
+    <path id="Path_107603" data-name="Path 107603" d="M13.888,1.857a13.848,13.848,0,0,1,7.42,2.149l.741.469-6.526,6.913-.418-.114a4.634,4.634,0,1,0,3.416,4.471,4.727,4.727,0,0,0-.155-1.2c-.115-.408.1-.629.433-.96.161-.162.391-.391.667-.665.487-.482,1.166-1.151,2.018-1.989,1.468-1.442,2.937-2.878,2.937-2.878l.63-.616.481.738a13.888,13.888,0,1,1-11.646-6.32Zm5.883,2.924A12.437,12.437,0,1,0,24.78,9.728c-1.857,1.818-4.171,4.089-4.924,4.847a6.163,6.163,0,0,1,.112,1.171,6.08,6.08,0,1,1-4.914-5.967Z" transform="translate(0 0.829)" fill="#158bc2"/>
+    <path id="Path_107604" data-name="Path 107604" d="M26.229,1.075A3.667,3.667,0,0,0,20.351,5.3L12.36,13.286a3.668,3.668,0,1,0,1.656,1.656l7.991-7.989a3.666,3.666,0,0,0,4.222-5.878" transform="translate(3.152 0)" fill="#158bc2"/>
+    <path id="Line_553" data-name="Line 553" d="M.946,7.813H-.5V0H.946Z" transform="translate(13.928 3.412)" fill="#158bc2"/>
+    <path id="Line_554" data-name="Line 554" d="M3.589,7.189-.429.487.812-.257l4.018,6.7Z" transform="translate(6.677 5.321)" fill="#158bc2"/>
+    <path id="Line_555" data-name="Line 555" d="M5.176,6.189-.353.67.669-.354,6.2,5.165Z" transform="translate(4.604 6.93)" fill="#158bc2"/>
+    <path id="Line_556" data-name="Line 556" d="M7.813.946H0V-.5H7.813Z" transform="translate(0.726 16.621)" fill="#158bc2"/>
+    <path id="Line_557" data-name="Line 557" d="M.489,4.846-.258,3.607,6.434-.428,7.181.81Z" transform="translate(2.361 18.917)" fill="#158bc2"/>
+    <path id="Line_558" data-name="Line 558" d="M.671,6.2-.354,5.182,5.158-.353,6.182.668Z" transform="translate(4.612 20.379)" fill="#158bc2"/>
+    <path id="Line_559" data-name="Line 559" d="M.875,7.588l-1.338-.55L2.508-.19,3.846.36Z" transform="translate(8.415 21.332)" fill="#158bc2"/>
+    <path id="Line_560" data-name="Line 560" d="M3.639,7.164-.427.492.808-.26,4.874,6.412Z" transform="translate(16.665 20.92)" fill="#158bc2"/>
+    <path id="Line_561" data-name="Line 561" d="M5.158,6.2-.354.668.671-.353,6.182,5.182Z" transform="translate(17.338 20.379)" fill="#158bc2"/>
+    <path id="Line_562" data-name="Line 562" d="M7.813.946H0V-.5H7.813Z" transform="translate(19.24 16.099)" fill="#158bc2"/>
+    <path id="Path_107605" data-name="Path 107605" d="M14.3,11.946H12.854A4.727,4.727,0,0,0,12.7,10.74l1.4-.369A6.175,6.175,0,0,1,14.3,11.946Z" transform="translate(5.667 4.629)" fill="#158bc2"/>
+  </g>
+</svg>

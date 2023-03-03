@@ -1,0 +1,235 @@
+@use "./constants";
+@use "./button";
+
+.redocDisplayContainer {
+  border-radius: constants.$smallBorderRadius;
+  border: 1px solid constants.$puddleBlue;
+
+  margin-bottom: 40px;
+
+  .redoc-wrap {
+    .menu-content {
+      background: constants.$marchGrey;
+
+      div[role="search"] {
+        position: relative;
+
+        input {
+          border-radius: constants.$smallBorderRadius;
+          height: 34px;
+          line-height: 34px;
+          padding: 0 13px;
+
+          font-size: 18px;
+          font-weight: normal;
+          color: black;
+          background: white;
+
+          &::placeholder {
+            color: constants.$juneGrey;
+          }
+        }
+
+        i {
+          display: none;
+        }
+        svg {
+          left: auto;
+          right: 25px;
+          top: 50%;
+          width: 18px;
+          height: 18px;
+
+          path {
+            fill: constants.$juneGrey;
+          }
+        }
+
+        > div.scrollbar-container {
+          margin-top: 10px;
+        }
+        > div.scrollbar-container,
+        div[data-role="search:results"] {
+          background: white;
+        }
+      }
+
+      li > label {
+        background: transparent;
+
+        .operation-type {
+          border-radius: constants.$smallBorderRadius;
+
+          margin-top: 0;
+          width: 58px;
+          min-width: 58px;
+          height: 24px;
+          line-height: 24px;
+
+          font-size: 14px;
+          font-weight: 600;
+
+          &.delete {
+            background-color: constants.$deleteAction;
+          }
+          &.get {
+            background-color: constants.$getAction;
+          }
+          &.hook {
+            background-color: constants.$eventAction;
+          }
+          &.post {
+            background-color: constants.$postAction;
+          }
+          &.put {
+            background-color: constants.$putAction;
+          }
+
+          &.options,
+          &.patch,
+          &.basic,
+          &.link,
+          &.head {
+            background-color: constants.$defaultAction;
+          }
+        }
+
+        > span:last-of-type {
+          font-size: 18px;
+          line-height: 22px;
+          color: constants.$apiDocumentationText;
+        }
+      }
+    }
+
+    .api-content {
+      background: white;
+
+      .ilacoL {
+        @extend .button;
+        height: 26px;
+        line-height: 26px;
+      }
+
+      span[type="primary"] {
+        background-color: constants.$royalPurple;
+      }
+      span[type="warning"] {
+        background-color: constants.$pumpkinOrange;
+        font-size: 14px;
+      }
+
+      table {
+        font-size: 16px;
+
+        .eIjWpQ {
+          font-size: 16px;
+          color: constants.$midRed;
+        }
+        .ibAyvN {
+          font-size: 16px;
+          color: constants.$darkYellow;
+          text-transform: lowercase;
+        }
+
+        tr > td:last-of-type,
+        tr > td:last-of-type span {
+          line-height: 22px;
+        }
+
+        button,
+        span {
+          font-size: 16px;
+        }
+
+        span.iDFogX {
+          display: inline-block;
+          height: 21px;
+          line-height: 21px;
+          padding: 0 10px;
+          border-radius: 13px;
+
+          font-size: 12px;
+          color: constants.$primaryColor;
+          border-color: constants.$primaryColor;
+        }
+      }
+
+      // Example area type buttons
+      .faCWDf button > span {
+        border-radius: constants.$smallBorderRadius;
+        padding: 0;
+        width: 58px;
+        height: 24px;
+        line-height: 24px;
+        font-size: 14px;
+        font-weight: 600;
+        text-align: center;
+
+        &.delete {
+          background-color: constants.$deleteAction;
+        }
+        &.get {
+          background-color: constants.$getAction;
+        }
+        &.hook {
+          background-color: constants.$eventAction;
+        }
+        &.post {
+          background-color: constants.$postAction;
+        }
+        &.put {
+          background-color: constants.$putAction;
+        }
+
+        &.options,
+        &.patch,
+        &.basic,
+        &.link,
+        &.head {
+          background-color: constants.$defaultAction;
+        }
+      }
+
+      // Payload button
+      .loHuJX > ul > li {
+        height: 40px;
+        line-height: 40px;
+        padding: 0 10px;
+
+        &.react-tabs__tab--selected {
+          color: constants.$primaryColor;
+        }
+        &.tab-success {
+          color: constants.$darkGreen;
+        }
+        &.tab-error {
+          color: constants.$darkRed;
+        }
+      }
+
+      // RESPONSE CALLOUTS
+      .iDYSTN,
+      .GIvIp {
+        border-radius: constants.$smallBorderRadius;
+        line-height: 22px;
+      }
+      // FAILURES
+      .iDYSTN {
+        background: constants.$lightRed;
+        border: 1px solid constants.$midRed;
+        color: constants.$midRed;
+      }
+      // SUCCESSES
+      .GIvIp {
+        background: constants.$lightGreen;
+        border: 1px solid constants.$darkGreen;
+        color: constants.$darkGreen;
+      }
+    }
+
+    .fburAk {
+      display: none;
+    }
+  }
+}

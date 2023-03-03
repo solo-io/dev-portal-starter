@@ -1,7 +1,12 @@
 @use "./background";
+@use "./button";
 @use "./container";
-@use "./topnav";
+@use "./links";
 @use "./green-theme";
+
+@use "./banner";
+@use "./redoc";
+@use "./topnav";
 
 //
 // Makes code snippets visible in dark mode

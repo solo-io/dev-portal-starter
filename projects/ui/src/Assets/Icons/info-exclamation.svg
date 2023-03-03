@@ -1,0 +1,14 @@
+<svg id="Component_1" data-name="Component 1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <g id="Group_24115" data-name="Group 24115">
+    <g id="Group_4032" data-name="Group 4032">
+      <g id="Ellipse_11" data-name="Ellipse 11">
+        <ellipse id="Ellipse_202" data-name="Ellipse 202" cx="8" cy="8" rx="8" ry="8" transform="translate(0.001 0)" fill="#ffe5b4"/>
+        <path id="Path_38533" data-name="Path 38533" d="M515.86,418.159a8,8,0,1,1,8-8A8.009,8.009,0,0,1,515.86,418.159Zm0-15a7,7,0,1,0,7,7A7.008,7.008,0,0,0,515.86,403.159Z" transform="translate(-507.86 -402.159)" fill="#fcb631"/>
+      </g>
+    </g>
+    <g id="Group_24115-2" data-name="Group 24115" transform="translate(7.41 3.242)">
+      <path id="Path_38534" data-name="Path 38534" d="M519.516,418.8h0c-.3,0-.537.362-.539.81v.62c0,.447.242.81.542.81s.538-.365.538-.81v-.62C520.055,419.171,519.814,418.808,519.516,418.8Z" transform="translate(-518.975 -411.696)" fill="#fcb631"/>
+      <path id="Path_38535" data-name="Path 38535" d="M519.516,407.022h0a.6.6,0,0,0-.379.129.407.407,0,0,0-.159.314v4.743a.511.511,0,0,0,.541.443.6.6,0,0,0,.379-.128.4.4,0,0,0,.16-.314v-4.743A.5.5,0,0,0,519.516,407.022Z" transform="translate(-518.975 -407.022)" fill="#fcb631"/>
+    </g>
+  </g>
+</svg>

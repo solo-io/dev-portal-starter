@@ -1,17 +1,7 @@
 //
 // Background to cover the entire page and all content.
 //
-.background {
-  position: absolute;
-  top: 150px;
-  right: 0px;
-  height: 485px;
-  width: 66vw;
-  border-radius: 15px;
 
-  z-index: 0;
-  background-color: var(--color-canvas);
-}
 .app-content {
   background-color: var(--color-canvas);
 }

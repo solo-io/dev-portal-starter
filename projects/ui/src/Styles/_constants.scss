@@ -1,9 +1,22 @@
-$maxContentWidth: 1385px;
+@forward "./default-constants" with (
+  // This is unused elsewhere. Just a demo of overriding
+  $dummyVar: 42,
 
-@mixin contentWidth {
-  width: 100vw;
-  max-width: $maxContentWidth;
-
-  padding: 0 30px;
-  margin: 0 auto;
-}
+  //
+  // SIZING
+  //
+  //$normalContentWidth: 200px,
+  //$largeContentWidth: 500px,
+  //
+  //
+  // COLORS
+  //
+  //$modalBack: blue;
+  //$primaryColor: orange;
+  //$secondaryColor: purple;
+  //$backgroundColor: red;
+  //$defaultTextColor: green;
+  //$iconsColor: white;
+  //$internalLinkColor: yellow;
+  //$externalLinkColor: black;
+);

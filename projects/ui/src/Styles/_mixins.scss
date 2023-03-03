@@ -1,0 +1,9 @@
+@use "./constants";
+
+@mixin contentWidth($width: constants.$normalContentWidth) {
+  width: calc(100vw - 16px);
+  max-width: $width;
+
+  padding: 0 30px;
+  margin: 0 auto;
+}

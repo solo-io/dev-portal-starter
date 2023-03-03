@@ -1,0 +1,5 @@
+@use "./constants";
+
+a {
+  color: constants.$internalLinkColor;
+}
