@@ -2,9 +2,9 @@
 @use "./button";
 
 .redocDisplayContainer {
-  border-radius: constants.$smallBorderRadius;
   border: 1px solid constants.$puddleBlue;
-
+  border-radius: constants.$smallBorderRadius;
+  width: 100%;
   margin-bottom: 40px;
 
   .redoc-wrap {

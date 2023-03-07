@@ -13,11 +13,16 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { API, APIKey, UsagePlan, User } from "./api-types";
 
-async function fetchJson<T>(
+export const restpointPrefix = "http://localhost:31080/v1";
+
+export async function fetchJson<T>(
   input: RequestInfo | URL,
   fetchOptions?: { method?: string; body?: string }
 ): Promise<T> {
-  const response = await fetch(input, fetchOptions);
+  const response = await fetch(input, {
+    crossDomain: true,
+    ...fetchOptions,
+  });
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -27,7 +32,7 @@ async function fetchJson<T>(
 function soloUseQuery<T>(apiCallString: string) {
   return 3; /*useQuery({
     queryKey: [apiCallString],
-    queryFn: () => fetchJson<T>(/*SOME REST ENDPOINT +  apiCallString),
+    queryFn: () => fetchJson<T>("http://localhost:31080/v1" + apiCallString),
   });*/
 }
 
@@ -74,7 +79,7 @@ export function useCreateApiKey(apiId: string, usagePlan: string) {
   });
 }
 
-export function useCreateApiKey(apiId: string) {
+export function useDeleteApiKey(apiId: string) {
   // Any calls to this may want to make use of the following in the `onSettled` case
   //  queryClient.invalidateQueries("api-keys");
 

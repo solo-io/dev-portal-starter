@@ -1,0 +1,186 @@
+@use "../constants";
+@use "../container";
+
+.apisList {
+  padding: 0 30px;
+
+  .filterArea {
+    .title {
+    }
+
+    .textFilter {
+    }
+    .pairsFilter {
+    }
+    .dropdownFilter {
+    }
+
+    .gridListToggle {
+      > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+
+        border: 1px solid constants.$puddleBlue;
+        color: constants.$augustGrey;
+        background-color: white;
+
+        svg {
+          height: 22px;
+          width: 22px;
+
+          * {
+            fill: currentColor;
+          }
+        }
+
+        .isActive {
+          color: white;
+          background: constants.$primaryColor;
+          border-color: constants.$primaryColor;
+        }
+      }
+    }
+
+    .currentFiltersArea {
+      padding: 8px 15px 0 25px;
+      border-radius: 0 0 constants.$smallBorderRadius
+        constants.$smallBorderRadius;
+      background: constants.$puddleBlue;
+
+      .activeFiltersGrid {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .activeFilter {
+        @extend .primaryTrimmedSmallWhiteContainer;
+
+        display: inline-flex;
+        font-size: 12px;
+        line-height: 20px;
+        height: 20px;
+        margin: 0 8px 8px 0;
+
+        .closingX svg {
+          width: 8px;
+          height: 8px;
+
+          * {
+            fill: currentColor;
+          }
+        }
+      }
+
+      .clearAll {
+        @extend .activeFilter;
+
+        background: constants.$primaryColor;
+        color: white;
+        margin: 0;
+      }
+    }
+  }
+
+  .apiGridCard {
+  }
+
+  .apiListCard {
+    border-radius: constants.$smallBorderRadius;
+
+    border: 1px solid constants.$puddleBlue;
+    background: constants.$lightGreyTransparent;
+    border: 0px 2px 8px constants.$darkGreyTransparent;
+
+    .content {
+      display: flex;
+
+      .majorIconHolder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 192px;
+        border-right: 1px solid constants.$puddleBlue;
+
+        svg {
+          width: 100px;
+          max-width: 95%;
+          height: 100px;
+
+          * {
+            fill: constants.$primaryColor;
+          }
+        }
+      }
+
+      .details {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        min-width: 250px;
+        min-height: 165px;
+
+        padding: 0 25px 0 40px;
+
+        .title {
+          margin-bottom: 15px;
+
+          font-size: 28px;
+          font-weight: 600;
+          color: constants.$defaultColoredText;
+        }
+        .description {
+          font-size: 16px;
+          line-height: 22px;
+          color: constants.$juneGrey;
+        }
+      }
+    }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      height: 43px;
+      padding: 0 15px 0 25px;
+      border-radius: 0 0 constants.$smallBorderRadius
+        constants.$smallBorderRadius;
+      background: constants.$puddleBlue;
+
+      .metaInfo {
+        display: flex;
+        align-items: center;
+
+        svg {
+          margin-right: 10px;
+          width: 20px;
+          height: 20px;
+
+          * {
+            fill: constants.$primaryColor;
+          }
+        }
+
+        .typeTitle {
+          @extend .primaryTrimmedSmallWhiteContainer;
+
+          font-size: 14px;
+          line-height: 22px;
+        }
+      }
+
+      .typeIcon {
+        svg {
+          width: 28px;
+          height: 28px;
+
+          * {
+            fill: constants.$primaryColor;
+          }
+        }
+      }
+    }
+  }
+}

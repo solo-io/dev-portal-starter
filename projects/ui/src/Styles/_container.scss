@@ -15,6 +15,16 @@
   @include mixins.contentWidth(constants.$largeContentWidth);
 }
 
+.primaryTrimmedSmallWhiteContainer {
+  display: inline-block;
+  padding: 0 10px;
+  border-radius: constants.$standardBorderRadius;
+
+  border: 1px solid constants.$primaryColor;
+  color: constants.$primaryColor;
+  background-color: constants.$backgroundColor;
+}
+
 .AppContainer {
   position: relative;
 
@@ -26,7 +36,8 @@
 
   width: 100vw;
   height: 100vh;
-  background: #f8fafb;
+  background: constants.$backgroundColor;
+  color: constants.$defaultText;
 }
 
 .MainContentContainer {

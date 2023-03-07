@@ -1,8 +1,13 @@
-import PageContainer from "../Common/PageContainer";
+import { API } from "../../Apis/api-types";
 
-export function ApiSummaryGridCard() {
+export function ApiSummaryGridCard({ key, api }: { key?: string; api: API }) {
   //
   // Render
   //
-  return <PageContainer>List of APIs</PageContainer>;
+  return (
+    <div key={key}>
+      <div>HEADER</div>
+      <div>{api.title}</div>
+    </div>
+  );
 }

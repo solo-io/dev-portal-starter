@@ -23,7 +23,7 @@ export function RedocDisplay({ url }: { url: string }) {
   }, [renderedUrl]);
 
   /* eslint-disable no-console */
-  console.log(renderedUrl);
+  //console.log(renderedUrl, url);
   /* eslint-enable no-console */
   return (
     <div className="redocDisplayContainer">

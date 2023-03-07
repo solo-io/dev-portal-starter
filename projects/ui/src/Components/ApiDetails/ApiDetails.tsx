@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { RedocDisplay } from "./RedocDisplay";
 import {
@@ -6,6 +5,9 @@ import {
   BannerHeadingTitle,
 } from "../Common/Banner/BannerHeading";
 import { Icon } from "../../Assets/Icons";
+import { API } from "../../Apis/api-types";
+import { useQuery } from "@tanstack/react-query";
+import { fetchJson, restpointPrefix } from "../../Apis/hooks";
 
 function HeaderSummary({
   apiYaml,
@@ -20,9 +22,9 @@ function HeaderSummary({
 
   return (
     <div className="apiDetailsHeaderAddition">
-      <div>
+      {/*<div>
         <Icon.HtmlTag /> {endpointsCount} Operations
-      </div>
+  </div>*/}
       <div>
         <Icon.OpenApiIcon /> {type}
       </div>
@@ -32,13 +34,19 @@ function HeaderSummary({
 
 export function ApiDetails() {
   const { apiId } = useParams();
-  //
-  // URL for the API
-  //
-  const [url] = useState(
-    // "https://api.apis.guru/v2/specs/github.com/1.1.4/openapi.yaml"
-    "http://localhost:4000/openapi.yaml"
-  );
+
+  /*const {
+    isLoading,
+    isError,
+    data: apiSchema,
+    error,
+  } = useQuery({
+    queryKey: [`/apis/${apiId}/schema`],
+    queryFn: () => fetchJson<API>(`${restpointPrefix}/apis/${apiId}/schema`),
+  });*/
+
+  const apiSchema =
+    "https://raw.githubusercontent.com/jmhbh/openapi-sample/main/examples/v3.0/petstore.json";
 
   return (
     <div className="NOTICEME NOTICE ME">
@@ -47,7 +55,7 @@ export function ApiDetails() {
           <BannerHeadingTitle
             text={apiId}
             additionalInfo={
-              <div style={{ color: "blue", fontSize: "12px" }}>Modified by</div>
+              /*<div style={{ color: "blue", fontSize: "12px" }}>Modified by</div>*/ undefined
             }
             stylingTweaks={{
               fontSize: "32px",
@@ -59,11 +67,16 @@ export function ApiDetails() {
         description={
           "Browse the list of APIs and documentation in this portal. From here you can get the information you need to make API calls."
         }
-        additionalContent={<HeaderSummary apiYaml={{}} type={"OpenAPI"} />}
+        additionalContent={
+          <HeaderSummary
+            apiYaml={{}}
+            type={/*apiSchema.isOpenApi*/ "OpenAPI"}
+          />
+        }
       />
 
       <main className="page-container-wrapper">
-        <RedocDisplay url={url} />
+        <RedocDisplay url={apiSchema} />
       </main>
       {/* <API apiDescriptionUrl="https://raw.githubusercontent.com/stoplightio/Public-APIs/master/reference/zoom/openapi.yaml" /> */}
     </div>
