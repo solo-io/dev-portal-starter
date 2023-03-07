@@ -5,52 +5,224 @@
   padding: 0 30px;
 
   .filterArea {
-    .title {
-    }
+    margin-bottom: 30px;
+    border-radius: constants.$smallBorderRadius;
 
-    .textFilter {
-    }
-    .pairsFilter {
-    }
-    .dropdownFilter {
-    }
+    border: 1px solid constants.$puddleBlue;
+    background: constants.$lightGreyTransparent;
+    box-shadow: 0px 2px 8px constants.$darkGreyTransparent;
 
-    .gridListToggle {
-      > div {
+    .choicesArea {
+      display: flex;
+      align-items: center;
+      min-height: 50px;
+      padding: 0 15px 0 25px;
+
+      .title {
+        width: 65px;
+        margin-right: 25px;
+        font-size: 24px;
+        font-weight: 600;
+      }
+
+      .filterBox {
+        display: flex;
+        align-items: center;
+        height: 34px;
+        line-height: 34px;
+        border-radius: constants.$smallBorderRadius;
+        border: 1px solid constants.$mayGrey;
+
+        background: white;
+      }
+
+      .filterTypeIconHolder {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 30px;
-        height: 30px;
-
-        border: 1px solid constants.$puddleBlue;
-        color: constants.$augustGrey;
-        background-color: white;
+        width: 34px;
+        height: 34px;
+        margin-right: 6px;
+        border-right: 1px solid constants.$mayGrey;
 
         svg {
-          height: 22px;
-          width: 22px;
-
+          width: 18px;
+          height: 18px;
           * {
-            fill: currentColor;
+            fill: constants.$juneGrey;
+          }
+        }
+      }
+
+      .filterPlaceholderTexts {
+        color: constants.$juneGrey;
+        font-weight: 300;
+        font-size: 16px;
+      }
+
+      .textFilter,
+      .pairsFilter,
+      .dropdownFilter {
+        flex: 1;
+        margin-right: 15px;
+      }
+      .textFilter {
+        @extend .filterBox;
+
+        input {
+          border: none;
+          outline: none;
+          box-shadow: none;
+
+          height: 30px;
+          line-height: 30px;
+
+          &::placeholder {
+            @extend .filterPlaceholderTexts;
           }
         }
 
-        .isActive {
-          color: white;
-          background: constants.$primaryColor;
-          border-color: constants.$primaryColor;
+        svg {
+          width: 18px;
+          height: 18px;
+          margin: 0 10px;
+          * {
+            stroke: constants.$juneGrey;
+          }
+        }
+      }
+      .pairsFilter {
+        @extend .filterBox;
+
+        .tagHolder {
+          @extend .filterTypeIconHolder;
+        }
+
+        .pairHolder {
+          display: grid;
+          align-items: center;
+          grid-gap: 5px;
+          grid-template-columns: 1fr 2px 1fr;
+          color: constants.$juneGrey;
+
+          input {
+            border-radius: constants.$smallBorderRadius;
+
+            border: 1px solid constants.$mayGrey;
+            outline: none;
+            box-shadow: none;
+
+            height: 25px;
+            line-height: 25px;
+            padding: 0 6px;
+
+            &::placeholder {
+              @extend .filterPlaceholderTexts;
+            }
+          }
+        }
+
+        .addButtonHolder {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 34px;
+          width: 34px;
+
+          svg {
+            height: 21px;
+            width: 21px;
+
+            * {
+              fill: constants.$juneGrey;
+            }
+          }
+        }
+      }
+      .dropdownFilter {
+        @extend .filterBox;
+
+        .gearHolder {
+          @extend .filterTypeIconHolder;
+
+          margin-right: 0;
+        }
+
+        .dropdownTrigger {
+          @extend .filterPlaceholderTexts;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          flex: 1;
+          cursor: pointer;
+          padding-left: 6px;
+          border-radius: 0 constants.$smallBorderRadius
+            constants.$smallBorderRadius 0;
+          height: 32px;
+
+          svg {
+            width: 14px;
+            margin: 0 10px;
+
+            * {
+              stroke: currentColor;
+            }
+          }
+
+          &[disabled] {
+            background: constants.$januaryGrey;
+            color: constants.$mayGrey;
+          }
+        }
+      }
+
+      .gridListToggle {
+        display: grid;
+        grid-template-columns: 30px 30px;
+        grid-gap: 8px;
+
+        .listingTypeToggle {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 30px;
+          height: 30px;
+          border-radius: constants.$smallBorderRadius;
+
+          border: 1px solid constants.$puddleBlue;
+          color: constants.$augustGrey;
+          background-color: white;
+
+          svg {
+            height: 22px;
+            width: 22px;
+
+            * {
+              fill: currentColor;
+            }
+          }
+
+          &.isActive {
+            color: white;
+            background: constants.$primaryColor;
+            border-color: constants.$primaryColor;
+          }
         }
       }
     }
 
     .currentFiltersArea {
+      display: flex;
+
       padding: 8px 15px 0 25px;
       border-radius: 0 0 constants.$smallBorderRadius
         constants.$smallBorderRadius;
       background: constants.$puddleBlue;
 
       .activeFiltersGrid {
+        flex: 1;
+
         display: flex;
         flex-wrap: wrap;
       }
@@ -58,17 +230,20 @@
         @extend .primaryTrimmedSmallWhiteContainer;
 
         display: inline-flex;
+        align-items: center;
         font-size: 12px;
-        line-height: 20px;
-        height: 20px;
+        line-height: 22px;
+        height: 22px;
         margin: 0 8px 8px 0;
+        font-size: 13px;
 
         .closingX svg {
           width: 8px;
           height: 8px;
+          margin-left: 8px;
 
           * {
-            fill: currentColor;
+            stroke: currentColor;
           }
         }
       }
@@ -91,7 +266,7 @@
 
     border: 1px solid constants.$puddleBlue;
     background: constants.$lightGreyTransparent;
-    border: 0px 2px 8px constants.$darkGreyTransparent;
+    box-shadow: 0px 2px 8px constants.$darkGreyTransparent;
 
     .content {
       display: flex;

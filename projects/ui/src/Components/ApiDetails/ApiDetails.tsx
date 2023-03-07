@@ -5,9 +5,9 @@ import {
   BannerHeadingTitle,
 } from "../Common/Banner/BannerHeading";
 import { Icon } from "../../Assets/Icons";
-import { API } from "../../Apis/api-types";
+/*import { API } from "../../Apis/api-types";
 import { useQuery } from "@tanstack/react-query";
-import { fetchJson, restpointPrefix } from "../../Apis/hooks";
+import { fetchJson, restpointPrefix } from "../../Apis/hooks";*/
 
 function HeaderSummary({
   apiYaml,
@@ -18,7 +18,7 @@ function HeaderSummary({
 }) {
   // parse yaml for operations
   // something like 1. find path at top level, 2. check # of direct children of path, 3. ?? check # of ops per child??
-  const endpointsCount = 4;
+  //const endpointsCount = 4;
 
   return (
     <div className="apiDetailsHeaderAddition">
@@ -46,7 +46,7 @@ export function ApiDetails() {
   });*/
 
   const apiSchema =
-    "https://raw.githubusercontent.com/jmhbh/openapi-sample/main/examples/v3.0/petstore.json";
+    "https://raw.githubusercontent.com/solo-io/workshops/master/gloo-portal/petstore-openapi-v2-full.json";
 
   return (
     <div className="NOTICEME NOTICE ME">

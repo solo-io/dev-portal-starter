@@ -21,6 +21,7 @@
     "@tanstack/react-query": "^4.24.9",
     "@typescript-eslint/eslint-plugin": "^5.51.0",
     "@typescript-eslint/parser": "^5.51.0",
+    "antd": "^5.3.0",
     "core-js": "^3.29.0",
     "eslint-plugin-storybook": "^0.6.10",
     "mobx": "^6.8.0",

@@ -10,7 +10,7 @@ import {
   BannerHeadingTitle,
 } from "../Common/Banner/BannerHeading";
 import { Icon } from "../../Assets/Icons";
-import { ApisFilter, PairValue } from "./ApisFilter";
+import { ApisFilter, FilterPair, FilterType, PairValue } from "./ApisFilter";
 
 export function Apis() {
   const {
@@ -23,26 +23,46 @@ export function Apis() {
     queryFn: () => fetchJson<API[]>(`${restpointPrefix}/apis`),
   });
 
-  const [namesFilter, setNamesFilter] = useState<string[]>([]);
-  const [pairsFilter, setPairsFilter] = useState<PairValue[]>([]);
-  const [typesFilter, setTypesFilter] = useState<string[]>([]);
+  const [allFilters, setAllFilters] = useState<FilterPair[]>([]);
+  const [nameFilter, setNameFilter] = useState<string>("");
 
   const [usingGridView, setUsingGridView] = useState(false);
 
   /* eslint-disable no-console */
-  console.log(error, apisList);
+  console.log(allFilters);
   /* eslint-enable no-console */
 
   const filters = {
     showingGrid: usingGridView,
     setShowingGrid: setUsingGridView,
-    namesFilter,
-    setNamesFilter,
-    pairsFilter,
-    setPairsFilter,
-    typesFilter,
-    setTypesFilter,
+    allFilters,
+    setAllFilters,
+    nameFilter,
+    setNameFilter,
   };
+
+  const displayedApisList = apisList
+    ? apisList.filter((api) => {
+        return (
+          (!nameFilter && !allFilters.length) ||
+          (!!nameFilter &&
+            api.title
+              .toLocaleLowerCase()
+              .includes(nameFilter.toLocaleLowerCase())) ||
+          allFilters.some((filter) => {
+            return (
+              (filter.type === FilterType.name &&
+                api.title
+                  .toLocaleLowerCase()
+                  .includes(filter.displayName.toLocaleLowerCase())) ||
+              (!!filter.type === FilterType.pairValue &&
+                api.customMetadata[filter.key] === filter.value) ||
+              (!!filter.type === FilterType.apiType && true)
+            );
+          })
+        );
+      })
+    : [];
 
   return (
     <PageContainer>
@@ -60,13 +80,12 @@ export function Apis() {
         ) : (
           <>
             <ApisFilter filters={filters} />
-            <div onClick={() => setUsingGridView((s) => !s)}>FILTERS</div>
             <div>
               {usingGridView
-                ? apisList.map((api) => (
+                ? displayedApisList.map((api) => (
                     <ApiSummaryGridCard api={api} key={api.apiId} />
                   ))
-                : apisList.map((api) => (
+                : displayedApisList.map((api) => (
                     <ApiSummaryListCard api={api} key={api.apiId} />
                   ))}
             </div>
