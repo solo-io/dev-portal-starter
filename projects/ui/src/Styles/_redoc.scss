@@ -6,7 +6,6 @@
   border-radius: constants.$smallBorderRadius;
   width: 100%;
   margin-bottom: 40px;
-  overflow: hidden;
 
   .redoc-wrap {
     .menu-content {
@@ -107,6 +106,8 @@
 
     .api-content {
       background: white;
+      border-radius: 0 constants.$smallBorderRadius constants.$smallBorderRadius
+        0;
 
       .ilacoL {
         @extend .button;
