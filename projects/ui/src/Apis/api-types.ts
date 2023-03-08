@@ -84,6 +84,8 @@
       type: object
 */
 
+import React from "react";
+
 /* NOTE: This should be taken out before public release for a 
      version which is run off of types generated somehow from our 
      private backend */
@@ -123,4 +125,5 @@ export type API = {
   license: string;
   usagePlans: string[];
   customMetadata: { [key: string]: any };
+  icon?: React.ReactNode;
 };

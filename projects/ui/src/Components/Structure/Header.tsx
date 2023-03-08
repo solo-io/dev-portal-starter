@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ReactComponent as Logo } from "../../Assets/logo.svg";
 import { NavLink, useLocation } from "react-router-dom";
+import { Icon } from "../../Assets/Icons";
 
 export function Header() {
   const routerLocation = useLocation();
@@ -33,7 +34,10 @@ export function Header() {
               APIs
             </NavLink>
             <div className="divider" />
-            <a href="/apis">Login</a>
+            <div className="userLoginArea">
+              <Icon.UserProfile className="userCircle" />
+              <Icon.DownArrow className="dropdownArrow" />
+            </div>
           </div>
         </nav>
       </header>

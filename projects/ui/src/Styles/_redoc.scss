@@ -6,6 +6,7 @@
   border-radius: constants.$smallBorderRadius;
   width: 100%;
   margin-bottom: 40px;
+  overflow: hidden;
 
   .redoc-wrap {
     .menu-content {
@@ -13,6 +14,7 @@
 
       div[role="search"] {
         position: relative;
+        margin-top: 10px;
 
         input {
           border-radius: constants.$smallBorderRadius;
@@ -37,6 +39,7 @@
           left: auto;
           right: 25px;
           top: 50%;
+          margin-top: -9px;
           width: 18px;
           height: 18px;
 

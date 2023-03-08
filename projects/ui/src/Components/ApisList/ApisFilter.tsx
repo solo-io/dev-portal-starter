@@ -100,9 +100,6 @@ export function ApisFilter({ filters }: { filters: ApisFiltration }) {
       )
   );
 
-  /* eslint-disable no-console */
-  console.log(selectableTypes);
-  /* eslint-enable no-console */
   return (
     <div className="filterArea">
       <div className="choicesArea">

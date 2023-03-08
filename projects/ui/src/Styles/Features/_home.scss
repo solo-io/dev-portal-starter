@@ -24,14 +24,15 @@
     .categoryCard {
       display: flex;
       flex-direction: column;
-      padding: 40px;
       min-height: 260px;
       border-radius: constants.$smallBorderRadius;
 
       border: 1px solid constants.$puddleBlue;
       background: constants.$lightGreyTransparent;
+      text-align: center;
+      cursor: default;
 
-      .categoryImage {
+      .categoryIcon {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -43,14 +44,35 @@
           max-height: 100px;
         }
       }
+      .categoryImageHolder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        height: 225px;
+        width: calc(100% + 2px);
+        overflow: hidden;
+        margin: -1px -1px 0;
+        border-radius: constants.$smallBorderRadius constants.$smallBorderRadius
+          0 0;
+        margin-bottom: 20px;
+
+        img {
+          width: 100%;
+          min-height: 100%;
+        }
+      }
+
       .categoryName {
-        font-size: 24px;
+        font-size: 28px;
         font-weight: 600;
-        margin-bottom: 15px;
+        margin-bottom: 5px;
+        padding: 0 40px;
       }
       .categoryDescription {
         font-size: 16px;
-        font-weight: 500;
+        font-weight: 400;
+        padding: 0 40px 40px;
       }
     }
   }

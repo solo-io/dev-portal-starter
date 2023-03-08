@@ -2,17 +2,12 @@ import { NavLink } from "react-router-dom";
 import { API } from "../../Apis/api-types";
 import { Icon } from "../../Assets/Icons";
 
-export function ApiSummaryListCard({ key, api }: { key?: string; api: API }) {
-  //
-  // Render
-  //
+export function ApiSummaryListCard({ api }: { api: API }) {
   return (
     <NavLink to={`/api-details/${api.apiId}`}>
-      <div key={key} className="apiListCard">
+      <div className="apiListCard">
         <div className="content">
-          <div className="majorIconHolder">
-            <Icon.Bug />
-          </div>
+          <div className="majorIconHolder">{api.icon}</div>
           <div className="details">
             <div>
               <h4 className="title">{api.title}</h4>

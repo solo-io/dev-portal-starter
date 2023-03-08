@@ -3,6 +3,7 @@
 
 .apisList {
   padding: 0 30px;
+  margin-bottom: 60px;
 
   .filterArea {
     margin-bottom: 30px;
@@ -258,10 +259,100 @@
     }
   }
 
-  .apiGridCard {
+  .apiGridList {
+    display: grid;
+    grid-gap: 30px;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    .apiGridCard {
+      display: flex;
+      flex-direction: column;
+
+      height: 100%;
+      min-height: 260px;
+      border-radius: constants.$smallBorderRadius;
+
+      border: 1px solid constants.$puddleBlue;
+      background: constants.$lightGreyTransparent;
+      color: constants.$defaultColoredText;
+      text-align: center;
+
+      .content {
+        flex: 1;
+
+        .apiImageHolder {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          height: 225px;
+          width: calc(100% + 2px);
+          overflow: hidden;
+          margin: -1px -1px 0;
+          border-radius: constants.$smallBorderRadius
+            constants.$smallBorderRadius 0 0;
+          margin-bottom: 20px;
+
+          img {
+            width: 100%;
+            min-height: 100%;
+          }
+        }
+
+        .title {
+          line-height: 32px;
+          font-size: 28px;
+          font-weight: 600;
+          margin-bottom: 10px;
+          padding: 0 40px;
+        }
+        .description {
+          font-size: 16px;
+          font-weight: 400;
+          padding: 0 40px 40px;
+
+          color: constants.$juneGrey;
+        }
+      }
+
+      .footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        height: 43px;
+        border-radius: 0 0 constants.$smallBorderRadius
+          constants.$smallBorderRadius;
+
+        background: constants.$puddleBlue;
+
+        .metaInfo {
+          display: flex;
+          align-items: center;
+
+          svg {
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+
+            * {
+              fill: constants.$primaryColor;
+            }
+          }
+
+          .typeTitle {
+            @extend .primaryTrimmedSmallWhiteContainer;
+
+            font-size: 14px;
+            line-height: 22px;
+          }
+        }
+      }
+    }
   }
 
   .apiListCard {
+    margin-bottom: 30px;
     border-radius: constants.$smallBorderRadius;
 
     border: 1px solid constants.$puddleBlue;

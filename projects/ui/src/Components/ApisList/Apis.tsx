@@ -13,7 +13,7 @@ import { Icon } from "../../Assets/Icons";
 import { ApisFilter, FilterPair, FilterType, PairValue } from "./ApisFilter";
 
 export function Apis() {
-  const {
+  /*const {
     isLoading,
     isError,
     data: apisList,
@@ -21,7 +21,54 @@ export function Apis() {
   } = useQuery({
     queryKey: ["/apis"],
     queryFn: () => fetchJson<API[]>(`${restpointPrefix}/apis`),
-  });
+  });*/
+
+  const isLoading = false;
+  const isError = false;
+
+  const apisList = [
+    {
+      apiId: "petstore-openapi-v2-full",
+      contact: "example@solo.io",
+      description: "A Petstore API",
+      license: "MIT",
+      termsOfService: "sample terms of service",
+      title: "Petstore v2",
+      usagePlans: ["bronze", "silver", "gold"],
+      icon: <Icon.CircledKey />,
+    },
+    {
+      apiId: "gameofthrones-characters",
+      contact: "example@solo.io",
+      description: "Character lists from ASOIAF",
+      license: "MIT",
+      termsOfService: "sample terms of service",
+      title: "Game of Thrones Characters",
+      usagePlans: ["bronze", "silver", "gold"],
+      icon: <Icon.NetworkHub />,
+    },
+    {
+      apiId: "Pokemon",
+      contact: "example@solo.io",
+      description:
+        "All the Pokémon data you'll ever need in one place, easily accessible through a modern RESTful API.",
+      license: "MIT",
+      termsOfService: "sample terms of service",
+      title: "The Pokedex",
+      usagePlans: ["bronze", "silver", "gold"],
+      icon: <Icon.Bug />,
+    },
+    {
+      apiId: "tacos",
+      contact: "example@solo.io",
+      description: "A database of taco recipes for a large list of ingredients",
+      license: "MIT",
+      termsOfService: "sample terms of service",
+      title: "Random Taco Recipes",
+      usagePlans: ["bronze", "silver", "gold"],
+      icon: <Icon.ListViewIcon />,
+    },
+  ];
 
   const [allFilters, setAllFilters] = useState<FilterPair[]>([]);
   const [nameFilter, setNameFilter] = useState<string>("");
@@ -29,7 +76,7 @@ export function Apis() {
   const [usingGridView, setUsingGridView] = useState(false);
 
   /* eslint-disable no-console */
-  console.log(allFilters);
+  //console.log(apisList);
   /* eslint-enable no-console */
 
   const filters = {
@@ -42,26 +89,28 @@ export function Apis() {
   };
 
   const displayedApisList = apisList
-    ? apisList.filter((api) => {
-        return (
-          (!nameFilter && !allFilters.length) ||
-          (!!nameFilter &&
-            api.title
-              .toLocaleLowerCase()
-              .includes(nameFilter.toLocaleLowerCase())) ||
-          allFilters.some((filter) => {
-            return (
-              (filter.type === FilterType.name &&
-                api.title
-                  .toLocaleLowerCase()
-                  .includes(filter.displayName.toLocaleLowerCase())) ||
-              (!!filter.type === FilterType.pairValue &&
-                api.customMetadata[filter.key] === filter.value) ||
-              (!!filter.type === FilterType.apiType && true)
-            );
-          })
-        );
-      })
+    ? apisList
+        .filter((api) => {
+          return (
+            (!nameFilter && !allFilters.length) ||
+            (!!nameFilter &&
+              api.title
+                .toLocaleLowerCase()
+                .includes(nameFilter.toLocaleLowerCase())) ||
+            allFilters.some((filter) => {
+              return (
+                (filter.type === FilterType.name &&
+                  api.title
+                    .toLocaleLowerCase()
+                    .includes(filter.displayName.toLocaleLowerCase())) ||
+                (!!filter.type === FilterType.pairValue &&
+                  api.customMetadata[filter.key] === filter.value) ||
+                (!!filter.type === FilterType.apiType && true)
+              );
+            })
+          );
+        })
+        .sort((filterA, filterB) => filterA.title.localeCompare(filterB.title))
     : [];
 
   return (
@@ -80,7 +129,7 @@ export function Apis() {
         ) : (
           <>
             <ApisFilter filters={filters} />
-            <div>
+            <div className={usingGridView ? "apiGridList" : ""}>
               {usingGridView
                 ? displayedApisList.map((api) => (
                     <ApiSummaryGridCard api={api} key={api.apiId} />

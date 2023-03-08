@@ -43,10 +43,6 @@
         color: constants.$internalLinkColor;
         border-bottom-color: constants.$internalLinkColor;
       }
-
-      &:last-of-type {
-        margin-right: 0;
-      }
     }
 
     .divider {
@@ -55,6 +51,31 @@
       margin-right: 30px;
 
       background: constants.$puddleBlue;
+    }
+  }
+
+  .userLoginArea {
+    display: flex;
+    align-items: center;
+    color: constants.$defaultColoredText;
+
+    svg.userCircle {
+      width: 40px;
+      height: 40px;
+
+      * {
+        fill: currentColor;
+      }
+    }
+
+    svg.dropdownArrow {
+      width: 14px;
+      margin-left: 10px;
+
+      * {
+        stroke: currentColor;
+        stroke-width: 2;
+      }
     }
   }
 }
