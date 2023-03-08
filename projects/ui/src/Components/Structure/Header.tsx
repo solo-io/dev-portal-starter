@@ -33,7 +33,7 @@ export function Header() {
               APIs
             </NavLink>
             <div className="divider" />
-            <a href="/apis">USER AREA</a>
+            <a href="/apis">Login</a>
           </div>
         </nav>
       </header>

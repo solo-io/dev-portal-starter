@@ -12,9 +12,9 @@ export function HomePage() {
     <PageContainer>
       <div>
         <BannerHeading
-          title={<BannerHeadingTitle text={"Lorem ipsum dolor sit amet"} />}
+          title={<BannerHeadingTitle text={"Developers Welcome!"} />}
           description={
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam"
+            "Welcome to the Acme Co. Developer Portal. Connect, partner, and build with us to create the next generation of digital experiences."
           }
           additionalContent={
             <NavLink to="/apis">
@@ -37,60 +37,27 @@ export function HomePage() {
             <div className="categoryImage">
               <Icon.Bug />
             </div>
-            <div className="categoryName">Lorem ipsum dolor sit amet</div>
+            <div className="categoryName">Partners</div>
             <div className="categoryDescription">
-              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-              nonumy eirmod
+              Partner APIs for onboarding, relationship management, and unified customer experience
             </div>
           </div>
           <div className="categoryCard">
             <div className="categoryImage">
               <Icon.WrenchGear />
             </div>
-            <div className="categoryName">Lorem ipsum dolor sit amet</div>
+            <div className="categoryName">Customers</div>
             <div className="categoryDescription">
-              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-              nonumy eirmod
+            Customer-facing APIs to drive new experiences from third-party client applications
             </div>
           </div>
           <div className="categoryCard">
             <div className="categoryImage">
               <Icon.Lock />
             </div>
-            <div className="categoryName">Lorem ipsum dolor sit amet</div>
+            <div className="categoryName">Digital Experience</div>
             <div className="categoryDescription">
-              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-              nonumy eirmod
-            </div>
-          </div>
-          <div className="categoryCard">
-            <div className="categoryImage">
-              <Icon.NetworkHub />
-            </div>
-            <div className="categoryName">Lorem ipsum dolor sit amet</div>
-            <div className="categoryDescription">
-              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-              nonumy eirmod
-            </div>
-          </div>
-          <div className="categoryCard">
-            <div className="categoryImage">
-              <Icon.UpstreamRipple />
-            </div>
-            <div className="categoryName">Lorem ipsum dolor sit amet</div>
-            <div className="categoryDescription">
-              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-              nonumy eirmod
-            </div>
-          </div>
-          <div className="categoryCard">
-            <div className="categoryImage">
-              <Icon.NetworkOfCircles />
-            </div>
-            <div className="categoryName">Lorem ipsum dolor sit amet</div>
-            <div className="categoryDescription">
-              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-              nonumy eirmod
+              Next generation digital experience APIs to enable the most advanced API-based integration available in the market today.
             </div>
           </div>
         </div>
