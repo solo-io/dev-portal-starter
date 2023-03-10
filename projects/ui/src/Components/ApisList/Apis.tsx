@@ -13,7 +13,7 @@ import { Icon } from "../../Assets/Icons";
 import { ApisFilter, FilterPair, FilterType, PairValue } from "./ApisFilter";
 
 export function Apis() {
-  /*const {
+  const {
     isLoading,
     isError,
     data: apisList,
@@ -21,8 +21,9 @@ export function Apis() {
   } = useQuery({
     queryKey: ["/apis"],
     queryFn: () => fetchJson<API[]>(`${restpointPrefix}/apis`),
-  });*/
-
+  });
+  
+/*
   const isLoading = false;
   const isError = false;
 
@@ -69,6 +70,7 @@ export function Apis() {
       icon: <Icon.ListViewIcon />,
     },
   ];
+  */
 
   const [allFilters, setAllFilters] = useState<FilterPair[]>([]);
   const [nameFilter, setNameFilter] = useState<string>("");

@@ -1,4 +1,7 @@
 import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { fetchJson, restpointPrefix } from "../../Apis/hooks";
+import { API } from "../../Apis/api-types";
 import { RedocDisplay } from "./RedocDisplay";
 import {
   BannerHeading,
@@ -35,7 +38,7 @@ function HeaderSummary({
 export function ApiDetails() {
   const { apiId } = useParams();
 
-  /*const {
+  const {
     isLoading,
     isError,
     data: apiSchema,
@@ -43,10 +46,12 @@ export function ApiDetails() {
   } = useQuery({
     queryKey: [`/apis/${apiId}/schema`],
     queryFn: () => fetchJson<API>(`${restpointPrefix}/apis/${apiId}/schema`),
-  });*/
+  });
 
+  /*
   const apiSchema =
     "https://raw.githubusercontent.com/solo-io/workshops/master/gloo-portal/petstore-openapi-v2-full.json";
+    */
 
   return (
     <div className="NOTICEME NOTICE ME">
