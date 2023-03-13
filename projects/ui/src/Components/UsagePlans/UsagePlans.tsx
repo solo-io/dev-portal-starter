@@ -1,8 +1,11 @@
 import { useParams } from "react-router-dom";
-import PageContainer from "../../Common/PageContainer";
+import PageContainer from "../Common/PageContainer";
+import { UsagePlansList } from "./ApiKeys/UsagePlansList";
 
-function UsagePlans() {
+export function UsagePlans() {
   const { apiId } = useParams();
+
+  const usagePlansList = [];
   //
   // Render
   //
@@ -15,8 +18,9 @@ function UsagePlans() {
           Could show specific plans for api: {apiId}
         </>
       )}
+      <main>
+        <UsagePlansList usagePlansList={usagePlansList} />
+      </main>
     </PageContainer>
   );
 }
-
-export default UsagePlans;

@@ -1,89 +1,84 @@
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import StoplightDemo from "./StoplightDemo";
+import { useParams } from "react-router-dom";
+import { RedocDisplay } from "./RedocDisplay";
+import {
+  BannerHeading,
+  BannerHeadingTitle,
+} from "../Common/Banner/BannerHeading";
+import { Icon } from "../../Assets/Icons";
+/*import { API } from "../../Apis/api-types";
+import { useQuery } from "@tanstack/react-query";
+import { fetchJson, restpointPrefix } from "../../Apis/hooks";*/
 
-function ApiDetails() {
-  const { apiId } = useParams();
-  //
-  // URL for the API
-  //
-  const [url, setUrl] = useState(
-    // "https://api.apis.guru/v2/specs/github.com/1.1.4/openapi.yaml"
-    "http://localhost:4000/example_openapi.yaml"
-  );
-  const [urlToDisplay, setUrlToDisplay] = useState(url);
-  useEffect(() => {
-    const debounceMs = 500;
-    const urlTimeout = setTimeout(() => setUrl(urlToDisplay), debounceMs);
-    return () => {
-      clearTimeout(urlTimeout);
-    };
-  }, [urlToDisplay, setUrl]);
+function HeaderSummary({
+  apiYaml,
+  type,
+}: {
+  apiYaml: { [key: string]: any };
+  type: any;
+}) {
+  // parse yaml for operations
+  // something like 1. find path at top level, 2. check # of direct children of path, 3. ?? check # of ops per child??
+  //const endpointsCount = 4;
 
-  //
-  // Render
-  //
   return (
-    <div>
-      <div className="sl-px-3 sl-prose sl-inverted sl-bg-canvas-100">
-        <div className="sl-flex">
-          <p
-            style={{ whiteSpace: "nowrap" }}
-            className="sl-pr-3 sl-py-1 sl-mb-3"
-          >
-            OpenApi URL ({apiId}):
-          </p>
-          <input
-            className="sl-bg-canvas-300 sl-relative sl-w-full sl-h-lg sl-text-base sl-pr-2.5 sl-pl-2.5 sl-rounded sl-border-light hover:sl-border-input focus:sl-border-primary sl-border"
-            placeholder="URL"
-            type="text"
-            value={urlToDisplay}
-            onChange={(e) => setUrlToDisplay(e.target.value)}
-          />
-          <p
-            style={{
-              whiteSpace: "nowrap",
-              marginTop: ".25rem",
-            }}
-            className="sl-pl-3"
-          >
-            {/* <a href={`/usage-plans/${apiId}`}>Usage Plans</a> */}
-            <Link to={`/usage-plans/${apiId}`}>Usage Plans</Link>
-          </p>
-        </div>
+    <div className="apiDetailsHeaderAddition">
+      {/*<div>
+        <Icon.HtmlTag /> {endpointsCount} Operations
+  </div>*/}
+      <div>
+        <Icon.OpenApiIcon /> {type}
       </div>
-      <div style={{ position: "relative" }}>
-        {/* <div
-          style={{
-            position: "absolute",
-            top: "0px",
-            left: "0px",
-            right: "0px",
-            bottom: "300px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 0,
-          }}
-        >
-          <Oval
-            height={80}
-            width={80}
-            color="var(--color-primary)"
-            visible={true}
-            ariaLabel="oval-loading"
-            secondaryColor="var(--color-primary-dark)"
-            strokeWidth={5}
-            strokeWidthSecondary={5}
-          />
-        </div> */}
-        <div style={{ position: "relative", zIndex: 1 }}>
-          <StoplightDemo url={url} />
-        </div>
-      </div>
-      {/* <API apiDescriptionUrl="https://raw.githubusercontent.com/stoplightio/Public-APIs/master/reference/zoom/openapi.yaml" /> */}
     </div>
   );
 }
 
-export default ApiDetails;
+export function ApiDetails() {
+  const { apiId } = useParams();
+
+  /*const {
+    isLoading,
+    isError,
+    data: apiSchema,
+    error,
+  } = useQuery({
+    queryKey: [`/apis/${apiId}/schema`],
+    queryFn: () => fetchJson<API>(`${restpointPrefix}/apis/${apiId}/schema`),
+  });*/
+
+  const apiSchema =
+    "https://raw.githubusercontent.com/solo-io/workshops/master/gloo-portal/petstore-openapi-v2-full.json";
+
+  return (
+    <div className="NOTICEME NOTICE ME">
+      <BannerHeading
+        title={
+          <BannerHeadingTitle
+            text={apiId}
+            additionalInfo={
+              /*<div style={{ color: "blue", fontSize: "12px" }}>Modified by</div>*/ undefined
+            }
+            stylingTweaks={{
+              fontSize: "32px",
+              lineHeight: "36px",
+            }}
+          />
+        }
+        fullIcon={<Icon.Bug />}
+        description={
+          "Browse the list of APIs and documentation in this portal. From here you can get the information you need to make API calls."
+        }
+        additionalContent={
+          <HeaderSummary
+            apiYaml={{}}
+            type={/*apiSchema.isOpenApi*/ "OpenAPI"}
+          />
+        }
+      />
+
+      <main className="page-container-wrapper">
+        <RedocDisplay url={apiSchema} />
+      </main>
+      {/* <API apiDescriptionUrl="https://raw.githubusercontent.com/stoplightio/Public-APIs/master/reference/zoom/openapi.yaml" /> */}
+    </div>
+  );
+}

@@ -1,0 +1,452 @@
+@use "../constants";
+@use "../container";
+
+.apisList {
+  padding: 0 30px;
+  margin-bottom: 60px;
+
+  .filterArea {
+    margin-bottom: 30px;
+    border-radius: constants.$smallBorderRadius;
+
+    border: 1px solid constants.$puddleBlue;
+    background: constants.$lightGreyTransparent;
+    box-shadow: 0px 2px 8px constants.$darkGreyTransparent;
+
+    .choicesArea {
+      display: flex;
+      align-items: center;
+      min-height: 50px;
+      padding: 0 15px 0 25px;
+
+      .title {
+        width: 65px;
+        margin-right: 25px;
+        font-size: 24px;
+        font-weight: 600;
+      }
+
+      .filterBox {
+        display: flex;
+        align-items: center;
+        height: 34px;
+        line-height: 34px;
+        border-radius: constants.$smallBorderRadius;
+        border: 1px solid constants.$mayGrey;
+
+        background: white;
+      }
+
+      .filterTypeIconHolder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        margin-right: 6px;
+        border-right: 1px solid constants.$mayGrey;
+
+        svg {
+          width: 18px;
+          height: 18px;
+          * {
+            fill: constants.$juneGrey;
+          }
+        }
+      }
+
+      .filterPlaceholderTexts {
+        color: constants.$juneGrey;
+        font-weight: 300;
+        font-size: 16px;
+      }
+
+      .textFilter,
+      .pairsFilter,
+      .dropdownFilter {
+        flex: 1;
+        margin-right: 15px;
+      }
+      .textFilter {
+        @extend .filterBox;
+
+        input {
+          border: none;
+          outline: none;
+          box-shadow: none;
+
+          height: 30px;
+          line-height: 30px;
+
+          &::placeholder {
+            @extend .filterPlaceholderTexts;
+          }
+        }
+
+        svg {
+          width: 18px;
+          height: 18px;
+          margin: 0 10px;
+          * {
+            stroke: constants.$juneGrey;
+          }
+        }
+      }
+      .pairsFilter {
+        @extend .filterBox;
+
+        .tagHolder {
+          @extend .filterTypeIconHolder;
+        }
+
+        .pairHolder {
+          display: grid;
+          align-items: center;
+          grid-gap: 5px;
+          grid-template-columns: 1fr 2px 1fr;
+          color: constants.$juneGrey;
+
+          input {
+            border-radius: constants.$smallBorderRadius;
+
+            border: 1px solid constants.$mayGrey;
+            outline: none;
+            box-shadow: none;
+
+            height: 25px;
+            line-height: 25px;
+            padding: 0 6px;
+
+            &::placeholder {
+              @extend .filterPlaceholderTexts;
+            }
+          }
+        }
+
+        .addButtonHolder {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 34px;
+          width: 34px;
+
+          svg {
+            height: 21px;
+            width: 21px;
+
+            * {
+              fill: constants.$juneGrey;
+            }
+          }
+        }
+      }
+      .dropdownFilter {
+        @extend .filterBox;
+
+        .gearHolder {
+          @extend .filterTypeIconHolder;
+
+          margin-right: 0;
+        }
+
+        .dropdownTrigger {
+          @extend .filterPlaceholderTexts;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          flex: 1;
+          cursor: pointer;
+          padding-left: 6px;
+          border-radius: 0 constants.$smallBorderRadius
+            constants.$smallBorderRadius 0;
+          height: 32px;
+
+          svg {
+            width: 14px;
+            margin: 0 10px;
+
+            * {
+              stroke: currentColor;
+            }
+          }
+
+          &[disabled] {
+            background: constants.$januaryGrey;
+            color: constants.$mayGrey;
+          }
+        }
+      }
+
+      .gridListToggle {
+        display: grid;
+        grid-template-columns: 30px 30px;
+        grid-gap: 8px;
+
+        .listingTypeToggle {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 30px;
+          height: 30px;
+          border-radius: constants.$smallBorderRadius;
+
+          border: 1px solid constants.$puddleBlue;
+          color: constants.$augustGrey;
+          background-color: white;
+
+          svg {
+            height: 22px;
+            width: 22px;
+
+            * {
+              fill: currentColor;
+            }
+          }
+
+          &.isActive {
+            color: white;
+            background: constants.$primaryColor;
+            border-color: constants.$primaryColor;
+          }
+        }
+      }
+    }
+
+    .currentFiltersArea {
+      display: flex;
+
+      padding: 8px 15px 0 25px;
+      border-radius: 0 0 constants.$smallBorderRadius
+        constants.$smallBorderRadius;
+      background: constants.$puddleBlue;
+
+      .activeFiltersGrid {
+        flex: 1;
+
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .activeFilter {
+        @extend .primaryTrimmedSmallWhiteContainer;
+
+        display: inline-flex;
+        align-items: center;
+        font-size: 12px;
+        line-height: 22px;
+        height: 22px;
+        margin: 0 8px 8px 0;
+        font-size: 13px;
+
+        .closingX svg {
+          width: 8px;
+          height: 8px;
+          margin-left: 8px;
+
+          * {
+            stroke: currentColor;
+          }
+        }
+      }
+
+      .clearAll {
+        @extend .activeFilter;
+
+        background: constants.$primaryColor;
+        color: white;
+        margin: 0;
+      }
+    }
+  }
+
+  .apiGridList {
+    display: grid;
+    grid-gap: 30px;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    .apiGridCard {
+      display: flex;
+      flex-direction: column;
+
+      height: 100%;
+      min-height: 260px;
+      border-radius: constants.$smallBorderRadius;
+
+      border: 1px solid constants.$puddleBlue;
+      background: constants.$lightGreyTransparent;
+      color: constants.$defaultColoredText;
+      text-align: center;
+
+      .content {
+        flex: 1;
+
+        .apiImageHolder {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          height: 225px;
+          width: calc(100% + 2px);
+          overflow: hidden;
+          margin: -1px -1px 0;
+          border-radius: constants.$smallBorderRadius
+            constants.$smallBorderRadius 0 0;
+          margin-bottom: 20px;
+
+          img {
+            width: 100%;
+            min-height: 100%;
+          }
+        }
+
+        .title {
+          line-height: 32px;
+          font-size: 28px;
+          font-weight: 600;
+          margin-bottom: 10px;
+          padding: 0 40px;
+        }
+        .description {
+          font-size: 16px;
+          font-weight: 400;
+          padding: 0 40px 40px;
+
+          color: constants.$juneGrey;
+        }
+      }
+
+      .footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        height: 43px;
+        border-radius: 0 0 constants.$smallBorderRadius
+          constants.$smallBorderRadius;
+
+        background: constants.$puddleBlue;
+
+        .metaInfo {
+          display: flex;
+          align-items: center;
+
+          svg {
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+
+            * {
+              fill: constants.$primaryColor;
+            }
+          }
+
+          .typeTitle {
+            @extend .primaryTrimmedSmallWhiteContainer;
+
+            font-size: 14px;
+            line-height: 22px;
+          }
+        }
+      }
+    }
+  }
+
+  .apiListCard {
+    margin-bottom: 30px;
+    border-radius: constants.$smallBorderRadius;
+
+    border: 1px solid constants.$puddleBlue;
+    background: constants.$lightGreyTransparent;
+    box-shadow: 0px 2px 8px constants.$darkGreyTransparent;
+
+    .content {
+      display: flex;
+
+      .majorIconHolder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 192px;
+        border-right: 1px solid constants.$puddleBlue;
+
+        svg {
+          width: 100px;
+          max-width: 95%;
+          height: 100px;
+
+          * {
+            fill: constants.$primaryColor;
+          }
+        }
+      }
+
+      .details {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        min-width: 250px;
+        min-height: 165px;
+
+        padding: 0 25px 0 40px;
+
+        .title {
+          margin-bottom: 15px;
+
+          font-size: 28px;
+          font-weight: 600;
+          color: constants.$defaultColoredText;
+        }
+        .description {
+          font-size: 16px;
+          line-height: 22px;
+          color: constants.$juneGrey;
+        }
+      }
+    }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      height: 43px;
+      padding: 0 15px 0 25px;
+      border-radius: 0 0 constants.$smallBorderRadius
+        constants.$smallBorderRadius;
+      background: constants.$puddleBlue;
+
+      .metaInfo {
+        display: flex;
+        align-items: center;
+
+        svg {
+          margin-right: 10px;
+          width: 20px;
+          height: 20px;
+
+          * {
+            fill: constants.$primaryColor;
+          }
+        }
+
+        .typeTitle {
+          @extend .primaryTrimmedSmallWhiteContainer;
+
+          font-size: 14px;
+          line-height: 22px;
+        }
+      }
+
+      .typeIcon {
+        svg {
+          width: 28px;
+          height: 28px;
+
+          * {
+            fill: constants.$primaryColor;
+          }
+        }
+      }
+    }
+  }
+}

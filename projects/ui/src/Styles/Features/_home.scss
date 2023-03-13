@@ -1,0 +1,79 @@
+@use "../constants";
+
+.homePageCategories {
+  width: 100%;
+  padding: 30px;
+  margin: 0 30px 60px;
+  border-radius: constants.$smallBorderRadius;
+
+  border: 1px solid constants.$mayGrey;
+  background: constants.$lightGreyTransparent;
+  color: constants.$octoberGrey;
+
+  h3 {
+    font-size: 34px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .categoriesList {
+    display: grid;
+    grid-gap: 30px;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    .categoryCard {
+      display: flex;
+      flex-direction: column;
+      min-height: 260px;
+      border-radius: constants.$smallBorderRadius;
+
+      border: 1px solid constants.$puddleBlue;
+      background: constants.$lightGreyTransparent;
+      text-align: center;
+      cursor: default;
+
+      .categoryIcon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100px;
+        margin-bottom: 15px;
+
+        svg {
+          width: 100px;
+          max-height: 100px;
+        }
+      }
+      .categoryImageHolder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        height: 225px;
+        width: calc(100% + 2px);
+        overflow: hidden;
+        margin: -1px -1px 0;
+        border-radius: constants.$smallBorderRadius constants.$smallBorderRadius
+          0 0;
+        margin-bottom: 20px;
+
+        img {
+          width: 100%;
+          min-height: 100%;
+        }
+      }
+
+      .categoryName {
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 5px;
+        padding: 0 40px;
+      }
+      .categoryDescription {
+        font-size: 16px;
+        font-weight: 400;
+        padding: 0 40px 40px;
+      }
+    }
+  }
+}

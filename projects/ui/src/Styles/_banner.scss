@@ -1,0 +1,124 @@
+@use "./constants";
+@use "./mixins";
+
+.bannerHeadingTitle {
+  display: flex;
+  align-items: center;
+
+  font-size: 48px;
+  line-height: 54px;
+  margin-bottom: 15px;
+
+  color: constants.$defaultColoredText;
+
+  > * {
+    margin-right: 18px;
+  }
+
+  svg {
+    width: 46px;
+    height: 46px;
+  }
+}
+
+.bannerHeading {
+  position: relative;
+
+  @include mixins.contentWidth();
+  padding: 87px 30px 40px;
+  margin-bottom: 40px;
+
+  .bannerContent {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    left: 0;
+    width: 50%;
+    max-width: 50%;
+    min-height: 187px;
+    padding: 35px 40px;
+
+    background: white;
+
+    border-radius: constants.$standardBorderRadius;
+    border: 1px solid constants.$puddleBlue;
+
+    z-index: 1;
+
+    .bigLeftIcon {
+      margin-right: 22px;
+
+      svg {
+        width: 140px;
+        height: 140px;
+        fill: constants.$primaryColor;
+      }
+    }
+
+    .coreContent {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: stretch;
+
+      .description {
+        font-size: 18px;
+        line-height: 26px;
+        color: constants.$juneGrey;
+      }
+
+      .additionalContent {
+        margin-top: 20px;
+      }
+    }
+  }
+
+  .banner {
+    position: absolute;
+    top: 60px;
+    bottom: 0;
+    right: 30px;
+    width: 66%;
+    max-width: 66%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+    overflow: hidden;
+
+    z-index: 0;
+
+    img {
+      width: 100%;
+      min-height: 100%;
+    }
+  }
+
+  &.tall {
+    padding-top: 172px;
+    padding-bottom: 112px;
+    margin-bottom: 60px;
+
+    .bannerContent {
+      min-height: 258px;
+      width: 53%;
+      max-width: 53%;
+    }
+  }
+}
+
+.widerContent .bannerHeading {
+  @include mixins.contentWidth(constants.$largeContentWidth);
+  padding: 87px 30px 40px;
+  margin-bottom: 40px;
+
+  .banner {
+    max-width: 53%;
+  }
+  .bannerHeading {
+    max-width: 48%;
+  }
+}

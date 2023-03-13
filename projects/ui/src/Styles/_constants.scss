@@ -1,0 +1,22 @@
+@forward "./default-constants" with (
+  // This is unused elsewhere. Just a demo of overriding
+  $dummyVar: 42,
+
+  //
+  // SIZING
+  //
+  //$normalContentWidth: 200px,
+  //$largeContentWidth: 500px,
+  //
+  //
+  // COLORS
+  //
+  //$modalBack: blue;
+  //$primaryColor: orange;
+  //$secondaryColor: purple;
+  //$backgroundColor: red;
+  //$defaultTextColor: green;
+  //$iconsColor: white;
+  //$internalLinkColor: yellow;
+  //$externalLinkColor: black;
+);

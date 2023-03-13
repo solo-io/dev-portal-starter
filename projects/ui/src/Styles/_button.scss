@@ -1,0 +1,15 @@
+@use "./constants";
+
+.button {
+  border-radius: 2px;
+  height: 40px;
+  min-width: 90px;
+  line-height: 40px;
+  padding: 0 10px;
+
+  border: 1px solid constants.$januaryGrey;
+  background: constants.$primaryColor;
+  color: white;
+
+  font-size: 14px;
+}
