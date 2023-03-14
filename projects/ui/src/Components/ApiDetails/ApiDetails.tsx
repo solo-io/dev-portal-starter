@@ -37,7 +37,7 @@ function HeaderSummary({
 
 export function ApiDetails() {
   const { apiId } = useParams();
-
+  /*
   const {
     isLoading,
     isError,
@@ -46,12 +46,15 @@ export function ApiDetails() {
   } = useQuery({
     queryKey: [`/apis/${apiId}/schema`],
     queryFn: () => fetchJson<API>(`${restpointPrefix}/apis/${apiId}/schema`),
-  });
+  });*/
 
-  /*
+  /* eslint-disable no-console */
+  //console.log(apiSchema);
+  /* eslint-enable no-console */
+  
   const apiSchema =
-    "https://raw.githubusercontent.com/solo-io/workshops/master/gloo-portal/petstore-openapi-v2-full.json";
-    */
+    "http://developer.example.com/v1/apis/tracks-rt-gloo-mesh-gateways-gg-demo-single/schema";
+    
 
   return (
     <div className="NOTICEME NOTICE ME">
