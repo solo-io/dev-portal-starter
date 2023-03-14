@@ -5,7 +5,7 @@ function Button(
   >
 ) {
   return (
-    <button {...props} className={`button ${props.className ?? ""}`}>
+    <button {...props} className={`styledButton ${props.className ?? ""}`}>
       {props.children}
     </button>
   );

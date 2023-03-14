@@ -1,14 +1,5 @@
 module.exports = {
-  extends: [
-    "react-app",
-    // "eslint:recommended",
-    // "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-    // "plugin:jest/recommended",
-    // "plugin:jest/style",
-    // "plugin:testing-library/react",
-    "plugin:storybook/recommended",
-  ],
+  extends: ["react-app", "plugin:@typescript-eslint/recommended"],
   parser: "@typescript-eslint/parser",
   plugins: ["@emotion"],
   ignorePatterns: [

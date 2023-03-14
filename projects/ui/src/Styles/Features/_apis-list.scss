@@ -255,6 +255,10 @@
         background: constants.$primaryColor;
         color: white;
         margin: 0;
+
+        svg {
+          stroke: white;
+        }
       }
     }
   }

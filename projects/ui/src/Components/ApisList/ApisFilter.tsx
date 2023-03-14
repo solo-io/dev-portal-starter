@@ -1,18 +1,17 @@
 import { Icon } from "../../Assets/Icons";
 import { Input, Dropdown, MenuProps } from "antd";
-import PageContainer from "../Common/PageContainer";
 import { useState } from "react";
 
-export type PairValue = { key: string; value: string };
+export type KeyValuePair = { key: string; value: string };
 
 export enum FilterType {
   name,
-  pairValue,
+  keyValuePair,
   apiType,
 }
 export type FilterPair = { displayName: string; type: FilterType };
 
-function getPairString(pair: PairValue) {
+function getPairString(pair: KeyValuePair) {
   return `${pair.key} : ${pair.value}`;
 }
 
@@ -26,7 +25,7 @@ type ApisFiltration = {
 };
 
 export function ApisFilter({ filters }: { filters: ApisFiltration }) {
-  const [pairFilter, setPairFilter] = useState<PairValue>({
+  const [pairFilter, setPairFilter] = useState<KeyValuePair>({
     key: "",
     value: "",
   });
@@ -48,7 +47,7 @@ export function ApisFilter({ filters }: { filters: ApisFiltration }) {
       value: pairFilter.value,
     });
   };
-  const alterPairValue = (evt: React.ChangeEvent<HTMLInputElement>) => {
+  const alterKeyValuePair = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = evt.target.value;
     setPairFilter({
       key: pairFilter.key,
@@ -56,10 +55,10 @@ export function ApisFilter({ filters }: { filters: ApisFiltration }) {
     });
   };
 
-  const addPairValueFilter = () => {
+  const addKeyValuePairFilter = () => {
     filters.setAllFilters([
       ...filters.allFilters,
-      { displayName: getPairString(pairFilter), type: FilterType.pairValue },
+      { displayName: getPairString(pairFilter), type: FilterType.keyValuePair },
     ]);
 
     setPairFilter({ key: "", value: "" });
@@ -111,7 +110,7 @@ export function ApisFilter({ filters }: { filters: ApisFiltration }) {
             onBlur={addNameFilter}
             value={filters.nameFilter}
           />
-          <Icon.MagnifyingGlass />
+          <Icon.MagnifyingGlass style={{ cursor: "pointer" }} />
         </div>
         <div className="pairsFilter">
           <div className="tagHolder">
@@ -126,12 +125,15 @@ export function ApisFilter({ filters }: { filters: ApisFiltration }) {
             <span>:</span>
             <Input
               placeholder="Value"
-              onChange={alterPairValue}
+              onChange={alterKeyValuePair}
               value={pairFilter.value}
             />
           </div>
           <div className="addButtonHolder">
-            <button aria-label="Add Pair Filter" onClick={addPairValueFilter}>
+            <button
+              aria-label="Add Pair Filter"
+              onClick={addKeyValuePairFilter}
+            >
               <Icon.Add />
             </button>
           </div>
@@ -195,16 +197,16 @@ export function ApisFilter({ filters }: { filters: ApisFiltration }) {
               </div>
             ))}
           </div>
-          <div className="clearAll">
+          <button
+            aria-label={`Remove all filters`}
+            className="clearAll"
+            onClick={clearAll}
+          >
             Clear All
-            <button
-              className="closingX"
-              aria-label={`Remove all filters`}
-              onClick={clearAll}
-            >
+            <span className="closingX">
               <Icon.SmallX />
-            </button>
-          </div>
+            </span>
+          </button>
         </div>
       )}
     </div>

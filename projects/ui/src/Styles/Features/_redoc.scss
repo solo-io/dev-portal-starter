@@ -1,5 +1,5 @@
-@use "./constants";
-@use "./button";
+@use "../constants";
+@use "../button";
 
 .redocDisplayContainer {
   border: 1px solid constants.$puddleBlue;
@@ -110,7 +110,7 @@
         0;
 
       .ilacoL {
-        @extend .button;
+        @extend .styledButton;
         height: 26px;
         line-height: 26px;
       }

@@ -9,9 +9,7 @@ interface AppProviderProps {
 interface IAppContext extends AppProviderProps {
   isMobileView: boolean;
   isDarkMode: boolean;
-  isGreenTheme: boolean;
   setIsDarkMode: (isDarkMode: boolean) => void;
-  setIsGreenTheme: (isGreenTheme: boolean) => void;
 }
 
 //
@@ -48,13 +46,9 @@ export const AppContextProvider = (props: AppProviderProps) => {
   const [isDarkMode, setIsDarkMode] = useState(
     localStorage.getItem("dark-mode") === "true"
   );
-  const [isGreenTheme, setIsGreenTheme] = useState(
-    localStorage.getItem("green-theme") === "true"
-  );
   useEffect(() => {
     localStorage.setItem("dark-mode", isDarkMode ? "true" : "false");
-    localStorage.setItem("green-theme", isGreenTheme ? "true" : "false");
-  }, [isDarkMode, isGreenTheme]);
+  }, [isDarkMode]);
 
   return (
     <AppContext.Provider
@@ -62,8 +56,6 @@ export const AppContextProvider = (props: AppProviderProps) => {
         isMobileView,
         isDarkMode,
         setIsDarkMode,
-        isGreenTheme,
-        setIsGreenTheme,
       }}
     >
       {props.children}
