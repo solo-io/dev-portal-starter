@@ -34,9 +34,9 @@ export function ApisList({
                   api.title
                     .toLocaleLowerCase()
                     .includes(filter.displayName.toLocaleLowerCase())) ||
-                (!!filter.type === FilterType.keyValuePair &&
+                (filter.type === FilterType.keyValuePair &&
                   api.customMetadata[filter.key] === filter.value) ||
-                (!!filter.type === FilterType.apiType && true)
+                (filter.type === FilterType.apiType && true)
               );
             })
           );

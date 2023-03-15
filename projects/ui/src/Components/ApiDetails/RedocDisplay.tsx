@@ -8,7 +8,7 @@ export function RedocDisplay({ url }: { url: string }) {
 
   return (
     <div className="redocDisplayContainer">
-      {renderedUrl !== undefined && (
+      {url !== undefined && (
         <RedocStandalone
           spec={url}
           options={{ layout: isMobileView ? "stacked" : "three-panel" }}
