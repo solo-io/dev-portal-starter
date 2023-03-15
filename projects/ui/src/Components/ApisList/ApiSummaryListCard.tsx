@@ -3,11 +3,16 @@ import { API } from "../../Apis/api-types";
 import { Icon } from "../../Assets/Icons";
 
 export function ApiSummaryListCard({ api }: { api: API }) {
+  /* eslint-disable no-console */
+  console.log(api);
+  /* eslint-enable no-console */
   return (
     <NavLink to={`/api-details/${api.apiId}`}>
       <div className="apiListCard">
         <div className="content">
-          <div className="majorIconHolder">{api.icon}</div>
+          <div className="majorIconHolder">
+            {api.icon ?? <Icon.WrenchGear className="colorIt" />}
+          </div>
           <div className="details">
             <div>
               <h4 className="title">{api.title}</h4>

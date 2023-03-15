@@ -15,30 +15,27 @@ export function ApisList({
 }) {
   const { isLoading, data: apisList } = useListApis();
 
-  /* eslint-disable no-console */
-  //console.log(apisList);
-  /* eslint-enable no-console */
-
   const displayedApisList = apisList
     ? apisList
         .filter((api) => {
           return (
-            (!nameFilter && !allFilters.length) ||
-            (!!nameFilter &&
+            (!nameFilter ||
               api.title
                 .toLocaleLowerCase()
-                .includes(nameFilter.toLocaleLowerCase())) ||
-            allFilters.some((filter) => {
-              return (
-                (filter.type === FilterType.name &&
-                  api.title
-                    .toLocaleLowerCase()
-                    .includes(filter.displayName.toLocaleLowerCase())) ||
-                (filter.type === FilterType.keyValuePair &&
-                  api.customMetadata[filter.key] === filter.value) ||
-                (filter.type === FilterType.apiType && true)
-              );
-            })
+                .includes(nameFilter.toLocaleLowerCase())) &&
+            (!allFilters.length ||
+              allFilters.every((filter) => {
+                return (
+                  (filter.type === FilterType.name &&
+                    api.title
+                      .toLocaleLowerCase()
+                      .includes(filter.displayName.toLocaleLowerCase())) ||
+                  (filter.type === FilterType.keyValuePair &&
+                    api.customMetadata &&
+                    api.customMetadata[filter.key] === filter.value) ||
+                  (filter.type === FilterType.apiType && true)
+                );
+              }))
           );
         })
         .sort((filterA, filterB) => filterA.title.localeCompare(filterB.title))

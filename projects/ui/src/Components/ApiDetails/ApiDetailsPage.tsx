@@ -7,29 +7,16 @@ import { Icon } from "../../Assets/Icons";
 import { ApiSchemaDisplay } from "./ApiSchemaDisplay";
 import { useGetApiDetails } from "../../Apis/hooks";
 import { ErrorBoundary } from "../Common/ErrorBoundary";
+import { APISchema } from "../../Apis/api-types";
 
-function HeaderSummary({
-  apiYaml,
-  type,
-}: {
-  apiYaml: { [key: string]: any };
-  type: any;
-}) {
-  // parse yaml for operations
-  // something like:
-  /* 1. find path at top level, 
-     2. check # of direct children of path, 
-     3. ?? check # of ops per child ??
-  */
-  //const endpointsCount = 4;
-
+function HeaderSummary({ apiSchema }: { apiSchema: APISchema }) {
   return (
     <div className="apiDetailsHeaderAddition">
-      {/*<div>
-        <Icon.HtmlTag /> {endpointsCount} Operations
-  </div>*/}
       <div>
-        <Icon.OpenApiIcon /> {type}
+        <Icon.HtmlTag /> {Object.keys(apiSchema.paths).length} Operations
+      </div>
+      <div>
+        <Icon.OpenApiIcon /> OpenAPI
       </div>
     </div>
   );
@@ -45,7 +32,7 @@ export function ApiDetailsPage() {
       <BannerHeading
         title={
           <BannerHeadingTitle
-            text={apiId}
+            text={apiSchema?.info.title ?? apiId}
             stylingTweaks={{
               fontSize: "32px",
               lineHeight: "36px",
@@ -57,9 +44,7 @@ export function ApiDetailsPage() {
           "Browse the list of APIs and documentation in this portal. From here you can get the information you need to make API calls."
         }
         additionalContent={
-          !!apiSchema ? (
-            <HeaderSummary apiYaml={{}} type={apiSchema.isOpenApi} />
-          ) : undefined
+          !!apiSchema ? <HeaderSummary apiSchema={apiSchema} /> : undefined
         }
       />
 

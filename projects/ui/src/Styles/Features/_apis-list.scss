@@ -311,6 +311,7 @@
           padding: 0 40px;
         }
         .description {
+          line-height: 22px;
           font-size: 16px;
           font-weight: 400;
           padding: 0 40px 40px;
@@ -378,7 +379,8 @@
           max-width: 95%;
           height: 100px;
 
-          * {
+          &.colorIt * {
+            stroke: constants.$primaryColor;
             fill: constants.$primaryColor;
           }
         }

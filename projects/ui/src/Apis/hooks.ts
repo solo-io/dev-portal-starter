@@ -11,7 +11,7 @@
 *      https://tanstack.com/query/v4/docs/react/reference/useQuery
 */
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { API, APIKey, UsagePlan, User } from "./api-types";
+import { API, APIKey, APISchema, UsagePlan, User } from "./api-types";
 
 export const restpointPrefix = "http://developer.example.com/v1";
 
@@ -49,7 +49,7 @@ export function useListApis(swallowError?: boolean) {
   return useSoloQuery<API[]>("/apis", swallowError);
 }
 export function useGetApiDetails(id: string, swallowError?: boolean) {
-  return useSoloQuery<string>(`/apis/${id}/schema`, swallowError);
+  return useSoloQuery<APISchema>(`/apis/${id}/schema`, swallowError);
 }
 
 export function useListUsagePlans(swallowError?: boolean) {

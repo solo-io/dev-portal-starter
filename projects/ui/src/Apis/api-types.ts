@@ -124,6 +124,34 @@ export type API = {
   contact: string;
   license: string;
   usagePlans: string[];
-  customMetadata: { [key: string]: any };
-  icon?: React.ReactNode;
+};
+
+type SchemaPropertyType = "string" | "integer" | "array" | "object";
+export type APISchema = {
+  components: {
+    schemas: {
+      Author?: {
+        properties: { [key: string]: SchemaPropertyType }; //Could hardcode props-list if desired
+        type: "object";
+      };
+      Module?: {
+        properties: { [key: string]: SchemaPropertyType }; //Could hardcode props-list if desired
+        type: "object";
+      };
+      Track?: {
+        properties: { [key: string]: SchemaPropertyType }; //Could hardcode props-list if desired
+        type: "object";
+      };
+    };
+  };
+  info: {
+    title: string;
+    version: string;
+  };
+  paths: {
+    [key: string]: any; // We should define this much better as its pretty limited
+  };
+  servers: {
+    url: string;
+  }[];
 };

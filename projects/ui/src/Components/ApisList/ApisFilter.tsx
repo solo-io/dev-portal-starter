@@ -117,6 +117,7 @@ export function ApisFilter({ filters }: { filters: ApisFiltration }) {
             <Icon.Tag />
           </div>
           <div className="pairHolder">
+            {/*TODO :: This should probably be a dropdown in the future */}
             <Input
               placeholder="Key"
               onChange={alterPairKey}
