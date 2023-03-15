@@ -3,7 +3,6 @@ import {
   BannerHeading,
   BannerHeadingTitle,
 } from "../Common/Banner/BannerHeading";
-import { Icon } from "../../Assets/Icons";
 import { NavLink } from "react-router-dom";
 import Button from "../Common/Button";
 

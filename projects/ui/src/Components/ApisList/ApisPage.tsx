@@ -5,7 +5,7 @@ import {
   BannerHeadingTitle,
 } from "../Common/Banner/BannerHeading";
 import { Icon } from "../../Assets/Icons";
-import { ApisFilter, FilterPair, FilterType } from "./ApisFilter";
+import { ApisFilter, FilterPair } from "./ApisFilter";
 import { ApisList } from "./ApisList";
 import { ErrorBoundary } from "../Common/ErrorBoundary";
 
