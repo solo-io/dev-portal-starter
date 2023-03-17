@@ -1,14 +1,15 @@
 import { useState } from "react";
 import PageContainer from "../Common/PageContainer";
-import {
-  BannerHeading,
-  BannerHeadingTitle,
-} from "../Common/Banner/BannerHeading";
+import { BannerHeading } from "../Common/Banner/BannerHeading";
+import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 import { Icon } from "../../Assets/Icons";
 import { ApisFilter, FilterPair } from "./ApisFilter";
 import { ApisList } from "./ApisList";
 import { ErrorBoundary } from "../Common/ErrorBoundary";
 
+/**
+ * MAIN COMPONENT
+ **/
 export function ApisPage() {
   const [allFilters, setAllFilters] = useState<FilterPair[]>([]);
   const [nameFilter, setNameFilter] = useState<string>("");

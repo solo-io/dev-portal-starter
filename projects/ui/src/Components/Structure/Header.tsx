@@ -3,6 +3,9 @@ import { ReactComponent as Logo } from "../../Assets/logo.svg";
 import { NavLink, useLocation } from "react-router-dom";
 import { Icon } from "../../Assets/Icons";
 
+/**
+ * MAIN COMPONENT
+ **/
 export function Header() {
   const routerLocation = useLocation();
 

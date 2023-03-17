@@ -1,27 +1,31 @@
 import { useParams } from "react-router-dom";
-import {
-  BannerHeading,
-  BannerHeadingTitle,
-} from "../Common/Banner/BannerHeading";
+import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { Icon } from "../../Assets/Icons";
 import { ApiSchemaDisplay } from "./ApiSchemaDisplay";
 import { useGetApiDetails } from "../../Apis/hooks";
 import { ErrorBoundary } from "../Common/ErrorBoundary";
 import { APISchema } from "../../Apis/api-types";
+import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 
+/**
+ * HELPER COMPONENT
+ **/
 function HeaderSummary({ apiSchema }: { apiSchema: APISchema }) {
   return (
     <div className="apiDetailsHeaderAddition">
-      <div>
+      <div className="apiDetailsExtraInfo">
         <Icon.HtmlTag /> {Object.keys(apiSchema.paths).length} Operations
       </div>
-      <div>
+      <div className="apiDetailsExtraInfo">
         <Icon.OpenApiIcon /> OpenAPI
       </div>
     </div>
   );
 }
 
+/**
+ * MAIN COMPONENT
+ **/
 export function ApiDetailsPage() {
   const { apiId } = useParams();
 

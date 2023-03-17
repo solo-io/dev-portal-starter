@@ -7,42 +7,16 @@ interface AppProviderProps {
   children?: any;
 }
 interface IAppContext extends AppProviderProps {
-  isMobileView: boolean;
   isDarkMode: boolean;
   setIsDarkMode: (isDarkMode: boolean) => void;
 }
 
-//
-// Context
-//
 export const AppContext = createContext({} as IAppContext);
 
-/*** Mobile breakpoint width in pixels. */
-const mobileWidth = 700;
-const checkIsMobileView = () => window.innerWidth < mobileWidth;
-
-//
-// Provider
-//
 export const AppContextProvider = (props: AppProviderProps) => {
-  //
-  // Mobile View
-  //
-  const [isMobileView, setIsMobileView] = useState(checkIsMobileView());
-  useEffect(() => {
-    const onWindowResize = () => {
-      const nowIsMobile = checkIsMobileView();
-      if (nowIsMobile !== isMobileView) setIsMobileView(nowIsMobile);
-    };
-    window.addEventListener("resize", onWindowResize);
-    return () => {
-      window.removeEventListener("resize", onWindowResize);
-    };
-  }, [isMobileView]);
-
-  //
-  // Theme
-  //
+  //  There is no toggle on any pages to switch this currently.
+  //  This skeleton is here to provide a sample for additions and
+  //     hooks for those who do wish to add a dark mode to get started.
   const [isDarkMode, setIsDarkMode] = useState(
     localStorage.getItem("dark-mode") === "true"
   );
@@ -53,7 +27,6 @@ export const AppContextProvider = (props: AppProviderProps) => {
   return (
     <AppContext.Provider
       value={{
-        isMobileView,
         isDarkMode,
         setIsDarkMode,
       }}

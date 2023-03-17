@@ -2,6 +2,9 @@ import { RedocStandalone } from "redoc";
 import { useContext } from "react";
 import { AppContext } from "../../Context/AppContext";
 
+/**
+ * MAIN COMPONENT
+ **/
 export function RedocDisplay({ url }: { url: string }) {
   const appCtx = useContext(AppContext);
   const { isMobileView } = appCtx;

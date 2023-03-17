@@ -1,11 +1,22 @@
 @use "./constants";
 
+/**
+*  This file is currently for LOADING... and <ERROR!> messaging.
+*  More concepts may be added in the future.
+**/
+
+/**
+*  LOADING...
+**/
 .loadingContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
 
+  // A pretty spinner while they wait...
+  // .inner and .outer define the two circling balls, and
+  //   their 'color's can be changed here.
   .loadingSpinner {
     position: relative;
 
@@ -77,6 +88,9 @@
   }
 }
 
+/**
+*  <ERROR!>, used by Error Boundaries to make error display prettier
+**/
 .errorDisplayContainer {
   display: flex;
   flex-direction: column;

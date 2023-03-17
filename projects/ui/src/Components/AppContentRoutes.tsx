@@ -6,6 +6,15 @@ import { Footer } from "./Structure/Footer";
 import { UsagePlansPage } from "./UsagePlans/UsagePlans";
 import { ErrorBoundary } from "./Common/ErrorBoundary";
 
+/**
+ * ROUTING COMPONENT
+ *    This handles all our routing, but also operates as an
+ *      error fallback of last resort. We typically try to have
+ *      smaller sections of pages fail on their own, but if
+ *      something goes wrong with the page this should stop the entire
+ *      app from crashing ungracefully while at least letting us
+ *      know the area that failed.
+ **/
 function AppContentRoutes() {
   return (
     <div className="MainContentContainer">

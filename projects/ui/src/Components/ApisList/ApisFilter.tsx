@@ -2,6 +2,9 @@ import { Icon } from "../../Assets/Icons";
 import { Input, Dropdown, MenuProps } from "antd";
 import { useState } from "react";
 
+/**
+ * HELPER TYPE DEFS
+ **/
 export type KeyValuePair = { key: string; value: string };
 
 export enum FilterType {
@@ -11,11 +14,17 @@ export enum FilterType {
 }
 export type FilterPair = { displayName: string; type: FilterType };
 
+/**
+ * HELPER FUNCTION
+ **/
 function getPairString(pair: KeyValuePair) {
   return `${pair.key} : ${pair.value}`;
 }
 
-type ApisFiltration = {
+/**
+ * MAIN COMPONENT
+ **/
+type ApisFiltrationProp = {
   showingGrid: boolean;
   allFilters: FilterPair[];
   setAllFilters: (newFiltersList: FilterPair[]) => void;
@@ -24,7 +33,7 @@ type ApisFiltration = {
   setNameFilter: (newNamesList: string) => void;
 };
 
-export function ApisFilter({ filters }: { filters: ApisFiltration }) {
+export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
   const [pairFilter, setPairFilter] = useState<KeyValuePair>({
     key: "",
     value: "",

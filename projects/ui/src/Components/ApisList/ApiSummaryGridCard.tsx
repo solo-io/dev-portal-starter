@@ -3,6 +3,9 @@ import { API } from "../../Apis/api-types";
 import { Icon } from "../../Assets/Icons";
 import { useMemo } from "react";
 
+/**
+ * MAIN COMPONENT
+ **/
 export function ApiSummaryGridCard({ api }: { api: API }) {
   // In the future banner images may come through API data.
   //   Even when that is the case, a default image may be desired

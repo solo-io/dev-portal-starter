@@ -1,9 +1,33 @@
+/******************************
+*******************************
+*
+* THIS IS THE FILE TO UPDATE SITE-WIDE STYLE CHOICES FOR!!
+*   It can override the colors or sizes set by default.
+*   Below, we have provided the most likely variables to be
+*   overridden
+*
+  ~~  TO BEGIN USING YOUR OWN COLORS  ~~
+    1. Find the variable concept you are looking to override,
+      -or- add another from those found in 
+        '_default-constants.scss' in this folder.
+    2. Change the value and uncomment the line.
+    3. Repeat 1 & 2 for all cases needed.
+
+    4. Done? In most cases, this should be all that is needed to
+      get your version personalized. In more advanced cases, it 
+      may be necessary to update one of other .scss files directly.
+      If that happens, feel free to bring it up with us at Solo
+      and we'll try to take it into account in the future.
+*
+*******************************
+******************************/
+
 @forward "./default-constants" with (
   // This is unused elsewhere. Just a demo of overriding
   $dummyVar: 42,
 
   //
-  // SIZING
+  // PAGE SIZING
   //
   //$normalContentWidth: 200px,
   //$largeContentWidth: 500px,

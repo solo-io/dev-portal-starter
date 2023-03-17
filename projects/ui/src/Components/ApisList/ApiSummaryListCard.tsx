@@ -2,6 +2,9 @@ import { NavLink } from "react-router-dom";
 import { API } from "../../Apis/api-types";
 import { Icon } from "../../Assets/Icons";
 
+/**
+ * MAIN COMPONENT
+ **/
 export function ApiSummaryListCard({ api }: { api: API }) {
   /* eslint-disable no-console */
   console.log(api);

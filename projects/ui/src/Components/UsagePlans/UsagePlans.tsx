@@ -2,13 +2,13 @@ import { useParams } from "react-router-dom";
 import PageContainer from "../Common/PageContainer";
 import { UsagePlansList } from "./ApiKeys/UsagePlansList";
 
+/**
+ * MAIN COMPONENT
+ **/
 export function UsagePlansPage() {
   const { apiId } = useParams();
 
   const usagePlansList = [];
-  //
-  // Render
-  //
   return (
     <PageContainer>
       Overview of Usage Plans

@@ -1,4 +1,4 @@
-function Button(
+export function Button(
   props: React.DetailedHTMLProps<
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
@@ -10,5 +10,3 @@ function Button(
     </button>
   );
 }
-
-export default Button;

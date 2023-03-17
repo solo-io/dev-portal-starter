@@ -4,6 +4,9 @@ import { useListApis } from "../../Apis/hooks";
 import { FilterPair, FilterType } from "./ApisFilter";
 import { Loading } from "../Common/Loading";
 
+/**
+ * MAIN COMPONENT
+ **/
 export function ApisList({
   allFilters,
   nameFilter,

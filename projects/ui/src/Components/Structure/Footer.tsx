@@ -1,3 +1,6 @@
+/**
+ * MAIN COMPONENT
+ **/
 export function Footer() {
   return (
     <footer>

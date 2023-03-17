@@ -3,6 +3,9 @@ import { RedocDisplay } from "./RedocDisplay";
 import { Loading } from "../Common/Loading";
 import { useGetApiDetails } from "../../Apis/hooks";
 
+/**
+ * MAIN COMPONENT
+ **/
 export function ApiSchemaDisplay() {
   const { apiId } = useParams();
 

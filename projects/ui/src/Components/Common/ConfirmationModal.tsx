@@ -1,3 +1,3 @@
 export function ConfirmationModal() {
-  return <div>HEADER</div>;
+  return <div>TODO :: Still to come!</div>;
 }
