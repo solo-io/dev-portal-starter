@@ -5,8 +5,10 @@
   align-items: center;
   flex-wrap: wrap;
   font-size: 18px;
+  font-weight: 500;
+  color: constants.$defaultColoredText;
 
-  > div {
+  .apiDetailsExtraInfo {
     display: flex;
     align-items: center;
     margin-right: 25px;

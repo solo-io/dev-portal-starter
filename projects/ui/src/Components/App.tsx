@@ -1,17 +1,15 @@
-import { useEffect } from "react";
 import { AppContextProvider } from "../Context/AppContext";
-import { useGetPokemonByNameQuery } from "../services/api";
 import AppContent from "./AppContent";
 
-function App() {
-  // eslint-disable-next-line no-console
-  //console.log(import.meta.env, import.meta.env.VITE_UI_VERSION);
-
+/**
+ * Currently this just wraps the app in a ContextProvider, which
+ *   isn't being used. The context provider is a simple way to provide
+ *   a "dark mode" alternative view or inject similar context-based needs.
+ **/
+export function App() {
   return (
     <AppContextProvider>
       <AppContent />
     </AppContextProvider>
   );
 }
-
-export default App;

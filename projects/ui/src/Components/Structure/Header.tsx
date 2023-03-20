@@ -3,16 +3,16 @@ import { ReactComponent as Logo } from "../../Assets/logo.svg";
 import { NavLink, useLocation } from "react-router-dom";
 import { Icon } from "../../Assets/Icons";
 
+/**
+ * MAIN COMPONENT
+ **/
 export function Header() {
   const routerLocation = useLocation();
-  //const appCtx = useContext(AppContext);
 
   const [inAPIsArea, setInAPIsArea] = useState(
     routerLocation.pathname.includes("/api") ||
       routerLocation.pathname.includes("/api-details/")
   );
-
-  //const { isDarkMode, setIsDarkMode, isGreenTheme, setIsGreenTheme } = appCtx;
 
   useEffect(() => {
     setInAPIsArea(
@@ -41,19 +41,6 @@ export function Header() {
           </div>
         </nav>
       </header>
-      {/*<div className="float-right">
-        <a href="/usage-plans">Usage-Plans</a>
-        {isDarkMode ? (
-          <Button onClick={() => setIsDarkMode(false)}>Light Mode</Button>
-        ) : (
-          <Button onClick={() => setIsDarkMode(true)}>Dark Mode</Button>
-        )}
-        {isGreenTheme ? (
-          <Button onClick={() => setIsGreenTheme(false)}>Blue Theme</Button>
-        ) : (
-          <Button onClick={() => setIsGreenTheme(true)}>Green Theme</Button>
-        )}
-        </div>*/}
     </>
   );
 }

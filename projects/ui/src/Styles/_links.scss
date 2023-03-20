@@ -1,5 +1,7 @@
 @use "./constants";
 
+// Resetting a tags
 a {
   color: constants.$internalLinkColor;
+  text-decoration: none;
 }

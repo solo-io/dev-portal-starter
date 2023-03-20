@@ -1,6 +1,22 @@
 @use "./constants";
 
-.button {
+// reset all html buttons
+button {
+  border: none;
+  background: none;
+  padding: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
+  cursor: pointer;
+}
+
+// A consistent button for general use.
+//  We've avoided being opionated here about "display"
+//    type here, but one could certainly follow "inline-..." conventions.
+.styledButton {
   border-radius: 2px;
   height: 40px;
   min-width: 90px;

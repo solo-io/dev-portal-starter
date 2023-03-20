@@ -10,10 +10,10 @@
 *   For more information, get started with: 
 *      https://tanstack.com/query/v4/docs/react/reference/useQuery
 */
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { API, APIKey, UsagePlan, User } from "./api-types";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { API, APIKey, APISchema, UsagePlan, User } from "./api-types";
 
-export const restpointPrefix = "http://localhost:31080/v1";
+export const restpointPrefix = "http://developer.example.com/v1";
 
 export async function fetchJson<T>(
   input: RequestInfo | URL,
@@ -29,29 +29,38 @@ export async function fetchJson<T>(
   return response.json();
 }
 
-function soloUseQuery<T>(apiCallString: string) {
-  return 3; /*useQuery({
+function useSoloQuery<T>(apiCallString: string, swallowError?: boolean) {
+  return useQuery({
+    // Key used for caching queries
     queryKey: [apiCallString],
-    queryFn: () => fetchJson<T>("http://localhost:31080/v1" + apiCallString),
-  });*/
+    queryFn: () => fetchJson<T>(restpointPrefix + apiCallString),
+    //Whether the API failures should auto-catch to an error boundary
+    useErrorBoundary: !swallowError,
+    // Number of attempt retries
+    retry: 5,
+  });
 }
 
-export function useGetCurrentUser() {
-  return soloUseQuery<User>("/me");
+export function useGetCurrentUser(swallowError?: boolean) {
+  return useSoloQuery<User>("/me", swallowError);
 }
 
-export function useListApis() {
-  return soloUseQuery<API[]>("/apis");
+export function useListApis(swallowError?: boolean) {
+  return useSoloQuery<API[]>("/apis", swallowError);
 }
-export function useGetApiDetails(id: string) {
-  return soloUseQuery<string>(`/apis/${id}/schema`);
-}
-
-export function useListUsagePlans(id: string) {
-  return soloUseQuery<UsagePlan[]>(`/usage-plans`);
+export function useGetApiDetails(id: string, swallowError?: boolean) {
+  return useSoloQuery<APISchema>(`/apis/${id}/schema`, swallowError);
 }
 
-export function useListApiKeys(apis?: string[], usagePlans?: string[]) {
+export function useListUsagePlans(swallowError?: boolean) {
+  return useSoloQuery<UsagePlan[]>(`/usage-plans`, swallowError);
+}
+
+export function useListApiKeys(
+  apis?: string[],
+  usagePlans?: string[],
+  swallowError?: boolean
+) {
   const apiOptionsExist = !!apis?.length;
   const plansOptionsExist = !!usagePlans?.length;
   const optionsString =
@@ -61,14 +70,20 @@ export function useListApiKeys(apis?: string[], usagePlans?: string[]) {
         }${plansOptionsExist ? `usagePlans=${usagePlans.join(",")}` : ""}`
       : "";
 
-  return soloUseQuery<{ usagePlan: string; apiKeys: APIKey[] }[]>(
-    `/api-keys${optionsString}`
+  return useSoloQuery<{ usagePlan: string; apiKeys: APIKey[] }[]>(
+    `/api-keys${optionsString}`,
+    swallowError
   );
 }
 
-export function useCreateApiKey(apiId: string, usagePlan: string) {
+export function useCreateApiKey(
+  apiId: string,
+  usagePlan: string,
+  swallowError?: boolean
+) {
   // Any calls to this may want to make use of the following in the `onSettled` case
   //  queryClient.invalidateQueries("api-keys");
+  // If so, useQueryClient will need to be imported from the @tanstack/react-query set
 
   return useMutation({
     mutationFn: () =>
@@ -76,12 +91,14 @@ export function useCreateApiKey(apiId: string, usagePlan: string) {
         method: "POST",
         body: JSON.stringify({ usagePlan, apiId }),
       }),
+    useErrorBoundary: !swallowError,
   });
 }
 
-export function useDeleteApiKey(apiId: string) {
+export function useDeleteApiKey(apiId: string, swallowError?: boolean) {
   // Any calls to this may want to make use of the following in the `onSettled` case
-  //  queryClient.invalidateQueries("api-keys");
+  //  queryClient.invalidateQueries(`api-keys/${apiId}`);
+  // If so, useQueryClient will need to be imported from the @tanstack/react-query set
 
   return useMutation({
     mutationFn: () =>
@@ -91,5 +108,6 @@ export function useDeleteApiKey(apiId: string) {
           method: "DELETE",
         }
       ),
+    useErrorBoundary: !swallowError,
   });
 }

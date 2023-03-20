@@ -1,5 +1,21 @@
-@use "./constants";
-@use "./button";
+@use "../constants";
+@use "../button";
+
+/*
+*   EXPLANATION OF TAGS, CLASSNAMES, AND VARIOUS ref HOOKS
+      Redocly generates the class names for its display. We have
+      tried to hook on to obvious, easy-to-read classes where possible
+      -while also trying to use as little page-structure 
+       info where possible- as these are the most likely to change
+       across versions.
+      
+    Unfortunately, the 6-letter-combination classes seem to be
+      version dependent. -- FOR THIS REASON: If the Redoc version
+      is changed from what was in the repo on latest download, it may be
+      necessary to rediscover the hook names yourself.
+    We will be striving to find better, more 
+      consistent hooks to latch styling on to as we move forward.
+*/
 
 .redocDisplayContainer {
   border: 1px solid constants.$puddleBlue;
@@ -8,9 +24,13 @@
   margin-bottom: 40px;
 
   .redoc-wrap {
+    /***
+    * LEFT AREA
+    ***/
     .menu-content {
       background: constants.$marchGrey;
 
+      // THE SEARCH BAR, SEARCH INPUT, and MAGNIFYING GLASS
       div[role="search"] {
         position: relative;
         margin-top: 10px;
@@ -47,6 +67,7 @@
           }
         }
 
+        // SEARCH RESULTS AREA & RELATED SCROLLBAR
         > div.scrollbar-container {
           margin-top: 10px;
         }
@@ -56,6 +77,7 @@
         }
       }
 
+      // LABELS, typically of METHOD NAMES
       li > label {
         background: transparent;
 
@@ -104,17 +126,22 @@
       }
     }
 
+    /***
+    * SECOND (usually MIDDLE) THIRD
+    ***/
     .api-content {
       background: white;
       border-radius: 0 constants.$smallBorderRadius constants.$smallBorderRadius
         0;
 
+      // DOWNLOAD BUTTON? (this seems to change by version)
       .ilacoL {
-        @extend .button;
+        @extend .styledButton;
         height: 26px;
         line-height: 26px;
       }
 
+      // METHOD TAGS
       span[type="primary"] {
         background-color: constants.$royalPurple;
       }
@@ -123,19 +150,23 @@
         font-size: 14px;
       }
 
+      // TABLE OF METHOD PARAMETER INFORMATION
       table {
         font-size: 16px;
 
+        // "required" tags
         .eIjWpQ {
           font-size: 16px;
           color: constants.$midRed;
         }
+        // "recursive" and other informatic tags
         .ibAyvN {
           font-size: 16px;
           color: constants.$darkYellow;
           text-transform: lowercase;
         }
 
+        // 2nd column in table, PARAMETER DESCRIPTIONS
         tr > td:last-of-type,
         tr > td:last-of-type span {
           line-height: 22px;

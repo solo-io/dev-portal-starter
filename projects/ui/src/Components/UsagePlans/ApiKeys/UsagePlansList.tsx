@@ -1,5 +1,8 @@
 import { UsagePlanCard } from "./UsagePlanCard";
 
+/**
+ * MAIN COMPONENT
+ **/
 export function UsagePlansList(usagePlansList: { usagePlansList: any[] }) {
   return (
     <div>

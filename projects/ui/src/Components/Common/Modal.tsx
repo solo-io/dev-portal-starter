@@ -1,3 +1,3 @@
 export function Modal() {
-  return <div>HEADER</div>;
+  return <div>STILL TO COME</div>;
 }

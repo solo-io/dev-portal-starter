@@ -1,16 +1,18 @@
 import PageContainer from "../Common/PageContainer";
-import {
-  BannerHeading,
-  BannerHeadingTitle,
-} from "../Common/Banner/BannerHeading";
-import { Icon } from "../../Assets/Icons";
+import { BannerHeading } from "../Common/Banner/BannerHeading";
+import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 import { NavLink } from "react-router-dom";
 import Button from "../Common/Button";
 
+/* TODO: Clean this up. Is there a better way to display this? Should 
+    these images be coming from the backend */
 import CardImage1 from "../../Assets/card-option-1.png";
 import CardImage2 from "../../Assets/card-option-2.png";
 import CardImage3 from "../../Assets/card-option-3.png";
 
+/**
+ * MAIN COMPONENT
+ **/
 export function HomePage() {
   return (
     <PageContainer>

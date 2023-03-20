@@ -1,0 +1,24 @@
+@use "./mixins";
+@use "./constants";
+
+footer {
+  grid-area: footer;
+
+  width: 100%;
+  height: 40px;
+
+  background: #e9eef3;
+  color: #8693a5;
+}
+.footerContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  height: 100%;
+  @include mixins.contentWidth;
+}
+
+.widerContent .footerContent {
+  @include mixins.contentWidth(constants.$largeContentWidth);
+}

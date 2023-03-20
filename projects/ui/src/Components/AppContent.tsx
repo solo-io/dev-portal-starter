@@ -7,17 +7,19 @@ import { useLocation } from "react-router-dom";
 function AppContent() {
   const routeLocation = useLocation();
   const appCtx = useContext(AppContext);
-  const { isMobileView, isDarkMode, isGreenTheme } = appCtx;
+  const { isDarkMode } = appCtx;
 
   const letContentGetWider = routeLocation.pathname.includes("/api-details/");
 
+  /** Explanation of the data/class wrappings below:
+   *    darkMode is from context. See the wrapping in App.tsx
+   *    widerContent is used to allow the API-Schema-viewing page to fill out more
+   *       since it is often a packed view.
+   */
   return (
     <div
       data-theme={isDarkMode ? "dark" : "light"}
-      data-color={isGreenTheme ? "green" : "blue"}
-      className={`AppContainer ${isMobileView ? "is-mobile" : "is-desktop"} ${
-        letContentGetWider ? "widerContent" : ""
-      }`}
+      className={`AppContainer ${letContentGetWider ? "widerContent" : ""}`}
     >
       <Header />
       <AppContentRoutes />

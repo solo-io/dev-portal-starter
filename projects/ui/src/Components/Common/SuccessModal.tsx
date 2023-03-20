@@ -1,3 +1,3 @@
 export function SuccessModal() {
-  return <div>HEADER</div>;
+  return <div>STILL TO COME</div>;
 }

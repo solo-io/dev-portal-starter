@@ -15,6 +15,4 @@ mkdir portal-test && cd portal-test && npx tmplr solo-io/dev-portal-starter#main
 ## Technology
 
 - This project was created with [Vite](https://vitejs.dev/), and configured to use React and TypeScript.
-- [Stoplight Elements](https://github.com/stoplightio/elements) is used for the API details page.
-  - The web component is used here in place of the React component, since the React component had dependency issues.
 - The styles are extended with [Sass](https://sass-lang.com/).

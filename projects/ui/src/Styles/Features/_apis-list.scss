@@ -5,6 +5,9 @@
   padding: 0 30px;
   margin-bottom: 60px;
 
+  /*
+  *  LIST FITLER PARTS - STARTS
+  */
   .filterArea {
     margin-bottom: 30px;
     border-radius: constants.$smallBorderRadius;
@@ -13,6 +16,7 @@
     background: constants.$lightGreyTransparent;
     box-shadow: 0px 2px 8px constants.$darkGreyTransparent;
 
+    // ADDING FILTER AREA
     .choicesArea {
       display: flex;
       align-items: center;
@@ -213,6 +217,7 @@
       }
     }
 
+    //  FILTERS IN EFFECT
     .currentFiltersArea {
       display: flex;
 
@@ -255,10 +260,20 @@
         background: constants.$primaryColor;
         color: white;
         margin: 0;
+
+        svg {
+          stroke: white;
+        }
       }
     }
   }
+  /*
+  *  LIST FITLER PARTS - ENDS
+  */
 
+  /*
+  *  FILTER [GRID AREA AND GRID CARDS] - STARTS
+  */
   .apiGridList {
     display: grid;
     grid-gap: 30px;
@@ -307,6 +322,7 @@
           padding: 0 40px;
         }
         .description {
+          line-height: 22px;
           font-size: 16px;
           font-weight: 400;
           padding: 0 40px 40px;
@@ -350,7 +366,13 @@
       }
     }
   }
+  /*
+  *  FILTER [GRID] - ENDS
+  */
 
+  /*
+  *  FILTER [WIDE CARDS] - STARTS
+  */
   .apiListCard {
     margin-bottom: 30px;
     border-radius: constants.$smallBorderRadius;
@@ -374,7 +396,8 @@
           max-width: 95%;
           height: 100px;
 
-          * {
+          &.colorIt * {
+            stroke: constants.$primaryColor;
             fill: constants.$primaryColor;
           }
         }
@@ -449,4 +472,7 @@
       }
     }
   }
+  /*
+  *  FILTER [WIDE CARDS] - ENDS
+  */
 }

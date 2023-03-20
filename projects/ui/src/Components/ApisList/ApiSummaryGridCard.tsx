@@ -3,25 +3,30 @@ import { API } from "../../Apis/api-types";
 import { Icon } from "../../Assets/Icons";
 import { useMemo } from "react";
 
+/**
+ * MAIN COMPONENT
+ **/
 export function ApiSummaryGridCard({ api }: { api: API }) {
-  const cardImage = useMemo(() => {
-    if (api.apiId === "petstore-openapi-v2-full") {
-      return "https://www.explorebranson.com/sites/default/files/styles/listing_image/public/listing_images/1119-amazing-pets-poodle.jpg?itok=IkjvNb8J";
-    } else if (api.apiId === "gameofthrones-characters") {
-      return "https://www.livecamcroatia.com/data/public/2019-04/dubrovnik-castle-1396267_1920.jpg";
-    } else if (api.apiId === "Pokemon") {
-      return "https://images.nintendolife.com/96205d207578a/pokemon-scarlet-and-violet-complete-paldea-region-pokedex-1.large.jpg";
-    } else {
+  // In the future banner images may come through API data.
+  //   Even when that is the case, a default image may be desired
+  //   for when no image is available.
+  // Further, you may have some clever trick for setting one of
+  //   many default images.
+  const defaultCardImage = useMemo(
+    () => {
       return "https://img.huffingtonpost.com/asset/57f2730f170000f70aac9059.jpeg?ops=scalefit_960_noupscale";
-    }
-  }, [api.apiId]);
+    },
+    // Currently we don't need to change images unless the api itself has changed.
+    //   Depending on the function within the memo, this may not always be the case.
+    [api.apiId]
+  );
 
   return (
     <NavLink to={`/api-details/${api.apiId}`}>
       <div className="apiGridCard">
         <div className="content">
           <div className="apiImageHolder">
-            <img src={cardImage} alt="" role="banner" />
+            <img src={defaultCardImage} alt="" role="banner" />
           </div>
           <div className="details">
             <div>
