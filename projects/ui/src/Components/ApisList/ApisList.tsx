@@ -18,6 +18,10 @@ export function ApisList({
 }) {
   const { isLoading, data: apisList } = useListApis();
 
+  if (isLoading) {
+    return <Loading message="Getting list of apis..." />;
+  }
+
   const displayedApisList = apisList
     ? apisList
         .filter((api) => {
@@ -43,10 +47,6 @@ export function ApisList({
         })
         .sort((filterA, filterB) => filterA.title.localeCompare(filterB.title))
     : [];
-
-  if (isLoading) {
-    return <Loading message="Getting list of apis..." />;
-  }
 
   return (
     <div className={usingGridView ? "apiGridList" : ""}>

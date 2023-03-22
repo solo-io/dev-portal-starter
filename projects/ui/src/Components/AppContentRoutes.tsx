@@ -3,7 +3,7 @@ import { ApiDetailsPage } from "./ApiDetails/ApiDetailsPage";
 import { ApisPage } from "./ApisList/ApisPage";
 import { HomePage } from "./Home/HomePage";
 import { Footer } from "./Structure/Footer";
-import { UsagePlansPage } from "./UsagePlans/UsagePlans";
+import { UsagePlansPage } from "./UsagePlans/UsagePlansPage";
 import { ErrorBoundary } from "./Common/ErrorBoundary";
 
 /**
