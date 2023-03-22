@@ -3,7 +3,7 @@ import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 import { Icon } from "../../Assets/Icons";
 import { ErrorBoundary } from "../Common/ErrorBoundary";
-import { UsagePlansList } from "./UsagePlanList/UsagePlansList";
+import { APIUsagePlansList } from "./UsagePlanList/APIUsagePlansList";
 
 /**
  * MAIN COMPONENT
@@ -23,8 +23,8 @@ export function UsagePlansPage() {
         }
       />
       <main className="plansList">
-        <ErrorBoundary fallback="There was an issue loading the list of Plans">
-          <UsagePlansList />
+        <ErrorBoundary fallback="There was an issue loading the list of Apis">
+          <APIUsagePlansList />
         </ErrorBoundary>
       </main>
     </PageContainer>
