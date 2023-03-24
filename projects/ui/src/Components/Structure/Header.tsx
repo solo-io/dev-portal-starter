@@ -37,6 +37,8 @@ export function Header() {
             <div className="userLoginArea">
               <Icon.UserProfile className="userCircle" />
               <Icon.DownArrow className="dropdownArrow" />
+              TODO:{" "}
+              <NavLink to={"/usage-plans"}>DROPDOWN WITH USAGE PLANS</NavLink>
             </div>
           </div>
         </nav>

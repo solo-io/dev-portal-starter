@@ -1,0 +1,46 @@
+@use "../constants";
+
+.apiKeyCard {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  border-radius: constants.$smallBorderRadius;
+  border: 1px solid constants.$puddleBlue;
+  padding: 18px;
+  background: white;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .accessIcon {
+    margin-right: 10px;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .title {
+    color: constants.$defaultColoredText;
+  }
+
+  &.emptyListCard {
+    line-height: 26px;
+
+    .accessIcon svg {
+      width: 76px;
+      height: 76px;
+    }
+
+    .title {
+      font-size: 22px;
+    }
+
+    .description {
+      font-size: 16px;
+    }
+  }
+}

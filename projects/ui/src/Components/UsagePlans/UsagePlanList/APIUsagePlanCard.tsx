@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { API } from "../../../Apis/api-types";
 import { useListUsagePlans } from "../../../Apis/hooks";
 import { Icon } from "../../../Assets/Icons";
@@ -10,6 +11,8 @@ import { UsagePlanDetails } from "./UsagePlanDetails";
  **/
 export function APIUsagePlanCard({ api }: { api: API }) {
   const { isLoading, data: usagePlans } = useListUsagePlans();
+
+  const [showUsagePlanDetails, setShowUsagePlanDetails] = useState(false);
 
   // We can tell users information about the API without the plans,
   //  so we can load most of the component.
@@ -28,56 +31,82 @@ export function APIUsagePlanCard({ api }: { api: API }) {
         )
     : [];
 
+  const productKeyCount = !!usagePlans
+    ? relevantUsagePlans.reduce(
+        (acc, usagePlan) => usagePlan.apiIds.length + acc,
+        0
+      )
+    : undefined;
+
+  const toggleUsagePlanDetails = () => {
+    setShowUsagePlanDetails((showing) => !showing);
+  };
+
   /* eslint-disable no-console */
   console.log(api);
   /* eslint-enable no-console */
   return (
-    <div className="apiListCard">
+    <div className="apiUsagePlanCard">
       <div className="content">
-        <div className="majorIconHolder">
-          <Icon.Bug />
-        </div>
-        <div className="details">
-          <div>
-            <h4 className="title">{api.title}</h4>
-            <div className="description">{api.description}</div>
+        <div className="apiHeader" onClick={toggleUsagePlanDetails}>
+          <div className="leadIconHolder">
+            <Icon.Bug />
           </div>
-        </div>
-        {usagePlans !== undefined && (
-          <div className="metaDetails">
-            <div className="metaDetail">
-              <div className="metaDetailIcon">
-                <Icon.Key />
-              </div>
-              <b>{plan.apiIds.length}</b> API Product Key
-              {plan.apiIds.length === 1 ? "" : "s"}
+          <div className="apiDetails">
+            <div>
+              <h4 className="title">{api.title}</h4>
+              <div className="description">{api.description}</div>
             </div>
+          </div>
+          <div className="metaDetails">
+            {productKeyCount !== undefined && (
+              <div className="metaDetail">
+                <div className="metaDetailIcon">
+                  <Icon.Key />
+                </div>
+                <span className="countNumber">{productKeyCount}</span> API
+                Product Key
+                {productKeyCount === 1 ? "" : "s"}
+              </div>
+            )}
             <div className="metaDetail">
               <div className="metaDetailIcon">
                 <Icon.Speedometer />
               </div>
-              <b>{api.usagePlans.length}</b> Plan
+              <span className="countNumber">{api.usagePlans.length}</span> Plan
               {api.usagePlans.length === 1 ? "" : "s"}
             </div>
+          </div>
+          <div className="viewToggleArrowHolder">
+            {showUsagePlanDetails ? <Icon.UpArrow /> : <Icon.DownArrow />}
+          </div>
+        </div>
+      </div>
+
+      <div
+        className={`usagePlansList ${
+          showUsagePlanDetails ? "showing" : "hidden"
+        }`}
+      >
+        {isLoading ? (
+          <Loading
+            message={`Getting information on usage plans for ${api.title}...`}
+          />
+        ) : (
+          <div className="usagePlansListContent">
+            {relevantUsagePlans.map((plan) => (
+              <ErrorBoundary
+                key={plan.name}
+                fallback={`There was an issue loading information about ${plan.name}`}
+              >
+                <UsagePlanDetails apiId={api.apiId} usagePlan={plan} />
+              </ErrorBoundary>
+            ))}
           </div>
         )}
       </div>
 
-      {isLoading ? (
-        <Loading
-          message={`Getting information on usage plans for ${api.title}...`}
-        />
-      ) : (
-        relevantUsagePlans.map((plan) => (
-          <ErrorBoundary
-            fallback={`There was an issue loading information about ${plan.name}`}
-          >
-            <UsagePlanDetails apiId={api.apiId} usagePlan={plan} />
-          </ErrorBoundary>
-        ))
-      )}
-
-      <div className="footer">
+      <div className="apiFooter">
         <div className="metaInfo">
           <Icon.SmallCodeGear />
           <div className="typeTitle" aria-label="API Type">

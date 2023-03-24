@@ -1,10 +1,8 @@
+import { useState } from "react";
 import { UsagePlan } from "../../../Apis/api-types";
-import { useListApiKeys, useListApis } from "../../../Apis/hooks";
 import { Button } from "../../Common/Button";
-import { ErrorBoundary } from "../../Common/ErrorBoundary";
-import { Loading } from "../../Common/Loading";
 import { APIKeysList } from "../ApiKeys/ApiKeysList";
-import { APIUsagePlanCard } from "./APIUsagePlanCard";
+import { GenerateApiKeyModal } from "../ApiKeys/GenerateApiKeyModal";
 
 /**
  * MAIN COMPONENT
@@ -16,22 +14,50 @@ export function UsagePlanDetails({
   usagePlan: UsagePlan;
   apiId: string;
 }) {
+  const [createModalIsOpen, setCreateModalIsOpen] = useState(false);
+
+  const openCreateKeyModal = () => {
+    /* eslint-disable no-console */
+    console.log("DO IT");
+    /* eslint-enable no-console */
+    setCreateModalIsOpen(true);
+  };
+  const closeCreateKeyModal = () => {
+    setCreateModalIsOpen(false);
+  };
+
   return (
-    <div>
-      <div>
+    <div className="usagePlanDetails">
+      <div className="planHeader">
         <div>
-          <div>{usagePlan.name}</div>
-          <div>
-            ( {usagePlan.rateLimitPolicy.requestsPerUnit} per{" "}
-            {usagePlan.rateLimitPolicy.unit} )
+          <div className="planName">{usagePlan.name} Plan</div>
+          <div className="planRate">
+            ( {usagePlan.rateLimitPolicy.requestsPerUnit} Requests per{" "}
+            <span className="timeUnit">{usagePlan.rateLimitPolicy.unit}</span> )
           </div>
         </div>
 
         <div>
-          HEADING <Button>+ ADD KEY</Button>
+          <Button
+            onClick={openCreateKeyModal}
+            className="paleButton smallButton"
+          >
+            + ADD KEY
+          </Button>
         </div>
       </div>
-      <APIKeysList apiId={apiId} usagePlan={usagePlan} />
+      <APIKeysList
+        apiId={apiId}
+        usagePlan={usagePlan}
+        openCreateKeyModal={openCreateKeyModal}
+      />
+
+      {createModalIsOpen && (
+        <GenerateApiKeyModal
+          usagePlanName={usagePlan.name}
+          onClose={closeCreateKeyModal}
+        />
+      )}
     </div>
   );
 }

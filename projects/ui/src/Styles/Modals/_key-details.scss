@@ -1,0 +1,40 @@
+@use "../constants";
+
+.generateKeyModal,
+.keyDetailsModal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  .inputLine,
+  .keyIdLine {
+    width: 100%;
+    padding: 0 40px;
+    margin-bottom: 18px;
+  }
+
+  .keyIdLine {
+    font-size: 22px;
+    line-height: 28px;
+  }
+
+  .planAccessCarveOut {
+    width: 100%;
+    padding: 10px 40px;
+    margin-bottom: 18px;
+    background: constants.$puddleBlue;
+    text-align: center;
+
+    .title {
+      font-size: 22px;
+      line-height: 28px;
+      color: constants.$defaultColoredText;
+    }
+    .planName {
+      font-size: 15px;
+      line-height: 18px;
+      color: constants.$juneGrey;
+    }
+  }
+}

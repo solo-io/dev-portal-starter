@@ -1,4 +1,4 @@
-import PageContainer from "../Common/PageContainer";
+import { PageContainer } from "../Common/PageContainer";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 import { Icon } from "../../Assets/Icons";
@@ -22,7 +22,7 @@ export function UsagePlansPage() {
           "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam."
         }
       />
-      <main className="plansList">
+      <main className="apiUsagePlansList">
         <ErrorBoundary fallback="There was an issue loading the list of Apis">
           <APIUsagePlansList />
         </ErrorBoundary>

@@ -11,6 +11,11 @@ button {
   justify-content: center;
   color: currentColor;
   cursor: pointer;
+
+  &.disabled {
+    cursor: default;
+    background: constants.$juneGrey;
+  }
 }
 
 // A consistent button for general use.
@@ -28,4 +33,28 @@ button {
   color: white;
 
   font-size: 14px;
+}
+
+.paleButton {
+  border-color: constants.$primaryColor;
+  background: white;
+  color: constants.$primaryColor;
+}
+
+.smallButton {
+  height: 26px;
+  line-height: 26px;
+}
+
+.justText {
+  display: inline;
+  height: auto;
+  line-height: inherit;
+  border: none;
+  background: none;
+  font-size: inherit;
+  padding: 0;
+
+  color: constants.$primaryColor;
+  font-weight: 500;
 }

@@ -13,13 +13,14 @@ export type User = {
   username: string;
 };
 
+export type RateLimitUnit = "SECOND" | "MINUTE" | "HOUR";
 export type UsagePlan = {
   name: string;
   authPolicies: {
     authType: string;
   }[];
   rateLimitPolicy: {
-    unit: string;
+    unit: RateLimitUnit;
     requestsPerUnit: number;
   };
   apiIds: apiId[];
@@ -27,7 +28,7 @@ export type UsagePlan = {
 
 export type APIKey = {
   apiId: apiId;
-  apiKey: string;
+  apiKey?: string;
 };
 
 export type API = {

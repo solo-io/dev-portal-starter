@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PageContainer from "../Common/PageContainer";
+import { PageContainer } from "../Common/PageContainer";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 import { Icon } from "../../Assets/Icons";

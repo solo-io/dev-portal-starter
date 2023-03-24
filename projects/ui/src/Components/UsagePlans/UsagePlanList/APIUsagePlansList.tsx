@@ -9,6 +9,9 @@ import { APIUsagePlanCard } from "./APIUsagePlanCard";
 export function APIUsagePlansList() {
   const { isLoading, data: apisList } = useListApis();
 
+  /* eslint-disable no-console */
+  console.log(apisList);
+  /* eslint-enable no-console */
   if (isLoading) {
     return <Loading message="Getting list of APIs..." />;
   }
@@ -24,8 +27,11 @@ export function APIUsagePlansList() {
     : [];
 
   return displayedApisList.map((api) => (
-    <ErrorBoundary fallback="There was an issue loading the list of Plans">
-      <APIUsagePlanCard api={api} key={api.apiId} />
+    <ErrorBoundary
+      key={api.apiId}
+      fallback="There was an issue loading the list of Plans"
+    >
+      <APIUsagePlanCard api={api} />
     </ErrorBoundary>
   ));
 }

@@ -13,7 +13,7 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { API, APIKey, APISchema, UsagePlan, User } from "./api-types";
 
-export const restpointPrefix = "http://developer.example.com/v1";
+export const restpointPrefix = "http://localhost:31080/v1";
 
 export async function fetchJson<T>(
   input: RequestInfo | URL,
