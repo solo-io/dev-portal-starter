@@ -12,6 +12,7 @@ PERSONALIZE IT
 
 - Colors and Style Defaults
 - Images & Icons
+- Logo
 - Deeper styling redos
 - Deeper code explanation
 

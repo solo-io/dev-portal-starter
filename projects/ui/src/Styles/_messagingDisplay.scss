@@ -117,6 +117,21 @@
     font-size: 18px;
     font-weight: 500;
   }
+
+  &.horizontalError {
+    flex-direction: row;
+    align-items: center;
+
+    svg {
+      width: 40px;
+      height: 40px;
+    }
+
+    .errorMessage {
+      padding-top: 0;
+      margin-left: 10px;
+    }
+  }
 }
 @keyframes animate {
   to {
