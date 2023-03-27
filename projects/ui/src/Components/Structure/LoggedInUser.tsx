@@ -7,31 +7,23 @@ import {
 } from "../../Apis/hooks";
 import { Button } from "../Common/Button";
 import { User } from "../../Apis/api-types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Tooltip } from "antd";
 
 /**
  * MAIN COMPONENT
  **/
 export function LoggedInUser() {
-  const { isLoading, data: user } = useGetCurrentUser();
+  const { isLoading, data: user, refetch: refetchUser } = useGetCurrentUser();
 
   const [attemptingAccessChange, setAttemptingAccessChange] = useState(false);
-  const [shownUser, setShownUser] = useState<User>();
-
-  useEffect(() => {
-    setShownUser(user || undefined);
-  }, [user]);
 
   const attemptLogin = () => {
     setAttemptingAccessChange(true);
 
-    fetchJson<User>(`${restpointPrefix}/login`, {
-      method: "POST",
-      body: JSON.stringify({ usagePlan: usagePlanName, apiId: apiKeyName }),
-    })
+    fetchJson<User>(`${restpointPrefix}/login`)
       .then((response) => {
-        setKeyValue(response);
+        refetchUser();
         setAttemptingAccessChange(false);
       })
       .catch(() => setAttemptingAccessChange(false));
@@ -39,33 +31,42 @@ export function LoggedInUser() {
   const attemptLogout = () => {
     setAttemptingAccessChange(true);
 
-    fetchJson<User>(`${restpointPrefix}/login`, {
-      method: "POST",
-      body: JSON.stringify({ usagePlan: usagePlanName, apiId: apiKeyName }),
-    })
+    fetchJson(`${restpointPrefix}/logout`)
       .then((response) => {
-        setShownUser(undefined);
+        refetchUser();
         setAttemptingAccessChange(false);
       })
       .catch(() => setAttemptingAccessChange(false));
   };
 
-  return (
-    <div className="userHolder">
-      <Tooltip
-        placement="bottom"
-        color=""
-        title={
-          <>
-            TODO:{" "}
-            <NavLink to={"/usage-plans"}>DROPDOWN WITH USAGE PLANS</NavLink>
-            <div onClick={attemptLogout}>LOG OUT</div>
-          </>
-        }
-      >
-        <Icon.UserProfile className="userCircle" />
+  return !user ? (
+    <Button
+      onClick={attemptLogin}
+      disabled={attemptingAccessChange || isLoading}
+    >
+      LOGIN
+    </Button>
+  ) : (
+    <Tooltip
+      placement="bottom"
+      color=""
+      title={
+        <div className="userDropdown">
+          <NavLink to={"/usage-plans"}>API Keys</NavLink>
+          <div
+            onClick={attemptLogout}
+            role="button"
+            className={attemptingAccessChange ? "disabled" : ""}
+          >
+            Logout
+          </div>
+        </div>
+      }
+    >
+      <div className="userHolder">
+        <Icon.UserProfile className="userCircle" /> {user?.username}
         <Icon.DownArrow className="dropdownArrow" />
-      </Tooltip>
-    </div>
+      </div>
+    </Tooltip>
   );
 }

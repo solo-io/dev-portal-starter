@@ -55,26 +55,30 @@
   }
 
   .userLoginArea {
-    display: flex;
-    align-items: center;
-    color: constants.$defaultColoredText;
+    .userHolder {
+      display: flex;
+      align-items: center;
+      color: constants.$defaultColoredText;
+      cursor: pointer;
 
-    svg.userCircle {
-      width: 40px;
-      height: 40px;
+      svg.userCircle {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
 
-      * {
-        fill: currentColor;
+        * {
+          fill: currentColor;
+        }
       }
-    }
 
-    svg.dropdownArrow {
-      width: 14px;
-      margin-left: 10px;
+      svg.dropdownArrow {
+        width: 14px;
+        margin-left: 10px;
 
-      * {
-        stroke: currentColor;
-        stroke-width: 2;
+        * {
+          stroke: currentColor;
+          stroke-width: 2;
+        }
       }
     }
   }
@@ -82,4 +86,42 @@
 
 .widerContent .navContent {
   @include mixins.contentWidth(constants.$largeContentWidth);
+}
+
+.userDropdown {
+  a,
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 18px;
+    line-height: 35px;
+    color: white;
+    border-left: 6px solid transparent;
+    cursor: pointer;
+
+    &:hover {
+      border-left-color: constants.$internalLinkColor;
+    }
+
+    &.active {
+      color: constants.$mayGrey;
+      border-left-color: constants.$mayGrey;
+      cursor: default;
+    }
+
+    &:first-child {
+      border-top-left-radius: 2px;
+    }
+    &:last-child {
+      border-bottom-left-radius: 2px;
+    }
+  }
+
+  div.disabled {
+    background: rgba(50, 50, 50, 0.4);
+    color: constants.$juneGrey;
+    border-left-color: constants.$juneGrey;
+    cursor: default;
+  }
 }
