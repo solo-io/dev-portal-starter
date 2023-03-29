@@ -22,10 +22,6 @@ function DeleteKeyActions({
     if (!attemptingDelete) {
       setAttemptingDelete(true);
 
-      // eslint-disable-next-line no-console
-      console.log(
-        JSON.stringify({ usagePlan: usagePlanName, apiId: apiKeyName })
-      );
       fetchJson<APIKey>(`${restpointPrefix}/api-keys/${apiId}`, {
         method: "DELETE",
       }).then((response) => {

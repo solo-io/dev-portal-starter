@@ -10,9 +10,6 @@ import { APIUsagePlanCard } from "./APIUsagePlanCard";
 export function APIUsagePlansList() {
   const { isLoading, data: apisList } = useListApis();
 
-  /* eslint-disable no-console */
-  console.log(apisList);
-  /* eslint-enable no-console */
   if (isLoading) {
     return <Loading message="Getting list of APIs..." />;
   }

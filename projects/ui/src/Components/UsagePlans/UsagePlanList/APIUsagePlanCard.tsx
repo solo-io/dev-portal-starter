@@ -42,9 +42,6 @@ export function APIUsagePlanCard({ api }: { api: API }) {
     setShowUsagePlanDetails((showing) => !showing);
   };
 
-  /* eslint-disable no-console */
-  console.log(api);
-  /* eslint-enable no-console */
   return (
     <div className="apiUsagePlanCard">
       <div className="content">
