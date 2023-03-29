@@ -27,34 +27,41 @@ button {
   min-width: 90px;
   line-height: 40px;
   padding: 0 10px;
-
   border: 1px solid constants.$januaryGrey;
   background: constants.$primaryColor;
   color: white;
-
   font-size: 14px;
-}
 
-.paleButton {
-  border-color: constants.$primaryColor;
-  background: white;
-  color: constants.$primaryColor;
-}
+  transition: background 1s linear;
 
-.smallButton {
-  height: 26px;
-  line-height: 26px;
-}
+  &.paleButton {
+    border-color: constants.$primaryColor;
+    background: white;
+    color: constants.$primaryColor;
+  }
 
-.justText {
-  display: inline;
-  height: auto;
-  line-height: inherit;
-  border: none;
-  background: none;
-  font-size: inherit;
-  padding: 0;
+  &.smallButton {
+    height: 26px;
+    line-height: 26px;
+  }
 
-  color: constants.$primaryColor;
-  font-weight: 500;
+  &.justText {
+    display: inline;
+    height: auto;
+    line-height: inherit;
+    border: none;
+    background: none;
+    font-size: inherit;
+    padding: 0;
+
+    color: constants.$primaryColor;
+    font-weight: 500;
+  }
+
+  &.success {
+    background: constants.$midGreen;
+  }
+  &.error {
+    background: constants.$pumpkinOrange;
+  }
 }

@@ -17,9 +17,6 @@ export function UsagePlanDetails({
   const [createModalIsOpen, setCreateModalIsOpen] = useState(false);
 
   const openCreateKeyModal = () => {
-    /* eslint-disable no-console */
-    console.log("DO IT");
-    /* eslint-enable no-console */
     setCreateModalIsOpen(true);
   };
   const closeCreateKeyModal = () => {

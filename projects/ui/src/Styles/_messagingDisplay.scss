@@ -7,8 +7,23 @@
 
 /**
 *  LOADING...
+*   &&
+*  | Empty |
 **/
-.loadingContainer {
+
+@keyframes animateCircles {
+  to {
+    transform: rotate(1turn);
+  }
+}
+@keyframes shadowFade {
+  to {
+    box-shadow: 0 0 2em transparent, 0 0 4em, 0 0 6em, 0 0 8em, 0 0 10em,
+      0 0 0 0.5em transparent;
+  }
+}
+.loadingContainer,
+.emptyDataContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,7 +32,8 @@
   // A pretty spinner while they wait...
   // .inner and .outer define the two circling balls, and
   //   their 'color's can be changed here.
-  .loadingSpinner {
+  .loadingSpinner,
+  .emptyCircle {
     position: relative;
 
     display: flex;
@@ -30,7 +46,7 @@
       position: absolute;
       border-radius: 50%;
       border-style: solid;
-      animation: animate 3s linear infinite;
+      animation: animateCircles 3s linear infinite;
 
       &.outer {
         width: 100%;
@@ -77,14 +93,44 @@
       }
     }
   }
+  .emptyCircle {
+    .chasePlate {
+      animation: animateCircles 1.3s linear;
 
-  .loadingMessage {
+      &.inner,
+      &.outer {
+        border-width: 0.2em;
+        border-color: currentColor;
+      }
+      &.inner {
+        --deg: -90deg;
+      }
+      &.outer {
+        --deg: -90deg;
+      }
+
+      .circle::before {
+        animation: shadowFade 1.5s ease-in;
+        animation-fill-mode: forwards;
+      }
+    }
+  }
+
+  .loadingMessage,
+  .emptyMainMessage,
+  .emptyDetailsMessage {
     padding-top: 20px;
     text-align: center;
     font-size: 18px;
     font-weight: 500;
 
     color: constants.$defaultColoredText;
+  }
+  .emptyDetailsMessage {
+    padding-top: 8px;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 400;
   }
 }
 
@@ -131,10 +177,5 @@
       padding-top: 0;
       margin-left: 10px;
     }
-  }
-}
-@keyframes animate {
-  to {
-    transform: rotate(1turn);
   }
 }

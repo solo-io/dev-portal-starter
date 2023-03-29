@@ -9,6 +9,7 @@ import { Button } from "../Common/Button";
 import { User } from "../../Apis/api-types";
 import { useState } from "react";
 import { Tooltip } from "antd";
+import { Loading } from "../Common/Loading";
 
 /**
  * MAIN COMPONENT
@@ -64,8 +65,14 @@ export function LoggedInUser() {
       }
     >
       <div className="userHolder">
-        <Icon.UserProfile className="userCircle" /> {user?.username}
-        <Icon.DownArrow className="dropdownArrow" />
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <>
+            <Icon.UserProfile className="userCircle" /> {user?.username}
+            <Icon.DownArrow className="dropdownArrow" />
+          </>
+        )}
       </div>
     </Tooltip>
   );

@@ -20,6 +20,8 @@ function CreateKeyActions({
 }) {
   const [attemptingCreate, setAttemptingCreate] = useState(false);
   const [keyValue, setKeyValue] = useState();
+  /* We aren't giving full insights here, but are giving them a hint at
+      whether it was successful *and* when the action is completed  */
   const [copySuccessful, setCopySuccessful] = useState();
 
   const attemptToCreate = () => {
@@ -66,10 +68,16 @@ function CreateKeyActions({
       // eslint-disable-next-line no-console
       console.error("Oops, unable to copy." + err);
     }
+    setCopySuccessful(success);
+    // A basic settimeout is not desirable since they
+    //  could leave the modal before the timer hits and
+    //  then references get grumpy. But it's non-fatal
+    //  and this is very straightforward for comprehension.
+    setTimeout(() => {
+      setCopySuccessful(undefined);
+    }, 3000);
 
     document.body.removeChild(textArea);
-
-    return success;
   };
 
   return (
@@ -91,6 +99,13 @@ function CreateKeyActions({
               onClick={copyKeyToClipboard}
               aria-label="Copy key to clipboard"
               title="Copy key to clipboard"
+              className={
+                !!copySuccessful
+                  ? "success"
+                  : copySuccessful === undefined
+                  ? ""
+                  : "error"
+              }
             >
               <Icon.PaperStack />
             </Button>

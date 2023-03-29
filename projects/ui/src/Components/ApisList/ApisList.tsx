@@ -3,6 +3,7 @@ import { ApiSummaryListCard } from "./ApiSummaryListCard";
 import { useListApis } from "../../Apis/hooks";
 import { FilterPair, FilterType } from "./ApisFilter";
 import { Loading } from "../Common/Loading";
+import { EmptyData } from "../Common/EmptyData";
 
 /**
  * MAIN COMPONENT
@@ -48,7 +49,7 @@ export function ApisList({
         .sort((filterA, filterB) => filterA.title.localeCompare(filterB.title))
     : [];
 
-  return (
+  return displayedApisList.length ? (
     <div className={usingGridView ? "apiGridList" : ""}>
       {usingGridView
         ? displayedApisList.map((api) => (
@@ -58,5 +59,7 @@ export function ApisList({
             <ApiSummaryListCard api={api} key={api.apiId} />
           ))}
     </div>
+  ) : (
+    <EmptyData topic="API" />
   );
 }
