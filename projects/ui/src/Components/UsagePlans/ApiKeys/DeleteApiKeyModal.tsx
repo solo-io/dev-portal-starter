@@ -33,7 +33,7 @@ function DeleteKeyActions({
 
   return (
     <div>
-      {attemptingCreate ? (
+      {attemptingDelete ? (
         <Loading message="Deleting key..." />
       ) : deleted ? null : (
         <>
