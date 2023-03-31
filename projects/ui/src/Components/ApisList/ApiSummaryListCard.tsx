@@ -6,9 +6,6 @@ import { Icon } from "../../Assets/Icons";
  * MAIN COMPONENT
  **/
 export function ApiSummaryListCard({ api }: { api: API }) {
-  /* eslint-disable no-console */
-  console.log(api);
-  /* eslint-enable no-console */
   return (
     <NavLink to={`/api-details/${api.apiId}`}>
       <div className="apiListCard">

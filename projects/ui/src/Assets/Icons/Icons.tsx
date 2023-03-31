@@ -24,6 +24,7 @@ export { ReactComponent as RightArrow } from "./right-arrow.svg";
 export { ReactComponent as SlashedEye } from "./slashed-eye.svg";
 export { ReactComponent as SmallCodeGear } from "./small-code-gear.svg";
 export { ReactComponent as SmallX } from "./small-x.svg";
+export { ReactComponent as Speedometer } from "./speedometer.svg";
 export { ReactComponent as SuccessCheckmark } from "./success-checkmark.svg";
 export { ReactComponent as Tag } from "./tag-icon.svg";
 export { ReactComponent as TileViewIcon } from "./tile-view.svg";

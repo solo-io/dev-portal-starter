@@ -8,6 +8,7 @@ type State = {
 
 type ErrorBoundProps = React.PropsWithChildren<{
   fallback: React.ReactNode;
+  class?: string;
 }>;
 
 // Error boundaries currently have to be classes.
@@ -32,7 +33,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundProps, State> {
 
   render() {
     return this.state.hasError ? (
-      <div className="errorDisplayContainer">
+      <div className={`errorDisplayContainer ${this.props.class ?? ""}`}>
         <Icon.DireX />
 
         <div className="errorMessage">{this.props.fallback}</div>

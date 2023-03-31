@@ -1,7 +1,7 @@
 /*  API HOOKS
 *   This file has how we access data in a hooks-style fashion.
 *
-*   For all hooks we provide back:
+*   For all hooks it is easy to access from the components calling them:
 *     isLoading: boolean
 *     error: null | <ErrorInfo>  NOTE:: Update with actual ErrorInfo type before public release
 *     data: any
@@ -13,11 +13,11 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { API, APIKey, APISchema, UsagePlan, User } from "./api-types";
 
-export const restpointPrefix = "http://developer.example.com/v1";
+export const restpointPrefix = "http://localhost:31080/v1";
 
 export async function fetchJson<T>(
   input: RequestInfo | URL,
-  fetchOptions?: { method?: string; body?: string }
+  fetchOptions?: { method?: string; body?: string; header?: string }
 ): Promise<T> {
   const response = await fetch(input, {
     crossDomain: true,
@@ -29,7 +29,11 @@ export async function fetchJson<T>(
   return response.json();
 }
 
-function useSoloQuery<T>(apiCallString: string, swallowError?: boolean) {
+function useSoloQuery<T>(
+  apiCallString: string,
+  swallowError?: boolean,
+  fetchOptions?: { method?: string; body?: string; header?: string }
+) {
   return useQuery({
     // Key used for caching queries
     queryKey: [apiCallString],
@@ -42,7 +46,13 @@ function useSoloQuery<T>(apiCallString: string, swallowError?: boolean) {
 }
 
 export function useGetCurrentUser(swallowError?: boolean) {
-  return useSoloQuery<User>("/me", swallowError);
+  return useSoloQuery<User>("/me", swallowError, {
+    header: JSON.stringify({
+      // This id_token is required by the Portal backend currently.
+      id_token:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiam9obkRvZSIsImVtYWlsIjoiam9obkBkb2UuY29tIiwibmFtZSI6IkpvaG4gRG9lIiwiZ3JvdXAiOiJ1c2VycyIsImlhdCI6MTUxNjIzOTAyMn0.5DqPUgiVzjjIgLvhLB6MCj1m3nlnGoh-chNg__xp394",
+    }),
+  });
 }
 
 export function useListApis(swallowError?: boolean) {

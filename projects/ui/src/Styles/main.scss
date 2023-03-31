@@ -1,4 +1,5 @@
-@use "./background";
+@use "./constants";
+
 @use "./fonts";
 @use "./button";
 @use "./container";
@@ -10,9 +11,15 @@
 @use "./topnav";
 
 @use "./Features/api-details";
+@use "./Features/api-keys";
 @use "./Features/apis-list";
+@use "./Features/api-usage-plans";
 @use "./Features/home";
 @use "./Features/redoc";
+
+@use "./Modals/delete-key";
+@use "./Modals/key-details";
+@use "./Modals/modal";
 
 /******************************
 *******************************
@@ -138,4 +145,32 @@ div {
 h1 {
   font-size: 48px;
   font-weight: 400;
+}
+
+/*********************
+**  ANTD OVERRIDES  **
+*********************/
+.ant-modal-mask {
+  background: constants.$greyBlueOpaque !important;
+}
+.ant-modal-content {
+  padding: 0 !important;
+}
+
+.ant-tooltip {
+  border: none;
+
+  .ant-tooltip-arrow::before {
+    background-color: rgba(constants.$secondaryColor, 0.9) !important;
+  }
+  .ant-tooltip-placement-bottom .ant-tooltip-arrow,
+  .ant-tooltip-placement-bottomLeft .ant-tooltip-arrow,
+  .ant-tooltip-placement-bottomRight .ant-tooltip-arrow {
+    border-bottom-color: rgba(constants.$secondaryColor, 0.9) !important;
+  }
+  .ant-tooltip-inner {
+    background-color: rgba(constants.$secondaryColor, 0.9) !important;
+    border-radius: 2px !important;
+    padding: 0 !important;
+  }
 }

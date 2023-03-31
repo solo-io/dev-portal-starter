@@ -4,9 +4,17 @@ export function Button(
     HTMLButtonElement
   >
 ) {
+  const { disabled, ...rest } = props;
+
   return (
-    <button {...props} className={`styledButton ${props.className ?? ""}`}>
-      {props.children}
+    <button
+      {...rest}
+      aria-disabled={disabled}
+      className={`styledButton ${rest.className ?? ""} ${
+        disabled ? "disabled" : ""
+      }`}
+    >
+      {rest.children}
     </button>
   );
 }

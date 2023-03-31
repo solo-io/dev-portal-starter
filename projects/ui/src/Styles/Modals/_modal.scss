@@ -1,0 +1,35 @@
+@use "../constants";
+
+.modalBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 0;
+  max-width: 425px;
+
+  .modalHeader {
+    margin-bottom: 28px;
+
+    svg {
+      width: 110px;
+      max-height: 110px;
+
+      * {
+        fill: constants.$defaultColoredText;
+      }
+    }
+  }
+  .modalTitle {
+    margin-bottom: 15px;
+    font-size: 28px;
+    line-height: 38px;
+    color: constants.$defaultColoredText;
+  }
+
+  .modalBody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+}

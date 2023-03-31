@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { ReactComponent as Logo } from "../../Assets/logo.svg";
 import { NavLink, useLocation } from "react-router-dom";
-import { Icon } from "../../Assets/Icons";
+import { LoggedInUser } from "./LoggedInUser";
+import { ErrorBoundary } from "../Common/ErrorBoundary";
 
 /**
  * MAIN COMPONENT
@@ -35,8 +36,9 @@ export function Header() {
             </NavLink>
             <div className="divider" />
             <div className="userLoginArea">
-              <Icon.UserProfile className="userCircle" />
-              <Icon.DownArrow className="dropdownArrow" />
+              <ErrorBoundary fallback="Access issues" class="horizontalError">
+                <LoggedInUser />
+              </ErrorBoundary>
             </div>
           </div>
         </nav>
