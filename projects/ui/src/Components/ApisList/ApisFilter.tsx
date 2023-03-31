@@ -1,12 +1,11 @@
 import { Icon } from "../../Assets/Icons";
 import { Input, Dropdown, MenuProps } from "antd";
 import { useState } from "react";
+import { KeyValuePair } from "../Common/DataPairPill";
 
 /**
  * HELPER TYPE DEFS
  **/
-export type KeyValuePair = { key: string; value: string };
-
 export enum FilterType {
   name,
   keyValuePair,

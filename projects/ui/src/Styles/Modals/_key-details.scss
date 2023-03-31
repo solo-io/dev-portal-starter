@@ -37,4 +37,44 @@
       color: constants.$juneGrey;
     }
   }
+
+  .pairHolder {
+    display: grid;
+    align-items: center;
+    grid-gap: 5px;
+    grid-template-columns: 1fr 2px 1fr;
+    color: constants.$juneGrey;
+
+    input {
+      border-radius: constants.$smallBorderRadius;
+
+      border: 1px solid constants.$mayGrey;
+      outline: none;
+      box-shadow: none;
+
+      height: 25px;
+      line-height: 25px;
+      padding: 0 6px;
+
+      &::placeholder {
+        @extend .filterPlaceholderTexts;
+      }
+    }
+  }
+  .addButtonHolder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    width: 34px;
+
+    svg {
+      height: 21px;
+      width: 21px;
+
+      * {
+        fill: constants.$juneGrey;
+      }
+    }
+  }
 }

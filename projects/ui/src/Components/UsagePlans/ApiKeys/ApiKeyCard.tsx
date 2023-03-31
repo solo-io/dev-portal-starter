@@ -63,7 +63,7 @@ export function ApiKeyCard({
           </Button>
         </div>
       </div>
-      <ErrorBoundary fallback="There was an issue loading the list of API Keys">
+      <ErrorBoundary fallback="There was an issue attempting that action for this key">
         {seeDetailsModalOpen && (
           <ApiKeyDetailsModal
             apiKey={apiKey}

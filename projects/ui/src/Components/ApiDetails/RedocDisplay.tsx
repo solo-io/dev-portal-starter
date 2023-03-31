@@ -2,18 +2,15 @@ import { RedocStandalone } from "redoc";
 import { useContext } from "react";
 import { AppContext } from "../../Context/AppContext";
 
-/**
- * MAIN COMPONENT
- **/
-export function RedocDisplay({ url }: { url: string }) {
+export function RedocDisplay({ spec }: { spec: string }) {
   const appCtx = useContext(AppContext);
   const { isMobileView } = appCtx;
 
   return (
-    <div className="redocDisplayContainer">
+    <div className="redocDisplayContainer" aria-label="Schema Display">
       {url !== undefined && (
         <RedocStandalone
-          spec={url}
+          spec={spec}
           options={{ layout: isMobileView ? "stacked" : "three-panel" }}
         />
       )}

@@ -2,19 +2,22 @@ import { Input } from "antd";
 import { APIKey } from "../../../Apis/api-types";
 import { Icon } from "../../../Assets/Icons";
 import { Modal } from "../../Common/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../../Common/Button";
 import { Loading } from "../../Common/Loading";
 import { fetchJson, restpointPrefix } from "../../../Apis/hooks";
+import { DataPairPill, KeyValuePair } from "../../Common/DataPairPill";
 
 function CreateKeyActions({
   apiKeyName,
   usagePlanName,
+  customMetadata,
   onSuccess,
   onClose,
 }: {
   apiKeyName: string;
   usagePlanName: string;
+  customMetadata: KeyValuePair[];
   onSuccess: () => void;
   onClose: () => any;
 }) {
@@ -30,7 +33,11 @@ function CreateKeyActions({
 
       fetchJson<APIKey>(`${restpointPrefix}/api-keys`, {
         method: "POST",
-        body: JSON.stringify({ usagePlan: usagePlanName, apiId: apiKeyName }),
+        body: JSON.stringify({
+          usagePlan: usagePlanName,
+          apiId: apiKeyName,
+          customMetadata,
+        }),
       })
         .then((response) => {
           setKeyValue(response);
@@ -132,7 +139,55 @@ export function GenerateApiKeyModal({
   onClose: () => any;
 }) {
   const [apiKeyName, setApiKeyName] = useState("");
+  const [possiblePair, setPossiblePair] = useState<KeyValuePair>({
+    key: "",
+    value: "",
+  });
+  const [possiblePairAlreadyInList, setPossiblePairAlreadyInList] =
+    useState(false);
+  const [metadataPairs, setMetadataPairs] = useState<KeyValuePair[]>([]);
   const [generated, setGenerated] = useState(false);
+
+  useEffect(() => {
+    setPossiblePairAlreadyInList(
+      metadataPairs.some(
+        (existingPair) =>
+          existingPair.key === possiblePair.key &&
+          existingPair.value === possiblePair.value
+      )
+    );
+  }, [possiblePair.key, possiblePair.value]);
+
+  const alterPairKey = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    const newKey = evt.target.value;
+    setPossiblePair({
+      key: newKey,
+      value: possiblePair.value,
+    });
+  };
+  const alterKeyValuePair = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = evt.target.value;
+    setPossiblePair({
+      key: possiblePair.key,
+      value: newValue,
+    });
+  };
+
+  const addKeyValuePair = () => {
+    if (!possiblePairAlreadyInList) {
+      setMetadataPairs([...metadataPairs, { ...possiblePair }]);
+
+      setPossiblePair({ key: "", value: "" });
+    }
+  };
+  const removePair = (removedPair: KeyValuePair) => {
+    setMetadataPairs(
+      metadataPairs.filter(
+        (oldPair) =>
+          oldPair.key !== removedPair.key || oldPair.value !== removedPair.value
+      )
+    );
+  };
 
   const onGenerationSuccess = () => {
     setGenerated(true);
@@ -153,13 +208,60 @@ export function GenerateApiKeyModal({
               disabled={generated}
             />
           </div>
-          <div className="planAccessCarveOut">
-            <div className="title">Access to:</div>
+          <div className="planAccessCarveOut" aria-labelledby="planAccessLabel">
+            <label className="title" id="planAccessLabel">
+              Access to:
+            </label>
             <div className="planName">{usagePlanName}</div>
+          </div>
+          <div className="customMetadata" aria-labelledby="customMetadataLabel">
+            <label className="title" id="customMetadataLabel">
+              Custom Meta Data
+            </label>
+            <div>
+              <div className="pairHolder">
+                {/*TODO :: This should probably be a dropdown in the future */}
+                <Input
+                  placeholder="Key"
+                  onChange={alterPairKey}
+                  value={possiblePair.key}
+                />
+                <span>:</span>
+                <Input
+                  placeholder="Value"
+                  onChange={alterKeyValuePair}
+                  value={possiblePair.value}
+                />
+              </div>
+              <div className="addButtonHolder">
+                <button
+                  aria-label="Add Pair "
+                  onClick={addKeyValuePair}
+                  disabled={possiblePairAlreadyInList}
+                  title={
+                    possiblePairAlreadyInList
+                      ? "This pair is already in the list"
+                      : undefined
+                  }
+                >
+                  <Icon.Add />
+                </button>
+              </div>
+            </div>
+            <div className="metadataList dataPairPillList">
+              {metadataPairs.map((pair) => (
+                <DataPairPill
+                  label={pair.key}
+                  value={pair.value}
+                  onRemove={() => removePair(pair)}
+                />
+              ))}
+            </div>
           </div>
           <CreateKeyActions
             usagePlanName={usagePlanName}
             apiKeyName={apiKeyName}
+            customMetadata={metadataPairs}
             onSuccess={onGenerationSuccess}
             onClose={onClose}
           />
