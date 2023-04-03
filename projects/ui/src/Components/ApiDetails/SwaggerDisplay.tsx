@@ -10,7 +10,7 @@ export function SwaggerDisplay({
 }) {
   useEffect(() => {
     SwaggerUIConstructor({
-      spec: spec,
+      url: "https://petstore.swagger.io/v2/swagger.json", //spec,
       dom_id: `#display-swagger-${apiId}`,
       withCredentials: true,
       deepLinking: true,

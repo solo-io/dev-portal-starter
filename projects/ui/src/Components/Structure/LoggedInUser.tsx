@@ -41,11 +41,8 @@ export function LoggedInUser() {
   };
 
   return !user ? (
-    <Button
-      onClick={attemptLogin}
-      disabled={attemptingAccessChange || isLoading}
-    >
-      LOGIN
+    <Button onClick={attemptLogin} disabled={attemptingAccessChange}>
+      LOG IN
     </Button>
   ) : (
     <Tooltip
@@ -59,7 +56,7 @@ export function LoggedInUser() {
             role="button"
             className={attemptingAccessChange ? "disabled" : ""}
           >
-            Logout
+            LOG OUT
           </div>
         </div>
       }

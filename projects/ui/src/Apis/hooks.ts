@@ -31,46 +31,46 @@ export async function fetchJson<T>(
 
 function useSoloQuery<T>(
   apiCallString: string,
-  swallowError?: boolean,
-  fetchOptions?: { method?: string; body?: string; header?: string }
+  fetchOptions?: { method?: string; body?: string; header?: string },
+  swallowError: (err: unknown) => boolean
 ) {
   return useQuery({
     // Key used for caching queries
     queryKey: [apiCallString],
     queryFn: () => fetchJson<T>(restpointPrefix + apiCallString),
     //Whether the API failures should auto-catch to an error boundary
-    useErrorBoundary: !swallowError,
+    useErrorBoundary: !swallowError || swallowError,
     // Number of attempt retries
     retry: 5,
   });
 }
 
-export function useGetCurrentUser(swallowError?: boolean) {
-  return useSoloQuery<User>("/me", swallowError, {
-    header: JSON.stringify({
-      // This id_token is required by the Portal backend currently.
-      id_token:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiam9obkRvZSIsImVtYWlsIjoiam9obkBkb2UuY29tIiwibmFtZSI6IkpvaG4gRG9lIiwiZ3JvdXAiOiJ1c2VycyIsImlhdCI6MTUxNjIzOTAyMn0.5DqPUgiVzjjIgLvhLB6MCj1m3nlnGoh-chNg__xp394",
-    }),
-  });
+export function useGetCurrentUser() {
+  return useSoloQuery<User>(
+    "/me",
+    {
+      header: JSON.stringify({
+        // This id_token is required by the Portal backend currently.
+        id_token:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiam9obkRvZSIsImVtYWlsIjoiam9obkBkb2UuY29tIiwibmFtZSI6IkpvaG4gRG9lIiwiZ3JvdXAiOiJ1c2VycyIsImlhdCI6MTUxNjIzOTAyMn0.5DqPUgiVzjjIgLvhLB6MCj1m3nlnGoh-chNg__xp394",
+      }),
+    },
+    (err) => err.response?.status === 401
+  );
 }
 
-export function useListApis(swallowError?: boolean) {
-  return useSoloQuery<API[]>("/apis", swallowError);
+export function useListApis() {
+  return useSoloQuery<API[]>("/apis");
 }
-export function useGetApiDetails(id: string, swallowError?: boolean) {
-  return useSoloQuery<APISchema>(`/apis/${id}/schema`, swallowError);
-}
-
-export function useListUsagePlans(swallowError?: boolean) {
-  return useSoloQuery<UsagePlan[]>(`/usage-plans`, swallowError);
+export function useGetApiDetails(id: string) {
+  return useSoloQuery<APISchema>(`/apis/${id}/schema`);
 }
 
-export function useListApiKeys(
-  apis?: string[],
-  usagePlans?: string[],
-  swallowError?: boolean
-) {
+export function useListUsagePlans() {
+  return useSoloQuery<UsagePlan[]>(`/usage-plans`);
+}
+
+export function useListApiKeys(apis?: string[], usagePlans?: string[]) {
   const apiOptionsExist = !!apis?.length;
   const plansOptionsExist = !!usagePlans?.length;
   const optionsString =
@@ -81,16 +81,11 @@ export function useListApiKeys(
       : "";
 
   return useSoloQuery<{ usagePlan: string; apiKeys: APIKey[] }[]>(
-    `/api-keys${optionsString}`,
-    swallowError
+    `/api-keys${optionsString}`
   );
 }
 
-export function useCreateApiKey(
-  apiId: string,
-  usagePlan: string,
-  swallowError?: boolean
-) {
+export function useCreateApiKey(apiId: string, usagePlan: string) {
   // Any calls to this may want to make use of the following in the `onSettled` case
   //  queryClient.invalidateQueries("api-keys");
   // If so, useQueryClient will need to be imported from the @tanstack/react-query set
@@ -101,11 +96,10 @@ export function useCreateApiKey(
         method: "POST",
         body: JSON.stringify({ usagePlan, apiId }),
       }),
-    useErrorBoundary: !swallowError,
   });
 }
 
-export function useDeleteApiKey(apiId: string, swallowError?: boolean) {
+export function useDeleteApiKey(apiId: string) {
   // Any calls to this may want to make use of the following in the `onSettled` case
   //  queryClient.invalidateQueries(`api-keys/${apiId}`);
   // If so, useQueryClient will need to be imported from the @tanstack/react-query set
@@ -118,6 +112,5 @@ export function useDeleteApiKey(apiId: string, swallowError?: boolean) {
           method: "DELETE",
         }
       ),
-    useErrorBoundary: !swallowError,
   });
 }

@@ -17,10 +17,10 @@ export function ApiSchemaDisplay() {
   }
 
   /** Redoc - Default */
-  //return <RedocDisplay spec={apiSchema} />;
+  return <RedocDisplay spec={apiSchema} />;
 
   /**
    * Swagger - Alternative
    */
-  return <SwaggerDisplay spec={apiSchema} apiId={apiId} />;
+  //return <SwaggerDisplay spec={apiSchema} apiId={apiId} />;
 }
