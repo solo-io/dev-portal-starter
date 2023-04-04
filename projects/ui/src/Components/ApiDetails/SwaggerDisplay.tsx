@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import SwaggerUIConstructor from "swagger-ui";
+import "swagger-ui/dist/swagger-ui.css";
 
 export function SwaggerDisplay({
   spec,
