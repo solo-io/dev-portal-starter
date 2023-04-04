@@ -17,10 +17,11 @@ export function APIKeysList({
   apiId: string;
   openCreateKeyModal: () => void;
 }) {
-  const { isLoading, data: plansKeysList } = useListApiKeys(
-    [apiId],
-    [usagePlan.name]
-  );
+  const {
+    isLoading,
+    data: plansKeysList,
+    refetch: refetchPlanKeysList,
+  } = useListApiKeys([apiId], [usagePlan.name]);
 
   if (isLoading) {
     return <Loading message="Getting list of api keys..." />;
@@ -49,6 +50,7 @@ export function APIKeysList({
           key={apiKey.apiId}
           apiKey={apiKey}
           usagePlanName={usagePlan.name}
+          forceListRefetch={refetchPlanKeysList}
         />
       </ErrorBoundary>
     ))

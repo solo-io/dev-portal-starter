@@ -70,47 +70,12 @@ export function useListUsagePlans() {
   return useSoloQuery<UsagePlan[]>(`/usage-plans`);
 }
 
-export function useListApiKeys(apis?: string[], usagePlans?: string[]) {
-  const apiOptionsExist = !!apis?.length;
-  const plansOptionsExist = !!usagePlans?.length;
-  const optionsString =
-    apiOptionsExist || plansOptionsExist
-      ? `?${apiOptionsExist ? `apis=${apis.join(",")}` : ""}${
-          apiOptionsExist && plansOptionsExist ? "&" : ""
-        }${plansOptionsExist ? `usagePlans=${usagePlans.join(",")}` : ""}`
-      : "";
+export function useListApiKeys(usagePlans?: string[]) {
+  const optionsString = !!usagePlans?.length
+    ? `?usagePlans=${usagePlans.join(",")}`
+    : "";
 
   return useSoloQuery<{ usagePlan: string; apiKeys: APIKey[] }[]>(
     `/api-keys${optionsString}`
   );
-}
-
-export function useCreateApiKey(apiId: string, usagePlan: string) {
-  // Any calls to this may want to make use of the following in the `onSettled` case
-  //  queryClient.invalidateQueries("api-keys");
-  // If so, useQueryClient will need to be imported from the @tanstack/react-query set
-
-  return useMutation({
-    mutationFn: () =>
-      fetchJson<APIKey>("api-keys", {
-        method: "POST",
-        body: JSON.stringify({ usagePlan, apiId }),
-      }),
-  });
-}
-
-export function useDeleteApiKey(apiId: string) {
-  // Any calls to this may want to make use of the following in the `onSettled` case
-  //  queryClient.invalidateQueries(`api-keys/${apiId}`);
-  // If so, useQueryClient will need to be imported from the @tanstack/react-query set
-
-  return useMutation({
-    mutationFn: () =>
-      fetchJson<{ usagePlan: string; apiKeys: APIKey[] }[]>(
-        `api-keys/${apiId}`,
-        {
-          method: "DELETE",
-        }
-      ),
-  });
 }

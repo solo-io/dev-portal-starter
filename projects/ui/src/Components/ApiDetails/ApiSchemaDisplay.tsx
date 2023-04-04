@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { RedocDisplay } from "./RedocDisplay";
+//import { RedocDisplay } from "./RedocDisplay";
 import { Loading } from "../Common/Loading";
 import { useGetApiDetails } from "../../Apis/hooks";
 import { SwaggerDisplay } from "./SwaggerDisplay";
@@ -17,10 +17,10 @@ export function ApiSchemaDisplay() {
   }
 
   /** Redoc - Default */
-  return <RedocDisplay spec={apiSchema} />;
+  //return <RedocDisplay spec={apiSchema} />;
 
   /**
    * Swagger - Alternative
    */
-  //return <SwaggerDisplay spec={apiSchema} apiId={apiId} />;
+  return <SwaggerDisplay spec={apiSchema} apiId={apiId} />;
 }

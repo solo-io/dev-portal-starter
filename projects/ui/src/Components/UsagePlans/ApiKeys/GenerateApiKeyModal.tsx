@@ -73,7 +73,7 @@ function CreateKeyActions({
       success = document.execCommand("copy");
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.error("Oops, unable to copy." + err);
+      console.error("Unable to copy." + err);
     }
     setCopySuccessful(success);
     // A basic settimeout is not desirable since they

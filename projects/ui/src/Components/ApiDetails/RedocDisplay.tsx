@@ -8,7 +8,7 @@ export function RedocDisplay({ spec }: { spec: string }) {
 
   return (
     <div className="redocDisplayContainer" aria-label="Schema Display">
-      {url !== undefined && (
+      {spec !== undefined && (
         <RedocStandalone
           spec={spec}
           options={{ layout: isMobileView ? "stacked" : "three-panel" }}

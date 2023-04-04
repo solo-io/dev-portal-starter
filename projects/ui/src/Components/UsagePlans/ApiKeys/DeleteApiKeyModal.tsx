@@ -65,6 +65,8 @@ export function DeleteApiKeyModal({
 
   useEffect(() => {
     return () => {
+      // This will clear the timer if the component is
+      //  closed before the timer runs out.
       if (closeTimer) {
         clearTimeout(closeTimer);
       }
@@ -83,7 +85,7 @@ export function DeleteApiKeyModal({
         deleted ? <Icon.SuccessCheckmark /> : <Icon.WarningExclamation />
       }
       title={
-        generated
+        deleted
           ? "Key Deleted Successfully!"
           : "Are you sure you want to remove this API Key?"
       }
