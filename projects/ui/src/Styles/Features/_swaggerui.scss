@@ -69,6 +69,8 @@ div[id^="display-swagger"] {
       border-color: constants.$defaultAction;
 
       .opblock-summary {
+        border-color: constants.$defaultAction;
+
         .opblock-summary-method {
           border-radius: constants.$smallBorderRadius;
           margin-top: 0;
@@ -82,30 +84,73 @@ div[id^="display-swagger"] {
           background-color: constants.$defaultAction;
         }
       }
+      .opblock-body .tab-header .tab-item.active h4 span:after {
+        background-color: constants.$defaultAction;
+      }
 
-      &.opblock-delete .opblock-summary {
-        .opblock-summary-method {
-          background-color: constants.$deleteAction;
+      &.opblock-delete {
+        .opblock-summary {
+          border-color: constants.$deleteAction;
+          .opblock-summary-method {
+            background-color: constants.$deleteAction;
+          }
+        }
+        .opblock-body {
+          .tab-header .tab-item.active h4 span:after {
+            background-color: constants.$deleteAction;
+          }
         }
       }
-      &.opblock-get .opblock-summary {
-        .opblock-summary-method {
-          background-color: constants.$getAction;
+      &.opblock-get {
+        .opblock-summary {
+          border-color: constants.$getAction;
+          .opblock-summary-method {
+            background-color: constants.$getAction;
+          }
+        }
+        .opblock-body {
+          .tab-header .tab-item.active h4 span:after {
+            background-color: constants.$getAction;
+          }
         }
       }
-      &.opblock-hook .opblock-summary {
-        .opblock-summary-method {
-          background-color: constants.$eventAction;
+      &.opblock-hook {
+        .opblock-summary {
+          border-color: constants.$eventAction;
+          .opblock-summary-method {
+            background-color: constants.$eventAction;
+          }
+        }
+        .opblock-body {
+          .tab-header .tab-item.active h4 span:after {
+            background-color: constants.$eventAction;
+          }
         }
       }
-      &.opblock-post .opblock-summary {
-        .opblock-summary-method {
-          background-color: constants.$postAction;
+      &.opblock-post {
+        .opblock-summary {
+          border-color: constants.$postAction;
+          .opblock-summary-method {
+            background-color: constants.$postAction;
+          }
+        }
+        .opblock-body {
+          .tab-header .tab-item.active h4 span:after {
+            background-color: constants.$postAction;
+          }
         }
       }
-      &.opblock-put .opblock-summary {
-        .opblock-summary-method {
-          background-color: constants.$putAction;
+      &.opblock-put {
+        .opblock-summary {
+          border-color: constants.$putAction;
+          .opblock-summary-method {
+            background-color: constants.$putAction;
+          }
+        }
+        .opblock-body {
+          .tab-header .tab-item.active h4 span:after {
+            background-color: constants.$putAction;
+          }
         }
       }
 
@@ -113,7 +158,13 @@ div[id^="display-swagger"] {
         border-color: constants.$marchGrey;
         background-color: hsla(0, 0%, 92%, 0.1);
 
-        .opblock-summary .opblock-summary-method {
+        .opblock-summary {
+          border-color: black;
+          .opblock-summary-method {
+            background-color: black;
+          }
+        }
+        .opblock-body .tab-header .tab-item.active h4 span:after {
           background-color: black;
         }
       }

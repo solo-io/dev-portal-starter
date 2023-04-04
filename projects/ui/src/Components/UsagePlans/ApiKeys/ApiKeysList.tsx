@@ -21,7 +21,7 @@ export function APIKeysList({
     isLoading,
     data: plansKeysList,
     refetch: refetchPlanKeysList,
-  } = useListApiKeys([apiId], [usagePlan.name]);
+  } = useListApiKeys([usagePlan.name]);
 
   if (isLoading) {
     return <Loading message="Getting list of api keys..." />;

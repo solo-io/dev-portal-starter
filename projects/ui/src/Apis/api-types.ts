@@ -39,6 +39,7 @@ export type API = {
   contact: string;
   license: string;
   usagePlans: string[];
+  customMetadata: Map<string, string>;
 };
 
 type SchemaPropertyType = "string" | "integer" | "array" | "object";
