@@ -26,19 +26,27 @@ export function ApiKeyDetailsModal({
             </label>
             <div className="planName">{usagePlanName}</div>
           </div>
-          <div className="customMetadata" aria-labelledby="customMetadataLabel">
-            <label className="title" id="customMetadataLabel">
-              Custom Meta Data
-            </label>
-            <div className="metadataList dataPairPillList">
-              {Object.keys(apiKey.customMetadata).map((customMetaKey) => (
-                <DataPairPill
-                  label={customMetaKey}
-                  value={apiKey.customMetadata[customMetaKey]}
-                />
-              ))}
+          {!!apiKey.customMetadata && apiKey.customMetadata.size > 0 && (
+            <div
+              className="customMetadata"
+              aria-labelledby="customMetadataLabel"
+            >
+              <label className="title" id="customMetadataLabel">
+                Custom Meta Data
+              </label>
+              <div className="metadataList dataPairPillList">
+                {Array.from(apiKey.customMetadata, ([name, value]) => ({
+                  name,
+                  value,
+                })).map((customMetaKey) => (
+                  <DataPairPill
+                    label={customMetaKey}
+                    value={apiKey.customMetadata[customMetaKey]}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       }
     />
