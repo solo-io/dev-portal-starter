@@ -22,10 +22,10 @@ function CreateKeyActions({
   onClose: () => any;
 }) {
   const [attemptingCreate, setAttemptingCreate] = useState(false);
-  const [keyValue, setKeyValue] = useState();
+  const [keyValue, setKeyValue] = useState<string | undefined>();
   /* We aren't giving full insights here, but are giving them a hint at
       whether it was successful *and* when the action is completed  */
-  const [copySuccessful, setCopySuccessful] = useState();
+  const [copySuccessful, setCopySuccessful] = useState<boolean | undefined>();
 
   const attemptToCreate = () => {
     if (!!apiKeyName && !attemptingCreate) {
@@ -40,7 +40,7 @@ function CreateKeyActions({
         }),
       })
         .then((response) => {
-          setKeyValue(response);
+          setKeyValue(response.apiKey);
           setAttemptingCreate(false);
         })
         .catch(() => setAttemptingCreate(false));
@@ -62,7 +62,7 @@ function CreateKeyActions({
     // Avoid flash of white box if rendered for any reason.
     textArea.style.background = "rgba(255, 255, 255, 0)";
 
-    textArea.value = keyValue;
+    textArea.value = keyValue ?? "Failed to copy...";
 
     document.body.appendChild(textArea);
     textArea.focus();
@@ -196,7 +196,9 @@ export function GenerateApiKeyModal({
   return (
     <Modal
       onClose={onClose}
-      headContent={generated ? <Icon.SuccessCheckmark /> : <Icon.CircledKey />}
+      headContent={
+        <>{generated ? <Icon.SuccessCheckmark /> : <Icon.CircledKey />}</>
+      }
       title={generated ? "Key Generated Successfully!" : "Generate a New Key"}
       bodyContent={
         <div className="generateKeyModal">
@@ -251,7 +253,7 @@ export function GenerateApiKeyModal({
             <div className="metadataList dataPairPillList">
               {metadataPairs.map((pair) => (
                 <DataPairPill
-                  label={pair.key}
+                  key={pair.key}
                   value={pair.value}
                   onRemove={() => removePair(pair)}
                 />

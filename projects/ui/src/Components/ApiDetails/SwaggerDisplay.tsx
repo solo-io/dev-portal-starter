@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import SwaggerUIConstructor from "swagger-ui";
 import "swagger-ui/dist/swagger-ui.css";
+import { APISchema } from "../../Apis/api-types";
 
 export function SwaggerDisplay({
   spec,
   apiId,
 }: {
-  spec: string;
+  spec: APISchema | undefined;
   apiId: string;
 }) {
   useEffect(() => {
@@ -15,7 +16,7 @@ export function SwaggerDisplay({
       dom_id: `#display-swagger-${apiId}`,
       withCredentials: true,
       deepLinking: true,
-      syntaxHighlight: { activated: false },
+      syntaxHighlight: { activate: false },
     });
   }, [apiId]);
 

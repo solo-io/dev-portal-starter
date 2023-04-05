@@ -12,11 +12,11 @@ import { DeleteApiKeyModal } from "./DeleteApiKeyModal";
 export function ApiKeyCard({
   apiKey,
   usagePlanName,
-  forceRefetchList,
+  forceListRefetch,
 }: {
   apiKey: APIKey;
   usagePlanName: string;
-  forceRefetchList: () => unknown;
+  forceListRefetch: () => unknown | Promise<unknown>;
 }) {
   const [seeDetailsModalOpen, setSeeDetailsModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -32,7 +32,7 @@ export function ApiKeyCard({
   };
   const closeDeleteModal = () => {
     setDeleteModalOpen(false);
-    forceRefetchList();
+    forceListRefetch();
   };
 
   return (
@@ -75,7 +75,7 @@ export function ApiKeyCard({
           />
         )}
         {deleteModalOpen && (
-          <DeleteApiKeyModal apiKey={apiKey} onClose={closeDeleteModal} />
+          <DeleteApiKeyModal apiId={apiKey.apiId} onClose={closeDeleteModal} />
         )}
       </ErrorBoundary>
     </div>

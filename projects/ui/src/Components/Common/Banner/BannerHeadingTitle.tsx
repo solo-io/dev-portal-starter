@@ -9,8 +9,8 @@ export function BannerHeadingTitle({
 }: {
   text: string;
   logo?: React.ReactNode;
-  additionalInfo: React.ReactNode;
-  stylingTweaks: {
+  additionalInfo?: React.ReactNode;
+  stylingTweaks?: {
     fontSize?: string;
     lineHeight?: string;
   };

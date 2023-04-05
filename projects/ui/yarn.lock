@@ -2006,6 +2006,11 @@
   resolved "https://registry.yarnpkg.com/@types/swagger-ui-dist/-/swagger-ui-dist-3.30.1.tgz#8ad3370dfce23bf73144bd9c5560afe2b5ccbd18"
   integrity sha512-wWojDensMF33dSrhak4iWSPOsWBbvf+rSJ6VWQ7ohQbGdKAiT2IwUexrDZkMvf3+vVAPVnNFDRDtxADFszbh+Q==
 
+"@types/swagger-ui@^3.52.0":
+  version "3.52.0"
+  resolved "https://registry.yarnpkg.com/@types/swagger-ui/-/swagger-ui-3.52.0.tgz#c915c3703e9eabb9a73ff11470a55dbdfbd9e096"
+  integrity sha512-SlufixEmh+8CLHNgTfAfCT1icNOF7bXboWabhHr1+hIolqlvfwYJGe7HgRcpI3ChE7HWASmEKLkMu34rxseJjQ==
+
 "@types/unist@*":
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/@types/unist/-/unist-2.0.6.tgz#250a7b16c3b91f672a24552ec64678eeb1d3a08d"

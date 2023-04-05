@@ -7,15 +7,15 @@ export function Modal({
   bodyContent,
 }: {
   onClose: () => any;
-  headContent: React.ReactDOM; // ususally just an icon
+  headContent: JSX.Element; // ususally just an icon
   title?: string;
-  bodyContent?: React.ReactDOM;
+  bodyContent?: JSX.Element;
 }) {
   // The modal "mask" is overriden in "main.scss" rather than with
   //   the maskStyles class so that we have easy access to our
   //   color constants.
   return (
-    <AntdModal maskStyle open={true} onCancel={onClose} footer={null}>
+    <AntdModal open={true} onCancel={onClose} footer={null}>
       <div className="modalBox">
         <div className="modalHeader">{headContent}</div>
         {!!title && <div className="modalTitle">{title}</div>}

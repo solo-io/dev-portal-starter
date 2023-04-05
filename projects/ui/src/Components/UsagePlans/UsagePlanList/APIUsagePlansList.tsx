@@ -24,16 +24,20 @@ export function APIUsagePlansList() {
       )
     : [];
 
-  return displayedApisList.length ? (
-    displayedApisList.map((api) => (
-      <ErrorBoundary
-        key={api.apiId}
-        fallback="There was an issue loading the list of Plans"
-      >
-        <APIUsagePlanCard api={api} />
-      </ErrorBoundary>
-    ))
-  ) : (
-    <EmptyData topic="API" />
+  return (
+    <>
+      {displayedApisList.length ? (
+        displayedApisList.map((api) => (
+          <ErrorBoundary
+            key={api.apiId}
+            fallback="There was an issue loading the list of Plans"
+          >
+            <APIUsagePlanCard api={api} />
+          </ErrorBoundary>
+        ))
+      ) : (
+        <EmptyData topic="API" />
+      )}
+    </>
   );
 }

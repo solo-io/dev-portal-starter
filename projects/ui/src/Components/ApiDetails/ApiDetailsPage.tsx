@@ -36,7 +36,7 @@ export function ApiDetailsPage() {
       <BannerHeading
         title={
           <BannerHeadingTitle
-            text={apiSchema?.info.title ?? apiId}
+            text={apiSchema?.info.title ?? apiId ?? "Unsupported Schema"}
             stylingTweaks={{
               fontSize: "32px",
               lineHeight: "36px",

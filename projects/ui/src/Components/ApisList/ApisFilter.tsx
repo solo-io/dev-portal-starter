@@ -19,6 +19,13 @@ export type FilterPair = { displayName: string; type: FilterType };
 function getPairString(pair: KeyValuePair) {
   return `${pair.key} : ${pair.value}`;
 }
+export function parsePairString(pairString: string) {
+  const [key, value] = pairString.split(":");
+  return {
+    key,
+    value,
+  };
+}
 
 /**
  * MAIN COMPONENT
@@ -153,7 +160,7 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
           </div>
           <Dropdown
             disabled={selectableTypes.length === 0}
-            trigger={"click"}
+            trigger={["click"]}
             menu={{
               items: selectableTypes,
               onClick: addTypeFilter,

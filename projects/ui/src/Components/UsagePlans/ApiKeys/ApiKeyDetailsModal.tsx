@@ -38,10 +38,10 @@ export function ApiKeyDetailsModal({
                 {Array.from(apiKey.customMetadata, ([name, value]) => ({
                   name,
                   value,
-                })).map((customMetaKey) => (
+                })).map((customMetaPair) => (
                   <DataPairPill
-                    label={customMetaKey}
-                    value={apiKey.customMetadata[customMetaKey]}
+                    key={customMetaPair.name}
+                    value={customMetaPair.value}
                   />
                 ))}
               </div>

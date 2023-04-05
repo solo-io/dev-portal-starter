@@ -48,15 +48,15 @@ export type APISchema = {
   components: {
     schemas: {
       Author?: {
-        properties: { [key: string]: SchemaPropertyType }; //Could hardcode props-list if desired
+        properties: { [key: string]: SchemaPropertyType };
         type: "object";
       };
       Module?: {
-        properties: { [key: string]: SchemaPropertyType }; //Could hardcode props-list if desired
+        properties: { [key: string]: SchemaPropertyType };
         type: "object";
       };
       Track?: {
-        properties: { [key: string]: SchemaPropertyType }; //Could hardcode props-list if desired
+        properties: { [key: string]: SchemaPropertyType };
         type: "object";
       };
     };
@@ -66,7 +66,7 @@ export type APISchema = {
     version: string;
   };
   paths: {
-    [key: string]: any; // We should define this much better as its pretty limited
+    [key: string]: unknown;
   };
   servers: {
     url: string;

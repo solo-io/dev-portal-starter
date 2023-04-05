@@ -7,7 +7,7 @@ export function DataPairPill({
   value,
   onRemove,
 }: KeyValuePair & {
-  onRemove?: (pair: KeyValuePair) => any;
+  onRemove?: () => any;
 }) {
   return (
     <div className="dataPairPill">
@@ -15,7 +15,7 @@ export function DataPairPill({
       {!!onRemove && (
         <button
           className="removingX"
-          aria-label={`Remove ${activeFilter.displayName} pair`}
+          aria-label={`Remove ${key} : ${value} pair`}
           onClick={onRemove}
         >
           <Icon.SmallX />

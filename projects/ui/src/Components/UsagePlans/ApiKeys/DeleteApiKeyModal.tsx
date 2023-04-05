@@ -61,7 +61,9 @@ export function DeleteApiKeyModal({
   onClose: () => any;
 }) {
   const [deleted, setDeleted] = useState(false);
-  const [closeTimer, setCloseTimer] = useState();
+  const [closeTimer, setCloseTimer] = useState<
+    NodeJS.Timeout | number | undefined
+  >();
 
   useEffect(() => {
     return () => {
@@ -82,7 +84,7 @@ export function DeleteApiKeyModal({
     <Modal
       onClose={onClose}
       headContent={
-        deleted ? <Icon.SuccessCheckmark /> : <Icon.WarningExclamation />
+        <>{deleted ? <Icon.SuccessCheckmark /> : <Icon.WarningExclamation />}</>
       }
       title={
         deleted
@@ -90,13 +92,15 @@ export function DeleteApiKeyModal({
           : "Are you sure you want to remove this API Key?"
       }
       bodyContent={
-        <div className="deleteKeyModal">
-          <DeleteKeyActions
-            apiId={apiId}
-            onSuccess={onDeletionSuccess}
-            onClose={onClose}
-          />
-        </div>
+        <>
+          <div className="deleteKeyModal">
+            <DeleteKeyActions
+              apiId={apiId}
+              onSuccess={onDeletionSuccess}
+              onClose={onClose}
+            />
+          </div>
+        </>
       }
     />
   );

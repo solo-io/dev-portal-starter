@@ -10,17 +10,17 @@
 *   For more information, get started with: 
 *      https://tanstack.com/query/v4/docs/react/reference/useQuery
 */
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { API, APIKey, APISchema, UsagePlan, User } from "./api-types";
 
-export const restpointPrefix = "http://localhost:31080/v1";
+export const restpointPrefix =
+  process.env.RESTPOINT ?? "http://localhost:31080/v1";
 
 export async function fetchJson<T>(
   input: RequestInfo | URL,
   fetchOptions?: { method?: string; body?: string; header?: string }
 ): Promise<T> {
   const response = await fetch(input, {
-    crossDomain: true,
     ...fetchOptions,
   });
   if (!response.ok) {
@@ -32,7 +32,7 @@ export async function fetchJson<T>(
 function useSoloQuery<T>(
   apiCallString: string,
   fetchOptions?: { method?: string; body?: string; header?: string },
-  swallowError: (err: unknown) => boolean
+  swallowError?: (err: unknown) => boolean
 ) {
   return useQuery({
     // Key used for caching queries
@@ -55,14 +55,14 @@ export function useGetCurrentUser() {
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiam9obkRvZSIsImVtYWlsIjoiam9obkBkb2UuY29tIiwibmFtZSI6IkpvaG4gRG9lIiwiZ3JvdXAiOiJ1c2VycyIsImlhdCI6MTUxNjIzOTAyMn0.5DqPUgiVzjjIgLvhLB6MCj1m3nlnGoh-chNg__xp394",
       }),
     },
-    (err) => err.response?.status === 401
+    (err: any) => err.response?.status === 401
   );
 }
 
 export function useListApis() {
   return useSoloQuery<API[]>("/apis");
 }
-export function useGetApiDetails(id: string) {
+export function useGetApiDetails(id?: string) {
   return useSoloQuery<APISchema>(`/apis/${id}/schema`);
 }
 

@@ -1,19 +1,10 @@
 import { RedocStandalone } from "redoc";
-import { useContext } from "react";
-import { AppContext } from "../../Context/AppContext";
+import { APISchema } from "../../Apis/api-types";
 
-export function RedocDisplay({ spec }: { spec: string }) {
-  const appCtx = useContext(AppContext);
-  const { isMobileView } = appCtx;
-
+export function RedocDisplay({ spec }: { spec: APISchema }) {
   return (
     <div className="redocDisplayContainer" aria-label="Schema Display">
-      {spec !== undefined && (
-        <RedocStandalone
-          spec={spec}
-          options={{ layout: isMobileView ? "stacked" : "three-panel" }}
-        />
-      )}
+      <RedocStandalone spec={spec} />
     </div>
   );
 }
