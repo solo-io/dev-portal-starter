@@ -10,6 +10,9 @@ import { Loading } from "../Common/Loading";
 export function LoggedInUser() {
   const { isLoading, data: user } = useGetCurrentUser();
 
+  // eslint-disable-next-line no-console
+  console.log(user);
+
   return !user ? (
     <a href={`${restpointPrefix}/login`}>
       <div className="styledButton">LOGIN</div>
