@@ -30,7 +30,9 @@ export function Header() {
             <Logo />
           </a>
           <div className="siteNavigating">
-            <NavLink to={"/"}>Home</NavLink>
+            <NavLink to={"/"} end>
+              Home
+            </NavLink>
             <NavLink to={"/apis"} className={inAPIsArea ? "active" : ""}>
               APIs
             </NavLink>

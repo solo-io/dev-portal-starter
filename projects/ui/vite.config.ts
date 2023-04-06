@@ -10,6 +10,7 @@ export default defineConfig({
     process: {
       env: {
         UI_VERSION: "ui-version",
+        RESTPOINT: process.env.RESTPOINT,
       },
     },
     global: {},
