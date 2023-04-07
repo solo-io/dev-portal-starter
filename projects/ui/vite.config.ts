@@ -13,6 +13,5 @@ export default defineConfig({
         RESTPOINT: process.env.RESTPOINT,
       },
     },
-    global: {},
   },
 });

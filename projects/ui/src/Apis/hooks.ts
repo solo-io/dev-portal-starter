@@ -46,7 +46,10 @@ function useSoloQuery<T>(
 }
 
 export function useGetCurrentUser() {
-  return useSoloQuery<User>("/me", (err: any) => err.response?.status === 401);
+  return useSoloQuery<User>(
+    "/me",
+    ((err: any) => err.response?.status === 401) as any
+  );
 }
 
 export function useListApis() {
