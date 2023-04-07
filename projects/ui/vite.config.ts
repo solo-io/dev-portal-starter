@@ -14,4 +14,9 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    rollupOptions: {
+      external: [/node_modules/],
+    },
+  },
 });

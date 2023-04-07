@@ -40,7 +40,7 @@ export function ApiKeyDetailsModal({
                   value,
                 })).map((customMetaPair) => (
                   <DataPairPill
-                    key={customMetaPair.name}
+                    pairKey={customMetaPair.name}
                     value={customMetaPair.value}
                   />
                 ))}

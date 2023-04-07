@@ -1,3 +1,4 @@
+import { MantineProvider } from "@mantine/core";
 import { AppContextProvider } from "../Context/AppContext";
 import AppContent from "./AppContent";
 
@@ -9,7 +10,9 @@ import AppContent from "./AppContent";
 export function App() {
   return (
     <AppContextProvider>
-      <AppContent />
+      <MantineProvider withGlobalStyles withNormalizeCSS>
+        <AppContent />
+      </MantineProvider>
     </AppContextProvider>
   );
 }

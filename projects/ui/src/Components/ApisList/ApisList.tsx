@@ -41,7 +41,7 @@ export function ApisList({
                   (filter.type === FilterType.keyValuePair &&
                     api.customMetadata &&
                     api.customMetadata.get(
-                      parsePairString(filter.displayName).key
+                      parsePairString(filter.displayName).pairKey
                     ) === parsePairString(filter.displayName).value) ||
                   (filter.type === FilterType.apiType && true) // This is the only type available for now
                 );

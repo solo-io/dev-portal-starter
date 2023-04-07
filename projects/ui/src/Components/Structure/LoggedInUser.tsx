@@ -1,8 +1,8 @@
 import { NavLink } from "react-router-dom";
 import { Icon } from "../../Assets/Icons";
 import { restpointPrefix, useGetCurrentUser } from "../../Apis/hooks";
-import { Tooltip } from "antd";
 import { Loading } from "../Common/Loading";
+import { Popover } from "@mantine/core";
 
 /**
  * MAIN COMPONENT
@@ -18,28 +18,27 @@ export function LoggedInUser() {
       <div className="styledButton">LOGIN</div>
     </a>
   ) : (
-    <Tooltip
-      placement="bottom"
-      color=""
-      title={
+    <Popover position="bottom">
+      <Popover.Target>
         <div className="userDropdown">
           <NavLink to={"/usage-plans"}>API Keys</NavLink>
           <a href={`${restpointPrefix}/logout`}>
             <div className="styledButton">LOGOUT</div>
           </a>
         </div>
-      }
-    >
-      <div className="userHolder">
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <>
-            <Icon.UserProfile className="userCircle" /> {user?.username}
-            <Icon.DownArrow className="dropdownArrow" />
-          </>
-        )}
-      </div>
-    </Tooltip>
+      </Popover.Target>
+      <Popover.Dropdown>
+        <div className="userHolder">
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <>
+              <Icon.UserProfile className="userCircle" /> {user?.username}
+              <Icon.DownArrow className="dropdownArrow" />
+            </>
+          )}
+        </div>
+      </Popover.Dropdown>
+    </Popover>
   );
 }

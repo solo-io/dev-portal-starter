@@ -1,9 +1,9 @@
 import { Icon } from "../../Assets/Icons";
 
-export type KeyValuePair = { key: string; value: string };
+export type KeyValuePair = { pairKey: string; value: string };
 
 export function DataPairPill({
-  key,
+  pairKey,
   value,
   onRemove,
 }: KeyValuePair & {
@@ -11,11 +11,11 @@ export function DataPairPill({
 }) {
   return (
     <div className="dataPairPill">
-      <label>{key}:</label> <div>value</div>{" "}
+      <label>{pairKey}:</label> <div>value</div>{" "}
       {!!onRemove && (
         <button
           className="removingX"
-          aria-label={`Remove ${key} : ${value} pair`}
+          aria-label={`Remove ${pairKey} : ${value} pair`}
           onClick={onRemove}
         >
           <Icon.SmallX />

@@ -1,4 +1,4 @@
-import { Input } from "antd";
+import { TextInput } from "@mantine/core";
 import { APIKey } from "../../../Apis/api-types";
 import { Icon } from "../../../Assets/Icons";
 import { Modal } from "../../Common/Modal";
@@ -48,43 +48,28 @@ function CreateKeyActions({
   };
 
   const copyKeyToClipboard = () => {
-    let textArea = document.createElement("textarea");
+    // This should not be able to hit this function
+    //   anyway if keyValue doesn't exist
+    if (!keyValue) {
+      let success = false;
 
-    textArea.style.position = "fixed";
-    textArea.style.top = "-999px";
-    textArea.style.left = "-999px";
+      navigator.clipboard
+        .writeText(keyValue!)
+        .then(() => (success = true))
+        .catch(() => {
+          // eslint-disable-next-line no-console
+          console.error("Unable to copy.");
+        });
 
-    // Ensure it has a small width and height. Setting to 1px / 1em
-    // doesn't work as this gives a negative w/h on some browsers.
-    textArea.style.width = "2em";
-    textArea.style.height = "2em";
-
-    // Avoid flash of white box if rendered for any reason.
-    textArea.style.background = "rgba(255, 255, 255, 0)";
-
-    textArea.value = keyValue ?? "Failed to copy...";
-
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-
-    let success = false;
-    try {
-      success = document.execCommand("copy");
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error("Unable to copy." + err);
+      setCopySuccessful(success);
+      // A basic settimeout is not desirable since they
+      //  could leave the modal before the timer hits and
+      //  then references get grumpy. But it's non-fatal
+      //  and this is very straightforward for comprehension.
+      setTimeout(() => {
+        setCopySuccessful(undefined);
+      }, 3000);
     }
-    setCopySuccessful(success);
-    // A basic settimeout is not desirable since they
-    //  could leave the modal before the timer hits and
-    //  then references get grumpy. But it's non-fatal
-    //  and this is very straightforward for comprehension.
-    setTimeout(() => {
-      setCopySuccessful(undefined);
-    }, 3000);
-
-    document.body.removeChild(textArea);
   };
 
   return (
@@ -140,7 +125,7 @@ export function GenerateApiKeyModal({
 }) {
   const [apiKeyName, setApiKeyName] = useState("");
   const [possiblePair, setPossiblePair] = useState<KeyValuePair>({
-    key: "",
+    pairKey: "",
     value: "",
   });
   const [possiblePairAlreadyInList, setPossiblePairAlreadyInList] =
@@ -152,23 +137,23 @@ export function GenerateApiKeyModal({
     setPossiblePairAlreadyInList(
       metadataPairs.some(
         (existingPair) =>
-          existingPair.key === possiblePair.key &&
+          existingPair.pairKey === possiblePair.pairKey &&
           existingPair.value === possiblePair.value
       )
     );
-  }, [possiblePair.key, possiblePair.value]);
+  }, [possiblePair.pairKey, possiblePair.value]);
 
   const alterPairKey = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const newKey = evt.target.value;
     setPossiblePair({
-      key: newKey,
+      pairKey: newKey,
       value: possiblePair.value,
     });
   };
   const alterKeyValuePair = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = evt.target.value;
     setPossiblePair({
-      key: possiblePair.key,
+      pairKey: possiblePair.pairKey,
       value: newValue,
     });
   };
@@ -177,14 +162,15 @@ export function GenerateApiKeyModal({
     if (!possiblePairAlreadyInList) {
       setMetadataPairs([...metadataPairs, { ...possiblePair }]);
 
-      setPossiblePair({ key: "", value: "" });
+      setPossiblePair({ pairKey: "", value: "" });
     }
   };
   const removePair = (removedPair: KeyValuePair) => {
     setMetadataPairs(
       metadataPairs.filter(
         (oldPair) =>
-          oldPair.key !== removedPair.key || oldPair.value !== removedPair.value
+          oldPair.pairKey !== removedPair.pairKey ||
+          oldPair.value !== removedPair.value
       )
     );
   };
@@ -203,7 +189,7 @@ export function GenerateApiKeyModal({
       bodyContent={
         <div className="generateKeyModal">
           <div className="inputLine">
-            <Input
+            <TextInput
               placeholder="API Key Name"
               onChange={(e) => setApiKeyName(e.target.value)}
               value={apiKeyName}
@@ -222,14 +208,13 @@ export function GenerateApiKeyModal({
             </label>
             <div>
               <div className="pairHolder">
-                {/*TODO :: This should probably be a dropdown in the future */}
-                <Input
+                <TextInput
                   placeholder="Key"
                   onChange={alterPairKey}
-                  value={possiblePair.key}
+                  value={possiblePair.pairKey}
                 />
                 <span>:</span>
-                <Input
+                <TextInput
                   placeholder="Value"
                   onChange={alterKeyValuePair}
                   value={possiblePair.value}
@@ -252,11 +237,7 @@ export function GenerateApiKeyModal({
             </div>
             <div className="metadataList dataPairPillList">
               {metadataPairs.map((pair) => (
-                <DataPairPill
-                  key={pair.key}
-                  value={pair.value}
-                  onRemove={() => removePair(pair)}
-                />
+                <DataPairPill {...pair} onRemove={() => removePair(pair)} />
               ))}
             </div>
           </div>

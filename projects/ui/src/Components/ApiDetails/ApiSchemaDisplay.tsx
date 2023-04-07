@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
-import { RedocDisplay } from "./RedocDisplay";
 import { Loading } from "../Common/Loading";
 import { useGetApiDetails } from "../../Apis/hooks";
+import { RedocDisplay } from "./RedocDisplay";
 //import { SwaggerDisplay } from "./SwaggerDisplay";
 
 /**
