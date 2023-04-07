@@ -17,6 +17,7 @@ export function ApiSchemaDisplay() {
   }
 
   /** Redoc - Default */
+  // @ts-ignore
   return <RedocDisplay spec={apiSchema} />;
 
   /**

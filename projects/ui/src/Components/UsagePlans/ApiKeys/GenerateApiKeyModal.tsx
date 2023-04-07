@@ -35,9 +35,9 @@ function CreateKeyActions({
         method: "POST",
         body: JSON.stringify({
           usagePlan: usagePlanName,
-          apiId: apiKeyName,
-          customMetadata,
+          apiKeyName: apiKeyName,
         }),
+        header: "Content-Type: application/json",
       })
         .then((response) => {
           setKeyValue(response.apiKey);

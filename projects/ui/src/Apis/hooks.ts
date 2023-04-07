@@ -13,8 +13,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { API, APIKey, APISchema, UsagePlan, User } from "./api-types";
 
-export const restpointPrefix =
-  process.env.RESTPOINT ?? "http://localhost:31080/v1";
+export const restpointPrefix = "http://localhost:31080/portal-server/v1";
 
 export async function fetchJson<T>(
   input: RequestInfo | URL,
@@ -22,6 +21,9 @@ export async function fetchJson<T>(
 ): Promise<T> {
   const response = await fetch(input, {
     ...fetchOptions,
+    headers: {
+        "Content-Type": "application/json",
+    }
   });
   if (!response.ok) {
     throw new Error("Network response was not ok");
@@ -46,7 +48,7 @@ function useSoloQuery<T>(
 }
 
 export function useGetCurrentUser() {
-  return useSoloQuery<User>("/me", (err: any) => err.response?.status === 401);
+  return useSoloQuery<User>("/me", {},(err: any) => err.response?.status === 401);
 }
 
 export function useListApis() {

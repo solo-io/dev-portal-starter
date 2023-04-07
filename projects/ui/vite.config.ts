@@ -7,12 +7,11 @@ import eslint from "vite-plugin-eslint";
 export default defineConfig({
   plugins: [react(), eslint(), svgr()],
   define: {
-    process: {
+    Process: {
       env: {
         UI_VERSION: "ui-version",
         RESTPOINT: process.env.RESTPOINT,
       },
     },
-    global: {},
   },
 });

@@ -24,11 +24,15 @@ update-ui-deps:
 
 .PHONY: run-ui
 run-ui: update-ui-deps
-	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) start
+	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) start --base=http://a38c-205-154-255-140.ngrok.io
 
 .PHONY: build-ui
 build-ui: update-ui-deps
 	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) build
+
+.PHONY: preview-ui
+preview-ui: update-ui-deps
+	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) preview
 
 .PHONY: lint-ui-code
 lint-ui-code: update-ui-deps
