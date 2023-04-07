@@ -24,7 +24,7 @@ update-ui-deps:
 
 .PHONY: run-ui
 run-ui: update-ui-deps
-	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) start --base=http://a38c-205-154-255-140.ngrok.io
+	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) start
 
 .PHONY: build-ui
 build-ui: update-ui-deps
