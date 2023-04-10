@@ -11,7 +11,7 @@ export function ApiSummaryListCard({ api }: { api: API }) {
       <div className="apiListCard">
         <div className="content">
           <div className="majorIconHolder">
-            {api.icon ?? <Icon.WrenchGear className="colorIt" />}
+            <Icon.WrenchGear className="colorIt" />
           </div>
           <div className="details">
             <div>

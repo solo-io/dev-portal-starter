@@ -1,3 +1,4 @@
+import { UsagePlan } from "../../../Apis/api-types";
 import { useListApiKeys } from "../../../Apis/hooks";
 import { Icon } from "../../../Assets/Icons";
 import { Button } from "../../Common/Button";
@@ -17,10 +18,11 @@ export function APIKeysList({
   apiId: string;
   openCreateKeyModal: () => void;
 }) {
-  const { isLoading, data: plansKeysList } = useListApiKeys(
-    [apiId],
-    [usagePlan.name]
-  );
+  const {
+    isLoading,
+    data: plansKeysList,
+    refetch: refetchPlanKeysList,
+  } = useListApiKeys([usagePlan.name]);
 
   if (isLoading) {
     return <Loading message="Getting list of api keys..." />;
@@ -40,33 +42,38 @@ export function APIKeysList({
       )
     : [];
 
-  return !!displayedApiKeys.length ? (
-    displayedApiKeys.map((apiKey) => (
-      <ErrorBoundary
-        fallback={`There was an issue while working with ${apiKey.apiId}`}
-      >
-        <ApiKeyCard
-          key={apiKey.apiId}
-          apiKey={apiKey}
-          usagePlanName={usagePlan.name}
-        />
-      </ErrorBoundary>
-    ))
-  ) : (
-    <div className="apiKeyCard emptyListCard">
-      <div className="accessIcon">
-        <Icon.CircledKey />
-      </div>
-      <div>
-        <div className="title">There are no keys to display here.</div>
-        <div className="description">
-          Please{" "}
-          <Button className="justText" onClick={openCreateKeyModal}>
-            generate a key
-          </Button>{" "}
-          to access this API Product using this usage plan.
+  return (
+    <>
+      {!!displayedApiKeys.length ? (
+        displayedApiKeys.map((apiKey) => (
+          <ErrorBoundary
+            fallback={`There was an issue while working with ${apiKey.apiId}`}
+          >
+            <ApiKeyCard
+              key={apiKey.apiId}
+              apiKey={apiKey}
+              usagePlanName={usagePlan.name}
+              forceListRefetch={refetchPlanKeysList}
+            />
+          </ErrorBoundary>
+        ))
+      ) : (
+        <div className="apiKeyCard emptyListCard">
+          <div className="accessIcon">
+            <Icon.CircledKey />
+          </div>
+          <div>
+            <div className="title">There are no keys to display here.</div>
+            <div className="description">
+              Please{" "}
+              <Button className="justText" onClick={openCreateKeyModal}>
+                generate a key
+              </Button>{" "}
+              to access this API Product using this usage plan.
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }

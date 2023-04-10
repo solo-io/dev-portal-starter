@@ -22,6 +22,12 @@ button {
 //  We've avoided being opionated here about "display"
 //    type here, but one could certainly follow "inline-..." conventions.
 .styledButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
+  cursor: pointer;
+
   border-radius: 2px;
   height: 40px;
   min-width: 90px;
@@ -63,5 +69,10 @@ button {
   }
   &.error {
     background: constants.$pumpkinOrange;
+  }
+
+  &.disabled {
+    cursor: default;
+    background: constants.$juneGrey;
   }
 }

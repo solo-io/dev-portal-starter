@@ -1,5 +1,6 @@
 import { APIKey } from "../../../Apis/api-types";
 import { Icon } from "../../../Assets/Icons";
+import { DataPairPill } from "../../Common/DataPairPill";
 import { Modal } from "../../Common/Modal";
 
 export function ApiKeyDetailsModal({
@@ -19,10 +20,33 @@ export function ApiKeyDetailsModal({
       bodyContent={
         <div className="keyDetailsModal">
           <div className="keyIdLine">{apiKey.apiId}</div>
-          <div className="planAccessCarveOut">
-            <div className="title">Access to:</div>
+          <div className="planAccessCarveOut" aria-labelledby="planAccessLabel">
+            <label className="title" id="planAccessLabel">
+              Access to:
+            </label>
             <div className="planName">{usagePlanName}</div>
           </div>
+          {!!apiKey.customMetadata && apiKey.customMetadata.size > 0 && (
+            <div
+              className="customMetadata"
+              aria-labelledby="customMetadataLabel"
+            >
+              <label className="title" id="customMetadataLabel">
+                Custom Meta Data
+              </label>
+              <div className="metadataList dataPairPillList">
+                {Array.from(apiKey.customMetadata, ([name, value]) => ({
+                  name,
+                  value,
+                })).map((customMetaPair) => (
+                  <DataPairPill
+                    pairKey={customMetaPair.name}
+                    value={customMetaPair.value}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       }
     />

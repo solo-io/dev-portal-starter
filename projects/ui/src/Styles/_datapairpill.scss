@@ -1,0 +1,22 @@
+@use "./constants";
+
+.dataPairPillList {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.dataPairPill {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  height: 25px;
+  line-height: 25px;
+  color: constants.$oceanBlue;
+  background: white;
+  border-radius: constants.$standardBorderRadius;
+  border: 1px solid constants.$puddleBlue;
+
+  label {
+    font-weight: 500;
+  }
+}

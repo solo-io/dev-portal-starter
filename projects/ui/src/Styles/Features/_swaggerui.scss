@@ -1,0 +1,173 @@
+@use "../constants";
+@use "../button";
+
+/*
+*   EXPLANATION OF div[id^="display-swagger"]
+      First, WHAT IS IT?  Our SwaggerDisplay component relies on
+      this ID to both connect and update the component. This is the 
+      prefix we provide, where the suffix is based on the schema
+      being displayed.
+
+
+      Second, WHY? Swagger does not currently offer a way to modify 
+      their css. Importing their styling means competing 
+      specificity, and this makes it easier to do that.
+
+      Alternatives might include seemingly arbitrary swagger classes 
+      to bump specifity or throwing !important on to everything.
+*/
+div[id^="display-swagger"] {
+  width: 100%;
+
+  .swagger-ui {
+    .wrapper {
+      max-width: constants.$largeContentWidth;
+
+      &.information-container {
+        background: white;
+        padding: 10px 20px;
+
+        .info {
+          margin: 15px 0;
+        }
+      }
+    }
+
+    .btn {
+      @extend .styledButton;
+      height: 26px;
+      line-height: 26px;
+
+      span {
+        padding: 0;
+      }
+
+      svg {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        margin-left: 4px;
+
+        * {
+          fill: white;
+        }
+      }
+    }
+
+    .parameter__name.required span,
+    .parameter__name.required:after {
+      font-size: 14px;
+      color: constants.$midRed !important;
+    }
+    .parameter__name.required:after {
+      top: -3px;
+      padding: 0 0 0 2px;
+    }
+
+    .opblock {
+      background-color: white;
+      border-color: constants.$defaultAction;
+
+      .opblock-summary {
+        border-color: constants.$defaultAction;
+
+        .opblock-summary-method {
+          border-radius: constants.$smallBorderRadius;
+          margin-top: 0;
+          padding: 0;
+          width: 58px;
+          min-width: 58px;
+          height: 24px;
+          font-size: 14px;
+          font-weight: 600;
+
+          background-color: constants.$defaultAction;
+        }
+      }
+      .opblock-body .tab-header .tab-item.active h4 span:after {
+        background-color: constants.$defaultAction;
+      }
+
+      &.opblock-delete {
+        .opblock-summary {
+          border-color: constants.$deleteAction;
+          .opblock-summary-method {
+            background-color: constants.$deleteAction;
+          }
+        }
+        .opblock-body {
+          .tab-header .tab-item.active h4 span:after {
+            background-color: constants.$deleteAction;
+          }
+        }
+      }
+      &.opblock-get {
+        .opblock-summary {
+          border-color: constants.$getAction;
+          .opblock-summary-method {
+            background-color: constants.$getAction;
+          }
+        }
+        .opblock-body {
+          .tab-header .tab-item.active h4 span:after {
+            background-color: constants.$getAction;
+          }
+        }
+      }
+      &.opblock-hook {
+        .opblock-summary {
+          border-color: constants.$eventAction;
+          .opblock-summary-method {
+            background-color: constants.$eventAction;
+          }
+        }
+        .opblock-body {
+          .tab-header .tab-item.active h4 span:after {
+            background-color: constants.$eventAction;
+          }
+        }
+      }
+      &.opblock-post {
+        .opblock-summary {
+          border-color: constants.$postAction;
+          .opblock-summary-method {
+            background-color: constants.$postAction;
+          }
+        }
+        .opblock-body {
+          .tab-header .tab-item.active h4 span:after {
+            background-color: constants.$postAction;
+          }
+        }
+      }
+      &.opblock-put {
+        .opblock-summary {
+          border-color: constants.$putAction;
+          .opblock-summary-method {
+            background-color: constants.$putAction;
+          }
+        }
+        .opblock-body {
+          .tab-header .tab-item.active h4 span:after {
+            background-color: constants.$putAction;
+          }
+        }
+      }
+
+      &.opblock-deprecated {
+        border-color: constants.$marchGrey;
+        background-color: hsla(0, 0%, 92%, 0.1);
+
+        .opblock-summary {
+          border-color: black;
+          .opblock-summary-method {
+            background-color: black;
+          }
+        }
+        .opblock-body .tab-header .tab-item.active h4 span:after {
+          background-color: black;
+        }
+      }
+    }
+  }
+}

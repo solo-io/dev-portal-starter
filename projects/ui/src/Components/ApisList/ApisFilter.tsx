@@ -1,12 +1,11 @@
 import { Icon } from "../../Assets/Icons";
-import { Input, Dropdown, MenuProps } from "antd";
+import { TextInput, Select } from "@mantine/core";
 import { useState } from "react";
+import { KeyValuePair } from "../Common/DataPairPill";
 
 /**
  * HELPER TYPE DEFS
  **/
-export type KeyValuePair = { key: string; value: string };
-
 export enum FilterType {
   name,
   keyValuePair,
@@ -18,7 +17,14 @@ export type FilterPair = { displayName: string; type: FilterType };
  * HELPER FUNCTION
  **/
 function getPairString(pair: KeyValuePair) {
-  return `${pair.key} : ${pair.value}`;
+  return `${pair.pairKey} : ${pair.value}`;
+}
+export function parsePairString(pairString: string): KeyValuePair {
+  const [pairKey, value] = pairString.split(":");
+  return {
+    pairKey,
+    value,
+  };
 }
 
 /**
@@ -35,7 +41,7 @@ type ApisFiltrationProp = {
 
 export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
   const [pairFilter, setPairFilter] = useState<KeyValuePair>({
-    key: "",
+    pairKey: "",
     value: "",
   });
 
@@ -52,14 +58,14 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
   const alterPairKey = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const newKey = evt.target.value;
     setPairFilter({
-      key: newKey,
+      pairKey: newKey,
       value: pairFilter.value,
     });
   };
   const alterKeyValuePair = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = evt.target.value;
     setPairFilter({
-      key: pairFilter.key,
+      pairKey: pairFilter.pairKey,
       value: newValue,
     });
   };
@@ -70,13 +76,13 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
       { displayName: getPairString(pairFilter), type: FilterType.keyValuePair },
     ]);
 
-    setPairFilter({ key: "", value: "" });
+    setPairFilter({ pairKey: "", value: "" });
   };
 
-  const addTypeFilter: MenuProps["onClick"] = ({ key }) => {
+  const addTypeFilter = (addedType: string) => {
     filters.setAllFilters([
       ...filters.allFilters,
-      { displayName: key, type: FilterType.apiType },
+      { displayName: addedType, type: FilterType.apiType },
     ]);
   };
 
@@ -94,17 +100,17 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
     filters.setAllFilters([]);
   };
 
-  const selectableTypes: MenuProps["items"] = [
+  const selectableTypes = [
     {
       label: "OpenAPI",
-      key: "OpenAPI",
+      value: "OpenAPI",
     },
   ].filter(
     (selectableType) =>
       !filters.allFilters.some(
         (filter) =>
           filter.type === FilterType.apiType &&
-          filter.displayName === selectableType.key
+          filter.displayName === selectableType.value
       )
   );
 
@@ -113,7 +119,7 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
       <div className="choicesArea">
         <h3 className="title">Filters</h3>
         <div className="textFilter">
-          <Input
+          <TextInput
             placeholder="Filter by name or keyword"
             onChange={(e) => filters.setNameFilter(e.target.value)}
             onBlur={addNameFilter}
@@ -126,14 +132,13 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
             <Icon.Tag />
           </div>
           <div className="pairHolder">
-            {/*TODO :: This should probably be a dropdown in the future */}
-            <Input
+            <TextInput
               placeholder="Key"
               onChange={alterPairKey}
-              value={pairFilter.key}
+              value={pairFilter.pairKey}
             />
             <span>:</span>
-            <Input
+            <TextInput
               placeholder="Value"
               onChange={alterKeyValuePair}
               value={pairFilter.value}
@@ -152,22 +157,19 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
           <div className="gearHolder">
             <Icon.CodeGear />
           </div>
-          <Dropdown
-            disabled={selectableTypes.length === 0}
-            trigger={"click"}
-            menu={{
-              items: selectableTypes,
-              onClick: addTypeFilter,
-              onSelect: addTypeFilter,
-            }}
-          >
-            <div
-              className="dropdownTrigger"
-              onClick={(e) => e.preventDefault()}
-            >
-              <span>API Type </span> <Icon.DownArrow />
-            </div>
-          </Dropdown>
+          <Select
+            disabled={(selectableTypes ?? []).length === 0}
+            data={selectableTypes}
+            onChange={addTypeFilter}
+            label={
+              <div
+                className="dropdownTrigger"
+                onClick={(e) => e.preventDefault()}
+              >
+                <span>API Type </span> <Icon.DownArrow />
+              </div>
+            }
+          />
         </div>
         <div className="gridListToggle">
           <button

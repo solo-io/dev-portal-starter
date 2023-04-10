@@ -10,17 +10,24 @@
 *   For more information, get started with: 
 *      https://tanstack.com/query/v4/docs/react/reference/useQuery
 */
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { API, APIKey, APISchema, UsagePlan, User } from "./api-types";
 
-export const restpointPrefix = "http://localhost:31080/v1";
+export const restpointPrefix =
+  process.env.RESTPOINT ?? "http://localhost:31080/v1";
 
 export async function fetchJson<T>(
   input: RequestInfo | URL,
-  fetchOptions?: { method?: string; body?: string; header?: string }
+  fetchOptions?: {
+    method?: string;
+    body?: string;
+    headers?: { [key: string]: string };
+  }
 ): Promise<T> {
   const response = await fetch(input, {
-    crossDomain: true,
+    headers: {
+      "Content-Type": "application/json",
+    },
     ...fetchOptions,
   });
   if (!response.ok) {
@@ -31,93 +38,45 @@ export async function fetchJson<T>(
 
 function useSoloQuery<T>(
   apiCallString: string,
-  swallowError?: boolean,
-  fetchOptions?: { method?: string; body?: string; header?: string }
+  fetchOptions?: { method?: string; body?: string; header?: string },
+  swallowError?: (err: unknown) => boolean
 ) {
   return useQuery({
     // Key used for caching queries
     queryKey: [apiCallString],
     queryFn: () => fetchJson<T>(restpointPrefix + apiCallString),
     //Whether the API failures should auto-catch to an error boundary
-    useErrorBoundary: !swallowError,
+    useErrorBoundary: !swallowError || swallowError,
     // Number of attempt retries
     retry: 5,
   });
 }
 
-export function useGetCurrentUser(swallowError?: boolean) {
-  return useSoloQuery<User>("/me", swallowError, {
-    header: JSON.stringify({
-      // This id_token is required by the Portal backend currently.
-      id_token:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiam9obkRvZSIsImVtYWlsIjoiam9obkBkb2UuY29tIiwibmFtZSI6IkpvaG4gRG9lIiwiZ3JvdXAiOiJ1c2VycyIsImlhdCI6MTUxNjIzOTAyMn0.5DqPUgiVzjjIgLvhLB6MCj1m3nlnGoh-chNg__xp394",
-    }),
-  });
-}
-
-export function useListApis(swallowError?: boolean) {
-  return useSoloQuery<API[]>("/apis", swallowError);
-}
-export function useGetApiDetails(id: string, swallowError?: boolean) {
-  return useSoloQuery<APISchema>(`/apis/${id}/schema`, swallowError);
-}
-
-export function useListUsagePlans(swallowError?: boolean) {
-  return useSoloQuery<UsagePlan[]>(`/usage-plans`, swallowError);
-}
-
-export function useListApiKeys(
-  apis?: string[],
-  usagePlans?: string[],
-  swallowError?: boolean
-) {
-  const apiOptionsExist = !!apis?.length;
-  const plansOptionsExist = !!usagePlans?.length;
-  const optionsString =
-    apiOptionsExist || plansOptionsExist
-      ? `?${apiOptionsExist ? `apis=${apis.join(",")}` : ""}${
-          apiOptionsExist && plansOptionsExist ? "&" : ""
-        }${plansOptionsExist ? `usagePlans=${usagePlans.join(",")}` : ""}`
-      : "";
-
-  return useSoloQuery<{ usagePlan: string; apiKeys: APIKey[] }[]>(
-    `/api-keys${optionsString}`,
-    swallowError
+export function useGetCurrentUser() {
+  return useSoloQuery<User>(
+    "/me",
+    undefined,
+    ((err: any) => err.response?.status === 401) as any
   );
 }
 
-export function useCreateApiKey(
-  apiId: string,
-  usagePlan: string,
-  swallowError?: boolean
-) {
-  // Any calls to this may want to make use of the following in the `onSettled` case
-  //  queryClient.invalidateQueries("api-keys");
-  // If so, useQueryClient will need to be imported from the @tanstack/react-query set
-
-  return useMutation({
-    mutationFn: () =>
-      fetchJson<APIKey>("api-keys", {
-        method: "POST",
-        body: JSON.stringify({ usagePlan, apiId }),
-      }),
-    useErrorBoundary: !swallowError,
-  });
+export function useListApis() {
+  return useSoloQuery<API[]>("/apis");
+}
+export function useGetApiDetails(id?: string) {
+  return useSoloQuery<APISchema>(`/apis/${id}/schema`);
 }
 
-export function useDeleteApiKey(apiId: string, swallowError?: boolean) {
-  // Any calls to this may want to make use of the following in the `onSettled` case
-  //  queryClient.invalidateQueries(`api-keys/${apiId}`);
-  // If so, useQueryClient will need to be imported from the @tanstack/react-query set
+export function useListUsagePlans() {
+  return useSoloQuery<UsagePlan[]>(`/usage-plans`);
+}
 
-  return useMutation({
-    mutationFn: () =>
-      fetchJson<{ usagePlan: string; apiKeys: APIKey[] }[]>(
-        `api-keys/${apiId}`,
-        {
-          method: "DELETE",
-        }
-      ),
-    useErrorBoundary: !swallowError,
-  });
+export function useListApiKeys(usagePlans?: string[]) {
+  const optionsString = !!usagePlans?.length
+    ? `?usagePlans=${usagePlans.join(",")}`
+    : "";
+
+  return useSoloQuery<{ usagePlan: string; apiKeys: APIKey[] }[]>(
+    `/api-keys${optionsString}`
+  );
 }

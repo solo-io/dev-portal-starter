@@ -12,9 +12,11 @@ import { DeleteApiKeyModal } from "./DeleteApiKeyModal";
 export function ApiKeyCard({
   apiKey,
   usagePlanName,
+  forceListRefetch,
 }: {
   apiKey: APIKey;
   usagePlanName: string;
+  forceListRefetch: () => unknown | Promise<unknown>;
 }) {
   const [seeDetailsModalOpen, setSeeDetailsModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -30,6 +32,7 @@ export function ApiKeyCard({
   };
   const closeDeleteModal = () => {
     setDeleteModalOpen(false);
+    forceListRefetch();
   };
 
   return (
@@ -63,7 +66,7 @@ export function ApiKeyCard({
           </Button>
         </div>
       </div>
-      <ErrorBoundary fallback="There was an issue loading the list of API Keys">
+      <ErrorBoundary fallback="There was an issue attempting that action for this key">
         {seeDetailsModalOpen && (
           <ApiKeyDetailsModal
             apiKey={apiKey}
@@ -72,7 +75,7 @@ export function ApiKeyCard({
           />
         )}
         {deleteModalOpen && (
-          <DeleteApiKeyModal apiKey={apiKey} onClose={closeDeleteModal} />
+          <DeleteApiKeyModal apiId={apiKey.apiId} onClose={closeDeleteModal} />
         )}
       </ErrorBoundary>
     </div>

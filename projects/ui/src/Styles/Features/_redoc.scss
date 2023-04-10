@@ -15,6 +15,12 @@
       necessary to rediscover the hook names yourself.
     We will be striving to find better, more 
       consistent hooks to latch styling on to as we move forward.
+
+    Note, depending on how fine grain styling is desired, some of these
+      could be set with the Redoc theme option: 
+      https://github.com/Redocly/redoc/blob/main/src/theme.ts
+    This option was not as fine grain as we desired, but is an excellent
+      and less fragile alternative.
 */
 
 .redocDisplayContainer {

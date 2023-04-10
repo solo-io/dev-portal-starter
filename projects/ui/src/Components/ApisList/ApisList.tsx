@@ -1,7 +1,7 @@
 import { ApiSummaryGridCard } from "./ApiSummaryGridCard";
 import { ApiSummaryListCard } from "./ApiSummaryListCard";
 import { useListApis } from "../../Apis/hooks";
-import { FilterPair, FilterType } from "./ApisFilter";
+import { FilterPair, FilterType, parsePairString } from "./ApisFilter";
 import { Loading } from "../Common/Loading";
 import { EmptyData } from "../Common/EmptyData";
 
@@ -40,8 +40,10 @@ export function ApisList({
                       .includes(filter.displayName.toLocaleLowerCase())) ||
                   (filter.type === FilterType.keyValuePair &&
                     api.customMetadata &&
-                    api.customMetadata[filter.key] === filter.value) ||
-                  (filter.type === FilterType.apiType && true)
+                    api.customMetadata.get(
+                      parsePairString(filter.displayName).pairKey
+                    ) === parsePairString(filter.displayName).value) ||
+                  (filter.type === FilterType.apiType && true) // This is the only type available for now
                 );
               }))
           );
