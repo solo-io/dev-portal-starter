@@ -18,9 +18,16 @@ export const restpointPrefix =
 
 export async function fetchJson<T>(
   input: RequestInfo | URL,
-  fetchOptions?: { method?: string; body?: string; header?: string }
+  fetchOptions?: {
+    method?: string;
+    body?: string;
+    headers?: { [key: string]: string };
+  }
 ): Promise<T> {
   const response = await fetch(input, {
+    headers: {
+      "Content-Type": "application/json",
+    },
     ...fetchOptions,
   });
   if (!response.ok) {
@@ -48,6 +55,7 @@ function useSoloQuery<T>(
 export function useGetCurrentUser() {
   return useSoloQuery<User>(
     "/me",
+    undefined,
     ((err: any) => err.response?.status === 401) as any
   );
 }

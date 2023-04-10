@@ -35,8 +35,8 @@ function CreateKeyActions({
         method: "POST",
         body: JSON.stringify({
           usagePlan: usagePlanName,
-          apiId: apiKeyName,
-          customMetadata,
+          apiKeyName,
+          //customMetadata, // Coming soon
         }),
       })
         .then((response) => {
