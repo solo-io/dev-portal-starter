@@ -38,7 +38,7 @@ module.exports = {
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/triple-slash-reference": "off",
     "@typescript-eslint/no-namespace": "off",
-    "no-console": "error",
+    "no-console": "warn",
     "no-empty": [
       "error",
       {

@@ -1,51 +1,53 @@
-import { APIKey } from "../../../Apis/api-types";
-import { Icon } from "../../../Assets/Icons";
-import { Modal } from "../../Common/Modal";
 import { useEffect, useState } from "react";
+import { useDeleteKeyMutation } from "../../../Apis/hooks";
+import { Icon } from "../../../Assets/Icons";
 import { Button } from "../../Common/Button";
 import { Loading } from "../../Common/Loading";
-import { fetchJson, restpointPrefix } from "../../../Apis/hooks";
+import { Modal } from "../../Common/Modal";
 
 function DeleteKeyActions({
-  apiId,
+  apiKeyId,
+  usagePlanName,
   onSuccess,
   onClose,
 }: {
-  apiId: string;
+  apiKeyId: string;
+  usagePlanName: string;
   onSuccess: () => void;
   onClose: () => any;
 }) {
   const [attemptingDelete, setAttemptingDelete] = useState(false);
   const [deleted, setDeleted] = useState(false);
+  const { trigger: deleteKey, isMutating } = useDeleteKeyMutation();
 
-  const attemptToDelete = () => {
-    if (!attemptingDelete) {
-      setAttemptingDelete(true);
-
-      fetchJson<APIKey>(`${restpointPrefix}/api-keys/${apiId}`, {
-        method: "DELETE",
-      }).then((response) => {
-        setDeleted(true);
-        onSuccess();
-      });
-    }
+  const attemptToDelete = async () => {
+    if (!apiKeyId || !!attemptingDelete) return;
+    setAttemptingDelete(true);
+    await deleteKey({ apiKeyId, usagePlanName });
+    onSuccess();
   };
 
+  // Set attempting to delete = false when finished creating the key.
+  useEffect(() => {
+    if (!attemptingDelete || !!isMutating) return;
+    setDeleted(true);
+  }, [attemptingDelete, isMutating]);
+
   return (
-    <div>
+    <div className="deleteKeyActions">
       {attemptingDelete ? (
         <Loading message="Deleting key..." />
       ) : deleted ? null : (
         <>
-          <Button onClick={attemptToDelete} title={"Confirm deleting this key"}>
-            DELETE
-          </Button>
           <Button
             className="paleButton"
             onClick={onClose}
             title={"Back out of this window without deleting"}
           >
             CANCEL
+          </Button>
+          <Button onClick={attemptToDelete} title={"Confirm deleting this key"}>
+            DELETE
           </Button>
         </>
       )}
@@ -54,10 +56,12 @@ function DeleteKeyActions({
 }
 
 export function DeleteApiKeyModal({
-  apiId,
+  apiKeyId,
+  usagePlanName,
   onClose,
 }: {
-  apiId: string;
+  apiKeyId: string;
+  usagePlanName: string;
   onClose: () => any;
 }) {
   const [deleted, setDeleted] = useState(false);
@@ -86,16 +90,17 @@ export function DeleteApiKeyModal({
       headContent={
         <>{deleted ? <Icon.SuccessCheckmark /> : <Icon.WarningExclamation />}</>
       }
-      title={
-        deleted
-          ? "Key Deleted Successfully!"
-          : "Are you sure you want to remove this API Key?"
-      }
       bodyContent={
         <>
           <div className="deleteKeyModal">
+            <div className="deleteKeyStatus">
+              {deleted
+                ? "Key Deleted Successfully!"
+                : "Are you sure you want to delete this API Key?"}
+            </div>
             <DeleteKeyActions
-              apiId={apiId}
+              apiKeyId={apiKeyId}
+              usagePlanName={usagePlanName}
               onSuccess={onDeletionSuccess}
               onClose={onClose}
             />

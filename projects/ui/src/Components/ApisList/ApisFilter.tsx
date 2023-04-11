@@ -1,6 +1,6 @@
-import { Icon } from "../../Assets/Icons";
-import { TextInput, Select } from "@mantine/core";
+import { Select, TextInput } from "@mantine/core";
 import { useState } from "react";
+import { Icon } from "../../Assets/Icons";
 import { KeyValuePair } from "../Common/DataPairPill";
 
 /**
@@ -45,7 +45,7 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
     value: "",
   });
 
-  const addNameFilter = (evt: React.ChangeEvent<HTMLInputElement>) => {
+  const addNameFilter = (evt: { target: { value: string } }) => {
     if (evt.target.value !== "") {
       filters.setAllFilters([
         ...filters.allFilters,
@@ -71,9 +71,11 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
   };
 
   const addKeyValuePairFilter = () => {
+    const displayName = getPairString(pairFilter);
+    if (displayName.trim() === ":") return;
     filters.setAllFilters([
       ...filters.allFilters,
-      { displayName: getPairString(pairFilter), type: FilterType.keyValuePair },
+      { displayName, type: FilterType.keyValuePair },
     ]);
 
     setPairFilter({ pairKey: "", value: "" });
@@ -118,7 +120,13 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
     <div className="filterArea">
       <div className="choicesArea">
         <h3 className="title">Filters</h3>
-        <div className="textFilter">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            addNameFilter({ target: { value: filters.nameFilter } });
+          }}
+          className="textFilter"
+        >
           <TextInput
             placeholder="Filter by name or keyword"
             onChange={(e) => filters.setNameFilter(e.target.value)}
@@ -126,19 +134,27 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
             value={filters.nameFilter}
           />
           <Icon.MagnifyingGlass style={{ cursor: "pointer" }} />
-        </div>
-        <div className="pairsFilter">
+        </form>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            addKeyValuePairFilter();
+          }}
+          className="pairsFilter"
+        >
           <div className="tagHolder">
             <Icon.Tag />
           </div>
           <div className="pairHolder">
             <TextInput
+              size="xs"
               placeholder="Key"
               onChange={alterPairKey}
               value={pairFilter.pairKey}
             />
             <span>:</span>
             <TextInput
+              size="xs"
               placeholder="Value"
               onChange={alterKeyValuePair}
               value={pairFilter.value}
@@ -152,23 +168,18 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
               <Icon.Add />
             </button>
           </div>
-        </div>
+        </form>
         <div className="dropdownFilter">
           <div className="gearHolder">
             <Icon.CodeGear />
           </div>
           <Select
+            size="xs"
             disabled={(selectableTypes ?? []).length === 0}
             data={selectableTypes}
             onChange={addTypeFilter}
-            label={
-              <div
-                className="dropdownTrigger"
-                onClick={(e) => e.preventDefault()}
-              >
-                <span>API Type </span> <Icon.DownArrow />
-              </div>
-            }
+            value=""
+            placeholder="API Type"
           />
         </div>
         <div className="gridListToggle">
@@ -196,8 +207,8 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
       {filters.allFilters.length > 0 && (
         <div className="currentFiltersArea">
           <div className="activeFiltersGrid">
-            {filters.allFilters.map((activeFilter) => (
-              <div className="activeFilter">
+            {filters.allFilters.map((activeFilter, idx) => (
+              <div key={idx} className="activeFilter">
                 {activeFilter.displayName}
                 <button
                   className="closingX"

@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
-import { BannerHeading } from "../Common/Banner/BannerHeading";
-import { Icon } from "../../Assets/Icons";
-import { ApiSchemaDisplay } from "./ApiSchemaDisplay";
-import { useGetApiDetails } from "../../Apis/hooks";
-import { ErrorBoundary } from "../Common/ErrorBoundary";
 import { APISchema } from "../../Apis/api-types";
+import { useGetApiDetails } from "../../Apis/hooks";
+import { Icon } from "../../Assets/Icons";
+import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
+import { ErrorBoundary } from "../Common/ErrorBoundary";
+import { ApiSchemaDisplay } from "./ApiSchemaDisplay";
 
 /**
  * HELPER COMPONENT
@@ -52,11 +52,9 @@ export function ApiDetailsPage() {
         }
       />
 
-      <main className="page-container-wrapper">
-        <ErrorBoundary fallback="There was an issue displaying the schema details">
-          <ApiSchemaDisplay />
-        </ErrorBoundary>
-      </main>
+      <ErrorBoundary fallback="There was an issue displaying the schema details">
+        <ApiSchemaDisplay />
+      </ErrorBoundary>
     </div>
   );
 }

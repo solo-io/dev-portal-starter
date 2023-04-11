@@ -4,23 +4,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 48px 0;
+  padding-bottom: 15px;
   max-width: 425px;
 
   .modalHeader {
-    margin-bottom: 28px;
+    margin-bottom: 15px;
 
     svg {
       width: 110px;
       max-height: 110px;
-
-      * {
-        fill: constants.$defaultColoredText;
-      }
     }
   }
   .modalTitle {
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     font-size: 28px;
     line-height: 38px;
     color: constants.$defaultColoredText;

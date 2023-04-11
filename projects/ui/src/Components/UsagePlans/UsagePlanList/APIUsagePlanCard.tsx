@@ -31,12 +31,8 @@ export function APIUsagePlanCard({ api }: { api: API }) {
         )
     : [];
 
-  const productKeyCount = !!usagePlans
-    ? relevantUsagePlans.reduce(
-        (acc, usagePlan) => usagePlan.apiIds.length + acc,
-        0
-      )
-    : undefined;
+  // TODO: total key count is not returned.
+  const productKeyCount = undefined;
 
   const toggleUsagePlanDetails = () => {
     setShowUsagePlanDetails((showing) => !showing);

@@ -43,9 +43,9 @@ export function ApiKeyCard({
         </div>
         <div className="details">
           <div>
-            <h4 className="title">{apiKey.apiId}</h4>
+            <h4 className="title">{apiKey.id}</h4>
             <div className="description">
-              ********************************************************
+              {apiKey.name ?? (apiKey.metadata as any).name ?? ""}
             </div>
           </div>
         </div>
@@ -53,16 +53,16 @@ export function ApiKeyCard({
           <Button
             onClick={openDetailsModal}
             aria-label={"See partial key details"}
-            title="Edit key"
+            title="View key details"
           >
-            <Icon.PaperStack />
+            View Details
           </Button>
           <Button
             onClick={openDeleteModal}
             aria-label={"Delete key"}
             title="Delete key"
           >
-            <Icon.PaperStack />
+            Delete
           </Button>
         </div>
       </div>
@@ -75,7 +75,11 @@ export function ApiKeyCard({
           />
         )}
         {deleteModalOpen && (
-          <DeleteApiKeyModal apiId={apiKey.apiId} onClose={closeDeleteModal} />
+          <DeleteApiKeyModal
+            apiKeyId={apiKey.id}
+            usagePlanName={usagePlanName}
+            onClose={closeDeleteModal}
+          />
         )}
       </ErrorBoundary>
     </div>

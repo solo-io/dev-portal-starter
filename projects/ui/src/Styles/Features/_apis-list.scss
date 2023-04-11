@@ -72,22 +72,17 @@
         margin-right: 15px;
       }
       .textFilter {
-        @extend .filterBox;
-
+        position: relative;
         input {
-          border: none;
-          outline: none;
-          box-shadow: none;
-
-          height: 30px;
-          line-height: 30px;
-
+          padding-right: 30px;
           &::placeholder {
             @extend .filterPlaceholderTexts;
           }
         }
-
         svg {
+          position: absolute;
+          top: 10px;
+          right: -2px;
           width: 18px;
           height: 18px;
           margin: 0 10px;
@@ -98,28 +93,27 @@
       }
       .pairsFilter {
         @extend .filterBox;
+        padding: 0px 5px;
 
         .tagHolder {
           @extend .filterTypeIconHolder;
+          padding: 0px 10px 0px 5px;
+          margin-right: 0px;
         }
 
         .pairHolder {
           display: grid;
+          padding: 0px 0px;
           align-items: center;
-          grid-gap: 5px;
           grid-template-columns: 1fr 2px 1fr;
           color: constants.$juneGrey;
 
           input {
             border-radius: constants.$smallBorderRadius;
 
-            border: 1px solid constants.$mayGrey;
+            border: 0px solid transparent;
             outline: none;
             box-shadow: none;
-
-            height: 25px;
-            line-height: 25px;
-            padding: 0 6px;
 
             &::placeholder {
               @extend .filterPlaceholderTexts;
@@ -146,6 +140,12 @@
       }
       .dropdownFilter {
         @extend .filterBox;
+        input {
+          border: none;
+          &::placeholder {
+            @extend .filterPlaceholderTexts;
+          }
+        }
 
         .gearHolder {
           @extend .filterTypeIconHolder;

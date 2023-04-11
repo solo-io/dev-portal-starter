@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { ReactComponent as Logo } from "../../Assets/logo.svg";
 import { NavLink, useLocation } from "react-router-dom";
-import { LoggedInUser } from "./LoggedInUser";
+import { ReactComponent as Logo } from "../../Assets/logo.svg";
 import { ErrorBoundary } from "../Common/ErrorBoundary";
+import { LoggedInUser } from "./LoggedInUser";
 
 /**
  * MAIN COMPONENT

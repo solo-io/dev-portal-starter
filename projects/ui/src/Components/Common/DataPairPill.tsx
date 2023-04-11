@@ -11,7 +11,8 @@ export function DataPairPill({
 }) {
   return (
     <div className="dataPairPill">
-      <label>{pairKey}:</label> <div>value</div>{" "}
+      <label>{pairKey} :</label>
+      <div>{value}</div>{" "}
       {!!onRemove && (
         <button
           className="removingX"

@@ -30,6 +30,14 @@ run-ui: update-ui-deps
 build-ui: update-ui-deps
 	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) build
 
+.PHONY: preview-ui
+preview-ui: update-ui-deps
+	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) preview
+
+.PHONY: build-ui-image
+build-ui-image:  # build-ui
+	docker build --no-cache -t $(IMAGE_NAME) .
+
 .PHONY: lint-ui-code
 lint-ui-code: update-ui-deps
 	yarn tsc --cwd=$(UI_ROOT_DIR) && yarn --cwd=$(UI_ROOT_DIR) lint --max-warnings=0

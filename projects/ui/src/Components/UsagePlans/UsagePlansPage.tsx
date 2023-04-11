@@ -1,8 +1,8 @@
-import { PageContainer } from "../Common/PageContainer";
+import { Icon } from "../../Assets/Icons";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
-import { Icon } from "../../Assets/Icons";
 import { ErrorBoundary } from "../Common/ErrorBoundary";
+import { PageContainer } from "../Common/PageContainer";
 import { APIUsagePlansList } from "./UsagePlanList/APIUsagePlansList";
 
 /**
@@ -18,9 +18,7 @@ export function UsagePlansPage() {
             logo={<Icon.CodeGear />}
           />
         }
-        description={
-          "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam."
-        }
+        description="View usage plans and manage API Keys for all your APIs."
       />
       <main className="apiUsagePlansList">
         <ErrorBoundary fallback="There was an issue loading the list of Apis">
