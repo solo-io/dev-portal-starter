@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useDeleteKeyMutation } from "../../../Apis/hooks";
 import { Icon } from "../../../Assets/Icons";
 import { Button } from "../../Common/Button";
@@ -17,27 +18,30 @@ function DeleteKeyActions({
   onClose: () => any;
 }) {
   const [attemptingDelete, setAttemptingDelete] = useState(false);
-  const [deleted, setDeleted] = useState(false);
   const { trigger: deleteKey, isMutating } = useDeleteKeyMutation();
 
   const attemptToDelete = async () => {
     if (!apiKeyId || !!attemptingDelete) return;
     setAttemptingDelete(true);
-    await deleteKey({ apiKeyId, usagePlanName });
+    await toast.promise(deleteKey({ apiKeyId, usagePlanName }), {
+      loading: "Deleting the API key...",
+      success: "API key deleted!",
+      error: "There was an error deleting the API key.",
+    });
     onSuccess();
   };
 
   // Set attempting to delete = false when finished creating the key.
   useEffect(() => {
     if (!attemptingDelete || !!isMutating) return;
-    setDeleted(true);
+    setAttemptingDelete(false);
   }, [attemptingDelete, isMutating]);
 
   return (
     <div className="deleteKeyActions">
       {attemptingDelete ? (
         <Loading message="Deleting key..." />
-      ) : deleted ? null : (
+      ) : (
         <>
           <Button
             className="paleButton"
@@ -65,24 +69,6 @@ export function DeleteApiKeyModal({
   onClose: () => any;
 }) {
   const [deleted, setDeleted] = useState(false);
-  const [closeTimer, setCloseTimer] = useState<
-    NodeJS.Timeout | number | undefined
-  >();
-
-  useEffect(() => {
-    return () => {
-      // This will clear the timer if the component is
-      //  closed before the timer runs out.
-      if (closeTimer) {
-        clearTimeout(closeTimer);
-      }
-    };
-  }, []);
-
-  const onDeletionSuccess = () => {
-    setDeleted(true);
-    setCloseTimer(setTimeout(onClose, 3000));
-  };
 
   return (
     <Modal
@@ -98,12 +84,24 @@ export function DeleteApiKeyModal({
                 ? "Key Deleted Successfully!"
                 : "Are you sure you want to delete this API Key?"}
             </div>
-            <DeleteKeyActions
-              apiKeyId={apiKeyId}
-              usagePlanName={usagePlanName}
-              onSuccess={onDeletionSuccess}
-              onClose={onClose}
-            />
+            {!deleted ? (
+              <DeleteKeyActions
+                apiKeyId={apiKeyId}
+                usagePlanName={usagePlanName}
+                onSuccess={() => setDeleted(true)}
+                onClose={onClose}
+              />
+            ) : (
+              <div className="deleteKeyActions">
+                <Button
+                  className="paleButton"
+                  onClick={onClose}
+                  title={"Close this modal"}
+                >
+                  CLOSE
+                </Button>
+              </div>
+            )}
           </div>
         </>
       }

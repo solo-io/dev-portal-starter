@@ -28,7 +28,14 @@ function CreateKeyActions({
   const attemptToCreate = async () => {
     if (!apiKeyName || !!attemptingCreate) return;
     setAttemptingCreate(true);
-    const response = await createKey({ usagePlanName, apiKeyName });
+    const response = await toast.promise(
+      createKey({ usagePlanName, apiKeyName }),
+      {
+        loading: "Creating the API key...",
+        success: "API key created!",
+        error: "There was an error creating the API key.",
+      }
+    );
     setKeyValue(response?.apiKey);
     onSuccess();
   };
@@ -42,7 +49,7 @@ function CreateKeyActions({
   return (
     <div>
       {!!keyValue ? (
-        <div className="keyIdLine">
+        <>
           <Alert
             variant="light"
             icon={<Icon.InfoExclamation />}
@@ -53,18 +60,19 @@ function CreateKeyActions({
             this value now.
           </Alert>
           <br />
-
-          <MantineButton
-            variant="subtle"
-            onClick={() => {
-              navigator.clipboard.writeText(keyValue);
-              toast.success("Copied API key to clipboard");
-            }}
-          >
-            <div className="keyId">{keyValue}</div>
-            <Icon.PaperStack />
-          </MantineButton>
-        </div>
+          <div className="keyIdLine">
+            <MantineButton
+              variant="subtle"
+              onClick={() => {
+                navigator.clipboard.writeText(keyValue);
+                toast.success("Copied API key to clipboard");
+              }}
+            >
+              <div className="keyId">{keyValue}</div>
+              <Icon.PaperStack />
+            </MantineButton>
+          </div>
+        </>
       ) : attemptingCreate ? (
         <Loading message="Generating key..." />
       ) : (
