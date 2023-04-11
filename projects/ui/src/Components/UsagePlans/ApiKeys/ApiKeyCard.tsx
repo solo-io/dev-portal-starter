@@ -43,7 +43,7 @@ export function ApiKeyCard({
         </div>
         <div className="details">
           <div>
-            <h4 className="title">{apiKey.apiId}</h4>
+            <h4 className="title">{apiKey.id}</h4>
             <div className="description">
               ********************************************************
             </div>
@@ -75,7 +75,7 @@ export function ApiKeyCard({
           />
         )}
         {deleteModalOpen && (
-          <DeleteApiKeyModal apiId={apiKey.apiId} onClose={closeDeleteModal} />
+          <DeleteApiKeyModal apiId={apiKey.id} onClose={closeDeleteModal} />
         )}
       </ErrorBoundary>
     </div>

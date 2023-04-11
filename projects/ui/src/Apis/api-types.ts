@@ -4,7 +4,7 @@
  *   within the Schema.
  */
 
-export type apiId = string;
+export type id = string;
 
 export type User = {
   id: string;
@@ -23,13 +23,13 @@ export type UsagePlan = {
     unit: RateLimitUnit;
     requestsPerUnit: number;
   };
-  apiIds: apiId[];
+  apiIds: id[];
 };
 
 export type APIKey = {
-  apiId: apiId;
+  id: id;
   apiKey?: string;
-  customMetadata?: Map<string, string>;
+  metadata?: Map<string, string>;
 };
 
 export type API = {

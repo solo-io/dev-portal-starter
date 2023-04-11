@@ -19,23 +19,23 @@ export function ApiKeyDetailsModal({
       title={"Key Details"}
       bodyContent={
         <div className="keyDetailsModal">
-          <div className="keyIdLine">{apiKey.apiId}</div>
+          <div className="keyIdLine">{apiKey.id}</div>
           <div className="planAccessCarveOut" aria-labelledby="planAccessLabel">
             <label className="title" id="planAccessLabel">
               Access to:
             </label>
             <div className="planName">{usagePlanName}</div>
           </div>
-          {!!apiKey.customMetadata && apiKey.customMetadata.size > 0 && (
+          {!!apiKey.metadata && apiKey.metadata.size > 0 && (
             <div
               className="customMetadata"
               aria-labelledby="customMetadataLabel"
             >
               <label className="title" id="customMetadataLabel">
-                Custom Meta Data
+                Metadata
               </label>
               <div className="metadataList dataPairPillList">
-                {Array.from(apiKey.customMetadata, ([name, value]) => ({
+                {Array.from(apiKey.metadata, ([name, value]) => ({
                   name,
                   value,
                 })).map((customMetaPair) => (

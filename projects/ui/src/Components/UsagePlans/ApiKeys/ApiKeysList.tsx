@@ -36,9 +36,9 @@ export function APIKeysList({
   // Next we're keeping the order of the key display consistent.
   const displayedApiKeys = !!planKeys?.apiKeys
     ? planKeys.apiKeys.sort((apiKeyA, apiKeyB) =>
-        apiKeyA.apiId
+        apiKeyA.id
           .toLocaleLowerCase()
-          .localeCompare(apiKeyB.apiId.toLocaleLowerCase())
+          .localeCompare(apiKeyB.id.toLocaleLowerCase())
       )
     : [];
 
@@ -47,10 +47,10 @@ export function APIKeysList({
       {!!displayedApiKeys.length ? (
         displayedApiKeys.map((apiKey) => (
           <ErrorBoundary
-            fallback={`There was an issue while working with ${apiKey.apiId}`}
+            fallback={`There was an issue while working with ${apiKey.id}`}
           >
             <ApiKeyCard
-              key={apiKey.apiId}
+              key={apiKey.id}
               apiKey={apiKey}
               usagePlanName={usagePlan.name}
               forceListRefetch={refetchPlanKeysList}
