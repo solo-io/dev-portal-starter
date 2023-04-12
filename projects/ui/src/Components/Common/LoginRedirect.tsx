@@ -6,6 +6,7 @@ const LoginRedirect = () => {
   const navigate = useNavigate();
   useEffect(() => {
     navigate("/");
+    // TODO: Figure out UX: https://github.com/solo-io/gloo-mesh-enterprise/issues/8709
     // setTimeout(() => {
     //   navigate("/");
     // }, 3000);

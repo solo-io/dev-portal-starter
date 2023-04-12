@@ -31,7 +31,7 @@ export function APIUsagePlanCard({ api }: { api: API }) {
         )
     : [];
 
-  // TODO: total key count is not returned.
+  // TODO: total key count is not returned. https://github.com/solo-io/gloo-mesh-enterprise/issues/8705
   const productKeyCount = undefined;
 
   const toggleUsagePlanDetails = () => {
