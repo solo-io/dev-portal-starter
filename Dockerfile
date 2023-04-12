@@ -1,6 +1,4 @@
 FROM node
 COPY ./projects/ui/dist ./dist
-COPY ./projects/ui/package.json .
 WORKDIR .
-RUN yarn install
-ENTRYPOINT ["yarn", "preview"]
+ENTRYPOINT ["npx", "vite@4.2.1", "preview", "--port", "4000"]
