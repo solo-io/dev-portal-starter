@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { useCreateKeyMutation } from "../../../Apis/hooks";
 import { Icon } from "../../../Assets/Icons";
 import { Button } from "../../Common/Button";
-import { DataPairPill, KeyValuePair } from "../../Common/DataPairPill";
+import { KeyValuePair } from "../../Common/DataPairPill";
 import { Loading } from "../../Common/Loading";
 import { Modal } from "../../Common/Modal";
 
@@ -179,6 +179,8 @@ export function GenerateApiKeyModal({
                 </label>
                 <div className="planName">{usagePlanName}</div>
               </div>
+              {/* 
+              // TODO: Enable this when the backend supports custom metadata.
               <div
                 className="customMetadata"
                 aria-labelledby="customMetadataLabel"
@@ -234,8 +236,9 @@ export function GenerateApiKeyModal({
                       onRemove={() => removePair(pair)}
                     />
                   ))}
-                </div>
+                </div> 
               </div>
+              */}
             </>
           )}
           <CreateKeyActions

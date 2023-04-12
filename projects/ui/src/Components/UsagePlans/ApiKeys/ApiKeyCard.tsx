@@ -43,7 +43,7 @@ export function ApiKeyCard({
         </div>
         <div className="details">
           <div>
-            <h4 className="title">{apiKey.id}</h4>
+            {/* <h4 className="title">{apiKey.id}</h4> */}
             <div className="description">
               {apiKey.name ?? (apiKey.metadata as any).name ?? ""}
             </div>
