@@ -2,9 +2,22 @@ import useSWR, { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
 import { API, APIKey, APISchema, UsagePlan, User } from "./api-types";
 
-export const restpointPrefix =
-  // import.meta.env.VITE_RESTPOINT ?? "/portal-server/v1";
-  "/portal-server/v1";
+//
+// Rename RESTPOINT to change the base API URL.
+//
+// RESTPOINT is renamed VITE_RESTPOINT in the Makefile,
+// since all Vite environment variables need to start
+// with VITE_
+let envRestpoint = import.meta.env.VITE_RESTPOINT;
+if (
+  envRestpoint &&
+  typeof envRestpoint === "string" &&
+  envRestpoint.at(-1) === "/"
+) {
+  // This allows the RESTPOINT env variable to work with or without a trailing "/"
+  envRestpoint = envRestpoint.substring(0, envRestpoint.length - 1);
+}
+export const restpointPrefix: string = envRestpoint ?? "/portal-server/v1";
 
 async function fetchJSON(...args: Parameters<typeof fetch>) {
   if (typeof args[0] !== "string") return;

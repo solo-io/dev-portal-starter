@@ -6,7 +6,4 @@ import svgr from "vite-plugin-svgr";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), eslint(), svgr()],
-  define: {
-    "process.env.UI_VERSION": "ui-version",
-  },
 });

@@ -24,15 +24,27 @@ update-ui-deps:
 
 .PHONY: run-ui
 run-ui: update-ui-deps
+ifneq ($(RESTPOINT),)
 	VITE_RESTPOINT=$(RESTPOINT) VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) start
+else
+	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) start
+endif
 
 .PHONY: run-storybook
 run-storybook: 
+ifneq ($(RESTPOINT),)
 	VITE_RESTPOINT=$(RESTPOINT) VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) storybook
+else
+	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) storybook
+endif
 
 .PHONY: build-ui
 build-ui: update-ui-deps
+ifneq ($(RESTPOINT),)
 	VITE_RESTPOINT=$(RESTPOINT) VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) build
+else
+	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) build
+endif
 
 .PHONY: preview-ui
 preview-ui: update-ui-deps
