@@ -12,7 +12,6 @@ export function ApiKeyDetailsModal({
   usagePlanName: string;
   onClose: () => any;
 }) {
-  // const [hasCopiedKey, setHasCopiedKey] = useState(false);
   return (
     <Modal
       onClose={onClose}
@@ -20,19 +19,6 @@ export function ApiKeyDetailsModal({
       title={"Key Details"}
       bodyContent={
         <div className="keyDetailsModal">
-          {/* <div className="keyIdLine">
-            <Button
-              variant="subtle"
-              onClick={() => {
-                navigator.clipboard.writeText(apiKey.id);
-                toast.success("Copied API key to clipboard");
-                setHasCopiedKey(true);
-              }}
-            >
-              <div className="keyId">{apiKey.id}</div>
-              {hasCopiedKey ? <Icon.SlashedCopy /> : <Icon.Copy />}
-            </Button>
-          </div> */}
           <div className="planAccessCarveOut" aria-labelledby="planAccessLabel">
             <label className="title" id="planAccessLabel">
               Access to:

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useCreateKeyMutation } from "../../../Apis/hooks";
 import { Icon } from "../../../Assets/Icons";
+import { copyToClipboard } from "../../../Utility/utility";
 import { Button } from "../../Common/Button";
 import { Loading } from "../../Common/Loading";
 import { Modal } from "../../Common/Modal";
@@ -68,9 +69,11 @@ function CreateKeyActions({
               variant="subtle"
               aria-label="Copy this API key"
               onClick={() => {
-                navigator.clipboard.writeText(keyValue);
-                toast.success("Copied API key to clipboard");
-                onCopiedKey();
+                copyToClipboard(keyValue)
+                  .then(() => {
+                    toast.success("Copied API key to clipboard");
+                  })
+                  .finally(onCopiedKey);
               }}
             >
               <div className="keyId">{keyValue}</div>
