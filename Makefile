@@ -26,6 +26,10 @@ update-ui-deps:
 run-ui: update-ui-deps
 	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) start
 
+.PHONY: run-storybook
+run-storybook: 
+	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) storybook
+
 .PHONY: build-ui
 build-ui: update-ui-deps
 	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) build
@@ -35,7 +39,7 @@ preview-ui: update-ui-deps
 	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) preview
 
 .PHONY: build-ui-image
-build-ui-image:  # build-ui
+build-ui-image: build-ui
 	docker build --no-cache -t $(IMAGE_NAME) .
 
 .PHONY: lint-ui-code

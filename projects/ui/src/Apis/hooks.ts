@@ -4,9 +4,6 @@ import { API, APIKey, APISchema, UsagePlan, User } from "./api-types";
 
 export const restpointPrefix = "/portal-server/v1";
 
-async function simpleFetcher(...args: Parameters<typeof fetch>) {
-  return fetch(...args);
-}
 async function fetchJSON(...args: Parameters<typeof fetch>) {
   if (typeof args[0] !== "string") return;
   let url = restpointPrefix + args[0];
@@ -77,7 +74,7 @@ export function useCreateKeyMutation() {
       }),
     });
     // TODO: Mutation should invalidate all usage plans that this api key is in.
-    mutate(`/api-keys?usagePlan=${usagePlanName}`);
+    mutate(`/api-keys?usagePlans=${usagePlanName}`);
     return res as APIKey;
   };
 
@@ -93,11 +90,11 @@ export function useDeleteKeyMutation() {
       arg: { apiKeyId, usagePlanName },
     }: { arg: { apiKeyId: string; usagePlanName: string } }
   ) => {
-    await simpleFetcher(`${url}/${apiKeyId}`, {
+    await fetch(`${restpointPrefix}${url}/${apiKeyId}`, {
       method: "DELETE",
     });
     // TODO: Mutation should invalidate all usage plans that this api key is in.
-    mutate(`/api-keys?usagePlan=${usagePlanName}`);
+    mutate(`/api-keys?usagePlans=${usagePlanName}`);
   };
 
   return useSWRMutation(`/api-keys`, deleteKey);
