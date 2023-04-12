@@ -7,7 +7,7 @@
   margin-bottom: 30px;
   border-radius: constants.$smallBorderRadius;
   border: 1px solid constants.$puddleBlue;
-  padding: 18px;
+  padding: 5px 5px 5px 15px;
   background: white;
 
   &:last-of-type {
@@ -15,16 +15,33 @@
   }
 
   .accessIcon {
+    display: flex;
+    align-items: center;
     margin-right: 10px;
 
     svg {
       width: 24px;
       height: 24px;
+      margin-right: 10px;
     }
   }
 
-  .title {
-    color: constants.$defaultColoredText;
+  .apiKeyKey {
+    flex-grow: 1;
+    height: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 10px 10px;
+    padding: 10px 20px;
+    // border-left: 1px solid constants.$juneGrey;
+  }
+
+  .apiKeyActions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2px;
   }
 
   &.emptyListCard {
@@ -36,6 +53,7 @@
     }
 
     .title {
+      color: constants.$defaultColoredText;
       font-size: 22px;
     }
 

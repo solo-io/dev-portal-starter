@@ -4,22 +4,25 @@ import toast from "react-hot-toast";
 import { useCreateKeyMutation } from "../../../Apis/hooks";
 import { Icon } from "../../../Assets/Icons";
 import { Button } from "../../Common/Button";
-import { KeyValuePair } from "../../Common/DataPairPill";
 import { Loading } from "../../Common/Loading";
 import { Modal } from "../../Common/Modal";
 
 function CreateKeyActions({
   apiKeyName,
   usagePlanName,
-  customMetadata,
+  // customMetadata,
+  // onClose,
   onSuccess,
-  onClose,
+  hasCopiedKey,
+  onCopiedKey,
 }: {
   apiKeyName: string;
   usagePlanName: string;
-  customMetadata: KeyValuePair[];
+  // customMetadata: KeyValuePair[];
   onSuccess: () => void;
   onClose: () => any;
+  hasCopiedKey: boolean;
+  onCopiedKey: () => void;
 }) {
   const [attemptingCreate, setAttemptingCreate] = useState(false);
   const [keyValue, setKeyValue] = useState<string | undefined>();
@@ -63,13 +66,15 @@ function CreateKeyActions({
           <div className="keyIdLine">
             <MantineButton
               variant="subtle"
+              aria-label="Copy this API key"
               onClick={() => {
                 navigator.clipboard.writeText(keyValue);
                 toast.success("Copied API key to clipboard");
+                onCopiedKey();
               }}
             >
               <div className="keyId">{keyValue}</div>
-              <Icon.PaperStack />
+              {hasCopiedKey ? <Icon.SlashedCopy /> : <Icon.Copy />}
             </MantineButton>
           </div>
         </>
@@ -96,6 +101,9 @@ export function GenerateApiKeyModal({
   onClose: () => any;
 }) {
   const [apiKeyName, setApiKeyName] = useState("");
+  const [generated, setGenerated] = useState(false);
+  // TODO: Enable this when the backend supports custom metadata.
+  /*
   const [possiblePair, setPossiblePair] = useState<KeyValuePair>({
     pairKey: "",
     value: "",
@@ -103,7 +111,6 @@ export function GenerateApiKeyModal({
   const [possiblePairAlreadyInList, setPossiblePairAlreadyInList] =
     useState(false);
   const [metadataPairs, setMetadataPairs] = useState<KeyValuePair[]>([]);
-  const [generated, setGenerated] = useState(false);
 
   useEffect(() => {
     setPossiblePairAlreadyInList(
@@ -150,10 +157,21 @@ export function GenerateApiKeyModal({
       )
     );
   };
+  */
+
+  const [hasCopiedKey, setHasCopiedKey] = useState(false);
 
   return (
     <Modal
-      onClose={onClose}
+      onClose={() => {
+        // If we have generated and not copied the API key,
+        // prevent the user from closing the modal.
+        if (generated && !hasCopiedKey) {
+          toast("Click the API key to copy it before closing the modal.");
+          return;
+        }
+        onClose();
+      }}
       headContent={
         <>{generated ? <Icon.SuccessCheckmark /> : <Icon.CircledKey />}</>
       }
@@ -244,8 +262,10 @@ export function GenerateApiKeyModal({
           <CreateKeyActions
             usagePlanName={usagePlanName}
             apiKeyName={apiKeyName}
-            customMetadata={metadataPairs}
+            // customMetadata={metadataPairs}
             onSuccess={() => setGenerated(true)}
+            hasCopiedKey={hasCopiedKey}
+            onCopiedKey={() => setHasCopiedKey(true)}
             onClose={onClose}
           />
         </div>

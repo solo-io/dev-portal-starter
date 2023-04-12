@@ -1,4 +1,5 @@
 import { Button } from "@mantine/core";
+import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { APIKey } from "../../../Apis/api-types";
 import { Icon } from "../../../Assets/Icons";
@@ -14,6 +15,7 @@ export function ApiKeyDetailsModal({
   usagePlanName: string;
   onClose: () => any;
 }) {
+  const [hasCopiedKey, setHasCopiedKey] = useState(false);
   return (
     <Modal
       onClose={onClose}
@@ -27,10 +29,11 @@ export function ApiKeyDetailsModal({
               onClick={() => {
                 navigator.clipboard.writeText(apiKey.id);
                 toast.success("Copied API key to clipboard");
+                setHasCopiedKey(true);
               }}
             >
               <div className="keyId">{apiKey.id}</div>
-              <Icon.PaperStack />
+              {hasCopiedKey ? <Icon.SlashedCopy /> : <Icon.Copy />}
             </Button>
           </div>
           <div className="planAccessCarveOut" aria-labelledby="planAccessLabel">
