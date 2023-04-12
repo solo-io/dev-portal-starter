@@ -1,6 +1,3 @@
-import { Button } from "@mantine/core";
-import { useState } from "react";
-import { toast } from "react-hot-toast";
 import { APIKey } from "../../../Apis/api-types";
 import { Icon } from "../../../Assets/Icons";
 import { DataPairPill } from "../../Common/DataPairPill";
@@ -15,7 +12,7 @@ export function ApiKeyDetailsModal({
   usagePlanName: string;
   onClose: () => any;
 }) {
-  const [hasCopiedKey, setHasCopiedKey] = useState(false);
+  // const [hasCopiedKey, setHasCopiedKey] = useState(false);
   return (
     <Modal
       onClose={onClose}
@@ -23,7 +20,7 @@ export function ApiKeyDetailsModal({
       title={"Key Details"}
       bodyContent={
         <div className="keyDetailsModal">
-          <div className="keyIdLine">
+          {/* <div className="keyIdLine">
             <Button
               variant="subtle"
               onClick={() => {
@@ -35,7 +32,7 @@ export function ApiKeyDetailsModal({
               <div className="keyId">{apiKey.id}</div>
               {hasCopiedKey ? <Icon.SlashedCopy /> : <Icon.Copy />}
             </Button>
-          </div>
+          </div> */}
           <div className="planAccessCarveOut" aria-labelledby="planAccessLabel">
             <label className="title" id="planAccessLabel">
               Access to:
