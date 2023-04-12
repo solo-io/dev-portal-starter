@@ -1,82 +1,104 @@
-/*  API HOOKS
-*   This file has how we access data in a hooks-style fashion.
-*
-*   For all hooks it is easy to access from the components calling them:
-*     isLoading: boolean
-*     error: null | <ErrorInfo>  NOTE:: Update with actual ErrorInfo type before public release
-*     data: any
-*     refetch: <refetches data, errors will be thrown if applicable>
-
-*   For more information, get started with: 
-*      https://tanstack.com/query/v4/docs/react/reference/useQuery
-*/
-import { useQuery } from "@tanstack/react-query";
+import useSWR, { useSWRConfig } from "swr";
+import useSWRMutation from "swr/mutation";
 import { API, APIKey, APISchema, UsagePlan, User } from "./api-types";
 
-export const restpointPrefix =
-  process.env.RESTPOINT ?? "http://localhost:31080/v1";
+export const restpointPrefix = "/portal-server/v1";
 
-export async function fetchJson<T>(
-  input: RequestInfo | URL,
-  fetchOptions?: {
-    method?: string;
-    body?: string;
-    headers?: { [key: string]: string };
-  }
-): Promise<T> {
-  const response = await fetch(input, {
-    headers: {
-      "Content-Type": "application/json",
+async function simpleFetcher(...args: Parameters<typeof fetch>) {
+  return fetch(...args);
+}
+async function fetchJSON(...args: Parameters<typeof fetch>) {
+  if (typeof args[0] !== "string") return;
+  let url = restpointPrefix + args[0];
+  const newArgs: typeof args = [
+    url,
+    {
+      ...args[1],
+      headers: {
+        ...args[1]?.headers,
+        "Content-Type": "application/json",
+      },
     },
-    ...fetchOptions,
-  });
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
-  return response.json();
+  ];
+  return fetch(...newArgs).then((res) => res.json());
 }
 
-function useSoloQuery<T>(
-  apiCallString: string,
-  fetchOptions?: { method?: string; body?: string; header?: string },
-  swallowError?: (err: unknown) => boolean
-) {
-  return useQuery({
-    // Key used for caching queries
-    queryKey: [apiCallString],
-    queryFn: () => fetchJson<T>(restpointPrefix + apiCallString),
-    //Whether the API failures should auto-catch to an error boundary
-    useErrorBoundary: !swallowError || swallowError,
-    // Number of attempt retries
-    retry: 5,
-  });
-}
+//
+// Queries
+//
 
 export function useGetCurrentUser() {
-  return useSoloQuery<User>(
-    "/me",
-    undefined,
-    ((err: any) => err.response?.status === 401) as any
-  );
+  return useSWR<User>("/me", fetchJSON);
 }
 
 export function useListApis() {
-  return useSoloQuery<API[]>("/apis");
+  return useSWR<API[]>("/apis", fetchJSON);
 }
 export function useGetApiDetails(id?: string) {
-  return useSoloQuery<APISchema>(`/apis/${id}/schema`);
+  return useSWR<APISchema>(`/apis/${id}/schema`, fetchJSON);
 }
 
 export function useListUsagePlans() {
-  return useSoloQuery<UsagePlan[]>(`/usage-plans`);
+  return useSWR<UsagePlan[]>(`/usage-plans`, fetchJSON);
 }
 
-export function useListApiKeys(usagePlans?: string[]) {
-  const optionsString = !!usagePlans?.length
-    ? `?usagePlans=${usagePlans.join(",")}`
-    : "";
+export function useListApiKeys(usagePlan: string) {
+  // const optionsString = !!usagePlans?.length
+  //   ? `?usagePlans=${usagePlans.join(",")}`
+  //   : "";
 
-  return useSoloQuery<{ usagePlan: string; apiKeys: APIKey[] }[]>(
-    `/api-keys${optionsString}`
+  // TODO: Add support for getting keys for multiple usage plans.
+  // TODO: While also having the cache invalidation work (see useAddKeyMutation).
+  return useSWR<{ usagePlan: string; apiKeys: APIKey[] }[]>(
+    `/api-keys?usagePlans=${usagePlan}`,
+    fetchJSON
   );
+}
+
+//
+// Mutations
+//
+
+export function useCreateKeyMutation() {
+  const { mutate } = useSWRConfig();
+
+  const createKey = async (
+    url: string,
+    {
+      arg: { usagePlanName, apiKeyName },
+    }: { arg: { usagePlanName: string; apiKeyName: string } }
+  ) => {
+    const res = await fetchJSON(url, {
+      method: "POST",
+      body: JSON.stringify({
+        usagePlan: usagePlanName,
+        apiKeyName,
+        //customMetadata, // Coming soon
+      }),
+    });
+    // TODO: Mutation should invalidate all usage plans that this api key is in.
+    mutate(`/api-keys?usagePlan=${usagePlanName}`);
+    return res as APIKey;
+  };
+
+  return useSWRMutation(`/api-keys`, createKey);
+}
+
+export function useDeleteKeyMutation() {
+  const { mutate } = useSWRConfig();
+
+  const deleteKey = async (
+    url: string,
+    {
+      arg: { apiKeyId, usagePlanName },
+    }: { arg: { apiKeyId: string; usagePlanName: string } }
+  ) => {
+    await simpleFetcher(`${url}/${apiKeyId}`, {
+      method: "DELETE",
+    });
+    // TODO: Mutation should invalidate all usage plans that this api key is in.
+    mutate(`/api-keys?usagePlan=${usagePlanName}`);
+  };
+
+  return useSWRMutation(`/api-keys`, deleteKey);
 }

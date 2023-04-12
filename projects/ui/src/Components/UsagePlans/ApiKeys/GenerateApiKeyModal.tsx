@@ -1,12 +1,12 @@
-import { TextInput } from "@mantine/core";
-import { APIKey } from "../../../Apis/api-types";
-import { Icon } from "../../../Assets/Icons";
-import { Modal } from "../../Common/Modal";
+import { Alert, Button as MantineButton, TextInput } from "@mantine/core";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useCreateKeyMutation } from "../../../Apis/hooks";
+import { Icon } from "../../../Assets/Icons";
 import { Button } from "../../Common/Button";
+import { KeyValuePair } from "../../Common/DataPairPill";
 import { Loading } from "../../Common/Loading";
-import { fetchJson, restpointPrefix } from "../../../Apis/hooks";
-import { DataPairPill, KeyValuePair } from "../../Common/DataPairPill";
+import { Modal } from "../../Common/Modal";
 
 function CreateKeyActions({
   apiKeyName,
@@ -23,86 +23,58 @@ function CreateKeyActions({
 }) {
   const [attemptingCreate, setAttemptingCreate] = useState(false);
   const [keyValue, setKeyValue] = useState<string | undefined>();
-  /* We aren't giving full insights here, but are giving them a hint at
-      whether it was successful *and* when the action is completed  */
-  const [copySuccessful, setCopySuccessful] = useState<boolean | undefined>();
+  const { trigger: createKey, isMutating } = useCreateKeyMutation();
 
-  const attemptToCreate = () => {
-    if (!!apiKeyName && !attemptingCreate) {
-      setAttemptingCreate(true);
-
-      fetchJson<APIKey>(`${restpointPrefix}/api-keys`, {
-        method: "POST",
-        body: JSON.stringify({
-          usagePlan: usagePlanName,
-          apiKeyName,
-          //customMetadata, // Coming soon
-        }),
-      })
-        .then((response) => {
-          setKeyValue(response.apiKey);
-          setAttemptingCreate(false);
-        })
-        .catch(() => setAttemptingCreate(false));
-    }
+  const attemptToCreate = async () => {
+    if (!apiKeyName || !!attemptingCreate) return;
+    setAttemptingCreate(true);
+    const response = await toast.promise(
+      createKey({ usagePlanName, apiKeyName }),
+      {
+        loading: "Creating the API key...",
+        success: "API key created!",
+        error: "There was an error creating the API key.",
+      }
+    );
+    setKeyValue(response?.apiKey);
+    onSuccess();
   };
 
-  const copyKeyToClipboard = () => {
-    // This should not be able to hit this function
-    //   anyway if keyValue doesn't exist
-    if (!keyValue) {
-      let success = false;
-
-      navigator.clipboard
-        .writeText(keyValue!)
-        .then(() => (success = true))
-        .catch(() => {
-          // eslint-disable-next-line no-console
-          console.error("Unable to copy.");
-        });
-
-      setCopySuccessful(success);
-      // A basic settimeout is not desirable since they
-      //  could leave the modal before the timer hits and
-      //  then references get grumpy. But it's non-fatal
-      //  and this is very straightforward for comprehension.
-      setTimeout(() => {
-        setCopySuccessful(undefined);
-      }, 3000);
-    }
-  };
+  // Set attempting to create = false when finished creating the key.
+  useEffect(() => {
+    if (!attemptingCreate || !!isMutating) return;
+    setAttemptingCreate(false);
+  }, [attemptingCreate, isMutating]);
 
   return (
     <div>
       {!!keyValue ? (
-        <div>
-          {keyValue}+Copy <Button onClick={onClose}>CLOSE WINDOW</Button>
-        </div>
+        <>
+          <Alert
+            variant="light"
+            icon={<Icon.InfoExclamation />}
+            title="Warning!"
+            color="orange"
+          >
+            This key value will not be available later. Please copy and secure
+            this value now.
+          </Alert>
+          <br />
+          <div className="keyIdLine">
+            <MantineButton
+              variant="subtle"
+              onClick={() => {
+                navigator.clipboard.writeText(keyValue);
+                toast.success("Copied API key to clipboard");
+              }}
+            >
+              <div className="keyId">{keyValue}</div>
+              <Icon.PaperStack />
+            </MantineButton>
+          </div>
+        </>
       ) : attemptingCreate ? (
         <Loading message="Generating key..." />
-      ) : keyValue ? (
-        <div className="generatedKeyHolder">
-          <div className="warning">
-            This key will not be viewable again. Please save it at this time.
-          </div>
-          <div className="generatedKey">
-            {keyValue}{" "}
-            <Button
-              onClick={copyKeyToClipboard}
-              aria-label="Copy key to clipboard"
-              title="Copy key to clipboard"
-              className={
-                !!copySuccessful
-                  ? "success"
-                  : copySuccessful === undefined
-                  ? ""
-                  : "error"
-              }
-            >
-              <Icon.PaperStack />
-            </Button>
-          </div>
-        </div>
       ) : (
         <Button
           onClick={attemptToCreate}
@@ -159,11 +131,15 @@ export function GenerateApiKeyModal({
   };
 
   const addKeyValuePair = () => {
-    if (!possiblePairAlreadyInList) {
-      setMetadataPairs([...metadataPairs, { ...possiblePair }]);
-
-      setPossiblePair({ pairKey: "", value: "" });
+    if (
+      possiblePairAlreadyInList ||
+      !possiblePair.pairKey ||
+      !possiblePair.value
+    ) {
+      return;
     }
+    setMetadataPairs([...metadataPairs, { ...possiblePair }]);
+    setPossiblePair({ pairKey: "", value: "" });
   };
   const removePair = (removedPair: KeyValuePair) => {
     setMetadataPairs(
@@ -175,10 +151,6 @@ export function GenerateApiKeyModal({
     );
   };
 
-  const onGenerationSuccess = () => {
-    setGenerated(true);
-  };
-
   return (
     <Modal
       onClose={onClose}
@@ -188,64 +160,92 @@ export function GenerateApiKeyModal({
       title={generated ? "Key Generated Successfully!" : "Generate a New Key"}
       bodyContent={
         <div className="generateKeyModal">
-          <div className="inputLine">
-            <TextInput
-              placeholder="API Key Name"
-              onChange={(e) => setApiKeyName(e.target.value)}
-              value={apiKeyName}
-              disabled={generated}
-            />
-          </div>
-          <div className="planAccessCarveOut" aria-labelledby="planAccessLabel">
-            <label className="title" id="planAccessLabel">
-              Access to:
-            </label>
-            <div className="planName">{usagePlanName}</div>
-          </div>
-          <div className="customMetadata" aria-labelledby="customMetadataLabel">
-            <label className="title" id="customMetadataLabel">
-              Custom Meta Data
-            </label>
-            <div>
-              <div className="pairHolder">
+          {!generated && (
+            <>
+              <div className="inputLine">
                 <TextInput
-                  placeholder="Key"
-                  onChange={alterPairKey}
-                  value={possiblePair.pairKey}
-                />
-                <span>:</span>
-                <TextInput
-                  placeholder="Value"
-                  onChange={alterKeyValuePair}
-                  value={possiblePair.value}
+                  placeholder="API Key Name"
+                  onChange={(e) => setApiKeyName(e.target.value)}
+                  value={apiKeyName}
+                  disabled={generated}
                 />
               </div>
-              <div className="addButtonHolder">
-                <button
-                  aria-label="Add Pair "
-                  onClick={addKeyValuePair}
-                  disabled={possiblePairAlreadyInList}
-                  title={
-                    possiblePairAlreadyInList
-                      ? "This pair is already in the list"
-                      : undefined
-                  }
-                >
-                  <Icon.Add />
-                </button>
+              <div
+                className="planAccessCarveOut"
+                aria-labelledby="planAccessLabel"
+              >
+                <label className="title" id="planAccessLabel">
+                  Access to:
+                </label>
+                <div className="planName">{usagePlanName}</div>
               </div>
-            </div>
-            <div className="metadataList dataPairPillList">
-              {metadataPairs.map((pair) => (
-                <DataPairPill {...pair} onRemove={() => removePair(pair)} />
-              ))}
-            </div>
-          </div>
+              {/* 
+              // TODO: Enable this when the backend supports custom metadata.
+              <div
+                className="customMetadata"
+                aria-labelledby="customMetadataLabel"
+              >
+                <label className="title" id="customMetadataLabel">
+                  Custom Meta Data
+                </label>
+                <div>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      if (possiblePairAlreadyInList) return;
+                      addKeyValuePair();
+                    }}
+                    className="pairHolder"
+                  >
+                    <div className="textHolder">
+                      <TextInput
+                        placeholder="Key"
+                        onChange={alterPairKey}
+                        value={possiblePair.pairKey}
+                      />
+                    </div>
+                    <span>:</span>
+                    <div className="textHolder">
+                      <TextInput
+                        placeholder="Value"
+                        onChange={alterKeyValuePair}
+                        value={possiblePair.value}
+                      />
+                    </div>
+                    <div className="addButtonHolder">
+                      <button
+                        aria-label="Add Pair "
+                        onClick={addKeyValuePair}
+                        disabled={possiblePairAlreadyInList}
+                        title={
+                          possiblePairAlreadyInList
+                            ? "This pair is already in the list"
+                            : undefined
+                        }
+                      >
+                        <Icon.Add />
+                      </button>
+                    </div>
+                  </form>
+                </div>
+                <div className="metadataList dataPairPillList">
+                  {metadataPairs.map((pair, idx) => (
+                    <DataPairPill
+                      key={idx}
+                      {...pair}
+                      onRemove={() => removePair(pair)}
+                    />
+                  ))}
+                </div> 
+              </div>
+              */}
+            </>
+          )}
           <CreateKeyActions
             usagePlanName={usagePlanName}
             apiKeyName={apiKeyName}
             customMetadata={metadataPairs}
-            onSuccess={onGenerationSuccess}
+            onSuccess={() => setGenerated(true)}
             onClose={onClose}
           />
         </div>

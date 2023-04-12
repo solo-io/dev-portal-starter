@@ -27,9 +27,10 @@ export type UsagePlan = {
 };
 
 export type APIKey = {
-  apiId: apiId;
+  name: string;
+  id: apiId;
   apiKey?: string;
-  customMetadata?: Map<string, string>;
+  metadata?: Record<string, string>;
 };
 
 export type API = {

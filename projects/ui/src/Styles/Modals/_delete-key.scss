@@ -1,2 +1,12 @@
 .deleteKeyModal {
+  .deleteKeyStatus {
+    padding: 30px 0px;
+  }
+  .deleteKeyActions {
+    margin-top: 15px;
+    width: 100%;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+  }
 }

@@ -76,3 +76,13 @@ button {
     background: constants.$juneGrey;
   }
 }
+
+.swaggerViewToggleHolder {
+  display: block;
+  text-align: right;
+  padding-right: 30px;
+  padding-bottom: 5px;
+  button {
+    color: constants.$primaryColor;
+  }
+}

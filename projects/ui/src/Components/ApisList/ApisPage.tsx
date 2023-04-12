@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { PageContainer } from "../Common/PageContainer";
+import { Icon } from "../../Assets/Icons";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
-import { Icon } from "../../Assets/Icons";
+import { ErrorBoundary } from "../Common/ErrorBoundary";
+import { PageContainer } from "../Common/PageContainer";
 import { ApisFilter, FilterPair } from "./ApisFilter";
 import { ApisList } from "./ApisList";
-import { ErrorBoundary } from "../Common/ErrorBoundary";
 
 /**
  * MAIN COMPONENT
