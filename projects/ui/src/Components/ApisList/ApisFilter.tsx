@@ -161,10 +161,7 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
             />
           </div>
           <div className="addButtonHolder">
-            <button
-              aria-label="Add Pair Filter"
-              onClick={addKeyValuePairFilter}
-            >
+            <button type="submit" aria-label="Add Pair Filter">
               <Icon.Add />
             </button>
           </div>
