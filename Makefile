@@ -24,19 +24,19 @@ update-ui-deps:
 
 .PHONY: run-ui
 run-ui: update-ui-deps
-	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) start
+	VITE_RESPOINT=$(RESTPOINT) VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) start
 
 .PHONY: run-storybook
 run-storybook: 
-	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) storybook
+	VITE_RESPOINT=$(RESTPOINT) VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) storybook
 
 .PHONY: build-ui
 build-ui: update-ui-deps
-	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) build
+	VITE_RESPOINT=$(RESTPOINT) VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) build
 
 .PHONY: preview-ui
 preview-ui: update-ui-deps
-	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) preview
+	VITE_RESPOINT=$(RESTPOINT) VITE_RESPOINT=$(RESTPOINT) yarn --cwd=$(UI_ROOT_DIR) preview
 
 .PHONY: build-ui-image
 build-ui-image: build-ui

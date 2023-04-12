@@ -2,7 +2,8 @@ import useSWR, { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
 import { API, APIKey, APISchema, UsagePlan, User } from "./api-types";
 
-export const restpointPrefix = "/portal-server/v1";
+export const restpointPrefix =
+  import.meta.env.VITE_RESTPOINT ?? "/portal-server/v1";
 
 async function fetchJSON(...args: Parameters<typeof fetch>) {
   if (typeof args[0] !== "string") return;
