@@ -36,9 +36,9 @@ export function APIKeysList({
   // Next we're keeping the order of the key display consistent.
   const displayedApiKeys = !!planKeys?.apiKeys
     ? planKeys.apiKeys.sort((apiKeyA, apiKeyB) =>
-        apiKeyA?.id
-          ?.toLocaleLowerCase()
-          ?.localeCompare(apiKeyB?.id?.toLocaleLowerCase())
+        apiKeyA.id
+          .toLocaleLowerCase()
+          .localeCompare(apiKeyB.id.toLocaleLowerCase())
       )
     : [];
 
