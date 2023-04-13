@@ -1,6 +1,7 @@
 import { Alert, Button as MantineButton, TextInput } from "@mantine/core";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { APIKey } from "../../../Apis/api-types";
 import { useCreateKeyMutation } from "../../../Apis/hooks";
 import { Icon } from "../../../Assets/Icons";
 import { copyToClipboard } from "../../../Utility/utility";
@@ -20,7 +21,7 @@ function CreateKeyActions({
   apiKeyName: string;
   usagePlanName: string;
   // customMetadata: KeyValuePair[];
-  onSuccess: () => void;
+  onSuccess: (apiKey: APIKey | undefined) => void;
   onClose: () => any;
   hasCopiedKey: boolean;
   onCopiedKey: () => void;
@@ -41,7 +42,7 @@ function CreateKeyActions({
       }
     );
     setKeyValue(response?.apiKey);
-    onSuccess();
+    onSuccess(response);
   };
 
   // Set attempting to create = false when finished creating the key.
@@ -99,9 +100,11 @@ function CreateKeyActions({
 export function GenerateApiKeyModal({
   usagePlanName,
   onClose,
+  onKeyGenerated,
 }: {
   usagePlanName: string;
   onClose: () => any;
+  onKeyGenerated: (apiKey: APIKey | undefined) => void;
 }) {
   const [apiKeyName, setApiKeyName] = useState("");
   const [generated, setGenerated] = useState(false);
@@ -266,7 +269,10 @@ export function GenerateApiKeyModal({
             usagePlanName={usagePlanName}
             apiKeyName={apiKeyName}
             // customMetadata={metadataPairs}
-            onSuccess={() => setGenerated(true)}
+            onSuccess={(key) => {
+              setGenerated(true);
+              onKeyGenerated(key);
+            }}
             hasCopiedKey={hasCopiedKey}
             onCopiedKey={() => setHasCopiedKey(true)}
             onClose={onClose}

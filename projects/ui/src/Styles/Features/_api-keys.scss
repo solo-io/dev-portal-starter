@@ -1,64 +1,78 @@
 @use "../constants";
 
-.apiKeyCard {
-  display: flex;
-  align-items: center;
+.apiKeyCardContainer {
   margin-top: 10px;
-  margin-bottom: 30px;
-  border-radius: constants.$smallBorderRadius;
-  border: 1px solid constants.$puddleBlue;
-  padding: 5px 5px 5px 15px;
-  background: white;
-
-  &:last-of-type {
-    margin-bottom: 0;
-  }
-
-  .accessIcon {
+  .apiKeyCard {
+    margin-bottom: 30px;
     display: flex;
     align-items: center;
-    margin-right: 10px;
+    border-radius: constants.$smallBorderRadius;
+    border: 1px solid constants.$puddleBlue;
+    padding: 5px 5px 5px 15px;
+    background: white;
 
-    svg {
-      width: 24px;
-      height: 24px;
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .accessIcon {
+      display: flex;
+      align-items: center;
       margin-right: 10px;
+
+      svg {
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+      }
+    }
+
+    .apiKeyKey {
+      flex-grow: 1;
+      height: 1.5em;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin: 10px 10px;
+      padding: 10px 20px;
+      // border-left: 1px solid constants.$juneGrey;
+    }
+
+    .apiKeyActions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      button {
+        padding: 5px;
+      }
+    }
+
+    &.emptyListCard {
+      line-height: 26px;
+
+      .accessIcon svg {
+        width: 76px;
+        height: 76px;
+      }
+
+      .title {
+        color: constants.$defaultColoredText;
+        font-size: 22px;
+      }
+
+      .description {
+        font-size: 16px;
+      }
+    }
+
+    &.recentlyGenerated {
+      border-color: constants.$darkGreen;
+      margin-bottom: 5px;
     }
   }
 
-  .apiKeyKey {
-    flex-grow: 1;
-    height: 1.5em;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    margin: 10px 10px;
-    padding: 10px 20px;
-    // border-left: 1px solid constants.$juneGrey;
-  }
-
-  .apiKeyActions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 2px;
-  }
-
-  &.emptyListCard {
-    line-height: 26px;
-
-    .accessIcon svg {
-      width: 76px;
-      height: 76px;
-    }
-
-    .title {
-      color: constants.$defaultColoredText;
-      font-size: 22px;
-    }
-
-    .description {
-      font-size: 16px;
-    }
+  .recentlyGeneratedText {
+    font-size: 14px;
+    color: constants.$darkGreen;
   }
 }

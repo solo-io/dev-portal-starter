@@ -1375,6 +1375,11 @@
   resolved "https://registry.yarnpkg.com/@exodus/schemasafe/-/schemasafe-1.0.0.tgz#f44e252665b1a6bdef0d686e22af3599a6f0a095"
   integrity sha512-2cyupPIZI69HQxEAPllLXBjQp4njDKkOjYRCYxvMZe3/LY9pp9fBM3Tb1wiFAdP6Emo4v3OEbCLGj6u73Q5KLw==
 
+"@faker-js/faker@^7.6.0":
+  version "7.6.0"
+  resolved "https://registry.yarnpkg.com/@faker-js/faker/-/faker-7.6.0.tgz#9ea331766084288634a9247fcd8b84f16ff4ba07"
+  integrity sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw==
+
 "@fal-works/esbuild-plugin-global-externals@^2.1.2":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@fal-works/esbuild-plugin-global-externals/-/esbuild-plugin-global-externals-2.1.2.tgz#c05ed35ad82df8e6ac616c68b92c2282bd083ba4"
@@ -7972,6 +7977,11 @@ react-loader-spinner@^5.3.4:
     react-is "^18.2.0"
     styled-components "^5.3.5"
     styled-tools "^1.7.2"
+
+react-magnetic-di@^2.2.13:
+  version "2.2.13"
+  resolved "https://registry.yarnpkg.com/react-magnetic-di/-/react-magnetic-di-2.2.13.tgz#ddb99afe77683ed0b9a7541a1fc5ef07e147dc14"
+  integrity sha512-EL3VTG1t9MYpr4+o9HPB6vgXHfw9lwddL6L31EO/bxIldkrPHlwpMimcT7w3dSjDiUyEUs7Qb2nUO/vY0gr1lg==
 
 react-redux@^8.0.5:
   version "8.0.5"

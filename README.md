@@ -13,6 +13,25 @@ This project is meant to be used with Gloo Platform API Portals.
 
 ## Setup
 
+Install nodejs v16.14.2.
+
+Run `IMAGE_NAME=your-image-name make build-ui-image` to output a docker image.
+
+If building the docker image without `make build-ui-image`, make sure to run `make build-ui` first to get the UI changes.
+
+## UI Iteration with engineering-demos resources
+
+The following steps can be used to iterate on the UI after applying the resources in the engineering-demos repo.
+
+1. Build the docker image (replace "username").  
+   `IMAGE_NAME=username/portal-frontend make build-ui-image`
+
+2. Push to docker hub (replace "username").  
+   `docker push username/portal-frontend:latest`
+
+3. Restart the portal-frontend deployment to see the reloaded image (make sure that the `spec.template.containers.image` field in the deployment yaml matches your image name).
+   `k rollout restart -n gloo-mesh-addons deploy/portal-frontend`
+
 ### Quick Start
 
 Paste the following into a terminal to get started. Node 16+ is required. In this code snippet, [tmplr](https://github.com/loreanvictor/tmplr) is used to download and initialize the latest commit of this repository's main branch, and [yarn](https://yarnpkg.com/) is used as the package manager.
@@ -23,9 +42,7 @@ mkdir portal-test && cd portal-test && npx tmplr solo-io/dev-portal-starter#main
 
 ### Switch Documentation Display Tool
 
-Redocly is setup as the default display tool. However, Swagger is also ready for use simply by switching commented lines in `ApiSchemaDisplay.tsx`
-
-If another tool entirely is preferred, then it's suggested to create a sibling file to `RedocDisplay.tsx` and `SwaggerDisplay.tsx` and then switching the component used inside of `ApiSchemaDisplay.tsx`
+The API details page includes a button to toggle between the Redocly and Swagger view, showing Redocly by default. Swagger can be changed to the default view by modifying `ApiSchemaDisplay.tsx`
 
 ## Personalizing
 
@@ -48,4 +65,4 @@ We've tried to provide a solid, but non-obtrusive, amount of comments throughout
 
 ## Different API Servicing the Site Itself
 
-We have defaulted the API to an endpoint that makes some assumptions about the relationship between the site and Gloo Platform API Portals. If running it different, replace the value for `const restpointPrefix = "http://localhost:31080/v1";` found in `src/Apis/hooks.ts`
+We have defaulted the API to an endpoint that makes some assumptions about the relationship between the site and Gloo Platform API Portals. The `VITE_RESTPOINT` environment variable changes this endpoint. This can be applied to the make targets (e.g. `VITE_RESTPOINT=http://example.com/my-portal-endpoint make build-ui`)

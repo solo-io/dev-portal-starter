@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { UsagePlan } from "../../../Apis/api-types";
+import { APIKey, UsagePlan } from "../../../Apis/api-types";
 import { Button } from "../../Common/Button";
 import { APIKeysList } from "../ApiKeys/ApiKeysList";
 import { GenerateApiKeyModal } from "../ApiKeys/GenerateApiKeyModal";
@@ -22,6 +22,8 @@ export function UsagePlanDetails({
   const closeCreateKeyModal = () => {
     setCreateModalIsOpen(false);
   };
+
+  const [lastKeyGenerated, setLastKeyGenerated] = useState<APIKey>();
 
   return (
     <div className="usagePlanDetails">
@@ -47,12 +49,14 @@ export function UsagePlanDetails({
         apiId={apiId}
         usagePlan={usagePlan}
         openCreateKeyModal={openCreateKeyModal}
+        lastKeyGenerated={lastKeyGenerated}
       />
 
       {createModalIsOpen && (
         <GenerateApiKeyModal
           usagePlanName={usagePlan.name}
           onClose={closeCreateKeyModal}
+          onKeyGenerated={setLastKeyGenerated}
         />
       )}
     </div>
