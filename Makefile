@@ -24,7 +24,9 @@ update-ui-deps:
 
 .PHONY: run-ui
 run-ui: update-ui-deps
-ifneq ($(RESTPOINT),)
+ifneq ($(VITE_RESTPOINT),)
+	VITE_RESTPOINT=$(VITE_RESTPOINT) VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) start
+else ifneq ($(RESTPOINT),)
 	VITE_RESTPOINT=$(RESTPOINT) VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) start
 else
 	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) start
@@ -32,7 +34,9 @@ endif
 
 .PHONY: run-storybook
 run-storybook: 
-ifneq ($(RESTPOINT),)
+ifneq ($(VITE_RESTPOINT),)
+	VITE_RESTPOINT=$(VITE_RESTPOINT) VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) storybook
+else ifneq ($(RESTPOINT),)
 	VITE_RESTPOINT=$(RESTPOINT) VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) storybook
 else
 	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) storybook
@@ -40,7 +44,9 @@ endif
 
 .PHONY: build-ui
 build-ui: update-ui-deps
-ifneq ($(RESTPOINT),)
+ifneq ($(VITE_RESTPOINT),)
+	VITE_RESTPOINT=$(VITE_RESTPOINT) VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) build
+else ifneq ($(RESTPOINT),)
 	VITE_RESTPOINT=$(RESTPOINT) VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) build
 else
 	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) build
@@ -48,7 +54,13 @@ endif
 
 .PHONY: preview-ui
 preview-ui: update-ui-deps
-	VITE_RESTPOINT=$(RESTPOINT) yarn --cwd=$(UI_ROOT_DIR) preview
+ifneq ($(VITE_RESTPOINT),)
+	VITE_RESTPOINT=$(VITE_RESTPOINT) VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) preview
+else ifneq ($(RESTPOINT),)
+	VITE_RESTPOINT=$(RESTPOINT) VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) preview
+else
+ 	VITE_UI_VERSION=$(VERSION) yarn --cwd=$(UI_ROOT_DIR) preview
+endif
 
 .PHONY: build-ui-image
 build-ui-image: build-ui
