@@ -1,6 +1,8 @@
+import { MantineProvider } from "@mantine/core";
 import type { Preview } from "@storybook/react";
 import React from "react";
 import { ToasterWithOptions } from "../src/Components/Common/ToasterWithOptions";
+import { AppContextProvider } from "../src/Context/AppContext";
 import "../src/Styles/main.scss";
 
 const preview: Preview = {
@@ -15,10 +17,12 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <>
-        <ToasterWithOptions />
-        <Story />
-      </>
+      <AppContextProvider>
+        <MantineProvider withGlobalStyles withNormalizeCSS>
+          <ToasterWithOptions />
+          <Story />
+        </MantineProvider>
+      </AppContextProvider>
     ),
   ],
 };

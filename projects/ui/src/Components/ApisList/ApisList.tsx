@@ -1,3 +1,4 @@
+import { di } from "react-magnetic-di";
 import { useListApis } from "../../Apis/hooks";
 import { EmptyData } from "../Common/EmptyData";
 import { Loading } from "../Common/Loading";
@@ -17,6 +18,7 @@ export function ApisList({
   nameFilter: string;
   usingGridView: boolean;
 }) {
+  di(useListApis);
   const { isLoading, data: apisList } = useListApis();
 
   if (isLoading) {
@@ -40,9 +42,9 @@ export function ApisList({
                       .includes(filter.displayName.toLocaleLowerCase())) ||
                   (filter.type === FilterType.keyValuePair &&
                     api.customMetadata &&
-                    api.customMetadata.get(
+                    api.customMetadata[
                       parsePairString(filter.displayName).pairKey
-                    ) === parsePairString(filter.displayName).value) ||
+                    ] === parsePairString(filter.displayName).value) ||
                   (filter.type === FilterType.apiType && true) // This is the only type available for now
                 );
               }))

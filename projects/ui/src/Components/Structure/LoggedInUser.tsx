@@ -16,7 +16,7 @@ export function LoggedInUser() {
 
   return !user ? (
     <a href={`${restpointPrefix}/login`}>
-      <div className="styledButton">LOGIN</div>
+      <div className="styledButton">Login</div>
     </a>
   ) : (
     <Popover position="bottom" opened={opened} onChange={setOpened}>
@@ -35,7 +35,7 @@ export function LoggedInUser() {
             href={`${restpointPrefix}/logout`}
             onClick={() => setOpened(!opened)}
           >
-            <div className="styledButton">LOGOUT</div>
+            Logout
           </a>
         </div>
       </Popover.Dropdown>

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { APIKeysList } from "../Components/UsagePlans/ApiKeys/ApiKeysList";
+import { APIKeysList } from "../../Components/UsagePlans/ApiKeys/ApiKeysList";
 
 // More on how to set up stories at: https://storybook.js.org/docs/7.0/react/writing-stories/introduction
 const meta = {
-  title: "Api Keys List",
+  title: "API Keys / API Keys List",
   component: APIKeysList,
 } satisfies Meta<typeof APIKeysList>;
 
@@ -14,6 +14,7 @@ type Story = StoryObj<typeof meta>;
 export const Empty: Story = {
   args: {
     apiId: "api-id-1",
+    lastKeyGenerated: undefined,
     usagePlan: {
       apiIds: ["api-id-2"],
       authPolicies: [

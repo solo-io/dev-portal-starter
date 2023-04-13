@@ -20,7 +20,7 @@ function getPairString(pair: KeyValuePair) {
   return `${pair.pairKey} : ${pair.value}`;
 }
 export function parsePairString(pairString: string): KeyValuePair {
-  const [pairKey, value] = pairString.split(":");
+  const [pairKey, value] = pairString.split(":").map((s) => s.trim());
   return {
     pairKey,
     value,
@@ -171,6 +171,7 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
             <Icon.CodeGear />
           </div>
           <Select
+            className="addTypeFilterSelect"
             size="xs"
             disabled={(selectableTypes ?? []).length === 0}
             data={selectableTypes}

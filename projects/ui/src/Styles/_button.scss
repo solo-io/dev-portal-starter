@@ -78,10 +78,12 @@ button {
 }
 
 .swaggerViewToggleHolder {
+  width: calc(100vw - 16px);
+  max-width: 1920px;
+  padding: 0px 30px 5px 0px;
+  margin: 0 auto;
   display: block;
   text-align: right;
-  padding-right: 30px;
-  padding-bottom: 5px;
   button {
     color: constants.$primaryColor;
   }

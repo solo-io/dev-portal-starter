@@ -1,4 +1,4 @@
-import { UsagePlan } from "../../../Apis/api-types";
+import { APIKey, UsagePlan } from "../../../Apis/api-types";
 import { useListApiKeys } from "../../../Apis/hooks";
 import { Icon } from "../../../Assets/Icons";
 import { Button } from "../../Common/Button";
@@ -13,10 +13,12 @@ export function APIKeysList({
   usagePlan,
   apiId,
   openCreateKeyModal,
+  lastKeyGenerated,
 }: {
   usagePlan: UsagePlan;
   apiId: string;
   openCreateKeyModal: () => void;
+  lastKeyGenerated: APIKey | undefined;
 }) {
   const {
     isLoading,
@@ -36,9 +38,9 @@ export function APIKeysList({
   // Next we're keeping the order of the key display consistent.
   const displayedApiKeys = !!planKeys?.apiKeys
     ? planKeys.apiKeys.sort((apiKeyA, apiKeyB) =>
-        apiKeyA?.id
-          ?.toLocaleLowerCase()
-          ?.localeCompare(apiKeyB?.id?.toLocaleLowerCase())
+        apiKeyA.id
+          .toLocaleLowerCase()
+          .localeCompare(apiKeyB.id.toLocaleLowerCase())
       )
     : [];
 
@@ -54,22 +56,25 @@ export function APIKeysList({
               apiKey={apiKey}
               usagePlanName={usagePlan.name}
               forceListRefetch={refetchPlanKeysList}
+              wasRecentlyGenerated={apiKey.id === lastKeyGenerated?.id}
             />
           </ErrorBoundary>
         ))
       ) : (
-        <div className="apiKeyCard emptyListCard">
-          <div className="accessIcon">
-            <Icon.CircledKey />
-          </div>
-          <div>
-            <div className="title">There are no keys to display here.</div>
-            <div className="description">
-              Please{" "}
-              <Button className="justText" onClick={openCreateKeyModal}>
-                generate a key
-              </Button>{" "}
-              to access this API Product using this usage plan.
+        <div className="apiKeyCardContainer">
+          <div className="apiKeyCard emptyListCard">
+            <div className="accessIcon">
+              <Icon.CircledKey />
+            </div>
+            <div>
+              <div className="title">There are no keys to display here.</div>
+              <div className="description">
+                Please{" "}
+                <Button className="justText" onClick={openCreateKeyModal}>
+                  generate a key
+                </Button>{" "}
+                to access this API Product using this usage plan.
+              </div>
             </div>
           </div>
         </div>

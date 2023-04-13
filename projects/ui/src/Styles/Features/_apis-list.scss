@@ -140,6 +140,9 @@
       }
       .dropdownFilter {
         @extend .filterBox;
+        .addTypeFilterSelect {
+          flex-grow: 1;
+        }
         input {
           border: none;
           &::placeholder {
@@ -322,12 +325,20 @@
           padding: 0 40px;
         }
         .description {
+          color: constants.$juneGrey;
           line-height: 22px;
           font-size: 16px;
           font-weight: 400;
-          padding: 0 40px 40px;
-
-          color: constants.$juneGrey;
+          padding: 0 40px 5px;
+          &:last-child {
+            padding-bottom: 40px;
+          }
+        }
+        .metadataList {
+          margin: 10px;
+          &:last-child {
+            margin-bottom: 20px;
+          }
         }
       }
 
@@ -409,20 +420,23 @@
         flex: 1;
         min-width: 250px;
         min-height: 165px;
-
-        padding: 0 25px 0 40px;
+        padding: 20px;
 
         .title {
           margin-bottom: 15px;
-
+          margin-left: 10px;
           font-size: 28px;
           font-weight: 600;
           color: constants.$defaultColoredText;
         }
         .description {
+          margin-left: 10px;
           font-size: 16px;
           line-height: 22px;
           color: constants.$juneGrey;
+        }
+        .metadataList {
+          margin-top: 10px;
         }
       }
     }

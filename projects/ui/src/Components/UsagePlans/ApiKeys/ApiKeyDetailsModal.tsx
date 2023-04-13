@@ -1,5 +1,3 @@
-import { Button } from "@mantine/core";
-import { toast } from "react-hot-toast";
 import { APIKey } from "../../../Apis/api-types";
 import { Icon } from "../../../Assets/Icons";
 import { DataPairPill } from "../../Common/DataPairPill";
@@ -21,18 +19,6 @@ export function ApiKeyDetailsModal({
       title={"Key Details"}
       bodyContent={
         <div className="keyDetailsModal">
-          <div className="keyIdLine">
-            <Button
-              variant="subtle"
-              onClick={() => {
-                navigator.clipboard.writeText(apiKey.id);
-                toast.success("Copied API key to clipboard");
-              }}
-            >
-              <div className="keyId">{apiKey.id}</div>
-              <Icon.PaperStack />
-            </Button>
-          </div>
           <div className="planAccessCarveOut" aria-labelledby="planAccessLabel">
             <label className="title" id="planAccessLabel">
               Access to:

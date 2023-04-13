@@ -1,0 +1,11 @@
+<svg id="Copy-simple-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="copy-checkmark-icon">
+    <rect id="Rectangle_8313" data-name="Rectangle 8313" width="24" height="24" fill="#65c389" opacity="0"/>
+    <g id="icon-text" transform="translate(1 1)">
+      <g id="copied-checkmark" transform="translate(0 0)">
+        <path id="noun_copy_100495" data-name="noun copy 100495" d="M442.585,425.724V407.112h13.7v18.612Zm12.719-17.63H443.54v16.675H455.3ZM440.62,422.776h-.982V404.164h13.728v.982H440.62Z" transform="translate(-439.638 -404.164)" fill="#65c389" fill-rule="evenodd"/>
+        <path id="Path_38627" data-name="Path 38627" d="M450.869,421.188,445.681,416l.732-.732,4.457,4.456,9.646-9.646.732.732Z" transform="translate(-439.426 -403.957)" fill="#65c389"/>
+      </g>
+    </g>
+  </g>
+</svg>
