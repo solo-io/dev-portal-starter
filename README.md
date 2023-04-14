@@ -8,13 +8,17 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
 
 1. Install [Node v16.14.2](https://nodejs.org/en/blog/release/v16.14.2) and [yarn](https://yarnpkg.com/).
 
-2. Run the following code snippet, which uses [tmplr](https://github.com/loreanvictor/tmplr) to download and initialize the latest commit of this repository's main branch.
+2. Run the following, which uses [tmplr](https://github.com/loreanvictor/tmplr) to download and initialize the latest commit of this repository's main branch.
 
-```shell
-mkdir portal-test && cd portal-test && npx tmplr solo-io/dev-portal-starter#main
-```
+   ```shell
+   mkdir portal-test && cd portal-test && npx tmplr solo-io/dev-portal-starter#main
+   ```
 
-3. Run `IMAGE_NAME=username/portal-frontend make build-ui-image` to output a docker image (replace username).
+3. Run the following to output a docker image (replace username):
+
+   ```shell
+   IMAGE_NAME=username/portal-frontend make build-ui-image
+   ```
 
 _\*\*\* Note: If building the docker image without `make build-ui-image`, make sure to run `make build-ui` first to get the UI changes.\*\*\*_
 
@@ -24,14 +28,22 @@ _\*\*\* Note: If building the docker image without `make build-ui-image`, make s
 
 The following steps can be used to iterate on the UI after following the previous setup instructions.
 
-1. Build the docker image (replace "username").  
-   `IMAGE_NAME=username/portal-frontend make build-ui-image`
+1. Build the docker image (replace "username").
 
-2. Push to docker hub (replace "username"). This is required to see UI updates if the kubernetes portal-frontend deployment has `imagePullPolicy: Always`.  
-   `docker push username/portal-frontend:latest`
+   ```shell
+   IMAGE_NAME=username/portal-frontend make build-ui-image
+   ```
 
-3. Restart the portal-frontend deployment to see the reloaded image (make sure that the `spec.template.containers.image` field in the deployment yaml matches your image name).  
-   `k rollout restart -n gloo-mesh-addons deploy/portal-frontend`
+2. Push to docker hub (replace "username"). This is required to see UI updates if the kubernetes portal-frontend deployment has `imagePullPolicy: Always`.
+
+   ```shell
+   docker push username/portal-frontend:latest
+   ```
+
+3. Restart the portal-frontend deployment to see the reloaded image (make sure that the `spec.template.containers.image` field in the deployment yaml matches your image name).
+   ```shell
+   k rollout restart -n gloo-mesh-addons deploy/portal-frontend
+   ```
 
 ## UI Iteration with Storybook and Mock Data
 
