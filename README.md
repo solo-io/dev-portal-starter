@@ -26,7 +26,7 @@ _\*\*\* Note: If building the docker image without `make build-ui-image`, make s
 
 ## UI Iteration
 
-The following steps can be used to iterate on the UI after following the previous setup instructions.
+The following steps can be used to iterate on the UI after the initial setup. These steps must be repeated after each UI change to see them in the build, and can be added as a `.bashrc` or `.zshrc` [alias](https://linuxize.com/post/how-to-create-bash-aliases/). To see UI changes faster, see the next section on "UI Iteration with Storybook and Mock Data".
 
 1. Build the docker image (replace "username").
 
