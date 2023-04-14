@@ -57,11 +57,11 @@ make run-storybook
 
 ### Switching the API Documentation Display
 
-The API details page includes a button to toggle between the Redocly and Swagger view, showing Redocly by default. Swagger can be changed to the default view by modifying `ApiSchemaDisplay.tsx`
+The API details page includes a button to toggle between the Redoc and Swagger views, showing the Redoc view by default. Swagger can be changed to be the default view by modifying `ApiSchemaDisplay.tsx`.
 
 ### Colors
 
-The styles are extended with [Sass](https://sass-lang.com/), and Sass variables are used throughout the app.
+[Sass](https://sass-lang.com/) and class names are used for styling, and Sass variables are used throughout the app.
 
 Colors may be overridden in `./projects/ui/src/Styles/_constants.scss`. See `_default-constants.scss` for the variable names that can be overridden.
 
