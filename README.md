@@ -53,11 +53,11 @@ Since building and pushing the image using the previous steps can take a while, 
 make run-storybook
 ```
 
+## Personalization
+
 ### Switching the API Documentation Display
 
 The API details page includes a button to toggle between the Redocly and Swagger view, showing Redocly by default. Swagger can be changed to the default view by modifying `ApiSchemaDisplay.tsx`
-
-## Personalization
 
 ### Colors
 
