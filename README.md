@@ -47,7 +47,7 @@ The following steps can be used to iterate on the UI after the initial setup. Th
 
 ## UI Iteration with Storybook and Mock Data
 
-Since building and pushing the image using the previous steps can take a while, UI iteration can also be done with [Storybook](https://storybook.js.org/). Storybook can run without any kubernetes resources set up. API responses are mocked using [react-magnetic-di](https://www.npmjs.com/package/react-magnetic-di) and [@faker-js/faker](https://fakerjs.dev/). The storybook server can be run on http:localhost:6006 using the command:
+Since building and pushing the image using the previous steps can take a while, UI iteration can also be done with [Storybook](https://storybook.js.org/). Storybook can run without any kubernetes resources set up. API responses are mocked using [react-magnetic-di](https://www.npmjs.com/package/react-magnetic-di) and [@faker-js/faker](https://fakerjs.dev/). The Storybook server can be run on [http:localhost:6006](http:localhost:6006) using the command:
 
 ```shell
 make run-storybook
