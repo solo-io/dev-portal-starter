@@ -4,44 +4,45 @@
  *   within the Schema.
  */
 
-export type apiId = string;
-
 export type User = {
-  id: string;
   name: string;
   email: string;
   username: string;
 };
 
-export type RateLimitUnit = "SECOND" | "MINUTE" | "HOUR";
+type RateLimitPolicy = {
+  unit: "UNKNOWN" | "SECOND" | "MINUTE" | "HOUR" | "DAY";
+  requestsPerUnit: number;
+};
+
+type AuthPolicy = {
+  authType: string;
+};
+
 export type UsagePlan = {
   name: string;
-  authPolicies: {
-    authType: string;
-  }[];
-  rateLimitPolicy: {
-    unit: RateLimitUnit;
-    requestsPerUnit: number;
-  };
-  apiIds: apiId[];
+  authPolicies: AuthPolicy[];
+  rateLimitPolicy: RateLimitPolicy;
+  apiIds: string[];
 };
 
 export type APIKey = {
   name: string;
-  id: apiId;
-  apiKey?: string;
-  metadata?: Record<string, string>;
+  id: string;
+  // APIKey is returned only once when the API key is created.
+  apiKey: string | undefined;
+  metadata?: Record<string, string> | undefined;
 };
 
 export type API = {
   apiId: string;
-  title: string;
-  description: string;
-  termsOfService: string;
   contact: string;
-  license: string;
-  usagePlans: string[];
   customMetadata: Record<string, string> | undefined;
+  description: string;
+  license: string;
+  termsOfService: string;
+  title: string;
+  usagePlans: string[];
 };
 
 type SchemaPropertyType = "string" | "integer" | "array" | "object";

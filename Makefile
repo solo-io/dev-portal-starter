@@ -45,6 +45,9 @@ build-ui: update-ui-deps
 preview-ui: update-ui-deps
  	$(UI_ARGS) yarn --cwd=$(UI_ROOT_DIR) preview
 
+# Note: if using the engineering-demos frontend-portal deployment, 
+# the built image must be pushed to dockerhub for the deployed image to be 
+# updated, if imagePullPolicy=Always
 .PHONY: build-ui-image
 build-ui-image: build-ui
 	docker build -t $(IMAGE_NAME) .
