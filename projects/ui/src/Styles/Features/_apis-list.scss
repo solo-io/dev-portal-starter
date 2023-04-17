@@ -61,7 +61,7 @@
 
       .filterPlaceholderTexts {
         color: constants.$juneGrey;
-        font-weight: 300;
+        font-weight: 400;
         font-size: 16px;
       }
 
@@ -74,6 +74,7 @@
       .textFilter {
         position: relative;
         input {
+          font-size: 16px;
           padding-right: 30px;
           &::placeholder {
             @extend .filterPlaceholderTexts;
@@ -102,18 +103,19 @@
         }
 
         .pairHolder {
-          display: grid;
-          padding: 0px 0px;
+          display: flex;
+          padding: 0px 4px;
+          gap: 4px;
           align-items: center;
-          grid-template-columns: 1fr 2px 1fr;
           color: constants.$juneGrey;
 
           input {
             border-radius: constants.$smallBorderRadius;
-
-            border: 0px solid transparent;
+            min-height: unset;
+            height: 28px;
             outline: none;
             box-shadow: none;
+            font-size: 16px;
 
             &::placeholder {
               @extend .filterPlaceholderTexts;
@@ -128,12 +130,20 @@
           height: 34px;
           width: 34px;
 
-          svg {
-            height: 21px;
-            width: 21px;
-
-            * {
-              fill: constants.$juneGrey;
+          button {
+            svg {
+              height: 21px;
+              width: 21px;
+              * {
+                fill: constants.$juneGrey;
+              }
+            }
+            border-radius: 50%;
+            &:hover {
+              background-color: lighten(constants.$marchGrey, 4);
+            }
+            &:active {
+              background-color: constants.$marchGrey;
             }
           }
         }
@@ -161,7 +171,6 @@
           display: flex;
           align-items: center;
           justify-content: space-between;
-
           flex: 1;
           cursor: pointer;
           padding-left: 6px;
@@ -228,46 +237,6 @@
       border-radius: 0 0 constants.$smallBorderRadius
         constants.$smallBorderRadius;
       background: constants.$puddleBlue;
-
-      .activeFiltersGrid {
-        flex: 1;
-
-        display: flex;
-        flex-wrap: wrap;
-      }
-      .activeFilter {
-        @extend .primaryTrimmedSmallWhiteContainer;
-
-        display: inline-flex;
-        align-items: center;
-        font-size: 12px;
-        line-height: 22px;
-        height: 22px;
-        margin: 0 8px 8px 0;
-        font-size: 13px;
-
-        .closingX svg {
-          width: 8px;
-          height: 8px;
-          margin-left: 8px;
-
-          * {
-            stroke: currentColor;
-          }
-        }
-      }
-
-      .clearAll {
-        @extend .activeFilter;
-
-        background: constants.$primaryColor;
-        color: white;
-        margin: 0;
-
-        svg {
-          stroke: white;
-        }
-      }
     }
   }
   /*
@@ -370,7 +339,7 @@
           .typeTitle {
             @extend .primaryTrimmedSmallWhiteContainer;
 
-            font-size: 14px;
+            font-size: 16px;
             line-height: 22px;
           }
         }

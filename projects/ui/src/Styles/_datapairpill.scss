@@ -1,4 +1,5 @@
 @use "./constants";
+@use "./container";
 
 .dataPairPillList {
   display: flex;
@@ -28,5 +29,69 @@
   }
   div {
     word-break: break-all;
+  }
+}
+
+.activeFiltersGrid {
+  flex: 1;
+
+  display: flex;
+  flex-wrap: wrap;
+}
+.activeFilter {
+  @extend .primaryTrimmedSmallWhiteContainer;
+
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  line-height: 22px;
+  height: 22px;
+  margin: 0 8px 8px 0;
+  font-size: 13px;
+  &:not(.clearAll) {
+    padding-right: 2px;
+  }
+
+  button.closingX {
+    margin-left: 5px;
+    border-radius: 50%;
+    padding: 5px;
+    svg {
+      width: 8px;
+      height: 8px;
+      margin-left: 0px !important;
+      * {
+        stroke: currentColor;
+      }
+    }
+    &:hover {
+      background: lighten(constants.$puddleBlue, 5);
+      svg * {
+        fill: white;
+      }
+    }
+    &:active {
+      background: constants.$puddleBlue;
+    }
+  }
+}
+
+.clearAll {
+  @extend .activeFilter;
+
+  background: constants.$primaryColor;
+  color: white;
+  margin: 0;
+
+  svg {
+    stroke: white;
+  }
+  &:hover {
+    border-color: lighten(constants.$primaryColor, 10);
+    background: lighten(constants.$primaryColor, 10);
+  }
+  &:active {
+    border-color: lighten(constants.$primaryColor, 20);
+    background: lighten(constants.$primaryColor, 20);
   }
 }

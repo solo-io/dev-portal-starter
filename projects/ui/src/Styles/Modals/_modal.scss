@@ -1,10 +1,23 @@
 @use "../constants";
 
+// Overrides the Mantine component library's close button styles.
+.mantine-Modal-header .mantine-Modal-close {
+  width: 1.75rem;
+  height: 1.75rem;
+  svg {
+    width: 24px;
+    height: 24px;
+    * {
+      fill: #ccd0d5;
+    }
+  }
+}
+
 .modalBox {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 15px;
+  padding-bottom: 30px;
   max-width: 425px;
 
   .modalHeader {

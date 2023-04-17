@@ -3,7 +3,6 @@ import toast from "react-hot-toast";
 import { useDeleteKeyMutation } from "../../../Apis/hooks";
 import { Icon } from "../../../Assets/Icons";
 import { Button } from "../../Common/Button";
-import { Loading } from "../../Common/Loading";
 import { Modal } from "../../Common/Modal";
 
 function DeleteKeyActions({
@@ -39,31 +38,33 @@ function DeleteKeyActions({
 
   return (
     <div className="deleteKeyActions">
-      {attemptingDelete ? (
-        <Loading message="Deleting key..." />
-      ) : (
-        <>
-          <Button
-            className="paleButton"
-            onClick={onClose}
-            title={"Back out of this window without deleting"}
-          >
-            CANCEL
-          </Button>
-          <Button onClick={attemptToDelete} title={"Confirm deleting this key"}>
-            DELETE
-          </Button>
-        </>
-      )}
+      <Button
+        className="error"
+        disabled={attemptingDelete}
+        onClick={attemptToDelete}
+        title={"Confirm deleting this key"}
+      >
+        DELETE
+      </Button>
+      <Button
+        className="paleButton"
+        disabled={attemptingDelete}
+        onClick={onClose}
+        title={"Back out of this window without deleting"}
+      >
+        CANCEL
+      </Button>
     </div>
   );
 }
 
 export function DeleteApiKeyModal({
+  apiKeyName,
   apiKeyId,
   usagePlanName,
   onClose,
 }: {
+  apiKeyName: string;
   apiKeyId: string;
   usagePlanName: string;
   onClose: () => any;
@@ -79,6 +80,7 @@ export function DeleteApiKeyModal({
       bodyContent={
         <>
           <div className="deleteKeyModal">
+            <div className="deleteKeyName">{apiKeyName}</div>
             <div className="deleteKeyStatus">
               {deleted
                 ? "Key Deleted Successfully!"

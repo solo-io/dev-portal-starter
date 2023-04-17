@@ -33,17 +33,39 @@ button {
   min-width: 90px;
   line-height: 40px;
   padding: 0 10px;
-  border: 1px solid constants.$januaryGrey;
-  background: constants.$primaryColor;
   color: white;
   font-size: 14px;
+  transition: background-color 0.1s linear;
 
-  transition: background 1s linear;
+  //
+  // Primary states
+  //
+  border: 1px solid constants.$januaryGrey;
+  background-color: constants.$primaryColor;
+  &:hover {
+    background-color: lighten(constants.$primaryColor, 10);
+  }
+  &:active {
+    background-color: lighten(constants.$primaryColor, 20);
+  }
 
+  //
+  // Pale states
+  //
   &.paleButton {
     border-color: constants.$primaryColor;
-    background: white;
+    background-color: white;
     color: constants.$primaryColor;
+    &:hover {
+      border-color: lighten(constants.$primaryColor, 10);
+      background-color: lighten(constants.$primaryColor, 10);
+      color: white;
+    }
+    &:active {
+      border-color: lighten(constants.$primaryColor, 20);
+      background-color: lighten(constants.$primaryColor, 20);
+      color: white;
+    }
   }
 
   &.smallButton {
@@ -51,29 +73,62 @@ button {
     line-height: 26px;
   }
 
+  //
+  // Just text states
+  //
   &.justText {
     display: inline;
     height: auto;
     line-height: inherit;
     border: none;
-    background: none;
+    background-color: transparent;
     font-size: inherit;
     padding: 0;
 
     color: constants.$primaryColor;
     font-weight: 500;
+    &:hover {
+      color: lighten(constants.$primaryColor, 10);
+    }
+    &:active {
+      color: lighten(constants.$primaryColor, 20);
+    }
   }
 
+  //
+  // Success states
+  //
   &.success {
-    background: constants.$midGreen;
-  }
-  &.error {
-    background: constants.$pumpkinOrange;
+    background-color: constants.$midGreen;
+    &:hover {
+      background-color: lighten(constants.$midGreen, 10);
+    }
+    &:active {
+      background-color: lighten(constants.$midGreen, 20);
+    }
   }
 
-  &.disabled {
+  //
+  // Error states
+  //
+  &.error {
+    background-color: constants.$pumpkinOrange;
+    &:hover {
+      background-color: lighten(constants.$pumpkinOrange, 10);
+    }
+    &:active {
+      background-color: lighten(constants.$pumpkinOrange, 20);
+    }
+  }
+
+  //
+  // Disabled states
+  //
+  &.disabled,
+  &.disabled:hover,
+  &.disabled:active {
     cursor: default;
-    background: constants.$juneGrey;
+    background-color: constants.$juneGrey;
   }
 }
 

@@ -46,10 +46,18 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
   });
 
   const addNameFilter = (evt: { target: { value: string } }) => {
+    const displayName = evt.target.value;
+    // Check for duplicate filters.
+    const isDuplicateFilter = filters.allFilters.some(
+      (f) => f.type === FilterType.name && f.displayName === displayName
+    );
+    if (isDuplicateFilter) {
+      return;
+    }
     if (evt.target.value !== "") {
       filters.setAllFilters([
         ...filters.allFilters,
-        { displayName: evt.target.value, type: FilterType.name },
+        { displayName, type: FilterType.name },
       ]);
     }
     filters.setNameFilter("");
@@ -73,6 +81,13 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
   const addKeyValuePairFilter = () => {
     const displayName = getPairString(pairFilter);
     if (displayName.trim() === ":") return;
+    // Check for duplicate filters.
+    const isDuplicateFilter = filters.allFilters.some(
+      (f) => f.type === FilterType.keyValuePair && f.displayName === displayName
+    );
+    if (isDuplicateFilter) {
+      return;
+    }
     filters.setAllFilters([
       ...filters.allFilters,
       { displayName, type: FilterType.keyValuePair },
@@ -133,7 +148,7 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
             onBlur={addNameFilter}
             value={filters.nameFilter}
           />
-          <Icon.MagnifyingGlass style={{ cursor: "pointer" }} />
+          <Icon.MagnifyingGlass style={{ pointerEvents: "none" }} />
         </form>
         <form
           onSubmit={(e) => {
