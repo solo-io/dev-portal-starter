@@ -23,6 +23,12 @@
 }
 @font-face {
   font-family: "Proxima Nova";
+  src: url(../Assets/fonts/ProximaNova-Semibold.otf) format("opentype");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Proxima Nova";
   src: url(../Assets/fonts/ProximaNova-Bold.otf) format("opentype");
   font-weight: 700;
   font-style: normal;

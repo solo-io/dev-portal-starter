@@ -2,6 +2,7 @@ import { Select, TextInput } from "@mantine/core";
 import { useState } from "react";
 import { Icon } from "../../Assets/Icons";
 import { KeyValuePair } from "../Common/DataPairPill";
+import GridListToggle from "../Common/GridListToggle";
 
 /**
  * HELPER TYPE DEFS
@@ -195,26 +196,10 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
             placeholder="API Type"
           />
         </div>
-        <div className="gridListToggle">
-          <button
-            aria-hidden="true"
-            className={`listingTypeToggle ${
-              filters.showingGrid ? "isActive" : ""
-            }`}
-            onClick={() => filters.setShowingGrid(true)}
-          >
-            <Icon.TileViewIcon />
-          </button>
-          <button
-            aria-hidden="true"
-            className={`listingTypeToggle ${
-              !filters.showingGrid ? "isActive" : ""
-            }`}
-            onClick={() => filters.setShowingGrid(false)}
-          >
-            <Icon.ListViewIcon />
-          </button>
-        </div>
+        <GridListToggle
+          onChange={(newIsList) => filters.setShowingGrid(!newIsList)}
+          isList={!filters.showingGrid}
+        />
       </div>
 
       {filters.allFilters.length > 0 && (

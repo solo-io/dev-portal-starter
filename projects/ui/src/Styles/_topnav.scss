@@ -16,29 +16,43 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  user-select: none;
 
   height: 100%;
   @include mixins.contentWidth();
 
   color: constants.$defaultText;
 
+  .logoContainer {
+    display: flex;
+    align-items: center;
+    margin-left: -12px;
+    padding: 0 12px;
+    width: auto;
+    height: 100%;
+  }
+
   .siteNavigating {
     display: flex;
     flex-direction: row;
     align-items: center;
     height: 100%;
+    gap: 5px;
 
-    a {
+    a.navLink {
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100%;
-      margin-right: 30px;
+      padding: 0px 12px;
+      cursor: pointer;
 
       color: constants.$externalLinkColor;
       border-bottom: 4px solid white;
-
-      &.active {
+      transition: background-color 0.25s, border-bottom-color 0.25s, color 0.25s;
+      &.active,
+      &.active:hover,
+      &.active:active {
         color: constants.$internalLinkColor;
         border-bottom-color: constants.$internalLinkColor;
       }
@@ -47,18 +61,21 @@
     .divider {
       height: 33px;
       width: 1px;
-      margin-right: 30px;
-
       background: constants.$puddleBlue;
     }
   }
 
   .userLoginArea {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 12px;
+    margin-right: -12px;
+
     .userHolder {
       display: flex;
       align-items: center;
       color: constants.$defaultColoredText;
-      cursor: pointer;
 
       svg.userCircle {
         width: 40px;
@@ -73,12 +90,27 @@
       svg.dropdownArrow {
         width: 14px;
         margin-left: 10px;
-
         * {
           stroke: currentColor;
           stroke-width: 2;
         }
       }
+    }
+  }
+
+  .userLoginArea.loggedIn,
+  .logoContainer,
+  .siteNavigating a.navLink {
+    cursor: pointer;
+    &:hover {
+      color: darken(constants.$internalLinkColor, 10);
+      background-color: lighten(constants.$puddleBlue, 9);
+      border-bottom-color: constants.$puddleBlue;
+    }
+    &:active {
+      color: darken(constants.$internalLinkColor, 10);
+      background-color: lighten(constants.$puddleBlue, 7);
+      border-bottom-color: constants.$puddleBlue;
     }
   }
 }

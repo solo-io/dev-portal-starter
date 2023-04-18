@@ -158,6 +158,10 @@
           &::placeholder {
             @extend .filterPlaceholderTexts;
           }
+          &:focus-visible {
+            outline: 2px solid constants.$primaryColor;
+            outline-offset: 1px;
+          }
         }
 
         .gearHolder {
@@ -190,40 +194,6 @@
           &[disabled] {
             background: constants.$januaryGrey;
             color: constants.$mayGrey;
-          }
-        }
-      }
-
-      .gridListToggle {
-        display: grid;
-        grid-template-columns: 30px 30px;
-        grid-gap: 8px;
-
-        .listingTypeToggle {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 30px;
-          height: 30px;
-          border-radius: constants.$smallBorderRadius;
-
-          border: 1px solid constants.$puddleBlue;
-          color: constants.$augustGrey;
-          background-color: white;
-
-          svg {
-            height: 22px;
-            width: 22px;
-
-            * {
-              fill: currentColor;
-            }
-          }
-
-          &.isActive {
-            color: white;
-            background: constants.$primaryColor;
-            border-color: constants.$primaryColor;
           }
         }
       }

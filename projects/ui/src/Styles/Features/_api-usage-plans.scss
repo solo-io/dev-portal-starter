@@ -98,9 +98,10 @@
             width: 42px;
             height: 42px;
             margin-right: 12px;
-            background: constants.$defaultColoredText;
+            background-color: constants.$oceanBlue;
 
             svg {
+              margin-top: -2px;
               width: 24px;
               height: 24px;
 
@@ -121,7 +122,8 @@
         margin-left: 35px;
 
         svg {
-          width: 24px;
+          width: 20px;
+          height: 20px;
         }
       }
     }

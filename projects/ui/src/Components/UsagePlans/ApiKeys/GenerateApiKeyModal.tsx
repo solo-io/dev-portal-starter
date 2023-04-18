@@ -6,7 +6,6 @@ import { useCreateKeyMutation } from "../../../Apis/hooks";
 import { Icon } from "../../../Assets/Icons";
 import { copyToClipboard } from "../../../Utility/utility";
 import { Button } from "../../Common/Button";
-import { Loading } from "../../Common/Loading";
 import { Modal } from "../../Common/Modal";
 
 function CreateKeyActions({
@@ -82,12 +81,10 @@ function CreateKeyActions({
             </MantineButton>
           </div>
         </>
-      ) : attemptingCreate ? (
-        <Loading message="Generating key..." />
       ) : (
         <Button
           onClick={attemptToCreate}
-          disabled={!apiKeyName}
+          disabled={!apiKeyName || attemptingCreate}
           title={!apiKeyName ? "An API Key Name must be provided" : ""}
         >
           GENERATE KEY
