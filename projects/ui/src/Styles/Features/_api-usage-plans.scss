@@ -14,12 +14,22 @@
     .apiHeader {
       display: flex;
       align-items: center;
+      width: 100%;
       border-radius: constants.$smallBorderRadius constants.$smallBorderRadius 0
         0;
       height: 128px;
       padding: 0 22px;
-      background: constants.$lightGreyTransparent;
+      background-color: constants.$lightGreyTransparent;
+
+      // Interaction
       cursor: pointer;
+      transition: 0.1s background-color;
+      &:hover {
+        background-color: darken(constants.$lightGreyTransparent, 10);
+      }
+      &:active {
+        background-color: darken(constants.$lightGreyTransparent, 25);
+      }
 
       .leadIconHolder {
         display: flex;

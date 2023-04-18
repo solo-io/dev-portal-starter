@@ -29,7 +29,7 @@
   position: relative;
 
   @include mixins.contentWidth();
-  padding: 87px 30px 40px;
+  padding: 30px 30px 25px;
   margin-bottom: 40px;
 
   .bannerContent {
@@ -80,8 +80,8 @@
 
   .banner {
     position: absolute;
-    top: 60px;
-    bottom: 0;
+    top: 10px;
+    bottom: 0px;
     right: 30px;
     width: 66%;
     max-width: 66%;
@@ -102,25 +102,25 @@
   }
 
   &.tall {
-    padding-top: 172px;
-    padding-bottom: 112px;
+    padding-top: 160px;
+    padding-bottom: 130px;
     margin-bottom: 60px;
 
     .bannerContent {
       min-height: 258px;
-      width: 53%;
-      max-width: 53%;
+      width: 51%;
+      max-width: 51%;
     }
   }
 }
 
 .widerContent .bannerHeading {
   @include mixins.contentWidth(constants.$largeContentWidth);
-  padding: 87px 30px 40px;
+  padding: 30px 30px 25px;
   margin-bottom: 40px;
 
   .banner {
-    max-width: 53%;
+    max-width: 51%;
   }
   .bannerHeading {
     max-width: 48%;

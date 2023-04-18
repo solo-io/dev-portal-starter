@@ -50,6 +50,11 @@ export function ApiDetailsPage() {
         additionalContent={
           !!apiSchema ? <HeaderSummary apiSchema={apiSchema} /> : undefined
         }
+        breadcrumbItems={[
+          { label: "Home", link: "/" },
+          { label: "APIs", link: "/apis" },
+          { label: apiSchema?.info.title ?? "" },
+        ]}
       />
 
       <ErrorBoundary fallback="There was an issue displaying the schema details">

@@ -32,6 +32,7 @@ export function ApisPage() {
         description={
           "Browse the list of APIs and documentation in this portal. From here you can get the information you need to make API calls."
         }
+        breadcrumbItems={[{ label: "Home", link: "/" }, { label: "APIs" }]}
       />
       <main className="apisList">
         <ApisFilter filters={filters} />

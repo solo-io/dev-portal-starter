@@ -6,7 +6,7 @@
   margin-bottom: 60px;
 
   /*
-  *  LIST FITLER PARTS - STARTS
+  *  LIST FILTER PARTS - STARTS
   */
   .filterArea {
     margin-bottom: 30px;
@@ -159,7 +159,7 @@
             @extend .filterPlaceholderTexts;
           }
           &:focus-visible {
-            outline: 2px solid constants.$primaryColor;
+            outline: 1px solid constants.$primaryColor;
             outline-offset: 1px;
           }
         }
@@ -210,7 +210,7 @@
     }
   }
   /*
-  *  LIST FITLER PARTS - ENDS
+  *  LIST FILTER PARTS - ENDS
   */
 
   /*
@@ -221,7 +221,7 @@
     grid-gap: 30px;
     grid-template-columns: 1fr 1fr 1fr;
 
-    .apiGridCard {
+    a.apiGridCard {
       display: flex;
       flex-direction: column;
 
@@ -428,4 +428,20 @@
   /*
   *  FILTER [WIDE CARDS] - ENDS
   */
+
+  // Wide + Grid Cards
+  // Shared styles
+  .apiListCard,
+  .apiGridList a.apiGridCard {
+    transition: 0.1s box-shadow, 0.1s outline-color;
+    outline-offset: 2px;
+    outline: 2px solid transparent;
+    &:hover {
+      outline-color: constants.$lakeBlue;
+    }
+    &:active {
+      outline-color: constants.$pondBlue;
+      box-shadow: 0 0 5px constants.$pondBlue;
+    }
+  }
 }

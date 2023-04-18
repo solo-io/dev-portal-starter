@@ -44,7 +44,7 @@ export function APIUsagePlanCard({ api }: { api: API }) {
   return (
     <div className="apiUsagePlanCard">
       <div className="content">
-        <div className="apiHeader" onClick={toggleUsagePlanDetails}>
+        <button className="apiHeader" onClick={toggleUsagePlanDetails}>
           <div className="leadIconHolder">
             <Icon.Bug />
           </div>
@@ -78,31 +78,29 @@ export function APIUsagePlanCard({ api }: { api: API }) {
               className={`canRotate ${showUsagePlanDetails ? "rotate180" : ""}`}
             />
           </div>
-        </div>
+        </button>
       </div>
 
-      <div
-        className={`usagePlansList ${
-          showUsagePlanDetails ? "showing" : "hidden"
-        }`}
-      >
-        {isLoading ? (
-          <Loading
-            message={`Getting information on usage plans for ${api.title}...`}
-          />
-        ) : (
-          <div className="usagePlansListContent">
-            {relevantUsagePlans.map((plan) => (
-              <ErrorBoundary
-                key={plan.name}
-                fallback={`There was an issue loading information about ${plan.name}`}
-              >
-                <UsagePlanDetails apiId={api.apiId} usagePlan={plan} />
-              </ErrorBoundary>
-            ))}
-          </div>
-        )}
-      </div>
+      {showUsagePlanDetails && (
+        <div className={"usagePlansList"}>
+          {isLoading ? (
+            <Loading
+              message={`Getting information on usage plans for ${api.title}...`}
+            />
+          ) : (
+            <div className="usagePlansListContent">
+              {relevantUsagePlans.map((plan) => (
+                <ErrorBoundary
+                  key={plan.name}
+                  fallback={`There was an issue loading information about ${plan.name}`}
+                >
+                  <UsagePlanDetails apiId={api.apiId} usagePlan={plan} />
+                </ErrorBoundary>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="apiFooter">
         <div className="metaInfo">
