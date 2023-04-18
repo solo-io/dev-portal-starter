@@ -66,6 +66,7 @@
         }
 
         .title {
+          text-align: left;
           margin-top: 5px;
           margin-bottom: 10px;
 
@@ -75,6 +76,7 @@
           color: constants.$defaultColoredText;
         }
         .description {
+          text-align: left;
           font-size: 16px;
           line-height: 22px;
           font-weight: 400;
