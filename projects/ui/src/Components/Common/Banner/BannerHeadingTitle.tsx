@@ -16,8 +16,8 @@ export function BannerHeadingTitle({
   };
 }) {
   return (
-    <div className="bannerHeadingTitle" style={stylingTweaks}>
-      {logo} <h1>{text}</h1> {additionalInfo}
+    <div className="bannerHeadingTitle">
+      {logo} <h1 style={stylingTweaks}>{text}</h1> {additionalInfo}
     </div>
   );
 }

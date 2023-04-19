@@ -2,6 +2,7 @@ import { Select, TextInput } from "@mantine/core";
 import { useState } from "react";
 import { Icon } from "../../Assets/Icons";
 import { KeyValuePair } from "../Common/DataPairPill";
+import GridListToggle from "../Common/GridListToggle";
 
 /**
  * HELPER TYPE DEFS
@@ -46,10 +47,18 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
   });
 
   const addNameFilter = (evt: { target: { value: string } }) => {
+    const displayName = evt.target.value;
+    // Check for duplicate filters.
+    const isDuplicateFilter = filters.allFilters.some(
+      (f) => f.type === FilterType.name && f.displayName === displayName
+    );
+    if (isDuplicateFilter) {
+      return;
+    }
     if (evt.target.value !== "") {
       filters.setAllFilters([
         ...filters.allFilters,
-        { displayName: evt.target.value, type: FilterType.name },
+        { displayName, type: FilterType.name },
       ]);
     }
     filters.setNameFilter("");
@@ -73,6 +82,13 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
   const addKeyValuePairFilter = () => {
     const displayName = getPairString(pairFilter);
     if (displayName.trim() === ":") return;
+    // Check for duplicate filters.
+    const isDuplicateFilter = filters.allFilters.some(
+      (f) => f.type === FilterType.keyValuePair && f.displayName === displayName
+    );
+    if (isDuplicateFilter) {
+      return;
+    }
     filters.setAllFilters([
       ...filters.allFilters,
       { displayName, type: FilterType.keyValuePair },
@@ -133,7 +149,7 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
             onBlur={addNameFilter}
             value={filters.nameFilter}
           />
-          <Icon.MagnifyingGlass style={{ cursor: "pointer" }} />
+          <Icon.MagnifyingGlass style={{ pointerEvents: "none" }} />
         </form>
         <form
           onSubmit={(e) => {
@@ -180,26 +196,10 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
             placeholder="API Type"
           />
         </div>
-        <div className="gridListToggle">
-          <button
-            aria-hidden="true"
-            className={`listingTypeToggle ${
-              filters.showingGrid ? "isActive" : ""
-            }`}
-            onClick={() => filters.setShowingGrid(true)}
-          >
-            <Icon.TileViewIcon />
-          </button>
-          <button
-            aria-hidden="true"
-            className={`listingTypeToggle ${
-              !filters.showingGrid ? "isActive" : ""
-            }`}
-            onClick={() => filters.setShowingGrid(false)}
-          >
-            <Icon.ListViewIcon />
-          </button>
-        </div>
+        <GridListToggle
+          onChange={(newIsList) => filters.setShowingGrid(!newIsList)}
+          isList={!filters.showingGrid}
+        />
       </div>
 
       {filters.allFilters.length > 0 && (

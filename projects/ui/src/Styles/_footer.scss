@@ -7,13 +7,14 @@ footer {
   width: 100%;
   height: 40px;
 
-  background: #e9eef3;
-  color: #8693a5;
+  background: constants.$marchGrey;
+  color: constants.$juneGrey;
 }
 .footerContent {
   display: flex;
   flex-direction: row;
   align-items: center;
+  font-size: 16px;
 
   height: 100%;
   @include mixins.contentWidth;

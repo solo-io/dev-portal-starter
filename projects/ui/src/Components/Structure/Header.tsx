@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { ReactComponent as Logo } from "../../Assets/logo.svg";
 import { ErrorBoundary } from "../Common/ErrorBoundary";
 import { LoggedInUser } from "./LoggedInUser";
@@ -26,22 +26,25 @@ export function Header() {
     <>
       <header aria-label="Site top level menus" className="topNav">
         <nav className="navContent">
-          <a href="/" aria-hidden="true">
-            <Logo />
-          </a>
+          <div className="logoContainer">
+            <Link to="/" aria-hidden="true">
+              <Logo />
+            </Link>
+          </div>
           <div className="siteNavigating">
-            <NavLink to={"/"} end>
+            <NavLink to={"/"} className={"navLink"} end>
               Home
             </NavLink>
-            <NavLink to={"/apis"} className={inAPIsArea ? "active" : ""}>
+            <NavLink
+              to={"/apis"}
+              className={`navLink ${inAPIsArea ? "active" : ""}`}
+            >
               APIs
             </NavLink>
             <div className="divider" />
-            <div className="userLoginArea">
-              <ErrorBoundary fallback="Access issues" class="horizontalError">
-                <LoggedInUser />
-              </ErrorBoundary>
-            </div>
+            <ErrorBoundary fallback="Access issues" class="horizontalError">
+              <LoggedInUser />
+            </ErrorBoundary>
           </div>
         </nav>
       </header>

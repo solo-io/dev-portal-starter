@@ -90,6 +90,7 @@ export function ApiKeyCard({
           )}
           {deleteModalOpen && (
             <DeleteApiKeyModal
+              apiKeyName={apiKey.name}
               apiKeyId={apiKey.id}
               usagePlanName={usagePlanName}
               onClose={closeDeleteModal}

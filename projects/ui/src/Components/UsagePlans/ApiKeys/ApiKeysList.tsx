@@ -1,3 +1,4 @@
+import { di } from "react-magnetic-di";
 import { APIKey, UsagePlan } from "../../../Apis/api-types";
 import { useListApiKeys } from "../../../Apis/hooks";
 import { Icon } from "../../../Assets/Icons";
@@ -20,6 +21,7 @@ export function APIKeysList({
   openCreateKeyModal: () => void;
   lastKeyGenerated: APIKey | undefined;
 }) {
+  di(useListApiKeys);
   const {
     isLoading,
     data: plansKeysList,

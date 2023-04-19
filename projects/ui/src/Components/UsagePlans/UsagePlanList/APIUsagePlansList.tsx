@@ -1,3 +1,4 @@
+import { di } from "react-magnetic-di";
 import { useListApis } from "../../../Apis/hooks";
 import { EmptyData } from "../../Common/EmptyData";
 import { ErrorBoundary } from "../../Common/ErrorBoundary";
@@ -8,6 +9,7 @@ import { APIUsagePlanCard } from "./APIUsagePlanCard";
  * MAIN COMPONENT
  **/
 export function APIUsagePlansList() {
+  di(useListApis);
   const { isLoading, data: apisList } = useListApis();
 
   if (isLoading) {

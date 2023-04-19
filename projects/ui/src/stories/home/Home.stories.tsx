@@ -1,20 +1,23 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { DeleteApiKeyModal } from "../../Components/UsagePlans/ApiKeys/DeleteApiKeyModal";
+import { MemoryRouter } from "react-router-dom";
+import { HomePage } from "../../Components/Home/HomePage";
 
 // More on how to set up stories at: https://storybook.js.org/docs/7.0/react/writing-stories/introduction
 const meta = {
-  title: "API Keys / Delete API Key Modal",
-  component: DeleteApiKeyModal,
-} satisfies Meta<typeof DeleteApiKeyModal>;
+  title: "Home / Homepage",
+  component: HomePage,
+} satisfies Meta<typeof HomePage>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/7.0/react/writing-stories/args
 export const Default: Story = {
-  args: {
-    apiKeyName: "Example API Key Name",
-    apiKeyId: "example-key-id",
-    usagePlanName: "Some-usage-plan",
-  },
+  decorators: [
+    (Story) => (
+      <MemoryRouter>
+        <Story />
+      </MemoryRouter>
+    ),
+  ],
 };

@@ -1,8 +1,8 @@
-import { PageContainer } from "../Common/PageContainer";
+import { NavLink } from "react-router-dom";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
-import { NavLink } from "react-router-dom";
 import { Button } from "../Common/Button";
+import { PageContainer } from "../Common/PageContainer";
 
 /* TODO: Clean this up. Is there a better way to display this? Should 
     these images be coming from the backend */

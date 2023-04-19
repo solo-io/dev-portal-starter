@@ -19,6 +19,10 @@ export function UsagePlansPage() {
           />
         }
         description="View usage plans and manage API Keys for all your APIs."
+        breadcrumbItems={[
+          { label: "Home", link: "/" },
+          { label: "API Usage Plans & Keys" },
+        ]}
       />
       <main className="apiUsagePlansList">
         <ErrorBoundary fallback="There was an issue loading the list of Apis">

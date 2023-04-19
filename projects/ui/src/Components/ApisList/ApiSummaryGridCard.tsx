@@ -23,42 +23,40 @@ export function ApiSummaryGridCard({ api }: { api: API }) {
   );
 
   return (
-    <NavLink to={`/api-details/${api.apiId}`}>
-      <div className="apiGridCard">
-        <div className="content">
-          <div className="apiImageHolder">
-            <img src={defaultCardImage} alt="" role="banner" />
-          </div>
-          <div className="details">
-            <div>
-              <h4 className="title">{api.title}</h4>
-              <div className="description">{api.description}</div>
-              {api.customMetadata && (
-                <div className="metadataList dataPairPillList">
-                  {Object.entries(api.customMetadata).map(
-                    ([pairKey, pairValue], idx) => (
-                      <DataPairPill
-                        key={idx}
-                        pairKey={pairKey}
-                        value={pairValue}
-                      />
-                    )
-                  )}
-                </div>
-              )}
-            </div>
+    <NavLink to={`/api-details/${api.apiId}`} className="apiGridCard">
+      <div className="content">
+        <div className="apiImageHolder">
+          <img src={defaultCardImage} alt="" role="banner" />
+        </div>
+        <div className="details">
+          <div>
+            <h4 className="title">{api.title}</h4>
+            <div className="description">{api.description}</div>
+            {api.customMetadata && (
+              <div className="metadataList dataPairPillList">
+                {Object.entries(api.customMetadata).map(
+                  ([pairKey, pairValue], idx) => (
+                    <DataPairPill
+                      key={idx}
+                      pairKey={pairKey}
+                      value={pairValue}
+                    />
+                  )
+                )}
+              </div>
+            )}
           </div>
         </div>
-        <div className="footer">
-          <div className="metaInfo">
-            <Icon.SmallCodeGear />
-            <div className="typeTitle" aria-label="API Type">
-              OpenAPI
-            </div>
+      </div>
+      <div className="footer">
+        <div className="metaInfo">
+          <Icon.SmallCodeGear />
+          <div className="typeTitle" aria-label="API Type">
+            OpenAPI
           </div>
-          <div className="typeIcon">
-            <Icon.OpenApiIcon />
-          </div>
+        </div>
+        <div className="typeIcon">
+          <Icon.OpenApiIcon />
         </div>
       </div>
     </NavLink>

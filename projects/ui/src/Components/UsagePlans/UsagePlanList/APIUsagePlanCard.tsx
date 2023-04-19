@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { API } from "../../../Apis/api-types";
+import { di } from "react-magnetic-di";
+import { API, UsagePlan } from "../../../Apis/api-types";
 import { useListUsagePlans } from "../../../Apis/hooks";
 import { Icon } from "../../../Assets/Icons";
 import { ErrorBoundary } from "../../Common/ErrorBoundary";
@@ -10,6 +11,7 @@ import { UsagePlanDetails } from "./UsagePlanDetails";
  * MAIN COMPONENT
  **/
 export function APIUsagePlanCard({ api }: { api: API }) {
+  di(useListUsagePlans);
   const { isLoading, data: usagePlans } = useListUsagePlans();
 
   const [showUsagePlanDetails, setShowUsagePlanDetails] = useState(false);
@@ -19,16 +21,17 @@ export function APIUsagePlanCard({ api }: { api: API }) {
 
   // When we have the plans, let's pull the ones we need and sort for consistency.
   const relevantUsagePlans = !!usagePlans
-    ? api.usagePlans
-        .map(
-          (apiPlanName) =>
-            usagePlans.find((usagePlan) => usagePlan.name === apiPlanName)!
-        )
-        .sort((planA, planB) =>
-          planA.name
-            .toLocaleLowerCase()
-            .localeCompare(planB.name.toLocaleLowerCase())
-        )
+    ? (
+        api.usagePlans
+          .map((apiPlanName) =>
+            usagePlans.find((usagePlan) => usagePlan.name === apiPlanName)
+          )
+          .filter((plan) => plan !== undefined) as UsagePlan[]
+      ).sort((planA, planB) =>
+        planA.name
+          .toLocaleLowerCase()
+          .localeCompare(planB.name.toLocaleLowerCase())
+      )
     : [];
 
   // TODO: total key count is not returned. https://github.com/solo-io/gloo-mesh-enterprise/issues/8705
@@ -41,7 +44,7 @@ export function APIUsagePlanCard({ api }: { api: API }) {
   return (
     <div className="apiUsagePlanCard">
       <div className="content">
-        <div className="apiHeader" onClick={toggleUsagePlanDetails}>
+        <button className="apiHeader" onClick={toggleUsagePlanDetails}>
           <div className="leadIconHolder">
             <Icon.Bug />
           </div>
@@ -71,33 +74,33 @@ export function APIUsagePlanCard({ api }: { api: API }) {
             </div>
           </div>
           <div className="viewToggleArrowHolder">
-            {showUsagePlanDetails ? <Icon.UpArrow /> : <Icon.DownArrow />}
+            <Icon.DownArrow
+              className={`canRotate ${showUsagePlanDetails ? "rotate180" : ""}`}
+            />
           </div>
-        </div>
+        </button>
       </div>
 
-      <div
-        className={`usagePlansList ${
-          showUsagePlanDetails ? "showing" : "hidden"
-        }`}
-      >
-        {isLoading ? (
-          <Loading
-            message={`Getting information on usage plans for ${api.title}...`}
-          />
-        ) : (
-          <div className="usagePlansListContent">
-            {relevantUsagePlans.map((plan) => (
-              <ErrorBoundary
-                key={plan.name}
-                fallback={`There was an issue loading information about ${plan.name}`}
-              >
-                <UsagePlanDetails apiId={api.apiId} usagePlan={plan} />
-              </ErrorBoundary>
-            ))}
-          </div>
-        )}
-      </div>
+      {showUsagePlanDetails && (
+        <div className={"usagePlansList"}>
+          {isLoading ? (
+            <Loading
+              message={`Getting information on usage plans for ${api.title}...`}
+            />
+          ) : (
+            <div className="usagePlansListContent">
+              {relevantUsagePlans.map((plan) => (
+                <ErrorBoundary
+                  key={plan.name}
+                  fallback={`There was an issue loading information about ${plan.name}`}
+                >
+                  <UsagePlanDetails apiId={api.apiId} usagePlan={plan} />
+                </ErrorBoundary>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="apiFooter">
         <div className="metaInfo">

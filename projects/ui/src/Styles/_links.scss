@@ -5,3 +5,10 @@ a {
   color: constants.$internalLinkColor;
   text-decoration: none;
 }
+
+svg.canRotate {
+  transition: transform 0.25s;
+  &.rotate180 {
+    transform: rotate(180deg);
+  }
+}

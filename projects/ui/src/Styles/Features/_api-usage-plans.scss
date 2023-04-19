@@ -14,12 +14,22 @@
     .apiHeader {
       display: flex;
       align-items: center;
+      width: 100%;
       border-radius: constants.$smallBorderRadius constants.$smallBorderRadius 0
         0;
       height: 128px;
       padding: 0 22px;
-      background: constants.$lightGreyTransparent;
+      background-color: constants.$lightGreyTransparent;
+
+      // Interaction
       cursor: pointer;
+      transition: 0.1s background-color;
+      &:hover {
+        background-color: darken(constants.$lightGreyTransparent, 10);
+      }
+      &:active {
+        background-color: darken(constants.$lightGreyTransparent, 25);
+      }
 
       .leadIconHolder {
         display: flex;
@@ -56,6 +66,7 @@
         }
 
         .title {
+          text-align: left;
           margin-top: 5px;
           margin-bottom: 10px;
 
@@ -65,6 +76,7 @@
           color: constants.$defaultColoredText;
         }
         .description {
+          text-align: left;
           font-size: 16px;
           line-height: 22px;
           font-weight: 400;
@@ -98,9 +110,10 @@
             width: 42px;
             height: 42px;
             margin-right: 12px;
-            background: constants.$defaultColoredText;
+            background-color: constants.$oceanBlue;
 
             svg {
+              margin-top: -2px;
               width: 24px;
               height: 24px;
 
@@ -121,7 +134,8 @@
         margin-left: 35px;
 
         svg {
-          width: 24px;
+          width: 20px;
+          height: 20px;
         }
       }
     }
