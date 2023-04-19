@@ -1,7 +1,7 @@
 import { Popover } from "@mantine/core";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { restpointPrefix, useGetCurrentUser } from "../../Apis/hooks";
 import { Icon } from "../../Assets/Icons";
 
@@ -11,6 +11,13 @@ import { Icon } from "../../Assets/Icons";
 export function LoggedInUser() {
   di(useGetCurrentUser);
   const { data: user } = useGetCurrentUser();
+
+  const routerLocation = useLocation();
+  const inUsagePlansArea = useMemo(
+    () => routerLocation.pathname.includes("/usage-plans"),
+    [routerLocation.pathname]
+  );
+
   const [opened, setOpened] = useState(false);
 
   // eslint-disable-next-line no-console
@@ -25,7 +32,7 @@ export function LoggedInUser() {
   ) : (
     <Popover position="bottom" opened={opened} onChange={setOpened}>
       <Popover.Target>
-        <div
+        <button
           className="userLoginArea loggedIn"
           onClick={() => setOpened(!opened)}
         >
@@ -35,11 +42,15 @@ export function LoggedInUser() {
               className={`dropdownArrow canRotate ${opened ? "rotate180" : ""}`}
             />
           </div>
-        </div>
+        </button>
       </Popover.Target>
-      <Popover.Dropdown>
-        <div className="userDropdown">
-          <NavLink to={"/usage-plans"} onClick={() => setOpened(!opened)}>
+      <Popover.Dropdown className="userDropdown">
+        <>
+          <NavLink
+            to={"/usage-plans"}
+            className={inUsagePlansArea ? "active" : ""}
+            onClick={() => setOpened(!opened)}
+          >
             API Keys
           </NavLink>
           <a
@@ -48,7 +59,7 @@ export function LoggedInUser() {
           >
             Logout
           </a>
-        </div>
+        </>
       </Popover.Dropdown>
     </Popover>
   );

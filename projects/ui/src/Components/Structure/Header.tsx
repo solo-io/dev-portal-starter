@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { ReactComponent as Logo } from "../../Assets/logo.svg";
 import { ErrorBoundary } from "../Common/ErrorBoundary";
@@ -10,15 +10,9 @@ import { LoggedInUser } from "./LoggedInUser";
 export function Header() {
   const routerLocation = useLocation();
 
-  const [inAPIsArea, setInAPIsArea] = useState(
-    routerLocation.pathname.includes("/api") ||
-      routerLocation.pathname.includes("/api-details/")
-  );
-
-  useEffect(() => {
-    setInAPIsArea(
-      routerLocation.pathname.includes("/apis/") ||
-        routerLocation.pathname.includes("/api-details/")
+  const inAPIsArea = useMemo(() => {
+    return ["/apis", "/api-details/"].some((s) =>
+      routerLocation.pathname.includes(s)
     );
   }, [routerLocation.pathname]);
 

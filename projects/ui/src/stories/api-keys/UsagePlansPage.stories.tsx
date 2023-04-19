@@ -8,12 +8,14 @@ import {
   useListUsagePlans,
 } from "../../Apis/hooks";
 import { UsagePlansPage } from "../../Components/UsagePlans/UsagePlansPage";
+import { appContentDecorator } from "../decorators/decorators";
 
 // More on how to set up stories at: https://storybook.js.org/docs/7.0/react/writing-stories/introduction
 // More on writing stories with args: https://storybook.js.org/docs/7.0/react/writing-stories/args
 const meta = {
   title: "API Keys / Usage Plans Page",
   component: UsagePlansPage,
+  parameters: { layout: "fullscreen" },
 } satisfies Meta<typeof UsagePlansPage>;
 
 export default meta;
@@ -83,6 +85,7 @@ const mockApiKeys: DeepPartialObject<{
 
 export const Default: Story = {
   decorators: [
+    appContentDecorator,
     (Story) => {
       //
       // 2. Create the injectable hooks using react-magnetic-di.
