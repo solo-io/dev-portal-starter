@@ -166,6 +166,7 @@ export function GenerateApiKeyModal({
 
   return (
     <Modal
+      className="generateKeyModal"
       onClose={() => {
         // If we have generated and not copied the API key,
         // prevent the user from closing the modal.
@@ -180,7 +181,7 @@ export function GenerateApiKeyModal({
       }
       title={generated ? "Key Generated Successfully!" : "Generate a New Key"}
       bodyContent={
-        <div className="generateKeyModal">
+        <div className="generateKeyModalBody">
           {!generated && (
             <>
               <div className="inputLine">
@@ -198,7 +199,11 @@ export function GenerateApiKeyModal({
                 <label className="title" id="planAccessLabel">
                   Access to:
                 </label>
-                <div className="planName">{usagePlanName}</div>
+                {/* 
+                // Can add usage plan description styles here.
+                <div className="planDescription"></div> 
+                */}
+                <div className="planName">{usagePlanName} Plan</div>
               </div>
               {/* 
               // TODO: Enable this when the backend supports custom metadata.

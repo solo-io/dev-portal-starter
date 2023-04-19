@@ -1,9 +1,14 @@
 @use "../constants";
 
+.mantine-Paper-root.mantine-Modal-content {
+  border-radius: 15px;
+}
+
 // Overrides the Mantine component library's close button styles.
 .mantine-Modal-header .mantine-Modal-close {
   width: 1.75rem;
   height: 1.75rem;
+  margin-right: 5px;
   svg {
     width: 24px;
     height: 24px;
@@ -17,7 +22,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 30px;
+  padding-bottom: 35px;
   max-width: 425px;
 
   .modalHeader {
