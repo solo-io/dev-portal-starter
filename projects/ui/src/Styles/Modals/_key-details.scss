@@ -16,6 +16,14 @@
     align-items: center;
     width: 100%;
 
+    .keyName {
+      margin-bottom: 15px;
+      color: constants.$juneGrey;
+      padding: 0px 20px;
+      max-width: 100%;
+      word-break: break-all;
+    }
+
     .inputLine,
     .keyIdLine {
       width: 100%;

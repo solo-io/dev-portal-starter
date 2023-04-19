@@ -20,6 +20,7 @@ export function ApiKeyDetailsModal({
       title={"Key Details"}
       bodyContent={
         <div className="keyDetailsModalBody">
+          <label className="keyName">{apiKey.name}</label>
           <div className="planAccessCarveOut" aria-labelledby="planAccessLabel">
             <label className="title" id="planAccessLabel">
               Access to:
