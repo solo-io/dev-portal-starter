@@ -183,8 +183,8 @@ div[id^="display-swagger"] {
     div.copy-to-clipboard,
     .opblock-tag-section h3.opblock-tag,
     a,
-    button,
-    select {
+    button:not(:disabled),
+    select:not(:disabled) {
       outline-offset: 2px;
       &:hover,
       &:focus,
