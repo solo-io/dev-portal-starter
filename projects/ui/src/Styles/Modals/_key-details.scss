@@ -1,8 +1,11 @@
 @use "../constants";
 @use "../Features/apis-list";
 
-.generateKeyModal,
-.keyDetailsModal {
+//
+// The root classes are on the .mantine-Modal-root, which is
+// outside the modal and page overlay
+.generateKeyModalRoot,
+.keyDetailsModalRoot {
   .mantine-Modal-body {
     padding: 0px;
     .modalBox {

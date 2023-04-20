@@ -166,7 +166,7 @@ export function GenerateApiKeyModal({
 
   return (
     <Modal
-      className="generateKeyModal"
+      className="generateKeyModalRoot"
       onClose={() => {
         // If we have generated and not copied the API key,
         // prevent the user from closing the modal.

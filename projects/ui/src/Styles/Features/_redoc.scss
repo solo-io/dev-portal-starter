@@ -86,6 +86,8 @@
           padding: 0px;
           margin: 0px;
           background-color: constants.$marchGrey;
+          //
+          // These are the li elements (one for each search result row) in the search result list.
           li {
             background: white;
             flex-basis: 100%;
@@ -98,6 +100,7 @@
             }
           }
         }
+        // These are the styles for the "no results were found" empty state.
         > div[data-role="search:results"] {
           text-align: center;
           margin-top: 5px;
@@ -105,14 +108,18 @@
         }
       }
 
+      // These are the styles for the li elements in the sidebar sub-menus.
+      // (when a sidebar navigation accordion menu is expanded).
       li {
         border-top: 1px solid darken(constants.$marchGrey, 3);
       }
+      // These are the styles for the li elements in the sidebar top-level-menus.
       .scrollbar-container > ul > li {
         border-top: 1px solid darken(constants.$marchGrey, 5);
         &:last-of-type {
           border-bottom: 1px solid darken(constants.$marchGrey, 5);
         }
+        // This lightens the background color of expanded sub-menus.
         ul {
           background-color: lighten(constants.$marchGrey, 5);
         }
@@ -322,10 +329,13 @@
     }
   }
 
+  // These are the buttons with the method and path name on the right side.
+  // Clicking on them shows the full URL for each endpoint.
   button.sc-eGFuAX {
     margin-top: 10px;
     border-radius: 0px;
   }
+  // These are some general styles for interactive elements.
   a,
   button:not(:disabled),
   [role="tablist"] li {

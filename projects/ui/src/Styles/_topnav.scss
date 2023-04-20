@@ -138,7 +138,8 @@
   }
 }
 
-// Interaction
+// These are the hover/active styles for the links in the main top bar,
+// and links in the logged in user dropdown area.
 .navContent .userLoginArea.loggedIn,
 .navContent .logoContainer,
 .navContent .siteNavigating a.navLink,
@@ -156,6 +157,9 @@
     border-color: constants.$puddleBlue;
   }
 
+  // .active means that this is the page that the user is on.
+  // This overrides the font color and border color so that it doesn't
+  // get the same hover/active states.
   &.active,
   &.active:hover,
   &.active:active {

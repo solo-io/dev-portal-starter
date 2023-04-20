@@ -14,7 +14,7 @@ export function ApiKeyDetailsModal({
 }) {
   return (
     <Modal
-      className="keyDetailsModal"
+      className="keyDetailsModalRoot"
       onClose={onClose}
       headContent={<Icon.CircledKey />}
       title={"Key Details"}
