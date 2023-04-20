@@ -75,7 +75,6 @@
     .userHolder {
       display: flex;
       align-items: center;
-      color: constants.$defaultColoredText;
 
       svg.userCircle {
         width: 40px;
@@ -97,22 +96,6 @@
       }
     }
   }
-
-  .userLoginArea.loggedIn,
-  .logoContainer,
-  .siteNavigating a.navLink {
-    cursor: pointer;
-    &:hover {
-      color: darken(constants.$internalLinkColor, 10);
-      background-color: lighten(constants.$puddleBlue, 9);
-      border-bottom-color: constants.$puddleBlue;
-    }
-    &:active {
-      color: darken(constants.$internalLinkColor, 10);
-      background-color: lighten(constants.$puddleBlue, 7);
-      border-bottom-color: constants.$puddleBlue;
-    }
-  }
 }
 
 .widerContent .navContent {
@@ -120,27 +103,30 @@
 }
 
 .userDropdown {
+  border: none;
+  box-shadow: constants.$marchGrey 0px 2px 3px 1px;
+  padding: 0px;
+  margin-top: -8px;
   white-space: nowrap;
   a,
   div {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0 18px;
+    padding: 5px 50px;
     line-height: 35px;
     cursor: pointer;
-    border-left: 6px solid transparent;
+    border-left: 4px solid transparent;
     border-bottom: 0px solid transparent !important;
-
-    &:hover {
-      border-left-color: constants.$internalLinkColor;
-    }
+    color: constants.$defaultColoredText;
 
     &:first-child {
       border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
     }
     &:last-child {
       border-bottom-left-radius: 2px;
+      border-bottom-right-radius: 2px;
     }
   }
 
@@ -149,5 +135,35 @@
     color: constants.$juneGrey;
     border-left-color: constants.$juneGrey;
     cursor: default;
+  }
+}
+
+// These are the hover/active styles for the links in the main top bar,
+// and links in the logged in user dropdown area.
+.navContent .userLoginArea.loggedIn,
+.navContent .logoContainer,
+.navContent .siteNavigating a.navLink,
+.navContent .userLoginArea .userHolder,
+.userDropdown a {
+  cursor: pointer;
+  &:hover {
+    color: darken(constants.$internalLinkColor, 10);
+    background-color: lighten(constants.$puddleBlue, 9);
+    border-color: constants.$puddleBlue;
+  }
+  &:active {
+    color: darken(constants.$internalLinkColor, 10);
+    background-color: lighten(constants.$puddleBlue, 7);
+    border-color: constants.$puddleBlue;
+  }
+
+  // .active means that this is the page that the user is on.
+  // This overrides the font color and border color so that it doesn't
+  // get the same hover/active states.
+  &.active,
+  &.active:hover,
+  &.active:active {
+    color: constants.$internalLinkColor;
+    border-color: constants.$internalLinkColor;
   }
 }

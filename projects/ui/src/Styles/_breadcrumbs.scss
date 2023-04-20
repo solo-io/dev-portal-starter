@@ -3,8 +3,9 @@
 
 .breadcrumbList {
   @include mixins.contentWidth();
-  padding-top: 15px;
-  min-height: 41px;
+  padding-top: 20px;
+  padding-bottom: 5px;
+  min-height: 51px;
 
   display: flex;
   align-items: center;

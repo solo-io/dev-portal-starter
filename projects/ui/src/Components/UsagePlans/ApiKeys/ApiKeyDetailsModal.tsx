@@ -14,11 +14,13 @@ export function ApiKeyDetailsModal({
 }) {
   return (
     <Modal
+      className="keyDetailsModalRoot"
       onClose={onClose}
       headContent={<Icon.CircledKey />}
       title={"Key Details"}
       bodyContent={
-        <div className="keyDetailsModal">
+        <div className="keyDetailsModalBody">
+          <label className="keyName">{apiKey.name}</label>
           <div className="planAccessCarveOut" aria-labelledby="planAccessLabel">
             <label className="title" id="planAccessLabel">
               Access to:
@@ -31,7 +33,7 @@ export function ApiKeyDetailsModal({
               aria-labelledby="customMetadataLabel"
             >
               <label className="title" id="customMetadataLabel">
-                Custom Metadata
+                Custom Meta Data
               </label>
               <div className="metadataList dataPairPillList">
                 {Object.entries(apiKey.metadata).map(([pairKey, pairValue]) => (

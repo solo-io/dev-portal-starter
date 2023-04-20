@@ -1,5 +1,6 @@
 import { Button } from "@mantine/core";
 import { useState } from "react";
+import { di } from "react-magnetic-di";
 import { useParams } from "react-router-dom";
 import { useGetApiDetails } from "../../Apis/hooks";
 import { Loading } from "../Common/Loading";
@@ -10,8 +11,8 @@ import { SwaggerDisplay } from "./SwaggerDisplay";
  * MAIN COMPONENT
  **/
 export function ApiSchemaDisplay() {
+  di(useGetApiDetails, useParams);
   const { apiId } = useParams();
-
   const { isLoading, data: apiSchema } = useGetApiDetails(apiId);
   const [isSwagger, setIsSwagger] = useState(false);
 

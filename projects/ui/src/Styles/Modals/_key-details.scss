@@ -1,110 +1,159 @@
 @use "../constants";
 @use "../Features/apis-list";
 
-.generateKeyModal,
-.keyDetailsModal {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-
-  .inputLine,
-  .keyIdLine {
-    width: 100%;
-    margin-bottom: 15px;
-  }
-
-  .inputLine {
-    padding: 0 40px;
-    input {
-      font-size: 16px;
+//
+// The root classes are on the .mantine-Modal-root, which is
+// outside the modal and page overlay
+.generateKeyModalRoot,
+.keyDetailsModalRoot {
+  .mantine-Modal-body {
+    padding: 0px;
+    .modalBox {
+      max-width: 440px;
     }
   }
-
-  .keyIdLine {
-    font-size: 14px;
-    line-height: 28px;
+  .generateKeyModalBody,
+  .keyDetailsModalBody {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    button {
-      display: inline-block;
-      .keyId {
-        margin-right: 10px;
-        font-weight: normal;
-        color: constants.$internalLinkColor;
+    width: 100%;
+
+    .keyName {
+      margin-bottom: 15px;
+      color: constants.$juneGrey;
+      padding: 0px 20px;
+      max-width: 100%;
+      word-break: break-all;
+    }
+
+    .inputLine,
+    .keyIdLine {
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    .inputLine {
+      padding: 0 40px;
+      margin-bottom: 20px;
+      input {
+        font-size: 16px;
       }
     }
-  }
 
-  .planAccessCarveOut {
-    width: auto;
-    padding: 10px 40px;
-    margin-bottom: 15px;
-    border-radius: 2px;
-    background: constants.$puddleBlue;
-    text-align: center;
-
-    .title {
-      margin-right: 5px;
-    }
-    .title,
-    .planName {
-      font-size: 22px;
+    .keyIdLine {
+      font-size: 14px;
       line-height: 28px;
-      color: constants.$defaultColoredText;
-      display: inline-block;
-      max-width: 100%;
-      word-break: break-word;
-    }
-  }
-
-  .pairHolder {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    color: constants.$juneGrey;
-    margin-bottom: 15px;
-
-    margin-top: 5px;
-    .textHolder {
-      flex-grow: 1;
-      input {
-        border-radius: constants.$smallBorderRadius;
-
-        border: 1px solid constants.$mayGrey;
-        outline: none;
-        box-shadow: none;
-
-        height: 25px;
-        line-height: 25px;
-        padding: 0 6px;
-
-        &::placeholder {
-          @extend .filterPlaceholderTexts;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      button {
+        display: inline-block;
+        .keyId {
+          margin-right: 10px;
+          font-weight: normal;
+          color: constants.$internalLinkColor;
         }
       }
     }
-  }
 
-  .customMetadata {
-    margin-bottom: 15px;
-    text-align: center;
-  }
+    .planAccessCarveOut {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      padding: 10px 40px;
+      margin-top: 5px;
+      margin-bottom: 25px;
+      background: constants.$puddleBlue;
+      text-align: center;
 
-  .addButtonHolder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 34px;
-    width: 34px;
+      .title,
+      .planName .title {
+        display: inline-block;
+        max-width: 100%;
+        word-break: break-word;
+      }
+      .title {
+        margin-right: 5px;
+        font-size: 26px;
+        padding: 8px 0;
+        color: constants.$defaultColoredText;
+      }
+      .planName {
+        color: constants.$juneGrey;
+        font-size: 18px;
+      }
+      .planDescription {
+        font-weight: 600;
+        color: constants.$defaultColoredText;
+        padding-top: 5px;
+        font-size: 18px;
+      }
+    }
 
-    svg {
-      height: 21px;
-      width: 21px;
+    .pairHolder {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: constants.$juneGrey;
+      margin-bottom: 15px;
 
-      * {
-        fill: constants.$juneGrey;
+      margin-top: 5px;
+      .textHolder {
+        flex-grow: 1;
+        input {
+          border-radius: constants.$smallBorderRadius;
+
+          border: 1px solid constants.$mayGrey;
+          outline: none;
+          box-shadow: none;
+
+          height: 25px;
+          line-height: 25px;
+          padding: 0 6px;
+
+          &::placeholder {
+            @extend .filterPlaceholderTexts;
+          }
+        }
+      }
+    }
+
+    .customMetadata {
+      padding: 0 20px;
+      > label.title {
+        font-size: 26px;
+        // Add these subtitle styles if adding
+        // the "Meta Data (optional)" subtitle text.
+        // display: flex;
+        // gap: 10px;
+        // > span.subtitle {
+        //   font-size: 18px;
+        //   color: constants.$juneGrey;
+        // }
+      }
+      margin-bottom: 15px;
+      text-align: center;
+      .metadataList {
+        margin-top: 15px;
+        justify-content: center;
+      }
+    }
+
+    .addButtonHolder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 34px;
+      width: 34px;
+
+      svg {
+        height: 21px;
+        width: 21px;
+
+        * {
+          fill: constants.$juneGrey;
+        }
       }
     }
   }

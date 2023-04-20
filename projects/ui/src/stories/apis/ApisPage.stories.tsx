@@ -5,6 +5,7 @@ import { MemoryRouter } from "react-router-dom";
 import { API } from "../../Apis/api-types";
 import { useListApis } from "../../Apis/hooks";
 import { ApisPage } from "../../Components/ApisList/ApisPage";
+import { appContentDecorator } from "../decorators/decorators";
 import { arrGen } from "../generators";
 
 // More on how to set up stories at: https://storybook.js.org/docs/7.0/react/writing-stories/introduction
@@ -12,6 +13,7 @@ import { arrGen } from "../generators";
 const meta = {
   title: "APIs / APIs Page",
   component: ApisPage,
+  parameters: { layout: "fullscreen" },
 } satisfies Meta<typeof ApisPage>;
 
 export default meta;
@@ -64,6 +66,7 @@ const mockApisList: DeepPartialObject<API>[] = [
 ];
 export const Default: Story = {
   decorators: [
+    appContentDecorator,
     (Story) => {
       const useListApisDi = injectable(useListApis, () => ({
         isLoading: false,

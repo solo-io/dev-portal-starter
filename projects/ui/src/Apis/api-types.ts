@@ -47,7 +47,7 @@ export type API = {
 
 type SchemaPropertyType = "string" | "integer" | "array" | "object";
 export type APISchema = {
-  components: {
+  components?: {
     schemas: {
       Author?: {
         properties: { [key: string]: SchemaPropertyType };
@@ -70,7 +70,7 @@ export type APISchema = {
   paths: {
     [key: string]: unknown;
   };
-  servers: {
+  servers?: {
     url: string;
   }[];
 };

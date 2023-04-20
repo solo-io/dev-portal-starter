@@ -169,5 +169,59 @@ div[id^="display-swagger"] {
         }
       }
     }
+
+    //
+    // Fixes some interaction issues with buttons in the main opblock sections.
+    // And makes it clearer when something is a button.
+    //
+    .opblock-summary {
+      padding: 0px;
+      > button {
+        padding: 5px;
+      }
+    }
+    div.copy-to-clipboard,
+    .opblock-tag-section h3.opblock-tag,
+    a,
+    button:not(:disabled),
+    select:not(:disabled) {
+      outline-offset: 2px;
+      &:hover,
+      &:focus,
+      &:focus-visible {
+        outline: 1px solid constants.$primaryColor;
+      }
+      &:active {
+        outline: 2px solid constants.$primaryColor;
+        box-shadow: 0 0 5px constants.$primaryColor;
+      }
+    }
+  }
+
+  //
+  // Fixes some of the layout in the Models section.
+  // width: 100% makes the expand buttons easier to find.
+  //
+  section.models {
+    position: relative;
+    .model-container > .model-box {
+      padding: 5px;
+    }
+    .model-box {
+      > button > .model-toggle.collapsed {
+        position: absolute;
+        top: 30px;
+        right: 15px;
+        margin-top: -10px;
+      }
+      width: 100%;
+      button.model-box-control {
+        width: 100%;
+      }
+      .model-toggle {
+        float: right;
+        margin-top: -2px;
+      }
+    }
   }
 }

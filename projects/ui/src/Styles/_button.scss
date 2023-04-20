@@ -128,7 +128,7 @@ button {
   &.disabled,
   &.disabled:hover,
   &.disabled:active {
-    cursor: default;
+    cursor: not-allowed;
     background-color: constants.$juneGrey;
   }
 }

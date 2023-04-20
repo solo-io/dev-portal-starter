@@ -1,3 +1,4 @@
+import { di } from "react-magnetic-di";
 import { useParams } from "react-router-dom";
 import { APISchema } from "../../Apis/api-types";
 import { useGetApiDetails } from "../../Apis/hooks";
@@ -27,8 +28,8 @@ function HeaderSummary({ apiSchema }: { apiSchema: APISchema }) {
  * MAIN COMPONENT
  **/
 export function ApiDetailsPage() {
+  di(useGetApiDetails, useParams);
   const { apiId } = useParams();
-
   const { data: apiSchema } = useGetApiDetails(apiId);
 
   return (

@@ -40,12 +40,14 @@
       div[role="search"] {
         position: relative;
         margin-top: 10px;
+        padding: 0px;
 
         input {
           border-radius: constants.$smallBorderRadius;
           height: 34px;
           line-height: 34px;
           padding: 0 13px;
+          margin-bottom: 10px;
 
           font-size: 18px;
           font-weight: normal;
@@ -61,10 +63,11 @@
           display: none;
         }
         svg {
+          pointer-events: none;
           left: auto;
-          right: 25px;
-          top: 50%;
-          margin-top: -9px;
+          right: 28px;
+          top: 23px;
+          margin-top: -15px;
           width: 18px;
           height: 18px;
 
@@ -79,13 +82,65 @@
         }
         > div.scrollbar-container,
         div[data-role="search:results"] {
-          background: white;
+          min-height: 45px;
+          padding: 0px;
+          margin: 0px;
+          background-color: constants.$marchGrey;
+          //
+          // These are the li elements (one for each search result row) in the search result list.
+          li {
+            background: white;
+            flex-basis: 100%;
+            label {
+              padding: 15px 10px;
+            }
+            border: 1px solid constants.$marchGrey;
+            &:not(:last-of-type) {
+              border-bottom: none;
+            }
+          }
+        }
+        // These are the styles for the "no results were found" empty state.
+        > div[data-role="search:results"] {
+          text-align: center;
+          margin-top: 5px;
+          margin-bottom: -10px;
+        }
+      }
+
+      // These are the styles for the li elements in the sidebar sub-menus.
+      // (when a sidebar navigation accordion menu is expanded).
+      li {
+        border-top: 1px solid darken(constants.$marchGrey, 3);
+      }
+      // These are the styles for the li elements in the sidebar top-level-menus.
+      .scrollbar-container > ul > li {
+        border-top: 1px solid darken(constants.$marchGrey, 5);
+        &:last-of-type {
+          border-bottom: 1px solid darken(constants.$marchGrey, 5);
+        }
+        // This lightens the background color of expanded sub-menus.
+        ul {
+          background-color: lighten(constants.$marchGrey, 5);
         }
       }
 
       // LABELS, typically of METHOD NAMES
       li > label {
-        background: transparent;
+        // When this is the active list item.
+        border-left: 4px solid transparent;
+        &.active {
+          border-left: 4px solid constants.$primaryColor;
+        }
+
+        // Keep background-color interaction.
+        background-color: transparent;
+        &:hover {
+          background-color: darken(constants.$marchGrey, 5);
+        }
+        &:active {
+          background-color: darken(constants.$marchGrey, 10);
+        }
 
         .operation-type {
           border-radius: constants.$smallBorderRadius;
@@ -271,6 +326,27 @@
 
     .fburAk {
       display: none;
+    }
+  }
+
+  // These are the buttons with the method and path name on the right side.
+  // Clicking on them shows the full URL for each endpoint.
+  button.sc-eGFuAX {
+    margin-top: 10px;
+    border-radius: 0px;
+  }
+  // These are some general styles for interactive elements.
+  a,
+  button:not(:disabled),
+  [role="tablist"] li {
+    outline-offset: 2px;
+    &:hover,
+    &:focus-visible {
+      outline: 1px solid constants.$primaryColor;
+    }
+    &:active {
+      outline: 2px solid constants.$primaryColor;
+      box-shadow: 0 0 5px constants.$primaryColor;
     }
   }
 }
