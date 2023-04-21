@@ -8,7 +8,9 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
 
 1. Install [Node v16.14.2](https://nodejs.org/en/blog/release/v16.14.2) and [yarn](https://yarnpkg.com/).
 
-2. Run the following, which uses [tmplr](https://github.com/loreanvictor/tmplr) to download and initialize the latest commit of this repository's main branch.
+2. Run the following to download and initialize the latest commit of this repository's main branch.
+
+   - This command uses [tmplr](https://github.com/loreanvictor/tmplr) for personalization of your developer portal. Currently, this just includes adding your company name, which shows up on the home page and on the website title, but could include other customization options in the future. The tmplr setup can be re-run at any time by running `npx tmplr` from the project's root directory.
 
    ```shell
    mkdir portal-test && cd portal-test && npx tmplr solo-io/dev-portal-starter#main
@@ -22,7 +24,13 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
 
 _\*\*\* Note: If building the docker image without `make build-ui-image`, make sure to run `make build-ui` first to get the UI changes.\*\*\*_
 
-4. Follow [the instructions in the engineering-demos repo](https://github.com/solo-io/engineering-demos/blob/ad5f6e217a50c8fcc9d1aa6e442a2c9bbef47eb2/gloo-mesh/portal/multicluster/README.md) to set up dev portal resources. Use the same image name that you used to build the image for the portal-frontend deployment's `spec.template.containers.image` field.
+4. Push your docker image:
+
+   ```shell
+   docker push username/portal-frontend
+   ```
+
+5. Follow [the instructions in the engineering-demos repo](https://github.com/solo-io/engineering-demos/blob/ad5f6e217a50c8fcc9d1aa6e442a2c9bbef47eb2/gloo-mesh/portal/multicluster/README.md) to set up dev portal resources. Use the same image name that you used to build the image for the portal-frontend deployment's `spec.template.containers.image` field.
 
 ## UI Iteration
 
@@ -54,6 +62,10 @@ make run-storybook
 ```
 
 ## Personalization
+
+### Re-Running Initial Setup
+
+The initial setup with [tmplr](https://github.com/loreanvictor/tmplr) can be re-run at any time by running `npx tmplr` from the project's root directory.
 
 ### Switching the API Documentation Display
 
