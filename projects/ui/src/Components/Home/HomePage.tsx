@@ -9,6 +9,7 @@ import { PageContainer } from "../Common/PageContainer";
 import CardImage1 from "../../Assets/card-option-1.png";
 import CardImage2 from "../../Assets/card-option-2.png";
 import CardImage3 from "../../Assets/card-option-3.png";
+import { companyName } from "../../user_variables.tmplr";
 
 /**
  * MAIN COMPONENT
@@ -19,9 +20,7 @@ export function HomePage() {
       <div>
         <BannerHeading
           title={<BannerHeadingTitle text={"Developers Welcome!"} />}
-          description={
-            "Welcome to the Acme Co. Developer Portal. Connect, partner, and build with us to create the next generation of digital experiences."
-          }
+          description={`Welcome to the ${companyName} Developer Portal. Connect, partner, and build with us to create the next generation of digital experiences.`}
           additionalContent={
             <NavLink to="/apis">
               <Button style={{ width: "150px", marginTop: "10px" }}>

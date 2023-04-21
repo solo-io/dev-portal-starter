@@ -3,12 +3,17 @@ steps:
   # Read variables from CLI
   #
   # -- Project Variables --
-  - read: project_name
-    prompt: What is the project name?
-    default: my_project_name
+  # - read: project_name
+  #   prompt: What is the project name?
+  #   default: My Project
+
   - read: company_name
     prompt: What is the company name?
-    default: my_company_name
+    default: Example Company
+
+  # - read: restpoint
+  #   prompt: "Is the portal backend hosted at a different URL (default: '/portal-server/v1')?"
+  #   default: /portal-server/v1
 
   # -- Color Variables --
   # - read: primary_color
@@ -23,5 +28,5 @@ steps:
   # index.html. This replaces {{ tmplr.variableName }}
   # with the variables value.
   #
-  - update: "src/**/*.tmplr.ts"
-  - update: "index.html"
+  - update: "./projects/ui/src/**/*.tmplr.ts"
+  - update: "./projects/ui/index.html"
