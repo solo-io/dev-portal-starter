@@ -28,5 +28,5 @@ steps:
   # index.html. This replaces {{ tmplr.variableName }}
   # with the variables value.
   #
-  - update: "./projects/ui/src/**/*.tmplr.ts"
-  - update: "./projects/ui/index.html"
+  - update: "projects/ui/src/**/*.tmplr.ts"
+  - update: "projects/ui/index.html"
