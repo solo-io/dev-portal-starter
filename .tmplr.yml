@@ -3,25 +3,10 @@ steps:
   # Read variables from CLI
   #
   # -- Project Variables --
-  # - read: project_name
-  #   prompt: What is the project name?
-  #   default: My Project
-
+  #
   - read: company_name
     prompt: What is the company name?
     default: Example Company
-
-  # - read: restpoint
-  #   prompt: "Is the portal backend hosted at a different URL (default: '/portal-server/v1')?"
-  #   default: /portal-server/v1
-
-  # -- Color Variables --
-  # - read: primary_color
-  #   prompt: What is the primary color hex code?
-  #   default: "#4f7"
-  # - read: secondary_color
-  #   prompt: What is the secondary color hex code?
-  #   default: "#f74"
 
   #
   # Write to all template files in the src folder, and
