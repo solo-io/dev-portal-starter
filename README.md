@@ -42,7 +42,7 @@ The following steps can be used to iterate on the UI after the initial setup. Th
    IMAGE_NAME=username/portal-frontend make build-ui-image
    ```
 
-2. Push to docker hub (replace "username"). This is required to see UI updates if the kubernetes portal-frontend deployment has `imagePullPolicy: Always`.
+2. Push your docker image (replace "username").
 
    ```shell
    docker push username/portal-frontend:latest
