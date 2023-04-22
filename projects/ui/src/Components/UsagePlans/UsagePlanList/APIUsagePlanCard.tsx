@@ -69,8 +69,9 @@ export function APIUsagePlanCard({ api }: { api: API }) {
               <div className="metaDetailIcon">
                 <Icon.Speedometer />
               </div>
-              <span className="countNumber">{api.usagePlans.length}</span> Plan
-              {api.usagePlans.length === 1 ? "" : "s"}
+              <span className="countNumber">{relevantUsagePlans.length}</span>{" "}
+              Plan
+              {relevantUsagePlans.length === 1 ? "" : "s"}
             </div>
           </div>
           <div className="viewToggleArrowHolder">

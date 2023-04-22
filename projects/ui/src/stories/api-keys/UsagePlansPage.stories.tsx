@@ -37,7 +37,7 @@ const mockApisList: DeepPartialObject<API>[] = [
     contact: "some-contact",
     description: "A mock API.",
     title: "Some title",
-    usagePlans: ["bronze", "silver"],
+    usagePlans: ["bronze", "silver", "gold"],
   },
 ];
 const mockUsagePlans: DeepPartialObject<UsagePlan>[] = [

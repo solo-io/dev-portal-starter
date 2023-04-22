@@ -1,0 +1,17 @@
+steps:
+  #
+  # Read variables from CLI
+  #
+  # -- Project Variables --
+  #
+  - read: company_name
+    prompt: What is the company name?
+    default: Example Company
+
+  #
+  # Write to all template files in the src folder, and
+  # index.html. This replaces {{ tmplr.variableName }}
+  # with the variables value.
+  #
+  - update: "projects/ui/src/**/*.tmplr.ts"
+  - update: "projects/ui/index.html"
