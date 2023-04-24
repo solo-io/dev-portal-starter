@@ -14,4 +14,3 @@ steps:
   # with the variables value.
   #
   - update: "projects/ui/src/**/*.tmplr.ts"
-  - update: "projects/ui/index.html"
