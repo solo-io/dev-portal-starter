@@ -61,6 +61,10 @@ Since building and pushing the image using the previous steps can take a while, 
 make run-storybook
 ```
 
+## Troubleshooting
+
+If using a different architecture from `amd64`, you may replace `amd64` with your architecture in the `/Dockerfile` and in the `make build-ui-image` make target in `/Makefile`. If seeing the error: `exec /usr/local/bin/npx: exec format error` in your frontend deployment, changing the architecture to `arm64`, rebuilding, and pushing as described in the "UI Iteration" section may solve the issue.
+
 ## Personalization
 
 ### Re-Running Initial Setup
