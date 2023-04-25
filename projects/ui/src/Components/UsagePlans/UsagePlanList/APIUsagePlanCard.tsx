@@ -89,16 +89,18 @@ export function APIUsagePlanCard({ api }: { api: API }) {
               message={`Getting information on usage plans for ${api.title}...`}
             />
           ) : (
-            <div className="usagePlansListContent">
-              {relevantUsagePlans.map((plan) => (
-                <ErrorBoundary
-                  key={plan.name}
-                  fallback={`There was an issue loading information about ${plan.name}`}
-                >
-                  <UsagePlanDetails apiId={api.apiId} usagePlan={plan} />
-                </ErrorBoundary>
-              ))}
-            </div>
+            relevantUsagePlans.length > 0 && (
+              <div className="usagePlansListContent">
+                {relevantUsagePlans.map((plan) => (
+                  <ErrorBoundary
+                    key={plan.name}
+                    fallback={`There was an issue loading information about ${plan.name}`}
+                  >
+                    <UsagePlanDetails apiId={api.apiId} usagePlan={plan} />
+                  </ErrorBoundary>
+                ))}
+              </div>
+            )
           )}
         </div>
       )}
