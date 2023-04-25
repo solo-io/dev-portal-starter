@@ -29,15 +29,16 @@ export async function copyToClipboard(textToCopy: string) {
   }
 }
 
-function download(filename: string, text: string) {
-  var element = document.createElement("a");
-  element.setAttribute(
+export function downloadTextFile(filename: string, text: string) {
+  const el = document.createElement("a");
+  el.setAttribute(
     "href",
     "data:text/plain;charset=utf-8," + encodeURIComponent(text)
   );
-  element.setAttribute("download", filename);
-  element.style.display = "none";
-  document.body.appendChild(element);
-  element.click();
-  document.body.removeChild(element);
+  el.setAttribute("download", filename);
+  el.setAttribute("target", "_blank");
+  el.style.display = "none";
+  document.body.appendChild(el);
+  el.click();
+  document.body.removeChild(el);
 }

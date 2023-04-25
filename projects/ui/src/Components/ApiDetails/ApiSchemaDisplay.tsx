@@ -4,6 +4,7 @@ import { di } from "react-magnetic-di";
 import { useParams } from "react-router-dom";
 import YAML from "yaml";
 import { useGetApiDetails, useListApis } from "../../Apis/hooks";
+import { downloadTextFile } from "../../Utility/utility";
 import { Loading } from "../Common/Loading";
 import { RedocDisplay } from "./RedocDisplay";
 import { SwaggerDisplay } from "./SwaggerDisplay";
@@ -76,17 +77,15 @@ spec:
           {isSwagger ? "Redoc" : "Swagger"} View
         </Button>
         {backstageYaml !== undefined && (
-          <a
-            target="_blank"
-            download={`catalog-info-${apiId}.yaml`}
-            href={`data:text/plain;charset=utf-8,${encodeURIComponent(
-              backstageYaml
-            )}`}
+          <Button
+            variant="subtle"
+            onClick={() =>
+              downloadTextFile(`catalog-info-${apiId}.yaml`, backstageYaml)
+            }
+            size="xs"
           >
-            <Button variant="subtle" size="xs">
-              Download Backstage YAML
-            </Button>
-          </a>
+            Download Backstage YAML
+          </Button>
         )}
       </div>
       <main className="page-container-wrapper">
