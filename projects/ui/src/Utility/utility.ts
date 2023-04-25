@@ -29,7 +29,7 @@ export async function copyToClipboard(textToCopy: string) {
   }
 }
 
-export function downloadTextFile(filename: string, text: string) {
+export function downloadFile(filename: string, text: string) {
   const el = document.createElement("a");
   el.setAttribute(
     "href",

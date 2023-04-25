@@ -4,7 +4,7 @@ import { di } from "react-magnetic-di";
 import { useParams } from "react-router-dom";
 import YAML from "yaml";
 import { useGetApiDetails, useListApis } from "../../Apis/hooks";
-import { downloadTextFile } from "../../Utility/utility";
+import { downloadFile } from "../../Utility/utility";
 import { Loading } from "../Common/Loading";
 import { RedocDisplay } from "./RedocDisplay";
 import { SwaggerDisplay } from "./SwaggerDisplay";
@@ -80,7 +80,7 @@ spec:
           <Button
             variant="subtle"
             onClick={() =>
-              downloadTextFile(`catalog-info-${apiId}.yaml`, backstageYaml)
+              downloadFile(`catalog-info-${apiId}.yaml`, backstageYaml)
             }
             size="xs"
           >
