@@ -50,7 +50,7 @@ preview-ui: update-ui-deps
 # updated, if imagePullPolicy=Always
 .PHONY: build-ui-image
 build-ui-image: build-ui
-	docker build -t $(IMAGE_NAME) .
+	docker build -t $(IMAGE_NAME) . --platform=linux/amd64
 
 .PHONY: lint-ui-code
 lint-ui-code: update-ui-deps
