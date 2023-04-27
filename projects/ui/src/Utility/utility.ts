@@ -28,3 +28,17 @@ export async function copyToClipboard(textToCopy: string) {
     }
   }
 }
+
+export function downloadFile(filename: string, text: string) {
+  const el = document.createElement("a");
+  el.setAttribute(
+    "href",
+    "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+  );
+  el.setAttribute("download", filename);
+  el.setAttribute("target", "_blank");
+  el.style.display = "none";
+  document.body.appendChild(el);
+  el.click();
+  document.body.removeChild(el);
+}
