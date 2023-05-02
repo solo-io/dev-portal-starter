@@ -23,7 +23,8 @@ export function LoggedInUser() {
   // eslint-disable-next-line no-console
   console.log(user);
 
-  return !user ? (
+  const isLoggedIn = !!user?.email || !!user?.username || !!user?.name;
+  return !isLoggedIn ? (
     <div className="userLoginArea loggedOut">
       <a href={`${restpointPrefix}/login`}>
         <div className="styledButton">LOGIN</div>
