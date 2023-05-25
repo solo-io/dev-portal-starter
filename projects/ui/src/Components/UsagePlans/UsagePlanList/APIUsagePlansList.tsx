@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { di } from "react-magnetic-di";
 import { useListApis } from "../../../Apis/hooks";
 import { EmptyData } from "../../Common/EmptyData";
@@ -12,19 +13,23 @@ export function APIUsagePlansList() {
   di(useListApis);
   const { isLoading, data: apisList } = useListApis();
 
+  // No filtering to do here, but let's make sure the ordering
+  //   stays consistent.
+  const displayedApisList = useMemo(
+    () =>
+      !!apisList?.length
+        ? apisList.sort((apiA, apiB) =>
+            apiA.title
+              .toLocaleLowerCase()
+              .localeCompare(apiB.title.toLocaleLowerCase())
+          )
+        : [],
+    [apisList]
+  );
+
   if (isLoading) {
     return <Loading message="Getting list of APIs..." />;
   }
-
-  // No filtering to do here, but let's make sure the ordering
-  //   stays consistent.
-  const displayedApisList = apisList
-    ? apisList.sort((apiA, apiB) =>
-        apiA.title
-          .toLocaleLowerCase()
-          .localeCompare(apiB.title.toLocaleLowerCase())
-      )
-    : [];
 
   return (
     <>

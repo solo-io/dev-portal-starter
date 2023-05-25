@@ -1,14 +1,17 @@
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { ReactComponent as Logo } from "../../Assets/logo.svg";
+import { PortalAuthContext } from "../../Context/PortalAuthContext";
 import { ErrorBoundary } from "../Common/ErrorBoundary";
-import { LoggedInUser } from "./LoggedInUser";
+import HeaderSectionLoggedIn from "./HeaderSectionLoggedIn";
+import HeaderSectionLoggedOut from "./HeaderSectionLoggedOut";
 
 /**
  * MAIN COMPONENT
  **/
 export function Header() {
   const routerLocation = useLocation();
+  const { isLoggedIn } = useContext(PortalAuthContext);
 
   const inAPIsArea = useMemo(() => {
     return ["/apis", "/api-details/"].some((s) =>
@@ -37,7 +40,11 @@ export function Header() {
             </NavLink>
             <div className="divider" />
             <ErrorBoundary fallback="Access issues" class="horizontalError">
-              <LoggedInUser />
+              {isLoggedIn ? (
+                <HeaderSectionLoggedIn />
+              ) : (
+                <HeaderSectionLoggedOut />
+              )}
             </ErrorBoundary>
           </div>
         </nav>
