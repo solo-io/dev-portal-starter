@@ -90,9 +90,7 @@ All icons can be found, as the others, in the `/Assets` folder, inside `/Icons`.
 
 ## Environment Variables
 
-All Vite environment variables need to start with `VITE_`, however if passed in through the Make targets the `VITE_` prefix is optional (e.g. `PORTAL_SERVER_URL=https://my-portal-server/v1 make run-ui`).
-
-You can add these environment variables to a `.env.local` file in the `projects/ui` folder, and prefix each variable name with `VITE_` (e.g. `VITE_PORTAL_SERVER_URL="..."`). This file is ignored by git.
+You can add these environment variables to a `.env.local` file in the `projects/ui` folder. All Vite environment variables need to start with `VITE_` in order for the app to be able to read them.
 
 #### VITE_PORTAL_SERVER_URL
 
