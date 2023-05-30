@@ -1,27 +1,23 @@
+import { useContext } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
+import { PortalAuthContext } from "../Context/PortalAuthContext";
 import { API, APIKey, APISchema, UsagePlan, User } from "./api-types";
 
-//
-// Rename RESTPOINT to change the base API URL.
-//
-// RESTPOINT is renamed VITE_RESTPOINT in the Makefile,
-// since all Vite environment variables need to start
-// with VITE_
-let envRestpoint = import.meta.env.VITE_RESTPOINT;
+let _portalServerUrl = import.meta.env.VITE_PORTAL_SERVER_URL;
 if (
-  envRestpoint &&
-  typeof envRestpoint === "string" &&
-  envRestpoint.at(-1) === "/"
+  _portalServerUrl &&
+  typeof _portalServerUrl === "string" &&
+  _portalServerUrl.at(-1) === "/"
 ) {
-  // This allows the RESTPOINT env variable to work with or without a trailing "/"
-  envRestpoint = envRestpoint.substring(0, envRestpoint.length - 1);
+  // This allows the VITE_PORTAL_SERVER_URL env variable to work with or without a trailing "/"
+  _portalServerUrl = _portalServerUrl.substring(0, _portalServerUrl.length - 1);
 }
-export const restpointPrefix: string = envRestpoint ?? "/portal-server/v1";
+export const portalServerUrl: string = _portalServerUrl ?? "/v1";
 
 async function fetchJSON(...args: Parameters<typeof fetch>) {
   if (typeof args[0] !== "string") return;
-  let url = restpointPrefix + args[0];
+  let url = portalServerUrl + args[0];
   const newArgs: typeof args = [
     url,
     {
@@ -35,23 +31,53 @@ async function fetchJSON(...args: Parameters<typeof fetch>) {
   return fetch(...newArgs).then((res) => res.json());
 }
 
+/**
+ * Returns `useSwr` with `fetchJson`, but adds the auth tokens
+ * from the `PortalAuthContext` in the headers.
+ */
+const useSwrWithAuth = <T>(
+  path: string,
+  config?: Parameters<typeof useSWR<T>>[2]
+) => {
+  const { latestAccessToken } = useContext(PortalAuthContext);
+
+  const authHeaders = {} as any;
+  if (!!latestAccessToken) {
+    authHeaders.Authorization = `Bearer ${latestAccessToken}`;
+  }
+  return useSWR<T>(
+    path,
+    (...args) => {
+      return fetchJSON(args[0], {
+        ...(args.length > 1 && !!args[1] ? args[1] : {}),
+        headers: {
+          ...(args.length > 1 && args[1].headers ? args[1].headers : {}),
+          ...authHeaders,
+        },
+      });
+    },
+    {
+      ...(config ?? {}),
+    }
+  );
+};
+
 //
 // Queries
 //
-
 export function useGetCurrentUser() {
-  return useSWR<User>("/me", fetchJSON);
+  return useSwrWithAuth<User>("/me");
 }
 
 export function useListApis() {
-  return useSWR<API[]>("/apis", fetchJSON);
+  return useSwrWithAuth<API[]>("/apis");
 }
 export function useGetApiDetails(id?: string) {
-  return useSWR<APISchema>(`/apis/${id}/schema`, fetchJSON);
+  return useSwrWithAuth<APISchema>(`/apis/${id}/schema`);
 }
 
 export function useListUsagePlans() {
-  return useSWR<UsagePlan[]>(`/usage-plans`, fetchJSON);
+  return useSwrWithAuth<UsagePlan[]>(`/usage-plans`);
 }
 
 export function useListApiKeys(usagePlan: string) {
@@ -61,9 +87,8 @@ export function useListApiKeys(usagePlan: string) {
 
   // TODO: Add support for getting keys for multiple usage plans.
   // TODO: While also having the cache invalidation work (see useAddKeyMutation).
-  return useSWR<{ usagePlan: string; apiKeys: APIKey[] }[]>(
-    `/api-keys?usagePlans=${usagePlan}`,
-    fetchJSON
+  return useSwrWithAuth<{ usagePlan: string; apiKeys: APIKey[] }[]>(
+    `/api-keys?usagePlans=${usagePlan}`
   );
 }
 
@@ -72,6 +97,7 @@ export function useListApiKeys(usagePlan: string) {
 //
 
 export function useCreateKeyMutation() {
+  const { latestAccessToken } = useContext(PortalAuthContext);
   const { mutate } = useSWRConfig();
 
   const createKey = async (
@@ -80,8 +106,13 @@ export function useCreateKeyMutation() {
       arg: { usagePlanName, apiKeyName },
     }: { arg: { usagePlanName: string; apiKeyName: string } }
   ) => {
+    const authHeaders = {} as any;
+    if (!!latestAccessToken) {
+      authHeaders.Authorization = `Bearer ${latestAccessToken}`;
+    }
     const res = await fetchJSON(url, {
       method: "POST",
+      headers: authHeaders,
       body: JSON.stringify({
         usagePlan: usagePlanName,
         apiKeyName,
@@ -97,6 +128,7 @@ export function useCreateKeyMutation() {
 }
 
 export function useDeleteKeyMutation() {
+  const { latestAccessToken } = useContext(PortalAuthContext);
   const { mutate } = useSWRConfig();
 
   const deleteKey = async (
@@ -105,11 +137,21 @@ export function useDeleteKeyMutation() {
       arg: { apiKeyId, usagePlanName },
     }: { arg: { apiKeyId: string; usagePlanName: string } }
   ) => {
-    await fetch(`${restpointPrefix}${url}/${apiKeyId}`, {
-      method: "DELETE",
-    });
-    // TODO: Mutation should invalidate all usage plans that this api key is in.
-    mutate(`/api-keys?usagePlans=${usagePlanName}`);
+    const authHeaders = {} as any;
+    if (!!latestAccessToken) {
+      authHeaders.Authorization = `Bearer ${latestAccessToken}`;
+    }
+    try {
+      await fetch(`${portalServerUrl}${url}/${apiKeyId}`, {
+        method: "DELETE",
+        headers: authHeaders,
+      });
+      // TODO: Mutation should invalidate all usage plans that this api key is in.
+      mutate(`/api-keys?usagePlans=${usagePlanName}`);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error((e as any)?.message);
+    }
   };
 
   return useSWRMutation(`/api-keys`, deleteKey);

@@ -1,36 +1,24 @@
 import { Popover } from "@mantine/core";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
 import { NavLink, useLocation } from "react-router-dom";
-import { restpointPrefix, useGetCurrentUser } from "../../Apis/hooks";
+import { useGetCurrentUser } from "../../Apis/hooks";
 import { Icon } from "../../Assets/Icons";
+import { PortalAuthContext } from "../../Context/PortalAuthContext";
 
-/**
- * MAIN COMPONENT
- **/
-export function LoggedInUser() {
+const HeaderSectionLoggedIn = () => {
   di(useGetCurrentUser);
   const { data: user } = useGetCurrentUser();
-
   const routerLocation = useLocation();
+  const { onLogout } = useContext(PortalAuthContext);
+  const [opened, setOpened] = useState(false);
+
   const inUsagePlansArea = useMemo(
     () => routerLocation.pathname.includes("/usage-plans"),
     [routerLocation.pathname]
   );
 
-  const [opened, setOpened] = useState(false);
-
-  // eslint-disable-next-line no-console
-  console.log(user);
-
-  const isLoggedIn = !!user?.email || !!user?.username || !!user?.name;
-  return !isLoggedIn ? (
-    <div className="userLoginArea loggedOut">
-      <a href={`${restpointPrefix}/login`}>
-        <div className="styledButton">LOGIN</div>
-      </a>
-    </div>
-  ) : (
+  return (
     <Popover position="bottom" opened={opened} onChange={setOpened}>
       <Popover.Target>
         <button
@@ -38,7 +26,8 @@ export function LoggedInUser() {
           onClick={() => setOpened(!opened)}
         >
           <div className="userHolder">
-            <Icon.UserProfile className="userCircle" /> {user?.username}
+            <Icon.UserProfile className="userCircle" />{" "}
+            {!!user ? user.username : " "}
             <Icon.DownArrow
               className={`dropdownArrow canRotate ${opened ? "rotate180" : ""}`}
             />
@@ -54,14 +43,19 @@ export function LoggedInUser() {
           >
             API Keys
           </NavLink>
-          <a
-            href={`${restpointPrefix}/logout`}
-            onClick={() => setOpened(!opened)}
+          <button
+            className="logout"
+            onClick={() => {
+              onLogout();
+              setOpened(false);
+            }}
           >
             Logout
-          </a>
+          </button>
         </>
       </Popover.Dropdown>
     </Popover>
   );
-}
+};
+
+export default HeaderSectionLoggedIn;

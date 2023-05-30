@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { restpointPrefix } from "../Apis/hooks";
+import { portalServerUrl } from "../Apis/hooks";
 import { ApiDetailsPage } from "./ApiDetails/ApiDetailsPage";
 import { ApisPage } from "./ApisList/ApisPage";
 import { ErrorBoundary } from "./Common/ErrorBoundary";
@@ -23,7 +23,7 @@ function AppContentRoutes() {
     <div className="MainContentContainer">
       <Routes>
         <Route
-          path={`${restpointPrefix}/logout`}
+          path={`${portalServerUrl}/logout`}
           element={
             <ErrorBoundary fallback="There was an issue loading the Logout screen">
               <LoggedOut />
@@ -31,7 +31,7 @@ function AppContentRoutes() {
           }
         />
         <Route
-          path={`${restpointPrefix}/login`}
+          path={`${portalServerUrl}/login`}
           element={
             <ErrorBoundary fallback="There was an issue loading the Login screen">
               <LoginRedirect />
