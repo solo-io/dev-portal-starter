@@ -43,8 +43,7 @@ document.title = companyName + " Portal";
  */
 export const tokenEndpoint = templateString(
   "{{ tmplr.tokenEndpoint }}",
-  import.meta.env.VITE_TOKEN_ENDPOINT,
-  "https://f983-2600-1700-1e17-8010-1434-ceb1-8a68-cb20.ngrok-free.app/auth/realms/master/protocol/openid-connect/token"
+  import.meta.env.VITE_TOKEN_ENDPOINT
 );
 
 /**
@@ -54,8 +53,7 @@ export const tokenEndpoint = templateString(
  */
 export const clientId = templateString(
   "{{ tmplr.clientId }}",
-  import.meta.env.VITE_CLIENT_ID,
-  "17daa3f6-9c0f-41c6-a620-62082da22f94"
+  import.meta.env.VITE_CLIENT_ID
 );
 
 /**
@@ -65,6 +63,5 @@ export const clientId = templateString(
  */
 export const clientSecret = templateString(
   "{{ tmplr.clientSecret }}",
-  import.meta.env.VITE_CLIENT_SECRET,
-  "19e4265d-5a68-406c-bb77-8f487da1fb3f"
+  import.meta.env.VITE_CLIENT_SECRET
 );
