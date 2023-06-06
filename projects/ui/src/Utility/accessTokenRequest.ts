@@ -1,20 +1,15 @@
 export const doAccessTokenRequest = async (
   formData: Record<string, string>,
-  grantType: "password" | "refresh_token",
+  grantType: "refresh_token" | "authorization_code",
   tokenEndpoint: string,
-  clientId: string,
-  clientSecret: string
+  clientId: string
 ) => {
   //
   // Build the request payload for a new oauth access token.
   //
   formData.grant_type = grantType;
   formData.client_id = clientId;
-  formData.client_secret = clientSecret;
-  if (
-    (!(formData.username ?? "").trim() || !(formData.password ?? "").trim()) &&
-    !formData.refresh_token
-  ) {
+  if (grantType === "refresh_token" && !formData.refresh_token) {
     return undefined;
   }
   //

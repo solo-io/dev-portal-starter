@@ -1,24 +1,16 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { PageContainer } from "./PageContainer";
+import { PortalAuthContext } from "../../Context/PortalAuthContext";
 
 const LoggedOut = () => {
+  const { onLogout } = useContext(PortalAuthContext);
   const navigate = useNavigate();
   useEffect(() => {
+    onLogout();
     navigate("/");
-    // TODO: Figure out UX: https://github.com/solo-io/gloo-mesh-enterprise/issues/8709
-    // setTimeout(() => {
-    //   navigate("/");
-    // }, 3000);
   }, []);
 
-  return (
-    <PageContainer>
-      You have been logged out.
-      {/* <br />
-      Please wait to be redirected back to the homepage. */}
-    </PageContainer>
-  );
+  return null;
 };
 
 export default LoggedOut;

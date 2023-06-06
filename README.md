@@ -21,7 +21,6 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
    ```shell
    VITE_PORTAL_SERVER_URL="/v1"
    VITE_CLIENT_ID="your-client-id"
-   VITE_CLIENT_SECRET="your-client-secret"
    VITE_TOKEN_ENDPOINT="your-token-endpoint"
    ```
 
@@ -100,16 +99,26 @@ This is the URL for the Gloo Platform Portal REST server. The default value is `
 
 The oauth client id. In Keycloak, this is shown in the client settings of your keycloak instances UI: `<your-keycloak-url>/auth`
 
-#### VITE_CLIENT_SECRET
-
-The oauth client secret. In Keycloak, this is shown in the client settings of your keycloak instances UI: `<your-keycloak-url>/auth`
-
 #### VITE_TOKEN_ENDPOINT
 
 This is the endpoint to get the oauth token. In Keycloak, this is the `token_endpoint` property from: `<your-keycloak-url>/auth/realms/<your-realm>/.well-known/openid-configuration`
 
 In Keycloak, it may look like:
 `<your-keycloak-url>/auth/realms/<your-realm>/protocol/openid-connect/token`
+
+#### VITE_AUTH_ENDPOINT
+
+This is the endpoint to get the PKCE authorization code. In Keycloak, this is the `authorization_code` property from: `<your-keycloak-url>/auth/realms/<your-realm>/.well-known/openid-configuration`
+
+In Keycloak, it may look like:
+`<your-keycloak-url>/auth/realms/<your-realm>/protocol/openid-connect/auth`
+
+#### VITE_LOGOUT_ENDPOINT
+
+This is the endpoint end your session. In Keycloak, this is the `end_session_endpoint` property from: `<your-keycloak-url>/auth/realms/<your-realm>/.well-known/openid-configuration`
+
+In Keycloak, it may look like:
+`<your-keycloak-url>/auth/realms/<your-realm>/protocol/openid-connect/logout`
 
 ## Troubleshooting Keycloak
 
