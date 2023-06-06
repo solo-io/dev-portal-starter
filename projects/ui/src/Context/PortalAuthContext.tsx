@@ -4,7 +4,7 @@ import { mutate } from "swr";
 import { AccessTokensResponse } from "../Apis/api-types";
 import { doAccessTokenRequest } from "../Utility/accessTokenRequest";
 import { parseJwt } from "../Utility/utility";
-import { clientId, clientSecret, tokenEndpoint } from "../user_variables.tmplr";
+import { clientId, tokenEndpoint } from "../user_variables.tmplr";
 
 //
 // Types
@@ -21,6 +21,8 @@ interface IPortalAuthContext extends PortalAuthProviderProps {
 }
 
 const LOCAL_STORAGE_TOKENS_KEY = "gloo-platform-portal-tokens";
+export const LOCAL_STORAGE_AUTH_VERIFIER = "gloo-platform-portal-auth-verifier";
+export const LOCAL_STORAGE_AUTH_STATE = "gloo-platform-portal-auth-state";
 
 export const PortalAuthContext = createContext({} as IPortalAuthContext);
 
@@ -29,6 +31,8 @@ export const PortalAuthContextProvider = (props: PortalAuthProviderProps) => {
     useState<NodeJS.Timeout>();
 
   const clearTokensApiCacheAndTimeout = () => {
+    localStorage.removeItem(LOCAL_STORAGE_AUTH_VERIFIER);
+    localStorage.removeItem(LOCAL_STORAGE_AUTH_STATE);
     localStorage.removeItem(LOCAL_STORAGE_TOKENS_KEY);
     // Mutate and match all swr keys to clear the cache.
     mutate(() => true, undefined, { revalidate: true });
@@ -117,8 +121,7 @@ export const PortalAuthContextProvider = (props: PortalAuthProviderProps) => {
             { refresh_token: tokensJSON.refresh_token },
             "refresh_token",
             tokenEndpoint,
-            clientId,
-            clientSecret
+            clientId
           );
           setTokensResponse(res);
         } catch (e) {

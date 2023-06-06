@@ -47,6 +47,26 @@ export const tokenEndpoint = templateString(
 );
 
 /**
+ * This is the endpoint to get the PKCE auth token.
+ * In keycloak, this is the `authorization_endpoint` property from:
+ * <your-keycloak-url>/auth/realms/<your-realm>/.well-known/openid-configuration
+ */
+export const authEndpoint = templateString(
+  "{{ tmplr.authEndpoint }}",
+  import.meta.env.VITE_AUTH_ENDPOINT
+);
+
+/**
+ * This is the endpoint to end your session.
+ * In keycloak, this is the `end_session_endpoint` property from:
+ * <your-keycloak-url>/auth/realms/<your-realm>/.well-known/openid-configuration
+ */
+export const logoutEndpoint = templateString(
+  "{{ tmplr.logoutEndpoint }}",
+  import.meta.env.VITE_LOGOUT_ENDPOINT
+);
+
+/**
  * The oauth client id.
  * In keycloak, this is shown in the client settings
  * of your keycloak instances UI: <your-keycloak-url>/auth
@@ -54,14 +74,4 @@ export const tokenEndpoint = templateString(
 export const clientId = templateString(
   "{{ tmplr.clientId }}",
   import.meta.env.VITE_CLIENT_ID
-);
-
-/**
- * The oauth client secret.
- * In keycloak, this is shown in the client settings
- * of your keycloak instances UI: <your-keycloak-url>/auth
- */
-export const clientSecret = templateString(
-  "{{ tmplr.clientSecret }}",
-  import.meta.env.VITE_CLIENT_SECRET
 );

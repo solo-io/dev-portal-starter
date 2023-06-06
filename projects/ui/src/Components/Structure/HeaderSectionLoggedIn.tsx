@@ -1,22 +1,30 @@
 import { Popover } from "@mantine/core";
-import { useContext, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useSearchParams } from "react-router-dom";
 import { useGetCurrentUser } from "../../Apis/hooks";
 import { Icon } from "../../Assets/Icons";
-import { PortalAuthContext } from "../../Context/PortalAuthContext";
+import { clientId, logoutEndpoint } from "../../user_variables.tmplr";
 
 const HeaderSectionLoggedIn = () => {
   di(useGetCurrentUser);
   const { data: user } = useGetCurrentUser();
   const routerLocation = useLocation();
-  const { onLogout } = useContext(PortalAuthContext);
   const [opened, setOpened] = useState(false);
 
   const inUsagePlansArea = useMemo(
     () => routerLocation.pathname.includes("/usage-plans"),
     [routerLocation.pathname]
   );
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  useEffect(() => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.delete("state");
+    newSearchParams.delete("session_state");
+    newSearchParams.delete("code");
+    setSearchParams(newSearchParams);
+  }, [setSearchParams]);
 
   return (
     <Popover position="bottom" opened={opened} onChange={setOpened}>
@@ -43,15 +51,12 @@ const HeaderSectionLoggedIn = () => {
           >
             API Keys
           </NavLink>
-          <button
+          <a
+            href={`${logoutEndpoint}?post_logout_redirect_uri=${window.location.origin}/logout&client_id=${clientId}`}
             className="logout"
-            onClick={() => {
-              onLogout();
-              setOpened(false);
-            }}
           >
             Logout
-          </button>
+          </a>
         </>
       </Popover.Dropdown>
     </Popover>

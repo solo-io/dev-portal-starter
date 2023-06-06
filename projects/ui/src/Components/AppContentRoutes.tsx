@@ -1,10 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-import { portalServerUrl } from "../Apis/hooks";
 import { ApiDetailsPage } from "./ApiDetails/ApiDetailsPage";
 import { ApisPage } from "./ApisList/ApisPage";
 import { ErrorBoundary } from "./Common/ErrorBoundary";
 import LoggedOut from "./Common/LoggedOut";
-import LoginRedirect from "./Common/LoginRedirect";
 import { HomePage } from "./Home/HomePage";
 import { Footer } from "./Structure/Footer";
 import { UsagePlansPage } from "./UsagePlans/UsagePlansPage";
@@ -23,18 +21,10 @@ function AppContentRoutes() {
     <div className="MainContentContainer">
       <Routes>
         <Route
-          path={`${portalServerUrl}/logout`}
+          path={`/logout`}
           element={
             <ErrorBoundary fallback="There was an issue loading the Logout screen">
               <LoggedOut />
-            </ErrorBoundary>
-          }
-        />
-        <Route
-          path={`${portalServerUrl}/login`}
-          element={
-            <ErrorBoundary fallback="There was an issue loading the Login screen">
-              <LoginRedirect />
             </ErrorBoundary>
           }
         />
