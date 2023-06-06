@@ -22,7 +22,6 @@
     "@faker-js/faker": "^7.6.0",
     "@mantine/core": "^6.0.6",
     "@mantine/hooks": "^6.0.6",
-    "@types/crypto-js": "^4.1.1",
     "mobx": "^6.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
