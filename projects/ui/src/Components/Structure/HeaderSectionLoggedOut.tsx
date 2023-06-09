@@ -1,5 +1,6 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 import {
   LOCAL_STORAGE_AUTH_STATE,
   LOCAL_STORAGE_AUTH_VERIFIER,
@@ -62,7 +63,7 @@ const AuthFlowStarter = () => {
   // that was sent with an initial request. The two values must match.
   //
   const stateValue = useMemo(() => {
-    const newStateValue = window.crypto.randomUUID();
+    const newStateValue = uuidv4();
     localStorage.setItem(LOCAL_STORAGE_AUTH_STATE, newStateValue);
     return newStateValue;
   }, []);
