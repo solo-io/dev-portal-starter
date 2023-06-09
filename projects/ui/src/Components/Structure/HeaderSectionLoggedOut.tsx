@@ -62,7 +62,7 @@ const AuthFlowStarter = () => {
   // that was sent with an initial request. The two values must match.
   //
   const stateValue = useMemo(() => {
-    const newStateValue = crypto.randomUUID();
+    const newStateValue = window.crypto.randomUUID();
     localStorage.setItem(LOCAL_STORAGE_AUTH_STATE, newStateValue);
     return newStateValue;
   }, []);

@@ -6,6 +6,13 @@ import { ErrorBoundary } from "../Common/ErrorBoundary";
 import HeaderSectionLoggedIn from "./HeaderSectionLoggedIn";
 import HeaderSectionLoggedOut from "./HeaderSectionLoggedOut";
 
+if (!window.isSecureContext) {
+  console.error(
+    "This page is not being delivered in a secure context (see https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts), " +
+      "so login will not work."
+  );
+}
+
 /**
  * MAIN COMPONENT
  **/
