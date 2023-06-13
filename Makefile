@@ -1,5 +1,3 @@
-
-
 #----------------------------------------------------------------------------------
 # Variables
 #----------------------------------------------------------------------------------
@@ -66,7 +64,7 @@ run-ui: update-ui-deps
 	$(UI_ARGS) yarn --cwd=$(UI_ROOT_DIR) start
 
 .PHONY: run-storybook
-run-storybook: 
+run-storybook:
 	$(UI_ARGS) yarn --cwd=$(UI_ROOT_DIR) storybook
 
 .PHONY: build-ui
@@ -75,13 +73,13 @@ build-ui: update-ui-deps
 
 .PHONY: preview-ui
 preview-ui: update-ui-deps
- 	$(UI_ARGS) yarn --cwd=$(UI_ROOT_DIR) preview
+	$(UI_ARGS) yarn --cwd=$(UI_ROOT_DIR) preview
 
-# Note: if using the engineering-demos frontend-portal deployment, 
-# the built image must be pushed to dockerhub for the deployed image to be 
+# Note: if using the engineering-demos frontend-portal deployment,
+# the built image must be pushed to dockerhub for the deployed image to be
 # updated, if imagePullPolicy=Always
 .PHONY: build-ui-image
-build-ui-image: build-ui
+build-ui-image:
 	docker build -t $(IMAGE_NAME) . --platform=linux/amd64
 
 .PHONY: lint-ui-code
