@@ -14,6 +14,8 @@ FROM node:16.14.2 AS runtime-stage
 
 WORKDIR /app
 COPY --from=build-stage /app/projects/ui/dist ./dist
+RUN npm install --global vite@4.2.3
+
 EXPOSE 4000
 
 # Set the entry point
