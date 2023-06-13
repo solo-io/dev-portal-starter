@@ -30,7 +30,7 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
 
    ```shell
    VITE_PORTAL_SERVER_URL="/v1"
-   VITE_CLIENT_ID="my-client-id"   # the client registered in the Auth Server
+   VITE_CLIENT_ID="your-client-id"   # the client registered in the Auth Server
    VITE_TOKEN_ENDPOINT="https://${KEYCLOAK_URL}/auth/realms/master/protocol/openid-connect/token"
    VITE_AUTH_ENDPOINT="https://${KEYCLOAK_URL}/auth/realms/master/protocol/openid-connect/auth"
    VITE_LOGOUT_ENDPOINT="https://${KEYCLOAK_URL}/auth/realms/master/protocol/openid-connect/logout"
