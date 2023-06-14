@@ -6,9 +6,7 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
 
 ## Initial Setup
 
-1. Install [Node v16.14.2](https://nodejs.org/en/blog/release/v16.14.2) and [yarn](https://yarnpkg.com/).
-
-2. Run the following to download and initialize the latest commit of this repository's main branch.
+1. Run the following to download and initialize the latest commit of this repository's main branch.
 
    - This command uses [tmplr](https://github.com/loreanvictor/tmplr) for personalization of your developer portal. Currently, this just includes adding your company name, which shows up on the home page and on the website title, but could include other customization options in the future. The tmplr setup can be re-run at any time by running `npx tmplr` from the project's root directory.
 
@@ -16,15 +14,29 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
    mkdir portal-test && cd portal-test && npx tmplr solo-io/dev-portal-starter#main
    ```
 
-3. Create a `.env.local` file in the `projects/ui` folder. Replace environment variable values to match your Gloo Platform Portal and oauth provider's installation. This file is ignored by git.
+2. Create a `.env.local` file in the `projects/ui` folder. Replace environment variable values to match your Gloo Platform Portal and oauth provider's installation. This file is ignored by git.
 
    ```shell
    VITE_PORTAL_SERVER_URL="/v1"
    VITE_CLIENT_ID="your-client-id"
    VITE_TOKEN_ENDPOINT="your-token-endpoint"
+   VITE_AUTH_ENDPOINT="your-auth-endpoint"
+   VITE_LOGOUT_ENDPOINT="your-logout-endpoint"
    ```
 
-4. Run the following to output a docker image, replacing the image name.
+   <details><summary>Sample values for Keycloak</summary>
+
+   ```shell
+   VITE_PORTAL_SERVER_URL="/v1"
+   VITE_CLIENT_ID="your-client-id"   # the client registered in the Auth Server
+   VITE_TOKEN_ENDPOINT="https://${KEYCLOAK_URL}/auth/realms/master/protocol/openid-connect/token"
+   VITE_AUTH_ENDPOINT="https://${KEYCLOAK_URL}/auth/realms/master/protocol/openid-connect/auth"
+   VITE_LOGOUT_ENDPOINT="https://${KEYCLOAK_URL}/auth/realms/master/protocol/openid-connect/logout"
+   ```
+   </details>
+
+
+3. Run the following to output a docker image, replacing the image name.
 
    ```shell
    IMAGE_NAME="your-image-name" \
@@ -42,6 +54,9 @@ _\*\*\* Note: If building the docker image without `make build-ui-image`, make s
 5. Follow [the instructions in the engineering-demos repo](https://github.com/solo-io/engineering-demos/blob/ad5f6e217a50c8fcc9d1aa6e442a2c9bbef47eb2/gloo-mesh/portal/multicluster/README.md) to set up dev portal resources. Use the same image name that you used to build the image for the portal-frontend deployment's `spec.template.containers.image` field.
 
 ## UI Iteration
+
+**Prerequisites for Local Development**:
+* Install [Node v16.14.2](https://nodejs.org/en/blog/release/v16.14.2) and [yarn](https://yarnpkg.com/)
 
 The UI can be run locally with:
 
