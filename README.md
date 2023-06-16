@@ -22,6 +22,8 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
    VITE_PORTAL_SERVER_URL="/v1"
    VITE_CLIENT_ID="your-client-id"
    VITE_TOKEN_ENDPOINT="your-token-endpoint"
+   VITE_AUTH_ENDPOINT="your-auth-endpoint"
+   VITE_LOGOUT_ENDPOINT="your-logout-endpoint"
    ```
 
 4. Run the following to output a docker image, replacing the image name.
