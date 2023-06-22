@@ -79,8 +79,9 @@ export function useGetCurrentUser() {
 export function useListApis() {
   const res = useSwrWithAuth<API[] | APIProduct[]>("/apis");
   //
-  // This is a preventative fix for the UI to not break while it
+  // This is a preventative fix for the API list page to not break while it
   // is being updated to use the new server-side APIProduct grouping.
+  // TODO: Update this when the portal server REST API is updated: https://github.com/solo-io/gloo-mesh-enterprise/issues/10067
   //
   let processedAPIs = res.data as API[];
   if (!!res.data?.length && "apiVersions" in res.data[0]) {
@@ -92,7 +93,6 @@ export function useListApis() {
       accum.push(
         ...curProd.apiVersions.reduce((accum, api) => {
           accum.push({
-            // TODO: Update apiId.
             apiId: curProd.apiProductId + api.apiVersion,
             apiProductDisplayName: curProd.apiProductDisplayName,
             apiProductId: curProd.apiProductId,

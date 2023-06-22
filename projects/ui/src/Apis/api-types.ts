@@ -52,19 +52,16 @@ export type API = {
 export type APIProduct = {
   apiProductId: string;
   apiProductDisplayName: string;
-  apiVersions: (
-    | API
-    | {
-        apiVersion: string;
-        contact: string;
-        customMetadata?: Record<string, string>;
-        description: string;
-        license: string;
-        termsOfService: string;
-        title: string;
-        usagePlans: string[];
-      }
-  )[];
+  apiVersions: {
+    apiVersion: string;
+    contact: string;
+    customMetadata?: Record<string, string>;
+    description: string;
+    license: string;
+    termsOfService: string;
+    title: string;
+    usagePlans: string[];
+  }[];
 };
 
 type SchemaPropertyType = "string" | "integer" | "array" | "object";
