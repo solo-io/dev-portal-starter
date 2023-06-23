@@ -45,6 +45,9 @@ export const Loading: Story = {
 //
 const mockApisList: DeepPartialObject<API>[] = [
   {
+    apiProductId: "some-api-product-id",
+    apiProductDisplayName: "Mock API Product",
+    apiVersion: "v1",
     apiId: "some-api",
     contact: "some-contact",
     customMetadata: arrGen(10).reduce(

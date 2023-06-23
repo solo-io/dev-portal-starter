@@ -1,4 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { DiProvider, injectable } from "react-magnetic-di";
+import { MemoryRouter } from "react-router-dom";
+import { useListApiKeys } from "../../Apis/hooks";
 import { APIKeysList } from "../../Components/UsagePlans/ApiKeys/ApiKeysList";
 
 // More on how to set up stories at: https://storybook.js.org/docs/7.0/react/writing-stories/introduction
@@ -29,4 +32,19 @@ export const Empty: Story = {
       },
     },
   },
+  decorators: [
+    (Story) => {
+      const useListApiKeysDi = injectable(useListApiKeys, () => ({
+        isLoading: false,
+        data: [],
+      }));
+      return (
+        <MemoryRouter>
+          <DiProvider use={[useListApiKeysDi]}>
+            <Story />
+          </DiProvider>
+        </MemoryRouter>
+      );
+    },
+  ],
 };

@@ -2,7 +2,14 @@ import { useContext } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
 import { PortalAuthContext } from "../Context/PortalAuthContext";
-import { API, APIKey, APISchema, UsagePlan, User } from "./api-types";
+import {
+  API,
+  APIKey,
+  APIProduct,
+  APISchema,
+  UsagePlan,
+  User,
+} from "./api-types";
 
 let _portalServerUrl = import.meta.env.VITE_PORTAL_SERVER_URL;
 if (
@@ -70,7 +77,41 @@ export function useGetCurrentUser() {
 }
 
 export function useListApis() {
-  return useSwrWithAuth<API[]>("/apis");
+  const res = useSwrWithAuth<API[] | APIProduct[]>("/apis");
+  //
+  // This is a preventative fix for the API list page to not break while it
+  // is being updated to use the new server-side APIProduct grouping.
+  // TODO: Update this when the portal server REST API is updated: https://github.com/solo-io/gloo-mesh-enterprise/issues/10067
+  //
+  let processedAPIs = res.data as API[];
+  if (!!res.data?.length && "apiVersions" in res.data[0]) {
+    //
+    // If res.data is an APIProduct[], convert it to an API[].
+    //
+    let apiProducts = res.data as APIProduct[];
+    processedAPIs = apiProducts.reduce((accum, curProd) => {
+      accum.push(
+        ...curProd.apiVersions.reduce((accum, api) => {
+          accum.push({
+            apiId: curProd.apiProductId + api.apiVersion,
+            apiProductDisplayName: curProd.apiProductDisplayName,
+            apiProductId: curProd.apiProductId,
+            apiVersion: api.apiVersion,
+            contact: api.contact,
+            customMetadata: api.customMetadata,
+            description: api.description,
+            license: api.license,
+            termsOfService: api.termsOfService,
+            title: api.title,
+            usagePlans: api.usagePlans,
+          });
+          return accum;
+        }, [] as API[])
+      );
+      return accum;
+    }, [] as API[]);
+  }
+  return { ...res, data: processedAPIs };
 }
 export function useGetApiDetails(id?: string) {
   return useSwrWithAuth<APISchema>(`/apis/${id}/schema`);

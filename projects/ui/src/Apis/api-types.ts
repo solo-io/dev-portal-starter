@@ -35,6 +35,9 @@ export type APIKey = {
 };
 
 export type API = {
+  apiProductId?: string;
+  apiProductDisplayName?: string;
+  apiVersion?: string;
   apiId: string;
   contact: string;
   customMetadata: Record<string, string> | undefined;
@@ -43,6 +46,22 @@ export type API = {
   termsOfService: string;
   title: string;
   usagePlans: string[];
+};
+
+// This api type may be returned in the next portal rest server version.
+export type APIProduct = {
+  apiProductId: string;
+  apiProductDisplayName: string;
+  apiVersions: {
+    apiVersion: string;
+    contact: string;
+    customMetadata?: Record<string, string>;
+    description: string;
+    license: string;
+    termsOfService: string;
+    title: string;
+    usagePlans: string[];
+  }[];
 };
 
 type SchemaPropertyType = "string" | "integer" | "array" | "object";

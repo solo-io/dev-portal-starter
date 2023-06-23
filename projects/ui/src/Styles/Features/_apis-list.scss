@@ -362,13 +362,25 @@
         padding: 20px;
 
         .title {
-          margin-bottom: 15px;
+          margin-bottom: 10px;
           margin-left: 10px;
           font-size: 28px;
           font-weight: 600;
           color: constants.$defaultColoredText;
         }
+        .subtitle-list {
+          display: flex;
+          flex-direction: column;
+          margin-left: 10px;
+          .subtitle-item {
+            font-size: 14px;
+            font-weight: 500;
+            color: constants.$defaultColoredText;
+          }
+        }
+
         .description {
+          margin-top: 5px;
           margin-left: 10px;
           font-size: 16px;
           line-height: 22px;
