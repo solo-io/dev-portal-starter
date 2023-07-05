@@ -1,8 +1,6 @@
-# Gloo Platform Portal UI
+# Dev Portal Starter
 
-## Description
-
-This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vite](https://vitejs.dev/), and configured to use React and Typescript. It can be used to view information about your APIs and usage plans, add or delete API keys, and view your OpenAPI schemas using an embedded [Redoc UI](https://github.com/Redocly/redoc) or [Swagger UI](https://swagger.io/tools/swagger-ui/) view. It also can be personalized with images and colors to match your branding and preferences.
+This is an example Solo.io Gloo Platform Developer Portal frontend app, built with [Vite](https://vitejs.dev/), and configured to use React and Typescript. It can be used to view information about your APIs and usage plans, add or delete API keys, and view your OpenAPI schemas using an embedded [Redoc UI](https://github.com/Redocly/redoc) or [Swagger UI](https://swagger.io/tools/swagger-ui/) view. It also can be personalized with images and colors to match your branding and preferences. Authentication is done using the [PKCE flow](https://datatracker.ietf.org/doc/html/rfc7636) with an OAuth provider, which in turn guards the REST server endpoints using an `ExtAuthPolicy`.
 
 ## Initial Setup
 
@@ -14,7 +12,7 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
    mkdir portal-test && cd portal-test && npx tmplr solo-io/dev-portal-starter#main
    ```
 
-2. Create a `.env.local` file in the `projects/ui` folder. Replace environment variable values to match your Gloo Platform Portal and oauth provider's installation. This file is ignored by git.
+2. Create a `.env.local` file in the `projects/ui` folder. Replace environment variable values to match your Gloo Platform Portal and oauth provider's installation. This file is ignored by Git.
 
    ```shell
    VITE_PORTAL_SERVER_URL="/v1"
@@ -29,12 +27,12 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
    ```shell
    VITE_PORTAL_SERVER_URL="/v1"
    VITE_CLIENT_ID="your-client-id"   # the client registered in the Auth Server
-   VITE_TOKEN_ENDPOINT="https://${KEYCLOAK_URL}/auth/realms/master/protocol/openid-connect/token"
-   VITE_AUTH_ENDPOINT="https://${KEYCLOAK_URL}/auth/realms/master/protocol/openid-connect/auth"
-   VITE_LOGOUT_ENDPOINT="https://${KEYCLOAK_URL}/auth/realms/master/protocol/openid-connect/logout"
+   VITE_TOKEN_ENDPOINT="https://${KEYCLOAK_URL}/realms/master/protocol/openid-connect/token"
+   VITE_AUTH_ENDPOINT="https://${KEYCLOAK_URL}/realms/master/protocol/openid-connect/auth"
+   VITE_LOGOUT_ENDPOINT="https://${KEYCLOAK_URL}/realms/master/protocol/openid-connect/logout"
    ```
-   </details>
 
+   </details>
 
 3. Run the following to output a docker image, replacing the image name.
 
@@ -56,7 +54,8 @@ _\*\*\* Note: If building the docker image without `make build-ui-image`, make s
 ## UI Iteration
 
 **Prerequisites for Local Development**:
-* Install [Node v16.14.2](https://nodejs.org/en/blog/release/v16.14.2) and [yarn](https://yarnpkg.com/)
+
+- Install [Node v16.14.2](https://nodejs.org/en/blog/release/v16.14.2) and [yarn](https://yarnpkg.com/)
 
 The UI can be run locally with:
 
@@ -112,29 +111,25 @@ This is the URL for the Gloo Platform Portal REST server. The default value is `
 
 #### VITE_CLIENT_ID
 
-The oauth client id. In Keycloak, this is shown in the client settings of your keycloak instances UI: `<your-keycloak-url>/auth`
+The oauth client id. In Keycloak, this is shown in the client settings of your keycloak instances UI.
 
 #### VITE_TOKEN_ENDPOINT
 
-This is the endpoint to get the oauth token. In Keycloak, this is the `token_endpoint` property from: `<your-keycloak-url>/auth/realms/<your-realm>/.well-known/openid-configuration`
+This is the endpoint to get the oauth token. In Keycloak, this is the `token_endpoint` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`
 
 In Keycloak, it may look like:
-`<your-keycloak-url>/auth/realms/<your-realm>/protocol/openid-connect/token`
+`<your-keycloak-url>/realms/<your-realm>/protocol/openid-connect/token`
 
 #### VITE_AUTH_ENDPOINT
 
-This is the endpoint to get the PKCE authorization code. In Keycloak, this is the `authorization_code` property from: `<your-keycloak-url>/auth/realms/<your-realm>/.well-known/openid-configuration`
+This is the endpoint to get the PKCE authorization code. In Keycloak, this is the `authorization_code` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`
 
 In Keycloak, it may look like:
-`<your-keycloak-url>/auth/realms/<your-realm>/protocol/openid-connect/auth`
+`<your-keycloak-url>/realms/<your-realm>/protocol/openid-connect/auth`
 
 #### VITE_LOGOUT_ENDPOINT
 
 This is the endpoint end your session. In Keycloak, this is the `end_session_endpoint` property from: `<your-keycloak-url>/auth/realms/<your-realm>/.well-known/openid-configuration`
 
 In Keycloak, it may look like:
-`<your-keycloak-url>/auth/realms/<your-realm>/protocol/openid-connect/logout`
-
-## Troubleshooting Keycloak
-
-In your Keycloak administration console, make sure that "Direct Access Grants" is enabled in your client settings, and "Web Origins" is set to `*`
+`<your-keycloak-url>/realms/<your-realm>/protocol/openid-connect/logout`
