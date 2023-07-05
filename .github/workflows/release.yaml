@@ -1,0 +1,23 @@
+name: Release Workflow
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  branchAndPublish:
+    runs-on: ubuntu-20.04
+
+    env:
+      REPO_VERSION: ${{ github.event.release.tag_name }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Create release branch
+        run: |
+          RELEASE_NUMBER=$(echo $REPO_VERSION | sed 's|\.[0-9]*$|\.x|g')
+          git checkout -b $RELEASE_NUMBER
+          git push origin $RELEASE_NUMBER
