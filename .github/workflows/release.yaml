@@ -1,0 +1,41 @@
+name: Release Workflow
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  branch:
+    runs-on: ubuntu-20.04
+
+    env:
+      RELEASE_TAG: ${{ github.event.release.tag_name }}
+      GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      GCLOUD_AUTH_KEY: ${{ secrets.GC_PUBLIC_GCR_SA_KEY }}
+
+    steps:
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.2.1
+        with:
+          project_id: solo-public
+          service_account_key: $GCLOUD_AUTH_KEY
+          export_default_credentials: true
+
+      - name: Configure Docker to use GCR
+        run: |
+          gcloud auth configure-docker --quiet
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Create release branch
+        run: |
+          RELEASE_NUMBER=$(echo $RELEASE_TAG | sed 's|\.[0-9]*$|\.x|g')
+          git checkout -b $RELEASE_NUMBER
+          git push origin $RELEASE_NUMBER
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t gcr.io/solo-public/portal-frontend:${RELEASE_TAG} .
+          docker push gcr.io/solo-public/portal-frontend:${RELEASE_TAG}
