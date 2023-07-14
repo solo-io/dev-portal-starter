@@ -53,6 +53,7 @@ export type APIProduct = {
   apiProductId: string;
   apiProductDisplayName: string;
   apiVersions: {
+    apiId: string;
     apiVersion: string;
     contact: string;
     customMetadata?: Record<string, string>;
