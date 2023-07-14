@@ -33,8 +33,8 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
    VITE_AUTH_ENDPOINT="https://${KEYCLOAK_URL}/auth/realms/master/protocol/openid-connect/auth"
    VITE_LOGOUT_ENDPOINT="https://${KEYCLOAK_URL}/auth/realms/master/protocol/openid-connect/logout"
    ```
-   </details>
 
+   </details>
 
 3. Run the following to output a docker image, replacing the image name.
 
@@ -56,7 +56,8 @@ _\*\*\* Note: If building the docker image without `make build-ui-image`, make s
 ## UI Iteration
 
 **Prerequisites for Local Development**:
-* Install [Node v16.14.2](https://nodejs.org/en/blog/release/v16.14.2) and [yarn](https://yarnpkg.com/)
+
+- Install [Node v16.14.2](https://nodejs.org/en/blog/release/v16.14.2) and [yarn](https://yarnpkg.com/)
 
 The UI can be run locally with:
 
@@ -138,3 +139,7 @@ In Keycloak, it may look like:
 ## Troubleshooting Keycloak
 
 In your Keycloak administration console, make sure that "Direct Access Grants" is enabled in your client settings, and "Web Origins" is set to `*`
+
+## Creating Releases
+
+When making a new release, use the GitHub UI, and name your release in the format: v1.2.3. When the release is published, a new branch will be made (v1.2.x), and a build of that version will be tagged and published to gcr.io/solo-public/docs/portal-frontend:v1.2.3 (replacing v1.2.3 with your tag name).
