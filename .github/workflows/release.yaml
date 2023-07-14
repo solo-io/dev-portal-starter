@@ -12,14 +12,13 @@ jobs:
     env:
       RELEASE_TAG: ${{ github.event.release.tag_name }}
       GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-      GCLOUD_AUTH_KEY: ${{ secrets.GC_PUBLIC_GCR_SA_KEY }}
 
     steps:
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.1
         with:
           project_id: solo-public
-          service_account_key: $GCLOUD_AUTH_KEY
+          service_account_key: ${{ secrets.GC_PUBLIC_GCR_SA_KEY }}
           export_default_credentials: true
 
       - name: Configure Docker to use GCR
