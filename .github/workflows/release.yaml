@@ -11,9 +11,17 @@ jobs:
 
     env:
       RELEASE_TAG: ${{ github.event.release.tag_name }}
+      GIT_USER_NAME: soloio-bot
+      GIT_USER_EMAIL: soloio-bot@github.com
       GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
     steps:
+      - name: Setup Git
+        run: |
+          git config user.name $GIT_USER_NAME
+          git config user.email $GIT_USER_EMAIL
+          git config --global url."https://${GH_TOKEN}@github.com/solo-io/".insteadOf "https://github.com/solo-io/"
+
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.1
         with:
