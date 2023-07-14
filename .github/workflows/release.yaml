@@ -35,9 +35,9 @@ jobs:
 
       - name: Create release branch
         run: |
-          RELEASE_NUMBER=$(echo $RELEASE_TAG | sed 's|\.[0-9]*$|\.x|g')
-          git checkout -b $RELEASE_NUMBER || true
-          git push origin $RELEASE_NUMBER || true
+          RELEASE_BRANCH=$(echo $RELEASE_TAG | sed 's|\.[0-9]*$|\.x|g')
+          git checkout -b $RELEASE_BRANCH || true
+          git push origin $RELEASE_BRANCH || true
 
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.1
