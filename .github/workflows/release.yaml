@@ -29,9 +29,9 @@ jobs:
         run: |
           RELEASE_VERSION=$(echo $RELEASE_TAG | sed 's|v||g')
           sed -i "s|\"version\"\:[[:space:]]*\"[0-9]*\.[0-9]*\.[0-9]*\"|\"version\"\: \"$RELEASE_VERSION\"|" ./projects/ui/package.json
-          git add ./projects/ui/package.json
-          git commit -m "Update package.json version information for $RELEASE_TAG"
-          git push origin $RELEASE_TAG
+          git add ./projects/ui/package.json || true
+          git commit -m "Update package.json version information for $RELEASE_TAG" || true
+          git push origin $RELEASE_TAG || true
 
       - name: Create release branch
         run: |
