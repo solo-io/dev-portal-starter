@@ -11,25 +11,18 @@ WORKDIR /app
 COPY ./projects projects
 WORKDIR /app/projects/ui
 
-# Install global dependencies
+# Install global dependencies and set up for runtime
 RUN apt-get update && apt-get install -y build-essential
-RUN npm install --global vite@4.2.3
+RUN yarn global add vite@4.2.3
+RUN yarn install
+EXPOSE 4000
 
-# Build the app and pass in the environment variables.
+# Build the app and pass in the environment variables, then start it.
 # The build can't happen in 2 stages (build and runtime),
 # since these variables will change when the image is deployed.
-RUN yarn install && VITE_PORTAL_SERVER_URL=$VITE_PORTAL_SERVER_URL \
+ENTRYPOINT VITE_PORTAL_SERVER_URL=$VITE_PORTAL_SERVER_URL \
     VITE_CLIENT_ID=$VITE_CLIENT_ID \
     VITE_TOKEN_ENDPOINT=$VITE_TOKEN_ENDPOINT \
     VITE_AUTH_ENDPOINT=$VITE_AUTH_ENDPOINT \
     VITE_LOGOUT_ENDPOINT=$VITE_LOGOUT_ENDPOINT \
-    yarn build
-
-# Set up for the runtime
-RUN cp -rf /app/projects/ui/dist /app/dist
-RUN rm -rf /app/projects
-WORKDIR /app
-EXPOSE 4000
-
-# Start the production build of the app
-ENTRYPOINT vite preview --port 4000 --host
+    yarn build && vite preview --port 4000 --host
