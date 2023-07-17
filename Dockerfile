@@ -26,10 +26,10 @@ RUN yarn install && VITE_PORTAL_SERVER_URL=$VITE_PORTAL_SERVER_URL \
     yarn build
 
 # Set up for the runtime
-EXPOSE 4000
+RUN cp -rf /app/projects/ui/dist /app/dist
+RUN rm -rf /app/projects
 WORKDIR /app
-COPY /app/projects/ui/dist ./dist
-RUN rm -rf /projects
+EXPOSE 4000
 
 # Start the production build of the app
 ENTRYPOINT vite preview --port 4000 --host
