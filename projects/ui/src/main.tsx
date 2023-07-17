@@ -5,6 +5,8 @@ import { ToasterWithOptions } from "./Components/Common/ToasterWithOptions";
 import { PortalAuthContextProvider } from "./Context/PortalAuthContext";
 import "./Styles/main.scss";
 
+console.log(import.meta.env);
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <PortalAuthContextProvider>
     <ToasterWithOptions />
