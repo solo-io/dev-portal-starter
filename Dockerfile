@@ -35,4 +35,9 @@ RUN npm install --global vite@4.2.3
 EXPOSE 4000
 
 # Set the entry point
-ENTRYPOINT ["vite", "preview", "--port", "4000", "--host"]
+ENTRYPOINT VITE_PORTAL_SERVER_URL=$VITE_PORTAL_SERVER_URL \
+    VITE_CLIENT_ID=$VITE_CLIENT_ID \
+    VITE_TOKEN_ENDPOINT=$VITE_TOKEN_ENDPOINT \
+    VITE_AUTH_ENDPOINT=$VITE_AUTH_ENDPOINT \
+    VITE_LOGOUT_ENDPOINT=$VITE_LOGOUT_ENDPOINT \
+    vite preview --port 4000 --host
