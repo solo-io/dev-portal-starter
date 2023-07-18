@@ -1,7 +1,7 @@
 {
   "name": "gloo-platform-portal-ui",
   "private": true,
-  "version": "0.0.9",
+  "version": "0.0.10",
   "type": "module",
   "scripts": {
     "start": "vite --port=4000",
