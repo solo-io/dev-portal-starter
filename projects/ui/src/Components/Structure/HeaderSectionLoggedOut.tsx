@@ -90,7 +90,7 @@ const AuthFlowStarter = () => {
       return;
     }
 
-    const url = `${authEndpoint}?client_id=${clientId}&scope=oidc,email,username&response_type=code&state=${stateValue}&code_challenge=${codeChallenge}&code_challenge_method=S256&redirect_uri=${
+    const url = `${authEndpoint}?client_id=${clientId}&scope=openid,email,username&response_type=code&state=${stateValue}&code_challenge=${codeChallenge}&code_challenge_method=S256&redirect_uri=${
       window.location.origin + window.location.pathname
     }`;
 
