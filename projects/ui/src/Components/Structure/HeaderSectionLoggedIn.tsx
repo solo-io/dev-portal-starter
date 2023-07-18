@@ -1,14 +1,20 @@
 import { Popover } from "@mantine/core";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
-import { NavLink, useLocation, useSearchParams } from "react-router-dom";
+import {
+  NavLink,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { useGetCurrentUser } from "../../Apis/hooks";
 import { Icon } from "../../Assets/Icons";
 import { PortalAuthContext } from "../../Context/PortalAuthContext";
-import { clientId, logoutEndpoint } from "../../user_variables.tmplr";
+import { revokationEndpoint } from "../../user_variables.tmplr";
 
 const HeaderSectionLoggedIn = () => {
   di(useGetCurrentUser);
+  const navigate = useNavigate();
   const { latestAccessToken } = useContext(PortalAuthContext);
   const { data: user } = useGetCurrentUser();
   const routerLocation = useLocation();
@@ -54,7 +60,19 @@ const HeaderSectionLoggedIn = () => {
             API Keys
           </NavLink>
           <a
-            href={`${logoutEndpoint}?id_token_hint=${latestAccessToken}&post_logout_redirect_uri=${window.location.origin}/logout&client_id=${clientId}`}
+            href={`/logout`}
+            onClick={async (e) => {
+              e.stopPropagation();
+              fetch(revokationEndpoint, {
+                method: "POST",
+                body: JSON.stringify({
+                  token: latestAccessToken,
+                  token_type_hint: "access_token",
+                }),
+              }).then(() => {
+                navigate("/logout");
+              });
+            }}
             className="logout"
           >
             Logout

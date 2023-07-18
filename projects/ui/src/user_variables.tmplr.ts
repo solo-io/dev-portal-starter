@@ -39,7 +39,7 @@ document.title = companyName + " Portal";
 /**
  * This is the endpoint to get the oauth token.
  * In keycloak, this is the `token_endpoint` property from:
- * <your-keycloak-url>/auth/realms/<your-realm>/.well-known/openid-configuration
+ * <your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration
  */
 export const tokenEndpoint = templateString(
   "{{ tmplr.tokenEndpoint }}",
@@ -49,7 +49,7 @@ export const tokenEndpoint = templateString(
 /**
  * This is the endpoint to get the PKCE auth token.
  * In keycloak, this is the `authorization_endpoint` property from:
- * <your-keycloak-url>/auth/realms/<your-realm>/.well-known/openid-configuration
+ * <your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration
  */
 export const authEndpoint = templateString(
   "{{ tmplr.authEndpoint }}",
@@ -58,12 +58,12 @@ export const authEndpoint = templateString(
 
 /**
  * This is the endpoint to end your session.
- * In keycloak, this is the `end_session_endpoint` property from:
- * <your-keycloak-url>/auth/realms/<your-realm>/.well-known/openid-configuration
+ * In keycloak, this is the `revokation_endpoint` property from:
+ * <your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration
  */
-export const logoutEndpoint = templateString(
-  "{{ tmplr.logoutEndpoint }}",
-  import.meta.env.VITE_LOGOUT_ENDPOINT
+export const revokationEndpoint = templateString(
+  "{{ tmplr.revokationEndpoint }}",
+  import.meta.env.VITE_REVOKATION_ENDPOINT
 );
 
 /**
