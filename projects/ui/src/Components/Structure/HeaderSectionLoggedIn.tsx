@@ -67,7 +67,6 @@ const HeaderSectionLoggedIn = () => {
                 method: "POST",
                 body: JSON.stringify({
                   token: latestAccessToken,
-                  token_type_hint: "access_token",
                 }),
               }).then(() => {
                 navigate("/logout");
