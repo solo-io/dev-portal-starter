@@ -21,6 +21,7 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
    VITE_CLIENT_ID="your-client-id"
    VITE_TOKEN_ENDPOINT="your-token-endpoint"
    VITE_AUTH_ENDPOINT="your-auth-endpoint"
+   VITE_LOGOUT_ENDPOINT="your-logout-endpoint"
    ```
 
    <details><summary>Sample values for Keycloak</summary>
