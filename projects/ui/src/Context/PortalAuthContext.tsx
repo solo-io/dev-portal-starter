@@ -13,6 +13,9 @@ interface PortalAuthProviderProps {
   children?: any;
 }
 interface IPortalAuthContext extends PortalAuthProviderProps {
+  // The id_token is used for identifying the user in the logout request.
+  idToken: string | undefined;
+  // The access_token is used for user claims (like "email").
   latestAccessToken: string | undefined;
   isLoggedIn: boolean;
   tokensResponse: AccessTokensResponse | undefined;
@@ -186,6 +189,7 @@ export const PortalAuthContextProvider = (props: PortalAuthProviderProps) => {
       value={{
         isLoggedIn: !!tokensResponse?.access_token,
         latestAccessToken: tokensResponse?.access_token,
+        idToken: tokensResponse?.id_token,
         tokensResponse,
         onLogin,
         onLogout,

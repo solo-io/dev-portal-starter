@@ -21,7 +21,6 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
    VITE_CLIENT_ID="your-client-id"
    VITE_TOKEN_ENDPOINT="your-token-endpoint"
    VITE_AUTH_ENDPOINT="your-auth-endpoint"
-   VITE_REVOKATION_ENDPOINT="your-revokation-endpoint"
    ```
 
    <details><summary>Sample values for Keycloak</summary>
@@ -31,7 +30,7 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
    VITE_CLIENT_ID="your-client-id"   # the client registered in the Auth Server
    VITE_TOKEN_ENDPOINT="https://${KEYCLOAK_URL}/realms/master/protocol/openid-connect/token"
    VITE_AUTH_ENDPOINT="https://${KEYCLOAK_URL}/realms/master/protocol/openid-connect/auth"
-   VITE_REVOKATION_ENDPOINT="https://${KEYCLOAK_URL}/realms/master/protocol/openid-connect/revoke"
+   VITE_LOGOUT_ENDPOINT="https://${KEYCLOAK_URL}/realms/master/protocol/openid-connect/logout"
    ```
 
    </details>
@@ -129,12 +128,12 @@ This is the endpoint to get the PKCE authorization code. In Keycloak, this is th
 In Keycloak, it may look like:
 `<your-keycloak-url>/realms/<your-realm>/protocol/openid-connect/auth`
 
-#### VITE_REVOKATION_ENDPOINT
+#### VITE_LOGOUT_ENDPOINT
 
-This is the endpoint to revoke your access token and end your session. In Keycloak, this is the `revokation_endpoint` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`
+This is the endpoint to end your session. In Keycloak, this is the `end_session_endpoint` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`
 
 In Keycloak, it may look like:
-`<your-keycloak-url>/realms/<your-realm>/protocol/openid-connect/revoke`
+`<your-keycloak-url>/realms/<your-realm>/protocol/openid-connect/logout`
 
 ## Troubleshooting Keycloak
 

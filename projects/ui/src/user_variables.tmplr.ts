@@ -58,12 +58,12 @@ export const authEndpoint = templateString(
 
 /**
  * This is the endpoint to end your session.
- * In keycloak, this is the `revokation_endpoint` property from:
+ * In keycloak, this is the `end_session_endpoint` property from:
  * <your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration
  */
-export const revokationEndpoint = templateString(
-  "{{ tmplr.revokationEndpoint }}",
-  import.meta.env.VITE_REVOKATION_ENDPOINT
+export const logoutEndpoint = templateString(
+  "{{ tmplr.logoutEndpoint }}",
+  import.meta.env.VITE_LOGOUT_ENDPOINT
 );
 
 /**
