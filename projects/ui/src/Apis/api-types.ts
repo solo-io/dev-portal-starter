@@ -99,6 +99,7 @@ export type APISchema = {
 // Response from keycloak.
 //
 export interface AccessTokensResponse {
+  id_token: string;
   access_token: string;
   expires_in: number;
   "not-before-policy": number;

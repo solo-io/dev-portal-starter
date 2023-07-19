@@ -90,7 +90,7 @@ const AuthFlowStarter = () => {
       return;
     }
 
-    const url = `${authEndpoint}?client_id=${clientId}&response_type=code&state=${stateValue}&code_challenge=${codeChallenge}&code_challenge_method=S256&redirect_uri=${
+    const url = `${authEndpoint}?client_id=${clientId}&scope=openid&response_type=code&state=${stateValue}&code_challenge=${codeChallenge}&code_challenge_method=S256&redirect_uri=${
       window.location.origin + window.location.pathname
     }`;
 
@@ -115,15 +115,14 @@ const HeaderSectionLoggedOut = () => {
       //
       // Get search params.
       const code = searchParams.get("code");
-      const sessionState = searchParams.get("session_state");
       const state = searchParams.get("state");
       //
-      // Stop here if the search params aren't in the URL.
-      if (!code || !sessionState || !state) {
+      // Stop here if the code isn't in the URL.
+      if (!code) {
         return;
       }
       const previousState = localStorage.getItem(LOCAL_STORAGE_AUTH_STATE);
-      if (state !== previousState) {
+      if (!!state && state !== previousState) {
         // eslint-disable-next-line no-console
         console.warn(
           "The 'state' returned from the login flow does not match the previously generated 'state' value."

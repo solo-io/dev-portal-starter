@@ -21,7 +21,6 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
    VITE_CLIENT_ID="your-client-id"
    VITE_TOKEN_ENDPOINT="your-token-endpoint"
    VITE_AUTH_ENDPOINT="your-auth-endpoint"
-   VITE_LOGOUT_ENDPOINT="your-logout-endpoint"
    ```
 
    <details><summary>Sample values for Keycloak</summary>
@@ -29,9 +28,9 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
    ```shell
    VITE_PORTAL_SERVER_URL="/v1"
    VITE_CLIENT_ID="your-client-id"   # the client registered in the Auth Server
-   VITE_TOKEN_ENDPOINT="https://${KEYCLOAK_URL}/auth/realms/master/protocol/openid-connect/token"
-   VITE_AUTH_ENDPOINT="https://${KEYCLOAK_URL}/auth/realms/master/protocol/openid-connect/auth"
-   VITE_LOGOUT_ENDPOINT="https://${KEYCLOAK_URL}/auth/realms/master/protocol/openid-connect/logout"
+   VITE_TOKEN_ENDPOINT="https://${KEYCLOAK_URL}/realms/master/protocol/openid-connect/token"
+   VITE_AUTH_ENDPOINT="https://${KEYCLOAK_URL}/realms/master/protocol/openid-connect/auth"
+   VITE_LOGOUT_ENDPOINT="https://${KEYCLOAK_URL}/realms/master/protocol/openid-connect/logout"
    ```
 
    </details>
@@ -117,24 +116,24 @@ The oauth client id. In Keycloak, this is shown in the client settings of your k
 
 #### VITE_TOKEN_ENDPOINT
 
-This is the endpoint to get the oauth token. In Keycloak, this is the `token_endpoint` property from: `<your-keycloak-url>/auth/realms/<your-realm>/.well-known/openid-configuration`
+This is the endpoint to get the oauth token. In Keycloak, this is the `token_endpoint` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`
 
 In Keycloak, it may look like:
-`<your-keycloak-url>/auth/realms/<your-realm>/protocol/openid-connect/token`
+`<your-keycloak-url>/realms/<your-realm>/protocol/openid-connect/token`
 
 #### VITE_AUTH_ENDPOINT
 
-This is the endpoint to get the PKCE authorization code. In Keycloak, this is the `authorization_code` property from: `<your-keycloak-url>/auth/realms/<your-realm>/.well-known/openid-configuration`
+This is the endpoint to get the PKCE authorization code. In Keycloak, this is the `authorization_code` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`
 
 In Keycloak, it may look like:
-`<your-keycloak-url>/auth/realms/<your-realm>/protocol/openid-connect/auth`
+`<your-keycloak-url>/realms/<your-realm>/protocol/openid-connect/auth`
 
 #### VITE_LOGOUT_ENDPOINT
 
-This is the endpoint end your session. In Keycloak, this is the `end_session_endpoint` property from: `<your-keycloak-url>/auth/realms/<your-realm>/.well-known/openid-configuration`
+This is the endpoint to end your session. In Keycloak, this is the `end_session_endpoint` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`
 
 In Keycloak, it may look like:
-`<your-keycloak-url>/auth/realms/<your-realm>/protocol/openid-connect/logout`
+`<your-keycloak-url>/realms/<your-realm>/protocol/openid-connect/logout`
 
 ## Troubleshooting Keycloak
 

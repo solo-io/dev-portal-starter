@@ -1,13 +1,15 @@
 import { Popover } from "@mantine/core";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
 import { NavLink, useLocation, useSearchParams } from "react-router-dom";
 import { useGetCurrentUser } from "../../Apis/hooks";
 import { Icon } from "../../Assets/Icons";
-import { clientId, logoutEndpoint } from "../../user_variables.tmplr";
+import { PortalAuthContext } from "../../Context/PortalAuthContext";
+import { logoutEndpoint } from "../../user_variables.tmplr";
 
 const HeaderSectionLoggedIn = () => {
   di(useGetCurrentUser);
+  const { idToken } = useContext(PortalAuthContext);
   const { data: user } = useGetCurrentUser();
   const routerLocation = useLocation();
   const [opened, setOpened] = useState(false);
@@ -52,7 +54,7 @@ const HeaderSectionLoggedIn = () => {
             API Keys
           </NavLink>
           <a
-            href={`${logoutEndpoint}?post_logout_redirect_uri=${window.location.origin}/logout&client_id=${clientId}`}
+            href={`${logoutEndpoint}?id_token_hint=${idToken}&post_logout_redirect_uri=${window.location.origin}/logout`}
             className="logout"
           >
             Logout
