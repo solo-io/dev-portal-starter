@@ -57,6 +57,7 @@ const useSwrWithAuth = <T>(
     (...args) => {
       return fetchJSON(args[0], {
         ...(args.length > 1 && !!args[1] ? args[1] : {}),
+        credentials: "include",
         headers: {
           ...(args.length > 1 && args[1].headers ? args[1].headers : {}),
           ...authHeaders,
@@ -150,6 +151,7 @@ export function useCreateKeyMutation() {
     const res = await fetchJSON(url, {
       method: "POST",
       headers: authHeaders,
+      credentials: "include",
       body: JSON.stringify({
         usagePlan: usagePlanName,
         apiKeyName,
@@ -182,6 +184,7 @@ export function useDeleteKeyMutation() {
       await fetch(`${portalServerUrl}${url}/${apiKeyId}`, {
         method: "DELETE",
         headers: authHeaders,
+        credentials: "include",
       });
       // TODO: Mutation should invalidate all usage plans that this api key is in.
       mutate(`/api-keys?usagePlans=${usagePlanName}`);

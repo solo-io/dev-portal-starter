@@ -75,3 +75,12 @@ export const clientId = templateString(
   "{{ tmplr.clientId }}",
   import.meta.env.VITE_CLIENT_ID
 );
+
+/**
+ * The ExtAuthPolicy's oidcAuthorizationCode.callback property.
+ * This is optional and only needed if this app is deployed in the mesh.
+ */
+export const oidcAuthCodeCallback = templateString(
+  "{{ tmplr.oidcAuthCodeCallback }}",
+  import.meta.env.VITE_OIDC_AUTH_CODE_CALLBACK
+);

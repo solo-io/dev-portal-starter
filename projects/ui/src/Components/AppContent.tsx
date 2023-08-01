@@ -1,8 +1,10 @@
 import { useContext } from "react";
+import { useLocation } from "react-router-dom";
 import { AppContext } from "../Context/AppContext";
+import { oidcAuthCodeCallback } from "../user_variables.tmplr";
 import AppContentRoutes from "./AppContentRoutes";
 import { Header } from "./Structure/Header";
-import { useLocation } from "react-router-dom";
+import OidcAuthCodeHeaderVariant from "./Structure/OidcAuthCodeHeaderVariant/OidcAuthCodeHeaderVariant";
 
 function AppContent() {
   const routeLocation = useLocation();
@@ -21,7 +23,7 @@ function AppContent() {
       data-theme={isDarkMode ? "dark" : "light"}
       className={`AppContainer ${letContentGetWider ? "widerContent" : ""}`}
     >
-      <Header />
+      {!!oidcAuthCodeCallback ? <OidcAuthCodeHeaderVariant /> : <Header />}
       <AppContentRoutes />
     </div>
   );

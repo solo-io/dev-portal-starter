@@ -41,6 +41,13 @@ ifneq ($(VITE_LOGOUT_ENDPOINT),)
 else ifneq ($(LOGOUT_ENDPOINT),)
 	UI_ARGS += VITE_LOGOUT_ENDPOINT=$(LOGOUT_ENDPOINT)
 endif
+#
+# EXTAUTH_LOGIN_ROUTE
+ifneq ($(VITE_OIDC_AUTH_CODE_CALLBACK),)
+	UI_ARGS += VITE_OIDC_AUTH_CODE_CALLBACK=$(VITE_OIDC_AUTH_CODE_CALLBACK)
+else ifneq ($(OIDC_AUTH_CODE_CALLBACK),)
+	UI_ARGS += VITE_OIDC_AUTH_CODE_CALLBACK=$(OIDC_AUTH_CODE_CALLBACK)
+endif
 
 
 
@@ -76,12 +83,13 @@ build-ui: update-ui-deps
 preview-ui: update-ui-deps
 	$(UI_ARGS) yarn --cwd=$(UI_ROOT_DIR) preview
 
-# Note: if using the engineering-demos frontend-portal deployment,
-# the built image must be pushed to dockerhub for the deployed image to be
-# updated, if imagePullPolicy=Always
-.PHONY: build-ui-image
-build-ui-image:
-	docker build -t $(IMAGE_NAME) . --platform=linux/amd64
+# # Note: if using the engineering-demos frontend-portal deployment,
+# # the built image must be pushed to dockerhub for the deployed image to be
+# # updated, if imagePullPolicy=Always
+# .PHONY: build-ui-image
+# build-ui-image:
+# 	docker build -t $(IMAGE_NAME) . --platform=linux/amd64
+
 
 .PHONY: lint-ui-code
 lint-ui-code: update-ui-deps
