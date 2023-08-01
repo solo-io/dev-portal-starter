@@ -136,9 +136,9 @@ This is the endpoint to end your session. In Keycloak, this is the `end_session_
 In Keycloak, it may look like:
 `<your-keycloak-url>/realms/<your-realm>/protocol/openid-connect/logout`
 
-#### VITE_OIDC_AUTH_CODE_CALLBACK
+#### VITE_APPLIED_OIDC_AUTH_CODE_CONFIG
 
-This is optional, and only needed if you deploy this app in your mesh and use an `oidcAuthorizationCode` `config` in your Gloo Platform `ExtAuthPolicy`. If so, this is your `ExtAuthPolicy`'s `oidcAuthorizationCode.callback` property, and will be the callback route for logging in. In this case, the other environment variables do not need to be set.
+This is optional, and only needed if you deploy this app in your mesh and use an `oidcAuthorizationCode` `config` in your Gloo Platform `ExtAuthPolicy`. If so, this can be set to "true", and the other environment variables do not need to be set.
 
 ## Troubleshooting Keycloak
 

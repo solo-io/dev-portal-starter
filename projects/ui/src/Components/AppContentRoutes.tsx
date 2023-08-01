@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { ApiDetailsPage } from "./ApiDetails/ApiDetailsPage";
 import { ApisPage } from "./ApisList/ApisPage";
 import { ErrorBoundary } from "./Common/ErrorBoundary";
@@ -20,6 +20,14 @@ function AppContentRoutes() {
   return (
     <div className="MainContentContainer">
       <Routes>
+        <Route
+          path="/portal-server/v1/login"
+          element={<Navigate to="/" replace />}
+        />
+        <Route
+          path="/portal-server/v1/logout"
+          element={<Navigate to="/" replace />}
+        />
         <Route
           path={`/logout`}
           element={

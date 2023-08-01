@@ -77,10 +77,10 @@ export const clientId = templateString(
 );
 
 /**
- * The ExtAuthPolicy's oidcAuthorizationCode.callback property.
- * This is optional and only needed if this app is deployed in the mesh.
+ * This is optional and only needed if this app is deployed in the mesh
+ * and the ExtAuthPolicy uses an oidcAuthorizationCode config.
  */
-export const oidcAuthCodeCallback = templateString(
-  "{{ tmplr.oidcAuthCodeCallback }}",
-  import.meta.env.VITE_OIDC_AUTH_CODE_CALLBACK
+export const appliedOidcAuthCodeConfig = templateString(
+  "{{ tmplr.appliedOidcAuthCodeConfig }}",
+  import.meta.env.VITE_APPLIED_OIDC_AUTH_CODE_CONFIG
 );

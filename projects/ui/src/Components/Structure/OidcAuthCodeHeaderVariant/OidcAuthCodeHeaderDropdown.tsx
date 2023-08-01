@@ -21,7 +21,7 @@ export function OidcAuthCodeHeaderDropdown() {
   const [opened, setOpened] = useState(false);
 
   // eslint-disable-next-line no-console
-  console.log(user);
+  // console.log(user);
 
   const isLoggedIn = !!user?.email || !!user?.username || !!user?.name;
   return !isLoggedIn ? (
