@@ -51,6 +51,18 @@ export function APIUsagePlanCard({ api }: { api: API }) {
           <div className="apiDetails">
             <div>
               <h4 className="title">{api.title}</h4>
+              <div className="subtitle-list">
+                {!!api.apiProductDisplayName && (
+                  <div className="subtitle-item">
+                    API Product: {api.apiProductDisplayName}
+                  </div>
+                )}
+                {!!api.apiVersion && (
+                  <div className="subtitle-item">
+                    API Version: {api.apiVersion}
+                  </div>
+                )}
+              </div>
               <div className="description">{api.description}</div>
             </div>
           </div>
