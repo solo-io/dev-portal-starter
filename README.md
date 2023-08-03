@@ -44,7 +44,7 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
      "your-image-name"
      ```
 
-   - If running this app in the mesh with an `ExtAuthPolicy` that has an `oidcAuthorizationCode` config, you will need to update the image name and environment variables in your portal frontend deployment. See the environment variables section of the Readme for more details.
+   - If running this app in the mesh with an `ExtAuthPolicy` that has an `oidcAuthorizationCode` config, you will need to update the image name and environment variables in your portal frontend deployment. See the [environment variables section](#environment-variables-if-using-an-oidcauthorizationcode-extauthpolicy) of the Readme for more details.
 
 ## UI Development
 
