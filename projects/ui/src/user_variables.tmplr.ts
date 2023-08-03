@@ -93,7 +93,7 @@ export const appliedOidcAuthCodeConfig = templateString(
 export const oidcAuthCodeConfigCallbackPath = templateString(
   "{{ tmplr.oidcAuthCodeConfigCallbackPath }}",
   import.meta.env.VITE_OIDC_AUTH_CODE_CONFIG_CALLBACK_PATH,
-  "/login"
+  (import.meta.env.VITE_PORTAL_SERVER_URL ?? "") + "/login"
 );
 
 /**
@@ -104,5 +104,5 @@ export const oidcAuthCodeConfigCallbackPath = templateString(
 export const oidcAuthCodeConfigLogoutPath = templateString(
   "{{ tmplr.oidcAuthCodeConfigLogoutPath }}",
   import.meta.env.VITE_OIDC_AUTH_CODE_CONFIG_LOGOUT_PATH,
-  "/logout"
+  (import.meta.env.VITE_PORTAL_SERVER_URL ?? "") + "/logout"
 );
