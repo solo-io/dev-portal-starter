@@ -1,4 +1,8 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import {
+  oidcAuthCodeConfigCallbackPath,
+  oidcAuthCodeConfigLogoutPath,
+} from "../user_variables.tmplr";
 import { ApiDetailsPage } from "./ApiDetails/ApiDetailsPage";
 import { ApisPage } from "./ApisList/ApisPage";
 import { ErrorBoundary } from "./Common/ErrorBoundary";
@@ -21,11 +25,11 @@ function AppContentRoutes() {
     <div className="MainContentContainer">
       <Routes>
         <Route
-          path="/portal-server/v1/login"
+          path={oidcAuthCodeConfigCallbackPath}
           element={<Navigate to="/" replace />}
         />
         <Route
-          path="/portal-server/v1/logout"
+          path={oidcAuthCodeConfigLogoutPath}
           element={<Navigate to="/" replace />}
         />
         <Route
