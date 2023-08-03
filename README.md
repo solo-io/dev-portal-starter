@@ -40,7 +40,8 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
      -e VITE_CLIENT_ID="your-client-id" \
      -e VITE_TOKEN_ENDPOINT="your-token-endpoint" \
      -e VITE_AUTH_ENDPOINT="your-auth-endpoint" \
-     -e VITE_LOGOUT_ENDPOINT="your-logout-endpoint"
+     -e VITE_LOGOUT_ENDPOINT="your-logout-endpoint" \
+     "your-image-name"
      ```
 
    - If running this app in the mesh with an `ExtAuthPolicy` that has an `oidcAuthorizationCode` config, you will need to update the image name and environment variables in your portal frontend deployment. See the environment variables section of the Readme for more details.
