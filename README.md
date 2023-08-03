@@ -4,7 +4,7 @@
 
 This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vite](https://vitejs.dev/), and configured to use React and Typescript. It can be used to view information about your APIs and usage plans, add or delete API keys, and view your OpenAPI schemas using an embedded [Redoc UI](https://github.com/Redocly/redoc) or [Swagger UI](https://swagger.io/tools/swagger-ui/) view. It also can be personalized with images and colors to match your branding and preferences.
 
-## Initial Setup
+## Building the Project
 
 1. Run the following to download and initialize the latest commit of this repository's main branch.
 
@@ -14,9 +14,46 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
    mkdir portal-test && cd portal-test && npx tmplr solo-io/dev-portal-starter#main
    ```
 
-2. Create a `.env.local` file in the `projects/ui` folder. Replace environment variable values to match your Gloo Platform Portal and oauth provider's installation. This file is ignored by git.
+2. Build your image.
+
+   ```sh
+   docker build -t "your-image-name"
+   ```
+
+3. Push your image:
 
    ```shell
+   docker push "your-image-name"
+   ```
+
+4. Follow [the instructions in the engineering-demos repo](https://github.com/solo-io/engineering-demos/blob/ad5f6e217a50c8fcc9d1aa6e442a2c9bbef47eb2/gloo-mesh/portal/multicluster/README.md) to set up dev portal resources. Use the same image name that you used to build the image for the portal-frontend deployment's `spec.template.containers.image` field.
+
+5. Run your image using the environment variables that correspond to your setup.
+
+   - If using the PKCE auth flow, the command will look like:
+
+     ```sh
+     docker run \
+     --name portal-frontend \
+     -p 4000:4000 \
+     -e VITE_PORTAL_SERVER_URL="/v1" \
+     -e VITE_CLIENT_ID="your-client-id" \
+     -e VITE_TOKEN_ENDPOINT="your-token-endpoint" \
+     -e VITE_AUTH_ENDPOINT="your-auth-endpoint" \
+     -e VITE_LOGOUT_ENDPOINT="your-logout-endpoint"
+     ```
+
+   - If running this app in the mesh with an `ExtAuthPolicy` that has an `oidcAuthorizationCode` config, you will need to update the image name and environment variables in your portal frontend deployment. See the environment variables section of the Readme for more details.
+
+## UI Development
+
+**Prerequisites for Local Development**:
+
+1. Install [Node v16.14.2](https://nodejs.org/en/blog/release/v16.14.2) and [yarn](https://yarnpkg.com/)
+
+2. Create a `.env.local` file in the `projects/ui` folder. Replace environment variable values to match your Gloo Platform Portal and oauth provider's installation. This file is ignored by git.
+
+   ```sh
    VITE_PORTAL_SERVER_URL="/v1"
    VITE_CLIENT_ID="your-client-id"
    VITE_TOKEN_ENDPOINT="your-token-endpoint"
@@ -26,7 +63,7 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
 
    <details><summary>Sample values for Keycloak</summary>
 
-   ```shell
+   ```sh
    VITE_PORTAL_SERVER_URL="/v1"
    VITE_CLIENT_ID="your-client-id"   # the client registered in the Auth Server
    VITE_TOKEN_ENDPOINT="https://${KEYCLOAK_URL}/realms/master/protocol/openid-connect/token"
@@ -36,30 +73,7 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
 
    </details>
 
-3. Run the following to output a docker image, replacing the image name.
-
-   ```shell
-   IMAGE_NAME="your-image-name" \
-   make build-ui-image
-   ```
-
-_\*\*\* Note: If building the docker image without `make build-ui-image`, make sure to run `make build-ui` with your environment variables set first to get the UI changes.\*\*\*_
-
-4. Push your docker image:
-
-   ```shell
-   docker push "your-image-name"
-   ```
-
-5. Follow [the instructions in the engineering-demos repo](https://github.com/solo-io/engineering-demos/blob/ad5f6e217a50c8fcc9d1aa6e442a2c9bbef47eb2/gloo-mesh/portal/multicluster/README.md) to set up dev portal resources. Use the same image name that you used to build the image for the portal-frontend deployment's `spec.template.containers.image` field.
-
-## UI Iteration
-
-**Prerequisites for Local Development**:
-
-- Install [Node v16.14.2](https://nodejs.org/en/blog/release/v16.14.2) and [yarn](https://yarnpkg.com/)
-
-The UI can be run locally with:
+3. Run the UI locally:
 
 ```shell
 make run-ui
@@ -72,10 +86,6 @@ UI iteration can also be done with [Storybook](https://storybook.js.org/). Story
 ```shell
 make run-storybook
 ```
-
-## Troubleshooting
-
-If using a different architecture from `amd64`, you may replace `amd64` with your architecture in the `/Dockerfile` and in the `make build-ui-image` make target in `/Makefile`. If seeing the error: `exec /usr/local/bin/npx: exec format error` in your frontend deployment, changing the architecture to `arm64`, rebuilding, and pushing as described in the "UI Iteration" section may solve the issue.
 
 ## Personalization
 
@@ -107,38 +117,24 @@ All icons can be found, as the others, in the `/Assets` folder, inside `/Icons`.
 
 You can add these environment variables to a `.env.local` file in the `projects/ui` folder. All Vite environment variables need to start with `VITE_` in order for the app to be able to read them.
 
-#### VITE_PORTAL_SERVER_URL
+#### Environment Variables for PKCE Authorization Flow
 
-This is the URL for the Gloo Platform Portal REST server. The default value is `/v1`.
+These variables are required if your authorization server is configured to use the PKCE auth flow. If this app is hosted outside the mesh, then the PKCE auth flow must be used.
 
-#### VITE_CLIENT_ID
+- `VITE_PORTAL_SERVER_URL` - This is the URL for the Gloo Platform Portal REST server. The default value is `/v1`.
+- `VITE_CLIENT_ID` - The oauth client id. In Keycloak, this is shown in the client settings of your keycloak instances UI: `<your-keycloak-url>/auth`.
+- `VITE_TOKEN_ENDPOINT` - This is the endpoint to get the oauth token. In Keycloak, this is the `token_endpoint` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`..
+- `VITE_AUTH_ENDPOINT` - This is the endpoint to get the PKCE authorization code. In Keycloak, this is the `authorization_code` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`.
+- `VITE_LOGOUT_ENDPOINT` - This is the endpoint to end your session. In Keycloak, this is the `end_session_endpoint` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`.
 
-The oauth client id. In Keycloak, this is shown in the client settings of your keycloak instances UI: `<your-keycloak-url>/auth`
+#### Environment Variables if using an `oidcAuthorizationCode` `ExtAuthPolicy`
 
-#### VITE_TOKEN_ENDPOINT
+These variables are required if this app is hosted in your mesh, behind a Gloo Platform `RouteTable` that uses an `ExtAuthPolicy` with an `oidcAuthorizationCode` config. In this configuration, your authorization server must be configured to use client id + secret authentication, and the `ExtAuthPolicy` will handle sessions with a browser cookie..
 
-This is the endpoint to get the oauth token. In Keycloak, this is the `token_endpoint` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`
-
-In Keycloak, it may look like:
-`<your-keycloak-url>/realms/<your-realm>/protocol/openid-connect/token`
-
-#### VITE_AUTH_ENDPOINT
-
-This is the endpoint to get the PKCE authorization code. In Keycloak, this is the `authorization_code` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`
-
-In Keycloak, it may look like:
-`<your-keycloak-url>/realms/<your-realm>/protocol/openid-connect/auth`
-
-#### VITE_LOGOUT_ENDPOINT
-
-This is the endpoint to end your session. In Keycloak, this is the `end_session_endpoint` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`
-
-In Keycloak, it may look like:
-`<your-keycloak-url>/realms/<your-realm>/protocol/openid-connect/logout`
-
-#### VITE_APPLIED_OIDC_AUTH_CODE_CONFIG
-
-This is optional, and only needed if you deploy this app in your mesh and use an `oidcAuthorizationCode` `config` in your Gloo Platform `ExtAuthPolicy`. If so, this can be set to "true", and the other environment variables do not need to be set.
+- `VITE_PORTAL_SERVER_URL` - This is the URL for the Gloo Platform Portal REST server. The default value is `/v1`. If using the example `RouteTable` for this configuration, this should be set to `"/portal-server/v1`
+- `VITE_APPLIED_OIDC_AUTH_CODE_CONFIG` - This must be set to "true" if using the `oidcAuthorizationCode` config.
+- `VITE_OIDC_AUTH_CODE_CONFIG_CALLBACK_PATH` - This is the `"callbackPath	"` value of your `oidcAuthorizationCode` config.
+- `VITE_OIDC_AUTH_CODE_CONFIG_LOGOUT_PATH` - This is the `"logoutPath"` value of your `oidcAuthorizationCode` config.
 
 ## Troubleshooting Keycloak
 

@@ -2,8 +2,12 @@ import { Popover } from "@mantine/core";
 import { useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
 import { NavLink, useLocation } from "react-router-dom";
-import { portalServerUrl, useGetCurrentUser } from "../../../Apis/hooks";
+import { useGetCurrentUser } from "../../../Apis/hooks";
 import { Icon } from "../../../Assets/Icons";
+import {
+  oidcAuthCodeConfigCallbackPath,
+  oidcAuthCodeConfigLogoutPath,
+} from "../../../user_variables.tmplr";
 
 /**
  * MAIN COMPONENT
@@ -26,7 +30,7 @@ export function OidcAuthCodeHeaderDropdown() {
   const isLoggedIn = !!user?.email || !!user?.username || !!user?.name;
   return !isLoggedIn ? (
     <div className="userLoginArea loggedOut">
-      <a href={`${portalServerUrl}/login`}>
+      <a href={oidcAuthCodeConfigCallbackPath}>
         <div className="styledButton">LOGIN</div>
       </a>
     </div>
@@ -55,7 +59,7 @@ export function OidcAuthCodeHeaderDropdown() {
             API Keys
           </NavLink>
           <a
-            href={`${portalServerUrl}/logout`}
+            href={oidcAuthCodeConfigLogoutPath}
             onClick={() => setOpened(!opened)}
           >
             Logout
