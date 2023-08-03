@@ -132,10 +132,10 @@ These variables are required if your authorization server is configured to use t
 
 These variables are required if this app is hosted in your mesh, behind a Gloo Platform `RouteTable` that uses an `ExtAuthPolicy` with an `oidcAuthorizationCode` config. In this configuration, your authorization server must be configured to use client id + secret authentication. The `ExtAuthPolicy` in this configuration will handle user sessions with a browser cookie.
 
-- `VITE_PORTAL_SERVER_URL` - This is the URL for the Gloo Platform Portal REST server. The default value is `/v1`. If using the example `RouteTable` for this configuration, this should be set to `"/portal-server/v1`
-- `VITE_APPLIED_OIDC_AUTH_CODE_CONFIG` - This must be set to "true" if using the `oidcAuthorizationCode` config.
-- `VITE_OIDC_AUTH_CODE_CONFIG_CALLBACK_PATH` - This is the `"callbackPath	"` value of your `oidcAuthorizationCode` config.
-- `VITE_OIDC_AUTH_CODE_CONFIG_LOGOUT_PATH` - This is the `"logoutPath"` value of your `oidcAuthorizationCode` config.
+- `VITE_PORTAL_SERVER_URL` - This is the URL for the Gloo Platform Portal REST server. The default value is "/v1". If using the example `RouteTable` for this configuration, this should be set to "/portal-server/v1"
+- `VITE_APPLIED_OIDC_AUTH_CODE_CONFIG` - This must be set to "true" if using the "oidcAuthorizationCode" config.
+- `VITE_OIDC_AUTH_CODE_CONFIG_CALLBACK_PATH` - This is the "callbackPath" value of your "oidcAuthorizationCode" config.
+- `VITE_OIDC_AUTH_CODE_CONFIG_LOGOUT_PATH` - This is the "logoutPath" value of your "oidcAuthorizationCode" config.
 
 ## Troubleshooting Keycloak
 
