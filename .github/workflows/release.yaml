@@ -24,12 +24,25 @@ jobs:
           git config user.name $GIT_USER_NAME
           git config user.email $GIT_USER_EMAIL
           git config --global url."https://${GH_TOKEN}@github.com/solo-io/".insteadOf "https://github.com/solo-io/"
+          git config --global pull.rebase false
+          git fetch --prune
 
-      - name: Create release branch
+      - name: Create/update release branch
         run: |
           RELEASE_BRANCH=$(echo $RELEASE_TAG | sed 's|\.[0-9]*$|\.x|g')
-          git checkout -b $RELEASE_BRANCH || true
-          git push origin $RELEASE_BRANCH || true
+          # Check if the release branch exists.
+          if [ $(git ls-remote origin --heads $RELEASE_BRANCH | wc -l) -eq 0 ]; then
+            # If it doesn't exist, we can create it and push to it.
+            echo "Branch $RELEASE_BRANCH does not exist, so it will be created."
+            git checkout -b $RELEASE_BRANCH
+            git push --set-upstream origin $RELEASE_BRANCH 
+          else
+            # Else, we need to update it.
+            echo "Branch $RELEASE_BRANCH exists, so it will be updated."
+            git checkout $RELEASE_BRANCH
+            git pull origin main -X theirs --allow-unrelated-histories
+            git push origin $RELEASE_BRANCH 
+          fi
 
       - name: Update version in package.json
         run: |
@@ -37,7 +50,7 @@ jobs:
           sed -i "s|\"version\"\:[[:space:]]*\"[0-9]*\.[0-9]*\.[0-9]*\"|\"version\"\: \"$RELEASE_VERSION\"|" ./projects/ui/package.json
           git add ./projects/ui/package.json || true
           git commit -m "Update package.json version information for $RELEASE_TAG" || true
-          git push origin $RELEASE_BRANCH || true
+          git push origin $RELEASE_BRANCH
 
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.1

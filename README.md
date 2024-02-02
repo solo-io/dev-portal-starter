@@ -4,6 +4,10 @@
 
 This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vite](https://vitejs.dev/), and configured to use React and Typescript. It can be used to view information about your APIs and usage plans, add or delete API keys, and view your OpenAPI schemas using an embedded [Redoc UI](https://github.com/Redocly/redoc) or [Swagger UI](https://swagger.io/tools/swagger-ui/) view. It also can be personalized with images and colors to match your branding and preferences.
 
+## Setup
+
+**For the full setup instructions, including the required Gloo Gateway Kubernetes resources, please check the [solo.io docs site](https://docs.solo.io/gloo-gateway/main/portal/dev-portal/frontend/portal-frontend/). The following steps assume that these resources are already applied.**
+
 ## Building the Project
 
 1. Run the following to download and initialize the latest commit of this repository's main branch.
@@ -26,25 +30,28 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
    docker push "your-image-name"
    ```
 
-4. Follow [the instructions in the engineering-demos repo](https://github.com/solo-io/engineering-demos/blob/ad5f6e217a50c8fcc9d1aa6e442a2c9bbef47eb2/gloo-mesh/portal/multicluster/README.md) to set up dev portal resources. Use the same image name that you used to build the image for the portal-frontend deployment's `spec.template.containers.image` field.
+4. Go through the steps on the [solo.io docs site](https://docs.solo.io/gloo-gateway/main/portal/dev-portal/frontend/portal-frontend/) to set up dev portal resources and deploy your image. Use the same image name that you used to build the image for the portal-frontend deployment's `spec.template.containers.image` field.
 
-5. Run your image using the environment variables that correspond to your setup.
+- If you would like to run your image outside the mesh you will need to:
 
-   - If using the PKCE auth flow, the command will look like:
+  - Update your auth provider to enable the PKCE auth flow.
+  - Update your portal server's `CorsPolicy` to include your portal frontend's domain.
+  - Update your portal server's `ExtAuthPolicy` to include the inlineJWKs from your auth provider.
+  - Run your portal frontend app with this command, replacing the variables to match your configuration:
 
-     ```sh
-     docker run \
-     --name portal-frontend \
-     -p 4000:4000 \
-     -e VITE_PORTAL_SERVER_URL="/v1" \
-     -e VITE_CLIENT_ID="your-client-id" \
-     -e VITE_TOKEN_ENDPOINT="your-token-endpoint" \
-     -e VITE_AUTH_ENDPOINT="your-auth-endpoint" \
-     -e VITE_LOGOUT_ENDPOINT="your-logout-endpoint" \
-     "your-image-name"
-     ```
+    ```sh
+    docker run \
+    --name portal-frontend \
+    -p 4000:4000 \
+    -e VITE_PORTAL_SERVER_URL="/v1" \
+    -e VITE_CLIENT_ID="your-client-id" \
+    -e VITE_TOKEN_ENDPOINT="your-token-endpoint" \
+    -e VITE_AUTH_ENDPOINT="your-auth-endpoint" \
+    -e VITE_LOGOUT_ENDPOINT="your-logout-endpoint" \
+    "your-image-name"
+    ```
 
-   - If running this app in the mesh with an `ExtAuthPolicy` that has an "oidcAuthorizationCode" config, you will need to update the image name and environment variables in your portal frontend deployment. See the [Environment Variables if using an oidcAuthorizationCode ExtAuthPolicy](#environment-variables-if-using-an-oidcauthorizationcode-extauthpolicy) of this Readme for more details.
+  - If running this app in the mesh with an `ExtAuthPolicy` that has an "oidcAuthorizationCode" config, you will need to update the image name and environment variables in your portal frontend deployment. See the [Environment Variables if using an oidcAuthorizationCode ExtAuthPolicy](#environment-variables-if-using-an-oidcauthorizationcode-extauthpolicy) of this Readme for more details.
 
 ## UI Development
 
