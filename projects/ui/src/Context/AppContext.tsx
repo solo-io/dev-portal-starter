@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 //
 // Types
@@ -10,6 +11,7 @@ interface IAppContext extends AppProviderProps {
   isMobileView: boolean;
   isDarkMode: boolean;
   setIsDarkMode: (isDarkMode: boolean) => void;
+  pageContentIsWide: boolean;
 }
 
 /*** Mobile breakpoint width in pixels. */
@@ -19,6 +21,7 @@ const checkIsMobileView = () => window.innerWidth < mobileWidth;
 export const AppContext = createContext({} as IAppContext);
 
 export const AppContextProvider = (props: AppProviderProps) => {
+  const routeLocation = useLocation();
   const [isMobileView, setIsMobileView] = useState(checkIsMobileView());
   useEffect(() => {
     const onWindowResize = () => {
@@ -47,6 +50,7 @@ export const AppContextProvider = (props: AppProviderProps) => {
         isMobileView,
         isDarkMode,
         setIsDarkMode,
+        pageContentIsWide: routeLocation.pathname.includes("/api-details/"),
       }}
     >
       {props.children}

@@ -6,6 +6,7 @@ import { ErrorBoundary } from "../Common/ErrorBoundary";
 import { PageContainer } from "../Common/PageContainer";
 import { ApisFilter, FilterPair } from "./ApisFilter";
 import { ApisList } from "./ApisList";
+import { StyledApisListMain } from "./ApisPage.style";
 
 /**
  * MAIN COMPONENT
@@ -34,7 +35,7 @@ export function ApisPage() {
         }
         breadcrumbItems={[{ label: "Home", link: "/" }, { label: "APIs" }]}
       />
-      <main className="apisList">
+      <StyledApisListMain>
         <ApisFilter filters={filters} />
         <ErrorBoundary fallback="There was an issue loading the list of APIs">
           <ApisList
@@ -43,7 +44,7 @@ export function ApisPage() {
             usingGridView={usingGridView}
           />
         </ErrorBoundary>
-      </main>
+      </StyledApisListMain>
     </PageContainer>
   );
 }

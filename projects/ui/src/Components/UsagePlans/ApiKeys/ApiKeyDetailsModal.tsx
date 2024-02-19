@@ -1,6 +1,6 @@
 import { APIKey } from "../../../Apis/api-types";
 import { Icon } from "../../../Assets/Icons";
-import { DataPairPill } from "../../Common/DataPairPill";
+import { DataPairPill, DataPairPillList } from "../../Common/DataPairPill";
 import { Modal } from "../../Common/Modal";
 
 export function ApiKeyDetailsModal({
@@ -14,7 +14,6 @@ export function ApiKeyDetailsModal({
 }) {
   return (
     <Modal
-      className="keyDetailsModalRoot"
       onClose={onClose}
       headContent={<Icon.CircledKey />}
       title={"Key Details"}
@@ -35,7 +34,7 @@ export function ApiKeyDetailsModal({
               <label className="title" id="customMetadataLabel">
                 Custom Meta Data
               </label>
-              <div className="metadataList dataPairPillList">
+              <DataPairPillList className="metadataList">
                 {Object.entries(apiKey.metadata).map(([pairKey, pairValue]) => (
                   <DataPairPill
                     key={pairKey}
@@ -43,7 +42,7 @@ export function ApiKeyDetailsModal({
                     value={pairValue}
                   />
                 ))}
-              </div>
+              </DataPairPillList>
             </div>
           )}
         </div>

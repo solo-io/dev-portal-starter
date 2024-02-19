@@ -166,7 +166,6 @@ export function GenerateApiKeyModal({
 
   return (
     <Modal
-      className="generateKeyModalRoot"
       onClose={() => {
         // If we have generated and not copied the API key,
         // prevent the user from closing the modal.
@@ -254,7 +253,7 @@ export function GenerateApiKeyModal({
                     </div>
                   </form>
                 </div>
-                <div className="metadataList dataPairPillList">
+                <DataPairPillList className="metadataList ">
                   {metadataPairs.map((pair, idx) => (
                     <DataPairPill
                       key={idx}
@@ -262,7 +261,7 @@ export function GenerateApiKeyModal({
                       onRemove={() => removePair(pair)}
                     />
                   ))}
-                </div> 
+                </DataPairPillList> 
               </div>
               */}
             </>

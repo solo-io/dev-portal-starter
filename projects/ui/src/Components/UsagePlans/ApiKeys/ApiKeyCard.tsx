@@ -3,6 +3,7 @@ import { useState } from "react";
 import { APIKey } from "../../../Apis/api-types";
 import { Icon } from "../../../Assets/Icons";
 import { ErrorBoundary } from "../../Common/ErrorBoundary";
+import { StyledApiKeyCardContainer } from "./ApiKeyCard.style";
 import { ApiKeyDetailsModal } from "./ApiKeyDetailsModal";
 import { DeleteApiKeyModal } from "./DeleteApiKeyModal";
 
@@ -37,7 +38,7 @@ export function ApiKeyCard({
   // const [showKey, setShowKey] = useState(false);
 
   return (
-    <div className="apiKeyCardContainer">
+    <StyledApiKeyCardContainer>
       <div
         className={`apiKeyCard ${
           wasRecentlyGenerated ? "recentlyGenerated" : ""
@@ -101,6 +102,6 @@ export function ApiKeyCard({
       {wasRecentlyGenerated && (
         <div className="recentlyGeneratedText">Key Generated Successfully</div>
       )}
-    </div>
+    </StyledApiKeyCardContainer>
   );
 }

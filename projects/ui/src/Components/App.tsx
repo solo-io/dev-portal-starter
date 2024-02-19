@@ -1,5 +1,7 @@
+import { Global, ThemeProvider } from "@emotion/react";
 import { MantineProvider } from "@mantine/core";
 import { AppContextProvider } from "../Context/AppContext";
+import { defaultTheme, globalStyles } from "../Styles";
 import AppContent from "./AppContent";
 
 /**
@@ -9,10 +11,13 @@ import AppContent from "./AppContent";
  **/
 export function App() {
   return (
-    <AppContextProvider>
-      <MantineProvider withGlobalStyles withNormalizeCSS>
-        <AppContent />
-      </MantineProvider>
-    </AppContextProvider>
+    <ThemeProvider theme={defaultTheme}>
+      <Global styles={globalStyles} />
+      <AppContextProvider>
+        <MantineProvider withGlobalStyles withNormalizeCSS>
+          <AppContent />
+        </MantineProvider>
+      </AppContextProvider>
+    </ThemeProvider>
   );
 }

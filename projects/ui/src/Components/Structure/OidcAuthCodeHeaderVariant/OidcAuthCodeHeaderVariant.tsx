@@ -1,7 +1,9 @@
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { ReactComponent as Logo } from "../../../Assets/logo.svg";
+import { AppContext } from "../../../Context/AppContext";
 import { ErrorBoundary } from "../../Common/ErrorBoundary";
+import { StyledTopNavContent, StyledTopNavHeader } from "../Header";
 import { OidcAuthCodeHeaderDropdown } from "./OidcAuthCodeHeaderDropdown";
 
 /**
@@ -18,10 +20,12 @@ const OidcAuthCodeHeaderVariant = () => {
     );
   }, [routerLocation.pathname]);
 
+  const { pageContentIsWide } = useContext(AppContext);
+
   return (
     <>
-      <header aria-label="Site top level menus" className="topNav">
-        <nav className="navContent">
+      <StyledTopNavHeader aria-label="Site top level menus">
+        <StyledTopNavContent pageContentIsWide={pageContentIsWide}>
           <div className="logoContainer">
             <Link to="/" aria-hidden="true">
               <Logo />
@@ -42,8 +46,8 @@ const OidcAuthCodeHeaderVariant = () => {
               <OidcAuthCodeHeaderDropdown />
             </ErrorBoundary>
           </div>
-        </nav>
-      </header>
+        </StyledTopNavContent>
+      </StyledTopNavHeader>
     </>
   );
 };

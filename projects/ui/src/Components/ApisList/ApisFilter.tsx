@@ -1,8 +1,80 @@
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 import { Select, TextInput } from "@mantine/core";
 import { useState } from "react";
 import { Icon } from "../../Assets/Icons";
+import { PrimaryTrimmedSmallWhiteContainer } from "../../Styles/PrimaryTrimmedSmallWhiteContainer";
 import { KeyValuePair } from "../Common/DataPairPill";
 import GridListToggle from "../Common/GridListToggle";
+
+const ActiveFiltersGrid = styled.div`
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const ActiveFilter = styled(PrimaryTrimmedSmallWhiteContainer)`
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  line-height: 22px;
+  height: 22px;
+  margin: 0 8px 8px 0;
+  font-size: 13px;
+  padding-right: 2px;
+
+  button.closingX {
+    margin-left: 5px;
+    border-radius: 50%;
+    padding: 5px;
+    svg {
+      width: 8px;
+      height: 8px;
+      margin-left: 0px !important;
+      * {
+        stroke: currentColor;
+      }
+    }
+    &:hover {
+      background: lighten(constants.$splashBlue, 5);
+      svg * {
+        fill: white;
+      }
+    }
+    &:active {
+      background: constants.$splashBlue;
+    }
+  }
+`;
+
+const ClearAllButton = styled.button(
+  ({ theme }) => css`
+    display: inline-flex;
+    align-items: center;
+    font-size: 12px;
+    line-height: 22px;
+    height: 22px;
+    margin: 0 8px 8px 0;
+    font-size: 13px;
+
+    padding-right: 0px;
+    background: ${theme.primary};
+    color: white;
+    margin: 0;
+
+    svg {
+      stroke: white;
+    }
+    &:hover {
+      border-color: ${theme.primaryLight10};
+      background: ${theme.primaryLight10};
+    }
+    &:active {
+      border-color: ${theme.primaryLight20};
+      background: ${theme.primaryLight20};
+    }
+  `
+);
 
 /**
  * HELPER TYPE DEFS
@@ -204,9 +276,9 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
 
       {filters.allFilters.length > 0 && (
         <div className="currentFiltersArea">
-          <div className="activeFiltersGrid">
+          <ActiveFiltersGrid>
             {filters.allFilters.map((activeFilter, idx) => (
-              <div key={idx} className="activeFilter">
+              <ActiveFilter key={idx}>
                 {activeFilter.displayName}
                 <button
                   className="closingX"
@@ -215,19 +287,15 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
                 >
                   <Icon.SmallX />
                 </button>
-              </div>
+              </ActiveFilter>
             ))}
-          </div>
-          <button
-            aria-label={`Remove all filters`}
-            className="clearAll"
-            onClick={clearAll}
-          >
+          </ActiveFiltersGrid>
+          <ClearAllButton aria-label={`Remove all filters`} onClick={clearAll}>
             Clear All
             <span className="closingX">
               <Icon.SmallX />
             </span>
-          </button>
+          </ClearAllButton>
         </div>
       )}
     </div>

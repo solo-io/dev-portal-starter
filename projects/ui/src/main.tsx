@@ -3,7 +3,6 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { App } from "./Components/App";
 import { ToasterWithOptions } from "./Components/Common/ToasterWithOptions";
 import { PortalAuthContextProvider } from "./Context/PortalAuthContext";
-import "./Styles/main.scss";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <PortalAuthContextProvider>

@@ -1,9 +1,10 @@
 import { Decorator } from "@storybook/react";
+import { StyledAppContainer } from "../../Components/AppContent";
 
 export const appContentDecorator: Decorator = (Story) => {
   return (
-    <div className="AppContainer" data-theme={"light"}>
+    <StyledAppContainer data-theme={"light"}>
       <Story />
-    </div>
+    </StyledAppContainer>
   );
 };

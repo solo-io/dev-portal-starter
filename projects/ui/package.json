@@ -19,6 +19,7 @@
     ]
   },
   "dependencies": {
+    "@emotion/styled": "^11.11.0",
     "@faker-js/faker": "^7.6.0",
     "@mantine/core": "^6.0.6",
     "@mantine/hooks": "^6.0.6",
@@ -38,7 +39,7 @@
   },
   "devDependencies": {
     "@emotion/eslint-plugin": "^11.10.0",
-    "@emotion/react": "^11.10.6",
+    "@emotion/react": "^11.11.3",
     "@storybook/addon-essentials": "^7.0.2",
     "@storybook/addon-interactions": "^7.0.2",
     "@storybook/addon-links": "^7.0.2",

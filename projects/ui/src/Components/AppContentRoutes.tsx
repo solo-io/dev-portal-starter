@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import { Navigate, Route, Routes } from "react-router-dom";
 import {
   oidcAuthCodeConfigCallbackPath,
@@ -11,6 +12,18 @@ import { HomePage } from "./Home/HomePage";
 import { Footer } from "./Structure/Footer";
 import { UsagePlansPage } from "./UsagePlans/UsagePlansPage";
 
+const MainContentContainer = styled.div`
+  grid-area: contentcontainer;
+
+  display: grid;
+  grid-template-rows: 1fr 40px;
+  grid-template-areas:
+    "content"
+    "footer";
+
+  min-height: 100%;
+`;
+
 /**
  * ROUTING COMPONENT
  *    This handles all our routing, but also operates as an
@@ -22,7 +35,7 @@ import { UsagePlansPage } from "./UsagePlans/UsagePlansPage";
  **/
 function AppContentRoutes() {
   return (
-    <div className="MainContentContainer">
+    <MainContentContainer>
       <Routes>
         <Route
           path={oidcAuthCodeConfigCallbackPath}
@@ -83,7 +96,7 @@ function AppContentRoutes() {
       </Routes>
 
       <Footer />
-    </div>
+    </MainContentContainer>
   );
 }
 
