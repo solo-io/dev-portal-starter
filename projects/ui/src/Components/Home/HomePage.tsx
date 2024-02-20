@@ -18,7 +18,7 @@ const HomePageCategories = styled.div(
   ({ theme }) => css`
     width: 100%;
     padding: 30px;
-    margin: 0 30px 60px;
+    margin: 60px 0;
     border-radius: ${borderRadiusConstants.small};
 
     border: 1px solid ${theme.aprilGrey};
