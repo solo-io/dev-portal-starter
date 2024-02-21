@@ -39,6 +39,7 @@ const colorMap = {
   splashBlue: "#dbe4ec",
   splashBlueLight7: "#f2f6f8",
   splashBlueLight10: "#fcfdfe",
+  splashBlueDark10: "#bacbda",
   pondBlue: "#55b8e3",
   lakeBlue: "#158bc2",
   lakeBlueDark10: "#1274a2",

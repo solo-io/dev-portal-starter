@@ -4,6 +4,7 @@ import { Select, TextInput } from "@mantine/core";
 import { useState } from "react";
 import { Icon } from "../../Assets/Icons";
 import { PrimaryTrimmedSmallWhiteContainer } from "../../Styles/PrimaryTrimmedSmallWhiteContainer";
+import { borderRadiusConstants } from "../../Styles/constants";
 import { KeyValuePair } from "../Common/DataPairPill";
 import GridListToggle from "../Common/GridListToggle";
 
@@ -13,41 +14,7 @@ const ActiveFiltersGrid = styled.div`
   flex-wrap: wrap;
 `;
 
-const ActiveFilter = styled(PrimaryTrimmedSmallWhiteContainer)`
-  display: inline-flex;
-  align-items: center;
-  font-size: 12px;
-  line-height: 22px;
-  height: 22px;
-  margin: 0 8px 8px 0;
-  font-size: 13px;
-  padding-right: 2px;
-
-  button.closingX {
-    margin-left: 5px;
-    border-radius: 50%;
-    padding: 5px;
-    svg {
-      width: 8px;
-      height: 8px;
-      margin-left: 0px !important;
-      * {
-        stroke: currentColor;
-      }
-    }
-    &:hover {
-      background: lighten(constants.$splashBlue, 5);
-      svg * {
-        fill: white;
-      }
-    }
-    &:active {
-      background: constants.$splashBlue;
-    }
-  }
-`;
-
-const ClearAllButton = styled.button(
+const ActiveFilter = styled(PrimaryTrimmedSmallWhiteContainer)(
   ({ theme }) => css`
     display: inline-flex;
     align-items: center;
@@ -56,8 +23,50 @@ const ClearAllButton = styled.button(
     height: 22px;
     margin: 0 8px 8px 0;
     font-size: 13px;
+    padding-right: 2px;
 
-    padding-right: 0px;
+    button.closingX {
+      margin-left: 5px;
+      border-radius: 50%;
+      padding: 5px;
+      svg {
+        width: 8px;
+        height: 8px;
+        margin-left: 0px !important;
+        * {
+          stroke: ${theme.primary};
+        }
+      }
+      &:hover {
+        background: ${theme.splashBlueLight7};
+        svg * {
+          fill: white;
+        }
+      }
+      &:active {
+        background: ${theme.splashBlue};
+      }
+    }
+  `
+);
+
+const ClearAllButton = styled.button(
+  ({ theme }) => css`
+    border: 1px solid ${theme.primary};
+    color: ${theme.primary};
+    background-color: ${theme.background};
+    display: inline-block;
+    padding: 0 10px;
+    border-radius: ${borderRadiusConstants.standard};
+
+    display: inline-flex;
+    align-items: center;
+    font-size: 12px;
+    line-height: 22px;
+    height: 22px;
+    margin: 0 8px 8px 0;
+    font-size: 13px;
+
     background: ${theme.primary};
     color: white;
     margin: 0;
