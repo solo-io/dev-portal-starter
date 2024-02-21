@@ -1,33 +1,36 @@
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Tooltip } from "@mantine/core";
 import { Icon } from "../../Assets/Icons";
 
-const GridListToggleButton = styled.button`
-  background: inherit;
-  border: none;
-  padding: 4px;
-  margin: 0;
-  height: 32px;
-  width: 32px;
-  border-radius: 4px;
-  svg {
-    width: 22px;
-    height: 22px;
-    * {
-      fill: constants.$seaBlue;
+const GridListToggleButton = styled.button(
+  ({ theme }) => css`
+    background: inherit;
+    border: none;
+    padding: 4px;
+    margin: 0;
+    height: 32px;
+    width: 32px;
+    border-radius: 4px;
+    svg {
+      width: 22px;
+      height: 22px;
+      * {
+        fill: ${theme.seaBlue};
+      }
     }
-  }
-  border: 1px solid transparent;
-  &:hover {
-    background-color: constants.$splashBlue;
-  }
-  &:active {
-    background-color: darken(constants.$splashBlue, 10);
-    svg * {
-      fill: constants.$oceanBlue;
+    border: 1px solid transparent;
+    &:hover {
+      background-color: ${theme.splashBlue};
     }
-  }
-`;
+    &:active {
+      background-color: ${theme.splashBlueDark10};
+      svg * {
+        fill: ${theme.oceanBlue};
+      }
+    }
+  `
+);
 
 const PREFER_LIST_LOCAL_STORAGE_KEY = "prefer-list-view";
 
@@ -68,8 +71,7 @@ const GridListToggle = ({
           position="bottom"
           label="Show grid view"
         >
-          <button
-            className="gridListToggle"
+          <GridListToggleButton
             aria-label="Show grid view"
             onClick={() => {
               localStorage.setItem(PREFER_LIST_LOCAL_STORAGE_KEY, "false");
@@ -77,7 +79,7 @@ const GridListToggle = ({
             }}
           >
             <Icon.TileViewIcon />
-          </button>
+          </GridListToggleButton>
         </Tooltip>
       )}
     </>

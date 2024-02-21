@@ -1,28 +1,31 @@
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
-const BannerHeadingTitleContainer = styled.div`
-  display: flex;
-  align-items: center;
+const BannerHeadingTitleContainer = styled.div(
+  ({ theme }) => css`
+    display: flex;
+    align-items: center;
 
-  font-size: 48px;
-  h1 {
     font-size: 48px;
-  }
-  line-height: 54px;
-  margin-bottom: 15px;
+    h1 {
+      font-size: 48px;
+    }
+    line-height: 54px;
+    margin-bottom: 15px;
 
-  color: constants.$defaultColoredText;
+    color: ${theme.defaultColoredText};
 
-  // Keep spacing for all nav items
-  > * {
-    margin-right: 18px;
-  }
+    // Keep spacing for all nav items
+    > * {
+      margin-right: 18px;
+    }
 
-  svg {
-    width: 46px;
-    height: 46px;
-  }
-`;
+    svg {
+      width: 46px;
+      height: 46px;
+    }
+  `
+);
 
 /**
  * MAIN COMPONENT
