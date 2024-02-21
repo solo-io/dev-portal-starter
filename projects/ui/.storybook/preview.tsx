@@ -1,9 +1,9 @@
+import { Global, ThemeProvider } from "@emotion/react";
 import { MantineProvider } from "@mantine/core";
 import type { Preview } from "@storybook/react";
 import React from "react";
 import { ToasterWithOptions } from "../src/Components/Common/ToasterWithOptions";
-import { AppContextProvider } from "../src/Context/AppContext";
-import "../src/Styles/main.scss";
+import { defaultTheme, globalStyles } from "../src/Styles";
 
 const preview: Preview = {
   parameters: {
@@ -17,12 +17,13 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <AppContextProvider>
+      <ThemeProvider theme={defaultTheme}>
+        <Global styles={globalStyles} />
         <MantineProvider withGlobalStyles withNormalizeCSS>
           <ToasterWithOptions />
           <Story />
         </MantineProvider>
-      </AppContextProvider>
+      </ThemeProvider>
     ),
   ],
 };
