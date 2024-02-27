@@ -1,97 +1,33 @@
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
+import { Loader } from "@mantine/core";
+import { useMemo } from "react";
 import { di } from "react-magnetic-di";
 import { useParams } from "react-router-dom";
-import { APISchema } from "../../Apis/api-types";
-import { useGetApiDetails } from "../../Apis/hooks";
-import { Icon } from "../../Assets/Icons";
-import { BannerHeading } from "../Common/Banner/BannerHeading";
-import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
-import { ErrorBoundary } from "../Common/ErrorBoundary";
-import { ApiSchemaDisplay } from "./ApiSchemaDisplay";
+import { useListApis } from "../../Apis/hooks";
+import { ApiDetailsPageContent } from "./ApiDetailsPageContent";
 
-const ApiDetailsHeaderAddition = styled.div(
-  ({ theme }) => css`
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    font-size: 18px;
-    font-weight: 500;
-    color: ${theme.defaultColoredText};
-  `
-);
-
-const ApiDetailsExtraInfo = styled.div(
-  ({ theme }) => css`
-    display: flex;
-    align-items: center;
-    margin-right: 25px;
-
-    svg {
-      width: 23px;
-      height: 23px;
-      margin-right: 8px;
-
-      * {
-        fill: ${theme.primary};
-      }
-    }
-  `
-);
-
-/**
- * HELPER COMPONENT
- **/
-function HeaderSummary({ apiSchema }: { apiSchema: APISchema }) {
-  return (
-    <ApiDetailsHeaderAddition>
-      <ApiDetailsExtraInfo>
-        <Icon.HtmlTag /> {Object.keys(apiSchema.paths).length} Operations
-      </ApiDetailsExtraInfo>
-      <ApiDetailsExtraInfo>
-        <Icon.OpenApiIcon /> OpenAPI
-      </ApiDetailsExtraInfo>
-    </ApiDetailsHeaderAddition>
-  );
-}
-
-/**
- * MAIN COMPONENT
- **/
 export function ApiDetailsPage() {
-  di(useGetApiDetails, useParams);
-  const { apiId } = useParams();
-  const { data: apiSchema } = useGetApiDetails(apiId);
+  di(useParams);
+  const { apiProductId, apiVersion } = useParams();
 
+  const { data: apisList } = useListApis();
+
+  const apiProductObject = useMemo(() => {
+    return apisList?.find((api) => api.apiProductId === apiProductId);
+  }, [apisList, apiProductId]);
+
+  const apiVersionObject = useMemo(() => {
+    return apiProductObject?.apiVersions.find(
+      (v) => v.apiVersion === apiVersion
+    );
+  }, [apiProductObject, apiVersion]);
+
+  if (!apiProductObject || !apiVersionObject) {
+    return <Loader />;
+  }
   return (
-    <div>
-      <BannerHeading
-        title={
-          <BannerHeadingTitle
-            text={apiSchema?.info.title ?? apiId ?? "Unsupported Schema"}
-            stylingTweaks={{
-              fontSize: "32px",
-              lineHeight: "36px",
-            }}
-          />
-        }
-        fullIcon={<Icon.Bug />}
-        description={
-          "Browse the list of APIs and documentation in this portal. From here you can get the information you need to make API calls."
-        }
-        additionalContent={
-          !!apiSchema ? <HeaderSummary apiSchema={apiSchema} /> : undefined
-        }
-        breadcrumbItems={[
-          { label: "Home", link: "/" },
-          { label: "APIs", link: "/apis" },
-          { label: apiSchema?.info.title ?? "" },
-        ]}
-      />
-
-      <ErrorBoundary fallback="There was an issue displaying the schema details">
-        <ApiSchemaDisplay />
-      </ErrorBoundary>
-    </div>
+    <ApiDetailsPageContent
+      api={apiProductObject}
+      apiVersion={apiVersionObject}
+    />
   );
 }

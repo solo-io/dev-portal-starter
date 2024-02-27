@@ -70,7 +70,7 @@ function AppContentRoutes() {
           }
         />
         <Route
-          path="/api-details/:apiId"
+          path="/api-details/:apiProductId/:apiVersion"
           element={
             <ErrorBoundary fallback="There was an issue displaying details about that API">
               <ApiDetailsPage />

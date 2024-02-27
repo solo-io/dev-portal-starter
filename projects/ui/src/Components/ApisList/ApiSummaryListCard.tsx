@@ -1,14 +1,15 @@
 import { NavLink } from "react-router-dom";
-import { API } from "../../Apis/api-types";
+import { APIProduct } from "../../Apis/api-types";
 import { Icon } from "../../Assets/Icons";
 import { DataPairPill, DataPairPillList } from "../Common/DataPairPill";
+import { getApiDetailsLink } from "./helpers";
 
 /**
  * MAIN COMPONENT
  **/
-export function ApiSummaryListCard({ api }: { api: API }) {
+export function ApiSummaryListCard({ api }: { api: APIProduct }) {
   return (
-    <NavLink to={`/api-details/${api.apiId}`}>
+    <NavLink to={getApiDetailsLink(api)}>
       <div className="apiListCard">
         <div className="content">
           <div className="majorIconHolder">
@@ -16,8 +17,8 @@ export function ApiSummaryListCard({ api }: { api: API }) {
           </div>
           <div className="details">
             <div>
-              <h4 className="title">{api.title}</h4>
-              <div className="subtitle-list">
+              <h4 className="title">{api.apiProductDisplayName}</h4>
+              {/* <div className="subtitle-list">
                 {!!api.apiProductDisplayName && (
                   <div className="subtitle-item">
                     API Product: {api.apiProductDisplayName}{" "}
@@ -28,21 +29,29 @@ export function ApiSummaryListCard({ api }: { api: API }) {
                     API Version: {api.apiVersion}{" "}
                   </div>
                 )}
-              </div>
-              <div className="description">{api.description}</div>
-              {api.customMetadata && (
-                <DataPairPillList className="metadataList">
-                  {Object.entries(api.customMetadata).map(
-                    ([pairKey, pairValue], idx) => (
-                      <DataPairPill
-                        key={idx}
-                        pairKey={pairKey}
-                        value={pairValue}
-                      />
-                    )
-                  )}
-                </DataPairPillList>
-              )}
+              </div> */}
+              {/* <div className="description">{api.description}</div> */}
+              {api.apiVersions.map((apiVersion) => {
+                if (!apiVersion.customMetadata) {
+                  return null;
+                }
+                return (
+                  <DataPairPillList
+                    key={apiVersion.apiVersion}
+                    className="metadataList"
+                  >
+                    {Object.entries(apiVersion.customMetadata).map(
+                      ([pairKey, pairValue], idx) => (
+                        <DataPairPill
+                          key={idx}
+                          pairKey={pairKey}
+                          value={pairValue}
+                        />
+                      )
+                    )}
+                  </DataPairPillList>
+                );
+              })}
             </div>
           </div>
         </div>
