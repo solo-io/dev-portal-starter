@@ -10,7 +10,6 @@ import { ErrorBoundary } from "./Common/ErrorBoundary";
 import LoggedOut from "./Common/LoggedOut";
 import { HomePage } from "./Home/HomePage";
 import { Footer } from "./Structure/Footer";
-import { UsagePlansPage } from "./UsagePlans/UsagePlansPage";
 
 const MainContentContainer = styled.div`
   grid-area: contentcontainer;
@@ -74,22 +73,6 @@ function AppContentRoutes() {
           element={
             <ErrorBoundary fallback="There was an issue displaying details about that API">
               <ApiDetailsPage />
-            </ErrorBoundary>
-          }
-        />
-        <Route
-          path="/usage-plans"
-          element={
-            <ErrorBoundary fallback="There was an issue displaying the list of Usage Plans">
-              <UsagePlansPage />
-            </ErrorBoundary>
-          }
-        />
-        <Route
-          path="/usage-plans/:apiId"
-          element={
-            <ErrorBoundary fallback="There was an issue displaying information about the Usage Plan">
-              <UsagePlansPage />
             </ErrorBoundary>
           }
         />
