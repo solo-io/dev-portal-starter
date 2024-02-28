@@ -8,6 +8,7 @@ import {
   oidcAuthCodeConfigCallbackPath,
   oidcAuthCodeConfigLogoutPath,
 } from "../../../user_variables.tmplr";
+import { StyledUserDropdown } from "../HeaderSectionLoggedIn";
 
 /**
  * MAIN COMPONENT
@@ -49,7 +50,7 @@ export function OidcAuthCodeHeaderDropdown() {
           </div>
         </button>
       </Popover.Target>
-      <Popover.Dropdown className="userDropdown">
+      <StyledUserDropdown>
         <>
           <NavLink
             to={"/usage-plans"}
@@ -65,7 +66,7 @@ export function OidcAuthCodeHeaderDropdown() {
             Logout
           </a>
         </>
-      </Popover.Dropdown>
+      </StyledUserDropdown>
     </Popover>
   );
 }

@@ -1,4 +1,4 @@
-import { Modal as MantineModal } from "@mantine/core";
+import { StyledMantineModal } from "./Modal.style";
 
 export function Modal({
   onClose,
@@ -18,7 +18,7 @@ export function Modal({
   //   the overlayProps so that we have easy access to our
   //   color constants.
   return (
-    <MantineModal
+    <StyledMantineModal
       opened={true}
       onClose={onClose}
       className={className}
@@ -29,6 +29,6 @@ export function Modal({
         {!!title && <div className="modalTitle">{title}</div>}
         {!!bodyContent && <div className="modalBody">{bodyContent}</div>}
       </div>
-    </MantineModal>
+    </StyledMantineModal>
   );
 }

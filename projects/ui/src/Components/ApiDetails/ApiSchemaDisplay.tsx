@@ -1,13 +1,31 @@
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 import { Button } from "@mantine/core";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
 import { useParams } from "react-router-dom";
 import { useGetApiDetails, useListApis } from "../../Apis/hooks";
+import { AppContext } from "../../Context/AppContext";
 import { createBackstageYaml } from "../../Utility/backstage_demo_utility";
 import { downloadFile } from "../../Utility/utility";
 import { Loading } from "../Common/Loading";
+import { PageContainerWrapper } from "../Common/PageContainer";
 import { RedocDisplay } from "./RedocDisplay";
 import { SwaggerDisplay } from "./SwaggerDisplay";
+
+const SwaggerViewToggleHolder = styled.div(
+  ({ theme }) => css`
+    width: calc(100vw - 16px);
+    max-width: 1920px;
+    padding: 0px 30px 5px 0px;
+    margin: 0 auto;
+    display: block;
+    text-align: right;
+    button {
+      color: ${theme.primary};
+    }
+  `
+);
 
 // This is a flag to enable the backstage yaml download button.
 const BACKSTAGE_YAML_DEMO_ENABLED = false;
@@ -22,6 +40,7 @@ export function ApiSchemaDisplay() {
     useGetApiDetails(apiId);
   const { isLoading: isLoadingApisList, data: apisList } = useListApis();
   const isLoading = isLoadingApiDetails || isLoadingApisList;
+  const { pageContentIsWide } = useContext(AppContext);
 
   const backstageYaml = useMemo(() => {
     if (!BACKSTAGE_YAML_DEMO_ENABLED) return undefined;
@@ -38,7 +57,7 @@ export function ApiSchemaDisplay() {
 
   return (
     <>
-      <div className="swaggerViewToggleHolder">
+      <SwaggerViewToggleHolder>
         <Button
           variant="subtle"
           onClick={() => setIsSwagger(!isSwagger)}
@@ -57,8 +76,8 @@ export function ApiSchemaDisplay() {
             Download Backstage YAML
           </Button>
         )}
-      </div>
-      <main className="page-container-wrapper">
+      </SwaggerViewToggleHolder>
+      <PageContainerWrapper pageContentIsWide={pageContentIsWide}>
         {!isSwagger ? (
           //
           // Redoc - Default
@@ -73,7 +92,7 @@ export function ApiSchemaDisplay() {
             apiId={apiId ?? "Unsupported schema display"}
           />
         )}
-      </main>
+      </PageContainerWrapper>
     </>
   );
 }

@@ -1,9 +1,36 @@
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDeleteKeyMutation } from "../../../Apis/hooks";
 import { Icon } from "../../../Assets/Icons";
 import { Button } from "../../Common/Button";
 import { Modal } from "../../Common/Modal";
+
+const StyledDeleteKeyModalBody = styled.div(
+  ({ theme }) => css`
+    .deleteKeyName {
+      padding: 0px 30px;
+      font-size: 16px;
+      text-align: center;
+      line-height: 1.5em;
+      color: ${theme.darkRed};
+    }
+    .deleteKeyStatus {
+      padding: 15px 10px;
+      font-size: 28px;
+      text-align: center;
+      line-height: 1.5em;
+    }
+    .deleteKeyActions {
+      margin-top: 15px;
+      width: 100%;
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+  `
+);
 
 function DeleteKeyActions({
   apiKeyId,
@@ -78,34 +105,32 @@ export function DeleteApiKeyModal({
         <>{deleted ? <Icon.SuccessCheckmark /> : <Icon.WarningExclamation />}</>
       }
       bodyContent={
-        <>
-          <div className="deleteKeyModal">
-            <div className="deleteKeyName">{apiKeyName}</div>
-            <div className="deleteKeyStatus">
-              {deleted
-                ? "Key Deleted Successfully!"
-                : "Are you sure you want to delete this API Key?"}
-            </div>
-            {!deleted ? (
-              <DeleteKeyActions
-                apiKeyId={apiKeyId}
-                usagePlanName={usagePlanName}
-                onSuccess={() => setDeleted(true)}
-                onClose={onClose}
-              />
-            ) : (
-              <div className="deleteKeyActions">
-                <Button
-                  className="paleButton"
-                  onClick={onClose}
-                  title={"Close this modal"}
-                >
-                  CLOSE
-                </Button>
-              </div>
-            )}
+        <StyledDeleteKeyModalBody>
+          <div className="deleteKeyName">{apiKeyName}</div>
+          <div className="deleteKeyStatus">
+            {deleted
+              ? "Key Deleted Successfully!"
+              : "Are you sure you want to delete this API Key?"}
           </div>
-        </>
+          {!deleted ? (
+            <DeleteKeyActions
+              apiKeyId={apiKeyId}
+              usagePlanName={usagePlanName}
+              onSuccess={() => setDeleted(true)}
+              onClose={onClose}
+            />
+          ) : (
+            <div className="deleteKeyActions">
+              <Button
+                className="paleButton"
+                onClick={onClose}
+                title={"Close this modal"}
+              >
+                CLOSE
+              </Button>
+            </div>
+          )}
+        </StyledDeleteKeyModalBody>
       }
     />
   );

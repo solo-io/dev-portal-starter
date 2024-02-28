@@ -1,3 +1,32 @@
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
+
+const BannerHeadingTitleContainer = styled.div(
+  ({ theme }) => css`
+    display: flex;
+    align-items: center;
+
+    font-size: 48px;
+    h1 {
+      font-size: 48px;
+    }
+    line-height: 54px;
+    margin-bottom: 15px;
+
+    color: ${theme.defaultColoredText};
+
+    // Keep spacing for all nav items
+    > * {
+      margin-right: 18px;
+    }
+
+    svg {
+      width: 46px;
+      height: 46px;
+    }
+  `
+);
+
 /**
  * MAIN COMPONENT
  **/
@@ -16,8 +45,8 @@ export function BannerHeadingTitle({
   };
 }) {
   return (
-    <div className="bannerHeadingTitle">
+    <BannerHeadingTitleContainer>
       {logo} <h1 style={stylingTweaks}>{text}</h1> {additionalInfo}
-    </div>
+    </BannerHeadingTitleContainer>
   );
 }

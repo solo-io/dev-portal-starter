@@ -1,3 +1,5 @@
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 import { di } from "react-magnetic-di";
 import { useParams } from "react-router-dom";
 import { APISchema } from "../../Apis/api-types";
@@ -8,19 +10,48 @@ import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 import { ErrorBoundary } from "../Common/ErrorBoundary";
 import { ApiSchemaDisplay } from "./ApiSchemaDisplay";
 
+const ApiDetailsHeaderAddition = styled.div(
+  ({ theme }) => css`
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 18px;
+    font-weight: 500;
+    color: ${theme.defaultColoredText};
+  `
+);
+
+const ApiDetailsExtraInfo = styled.div(
+  ({ theme }) => css`
+    display: flex;
+    align-items: center;
+    margin-right: 25px;
+
+    svg {
+      width: 23px;
+      height: 23px;
+      margin-right: 8px;
+
+      * {
+        fill: ${theme.primary};
+      }
+    }
+  `
+);
+
 /**
  * HELPER COMPONENT
  **/
 function HeaderSummary({ apiSchema }: { apiSchema: APISchema }) {
   return (
-    <div className="apiDetailsHeaderAddition">
-      <div className="apiDetailsExtraInfo">
+    <ApiDetailsHeaderAddition>
+      <ApiDetailsExtraInfo>
         <Icon.HtmlTag /> {Object.keys(apiSchema.paths).length} Operations
-      </div>
-      <div className="apiDetailsExtraInfo">
+      </ApiDetailsExtraInfo>
+      <ApiDetailsExtraInfo>
         <Icon.OpenApiIcon /> OpenAPI
-      </div>
-    </div>
+      </ApiDetailsExtraInfo>
+    </ApiDetailsHeaderAddition>
   );
 }
 

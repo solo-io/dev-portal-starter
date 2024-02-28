@@ -1,3 +1,5 @@
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 import { Popover } from "@mantine/core";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
@@ -6,6 +8,45 @@ import { useGetCurrentUser } from "../../Apis/hooks";
 import { Icon } from "../../Assets/Icons";
 import { PortalAuthContext } from "../../Context/PortalAuthContext";
 import { logoutEndpoint } from "../../user_variables.tmplr";
+
+export const StyledUserDropdown = styled(Popover.Dropdown)(
+  ({ theme }) => css`
+    border: none;
+    box-shadow: ${theme.marchGrey} 0px 2px 3px 1px;
+    padding: 0px;
+    margin-top: -8px;
+    white-space: nowrap;
+    a,
+    button.logout,
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 5px 50px;
+      line-height: 35px;
+      cursor: pointer;
+      border-left: 4px solid transparent;
+      border-bottom: 0px solid transparent !important;
+      color: ${theme.defaultColoredText};
+
+      &:first-child {
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+      }
+      &:last-child {
+        border-bottom-left-radius: 2px;
+        border-bottom-right-radius: 2px;
+      }
+    }
+
+    div.disabled {
+      background: rgba(50, 50, 50, 0.4);
+      color: ${theme.augustGrey};
+      border-left-color: ${theme.augustGrey};
+      cursor: default;
+    }
+  `
+);
 
 const HeaderSectionLoggedIn = () => {
   di(useGetCurrentUser);
@@ -44,7 +85,7 @@ const HeaderSectionLoggedIn = () => {
           </div>
         </button>
       </Popover.Target>
-      <Popover.Dropdown className="userDropdown">
+      <StyledUserDropdown>
         <>
           <NavLink
             to={"/usage-plans"}
@@ -60,7 +101,7 @@ const HeaderSectionLoggedIn = () => {
             Logout
           </a>
         </>
-      </Popover.Dropdown>
+      </StyledUserDropdown>
     </Popover>
   );
 };

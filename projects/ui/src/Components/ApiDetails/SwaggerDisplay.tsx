@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import SwaggerUIConstructor from "swagger-ui";
 import "swagger-ui/dist/swagger-ui.css";
 import { APISchema } from "../../Apis/api-types";
+import { SwaggerDisplayContainer } from "./SwaggerDisplay.style";
 
 const sanitize = (id: string) => id.replaceAll(".", "-");
 
@@ -33,6 +34,11 @@ export function SwaggerDisplay({
   }, [sanitizedDomId, spec]);
 
   return (
-    <div aria-label="Schema Display" id={`display-swagger-${sanitizedDomId}`} />
+    <SwaggerDisplayContainer>
+      <div
+        aria-label="Schema Display"
+        id={`display-swagger-${sanitizedDomId}`}
+      />
+    </SwaggerDisplayContainer>
   );
 }

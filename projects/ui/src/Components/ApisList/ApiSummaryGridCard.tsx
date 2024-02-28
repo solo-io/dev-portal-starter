@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { NavLink } from "react-router-dom";
 import { API } from "../../Apis/api-types";
 import { Icon } from "../../Assets/Icons";
-import { DataPairPill } from "../Common/DataPairPill";
+import { DataPairPill, DataPairPillList } from "../Common/DataPairPill";
 
 /**
  * MAIN COMPONENT
@@ -45,7 +45,7 @@ export function ApiSummaryGridCard({ api }: { api: API }) {
             </div>
             <div className="description">{api.description}</div>
             {api.customMetadata && (
-              <div className="metadataList dataPairPillList">
+              <DataPairPillList className="metadataList">
                 {Object.entries(api.customMetadata).map(
                   ([pairKey, pairValue], idx) => (
                     <DataPairPill
@@ -55,7 +55,7 @@ export function ApiSummaryGridCard({ api }: { api: API }) {
                     />
                   )
                 )}
-              </div>
+              </DataPairPillList>
             )}
           </div>
         </div>

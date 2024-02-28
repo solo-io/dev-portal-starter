@@ -17,6 +17,7 @@
     "jsx": "react-jsx"
   },
   "include": [
+    "src/Styles/custom.d.ts",
     "src/custom.d.ts",
     "./src/**/*.svg",
     "./src/**/*.ts",

@@ -6,6 +6,7 @@ import { Button } from "../../Common/Button";
 import { ErrorBoundary } from "../../Common/ErrorBoundary";
 import { Loading } from "../../Common/Loading";
 import { ApiKeyCard } from "./ApiKeyCard";
+import { StyledApiKeyCardContainer } from "./ApiKeyCard.style";
 
 /**
  * MAIN COMPONENT
@@ -63,7 +64,7 @@ export function APIKeysList({
           </ErrorBoundary>
         ))
       ) : (
-        <div className="apiKeyCardContainer">
+        <StyledApiKeyCardContainer>
           <div className="apiKeyCard emptyListCard">
             <div className="accessIcon">
               <Icon.CircledKey />
@@ -79,7 +80,7 @@ export function APIKeysList({
               </div>
             </div>
           </div>
-        </div>
+        </StyledApiKeyCardContainer>
       )}
     </>
   );
