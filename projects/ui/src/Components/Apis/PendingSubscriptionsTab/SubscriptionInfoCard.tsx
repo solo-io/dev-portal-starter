@@ -57,12 +57,6 @@ const SubscriptionInfoCard = ({
       {subscribedApi && (
         <NavLink to={getApiDetailsLink(subscribedApi)}>Spec</NavLink>
       )}
-
-      {/* <Card shadow="sm" padding="lg" radius="md" withBorder>
-        <Card.Section>
-          {subscription.subscriptionName}
-        </Card.Section>
-      </Card> */}
     </SubscriptionInfoCardStyles.Card>
   );
 };
