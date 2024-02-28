@@ -1,7 +1,9 @@
-import { APIProduct } from "../../Apis/api-types";
+import { APIVersion } from "../../Apis/api-types";
 
-export const getApiDetailsLink = (api: APIProduct) => {
+export function getApiDetailsLink<
+  T extends { apiProductId: string; apiVersions: APIVersion[] }
+>(api: T) {
   return `/api-details/${api.apiProductId}/${
     api.apiVersions.length > 0 ? api.apiVersions.at(0)?.apiVersion : ""
   }`;
-};
+}
