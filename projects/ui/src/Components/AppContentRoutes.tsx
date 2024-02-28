@@ -5,7 +5,7 @@ import {
   oidcAuthCodeConfigLogoutPath,
 } from "../user_variables.tmplr";
 import { ApiDetailsPage } from "./ApiDetails/ApiDetailsPage";
-import { ApisPage } from "./ApisList/ApisPage";
+import { ApisPage } from "./Apis/ApisPage";
 import { ErrorBoundary } from "./Common/ErrorBoundary";
 import LoggedOut from "./Common/LoggedOut";
 import { HomePage } from "./Home/HomePage";

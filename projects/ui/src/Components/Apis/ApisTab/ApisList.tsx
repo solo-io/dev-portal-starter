@@ -1,15 +1,13 @@
 import { useMemo } from "react";
 import { di } from "react-magnetic-di";
-import { useListApis } from "../../Apis/hooks";
-import { EmptyData } from "../Common/EmptyData";
-import { Loading } from "../Common/Loading";
-import { ApiSummaryGridCard } from "./ApiSummaryGridCard";
-import { ApiSummaryListCard } from "./ApiSummaryListCard";
+import { useListApis } from "../../../Apis/hooks";
+import { EmptyData } from "../../Common/EmptyData";
+import { Loading } from "../../Common/Loading";
+import { ApisPageStyles } from "../ApisPage.style";
+import { ApiSummaryGridCard } from "./ApiSummaryCards/ApiSummaryGridCard";
+import { ApiSummaryListCard } from "./ApiSummaryCards/ApiSummaryListCard";
 import { FilterPair, FilterType, parsePairString } from "./ApisFilter";
 
-/**
- * MAIN COMPONENT
- **/
 export function ApisList({
   allFilters,
   nameFilter,
@@ -22,6 +20,9 @@ export function ApisList({
   di(useListApis);
   const { isLoading, data: apisList } = useListApis();
 
+  //
+  // Filter the list of api products.
+  //
   const filteredApisList = useMemo(() => {
     if (!apisList?.length) {
       return [];
@@ -58,21 +59,29 @@ export function ApisList({
       );
   }, [apisList, allFilters, nameFilter]);
 
+  //
+  // Render
+  //
   if (isLoading) {
     return <Loading message="Getting list of apis..." />;
   }
-
-  return filteredApisList.length ? (
-    <div className={usingGridView ? "apiGridList" : ""}>
-      {usingGridView
-        ? filteredApisList.map((api) => (
-            <ApiSummaryGridCard api={api} key={api.apiProductId} />
-          ))
-        : filteredApisList.map((api) => (
-            <ApiSummaryListCard api={api} key={api.apiProductId} />
-          ))}
+  if (!filteredApisList.length) {
+    return <EmptyData topic="API" />;
+  }
+  if (usingGridView) {
+    return (
+      <ApisPageStyles.ApiGridList>
+        {filteredApisList.map((api) => (
+          <ApiSummaryGridCard api={api} key={api.apiProductId} />
+        ))}
+      </ApisPageStyles.ApiGridList>
+    );
+  }
+  return (
+    <div>
+      {filteredApisList.map((api) => (
+        <ApiSummaryListCard api={api} key={api.apiProductId} />
+      ))}
     </div>
-  ) : (
-    <EmptyData topic="API" />
   );
 }

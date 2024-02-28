@@ -1,7 +1,7 @@
 import { Global, ThemeProvider } from "@emotion/react";
 import { MantineProvider } from "@mantine/core";
 import { AppContextProvider } from "../Context/AppContext";
-import { defaultTheme, globalStyles } from "../Styles";
+import { colors, defaultTheme, globalStyles } from "../Styles";
 import AppContent from "./AppContent";
 
 /**
@@ -14,7 +14,26 @@ export function App() {
     <ThemeProvider theme={defaultTheme}>
       <Global styles={globalStyles} />
       <AppContextProvider>
-        <MantineProvider withGlobalStyles withNormalizeCSS>
+        <MantineProvider
+          theme={{
+            colors: {
+              blue: [
+                colors.dropBlue,
+                colors.splashBlueLight10,
+                colors.splashBlueLight7,
+                colors.splashBlue,
+                colors.splashBlueDark10,
+                colors.pondBlue,
+                colors.lakeBlue,
+                colors.lakeBlueDark10,
+                colors.oceanBlue,
+                colors.neptuneBlue,
+              ],
+            },
+          }}
+          withGlobalStyles
+          withNormalizeCSS
+        >
           <AppContent />
         </MantineProvider>
       </AppContextProvider>

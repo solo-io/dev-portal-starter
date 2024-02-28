@@ -1,71 +1,13 @@
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
-import { APIProduct, APISchema, APIVersion } from "../../Apis/api-types";
+import { APIProduct, APIVersion } from "../../Apis/api-types";
 import { useGetApiDetails } from "../../Apis/hooks";
 import { Icon } from "../../Assets/Icons";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 import { ErrorBoundary } from "../Common/ErrorBoundary";
 import { Loading } from "../Common/Loading";
-import { ApiSchemaDisplay } from "./ApiSchemaDisplay";
+import { ApiDetailsPageStyles as Styles } from "./ApiDetailsPage.style";
+import { ApiSchemaDisplay } from "./SchemaTab/ApiSchemaDisplay";
 
-const ApiDetailsHeaderAddition = styled.div(
-  ({ theme }) => css`
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    font-size: 18px;
-    font-weight: 500;
-    color: ${theme.defaultColoredText};
-  `
-);
-
-const ApiDetailsExtraInfo = styled.div(
-  ({ theme }) => css`
-    display: flex;
-    align-items: center;
-    margin-right: 25px;
-
-    svg {
-      width: 23px;
-      height: 23px;
-      margin-right: 8px;
-
-      * {
-        fill: ${theme.primary};
-      }
-    }
-  `
-);
-
-/**
- * HELPER COMPONENT
- **/
-function HeaderSummary({
-  apiSchema,
-  apiVersion,
-}: {
-  apiSchema: APISchema;
-  apiVersion: APIVersion;
-}) {
-  return (
-    <ApiDetailsHeaderAddition>
-      <ApiDetailsExtraInfo>
-        <Icon.HtmlTag /> {Object.keys(apiSchema.paths).length} Operations
-      </ApiDetailsExtraInfo>
-      <ApiDetailsExtraInfo>
-        <Icon.OpenApiIcon /> OpenAPI
-      </ApiDetailsExtraInfo>
-      <ApiDetailsExtraInfo>
-        Version: {apiVersion.apiVersion}
-      </ApiDetailsExtraInfo>
-    </ApiDetailsHeaderAddition>
-  );
-}
-
-/**
- * MAIN COMPONENT
- **/
 export function ApiDetailsPageContent({
   api,
   apiVersion,
@@ -93,7 +35,18 @@ export function ApiDetailsPageContent({
         }
         additionalContent={
           !!apiSchema ? (
-            <HeaderSummary apiSchema={apiSchema} apiVersion={apiVersion} />
+            <Styles.ApiDetailsHeaderAddition>
+              <Styles.ApiDetailsExtraInfo>
+                <Icon.HtmlTag /> {Object.keys(apiSchema.paths).length}{" "}
+                Operations
+              </Styles.ApiDetailsExtraInfo>
+              <Styles.ApiDetailsExtraInfo>
+                <Icon.OpenApiIcon /> OpenAPI
+              </Styles.ApiDetailsExtraInfo>
+              <Styles.ApiDetailsExtraInfo>
+                Version: {apiVersion.apiVersion}
+              </Styles.ApiDetailsExtraInfo>
+            </Styles.ApiDetailsHeaderAddition>
           ) : undefined
         }
         breadcrumbItems={[

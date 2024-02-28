@@ -1,26 +1,11 @@
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
 import { Button } from "@mantine/core";
 import { useContext, useState } from "react";
-import { APISchema } from "../../Apis/api-types";
-import { AppContext } from "../../Context/AppContext";
-import { PageContainerWrapper } from "../Common/PageContainer";
-import { RedocDisplay } from "./RedocDisplay";
-import { SwaggerDisplay } from "./SwaggerDisplay";
-
-const SwaggerViewToggleHolder = styled.div(
-  ({ theme }) => css`
-    width: calc(100vw - 16px);
-    max-width: 1920px;
-    padding: 0px 30px 5px 0px;
-    margin: 0 auto;
-    display: block;
-    text-align: right;
-    button {
-      color: ${theme.primary};
-    }
-  `
-);
+import { APISchema } from "../../../Apis/api-types";
+import { AppContext } from "../../../Context/AppContext";
+import { PageContainerWrapper } from "../../Common/PageContainer";
+import { ApiDetailsPageStyles as Styles } from "../ApiDetailsPage.style";
+import { RedocDisplay } from "./redoc/RedocDisplay";
+import { SwaggerDisplay } from "./swagger/SwaggerDisplay";
 
 /**
  * MAIN COMPONENT
@@ -37,7 +22,7 @@ export function ApiSchemaDisplay({
 
   return (
     <>
-      <SwaggerViewToggleHolder>
+      <Styles.SwaggerViewToggleHolder>
         <Button
           variant="subtle"
           onClick={() => setIsSwagger(!isSwagger)}
@@ -45,7 +30,7 @@ export function ApiSchemaDisplay({
         >
           {isSwagger ? "Redoc" : "Swagger"} View
         </Button>
-      </SwaggerViewToggleHolder>
+      </Styles.SwaggerViewToggleHolder>
       <PageContainerWrapper pageContentIsWide={pageContentIsWide}>
         {!isSwagger ? (
           //

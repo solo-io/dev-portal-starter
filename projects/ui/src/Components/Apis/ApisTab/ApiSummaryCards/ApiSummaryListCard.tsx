@@ -1,8 +1,9 @@
 import { NavLink } from "react-router-dom";
-import { APIProduct } from "../../Apis/api-types";
-import { Icon } from "../../Assets/Icons";
-import { DataPairPill, DataPairPillList } from "../Common/DataPairPill";
-import { getApiDetailsLink } from "./helpers";
+import { APIProduct } from "../../../../Apis/api-types";
+import { Icon } from "../../../../Assets/Icons";
+import { DataPairPill, DataPairPillList } from "../../../Common/DataPairPill";
+import { getApiDetailsLink } from "../../helpers";
+import { ApiSummaryListCardStyles } from "./ApiSummaryListCard.style";
 
 /**
  * MAIN COMPONENT
@@ -10,7 +11,7 @@ import { getApiDetailsLink } from "./helpers";
 export function ApiSummaryListCard({ api }: { api: APIProduct }) {
   return (
     <NavLink to={getApiDetailsLink(api)}>
-      <div className="apiListCard">
+      <ApiSummaryListCardStyles.ApiListCardWithLink>
         <div className="content">
           <div className="majorIconHolder">
             <Icon.WrenchGear className="colorIt" />
@@ -66,7 +67,7 @@ export function ApiSummaryListCard({ api }: { api: APIProduct }) {
             <Icon.OpenApiIcon />
           </div>
         </div>
-      </div>
+      </ApiSummaryListCardStyles.ApiListCardWithLink>
     </NavLink>
   );
 }

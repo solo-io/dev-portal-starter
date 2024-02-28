@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { borderRadiusConstants } from "../../Styles/constants";
-import { makeStyledButtonCSS } from "../Common/Button";
+import { borderRadiusConstants } from "../../../../Styles/constants";
+import { makeStyledButtonCSS } from "../../../Common/Button";
 
 /*
 *   EXPLANATION OF TAGS, CLASSNAMES, AND VARIOUS ref HOOKS

@@ -1,9 +1,9 @@
 import { useMemo } from "react";
-import { NavLink } from "react-router-dom";
-import { APIProduct } from "../../Apis/api-types";
-import { Icon } from "../../Assets/Icons";
-import { DataPairPill, DataPairPillList } from "../Common/DataPairPill";
-import { getApiDetailsLink } from "./helpers";
+import { APIProduct } from "../../../../Apis/api-types";
+import { Icon } from "../../../../Assets/Icons";
+import { DataPairPill, DataPairPillList } from "../../../Common/DataPairPill";
+import { getApiDetailsLink } from "../../helpers";
+import { ApiSummaryGridCardStyles } from "./ApiSummaryGridCard.style";
 
 /**
  * MAIN COMPONENT
@@ -24,7 +24,7 @@ export function ApiSummaryGridCard({ api }: { api: APIProduct }) {
   );
 
   return (
-    <NavLink to={getApiDetailsLink(api)} className="apiGridCard">
+    <ApiSummaryGridCardStyles.ApiGridCardWithLink to={getApiDetailsLink(api)}>
       <div className="content">
         <div className="apiImageHolder">
           <img src={defaultCardImage} alt="" role="banner" />
@@ -77,6 +77,6 @@ export function ApiSummaryGridCard({ api }: { api: APIProduct }) {
           <Icon.OpenApiIcon />
         </div>
       </div>
-    </NavLink>
+    </ApiSummaryGridCardStyles.ApiGridCardWithLink>
   );
 }
