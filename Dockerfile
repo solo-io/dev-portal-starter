@@ -1,4 +1,4 @@
-FROM node:16.14.2 
+FROM node:18.16.0
 
 ENV VITE_PORTAL_SERVER_URL=$VITE_PORTAL_SERVER_URL \
     VITE_CLIENT_ID=$VITE_CLIENT_ID \
@@ -15,7 +15,6 @@ WORKDIR /app/projects/ui
 
 # Install global dependencies and set up for runtime
 RUN apt-get update && apt-get install -y build-essential
-RUN yarn global add vite@4.2.3
 RUN yarn install
 EXPOSE 4000
 
@@ -29,4 +28,4 @@ ENTRYPOINT VITE_PORTAL_SERVER_URL=$VITE_PORTAL_SERVER_URL \
     VITE_APPLIED_OIDC_AUTH_CODE_CONFIG=$VITE_APPLIED_OIDC_AUTH_CODE_CONFIG \
     VITE_OIDC_AUTH_CODE_CONFIG_CALLBACK_PATH=$VITE_OIDC_AUTH_CODE_CONFIG_CALLBACK_PATH \
     VITE_OIDC_AUTH_CODE_CONFIG_LOGOUT_PATH=$VITE_OIDC_AUTH_CODE_CONFIG_LOGOUT_PATH \
-    yarn build && vite preview --port 4000 --host
+    yarn build && yarn run vite preview --port 4000 --host
