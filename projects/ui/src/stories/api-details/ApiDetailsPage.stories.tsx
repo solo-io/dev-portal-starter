@@ -48,7 +48,8 @@ export const Default: Story = {
         data: exampleOpenApiSchema,
       }));
       const useParamsDi = injectable(useParams, () => ({
-        apiId: mockApisList[0].apiVersions![0].apiId,
+        apiProductId: mockApisList[0].apiProductId,
+        apiVersion: mockApisList[0].apiVersions![0].apiVersion,
       }));
       const useListApisDi = injectable(useListApis, () => ({
         isLoading: false,

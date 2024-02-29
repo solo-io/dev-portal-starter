@@ -1,3 +1,4 @@
+import { di } from "react-magnetic-di";
 import { APIProduct, APIVersion } from "../../Apis/api-types";
 import { useGetApiDetails } from "../../Apis/hooks";
 import { Icon } from "../../Assets/Icons";
@@ -15,6 +16,7 @@ export function ApiDetailsPageContent({
   api: APIProduct;
   apiVersion: APIVersion;
 }) {
+  di(useGetApiDetails);
   const { data: apiSchema, isLoading } = useGetApiDetails(apiVersion.apiId);
 
   return (

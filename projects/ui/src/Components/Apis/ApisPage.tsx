@@ -47,6 +47,10 @@ export function ApisPage() {
 
       <Box px={30} mb={60}>
         <Tabs defaultValue="apis">
+          {/*
+          
+          Tab Titles
+          */}
           <Tabs.List>
             <Tabs.Tab value="apis">APIs</Tabs.Tab>
             <Tabs.Tab value="subs">
@@ -66,11 +70,13 @@ export function ApisPage() {
               </Flex>
             </Tabs.Tab>
           </Tabs.List>
-
+          {/*
+          
+          Tab Content
+          */}
           <Tabs.Panel value="apis" pt={"sm"}>
             <ApisTabContent />
           </Tabs.Panel>
-
           <Tabs.Panel value="subs" pt={"sm"}>
             <PendingSubscriptionTabContent subscriptions={subscriptions} />
           </Tabs.Panel>

@@ -6,7 +6,7 @@ import { useListApis } from "../../Apis/hooks";
 import { ApiDetailsPageContent } from "./ApiDetailsPageContent";
 
 export function ApiDetailsPage() {
-  di(useParams);
+  di(useParams, useListApis);
   const { apiProductId, apiVersion } = useParams();
 
   const { data: apisList } = useListApis();
