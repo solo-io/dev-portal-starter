@@ -5,7 +5,7 @@ import { makePrimaryTrimmedSmallWhiteContainerCSS } from "../PrimaryTrimmedSmall
 import { borderRadiusConstants } from "../constants";
 
 export namespace GridCardStyles {
-  export const GridCard = styled(NavLink)(
+  export const GridCard = styled.div(
     ({ theme }) => css`
       display: flex;
       flex-direction: column;
@@ -97,7 +97,11 @@ export namespace GridCardStyles {
           }
         }
       }
+    `
+  );
 
+  export const GridCardWithLink = styled(GridCard)(
+    ({ theme }) => css`
       //
       // Shared styles between API summary cards
       //
@@ -112,7 +116,5 @@ export namespace GridCardStyles {
         box-shadow: 0 0 5px ${theme.pondBlue};
       }
     `
-  );
-
-  export const GridCardWithLink = styled(GridCard)().withComponent(NavLink);
+  ).withComponent(NavLink);
 }

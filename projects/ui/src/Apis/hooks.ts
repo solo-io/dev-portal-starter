@@ -32,6 +32,12 @@ async function fetchJSON(...args: Parameters<typeof fetch>) {
       ...args[1],
       headers: {
         ...args[1]?.headers,
+        // TODO: Could remove this once auth is working.
+        ...(import.meta.env.VITE_AUTH_HEADER
+          ? {
+              Authorization: import.meta.env.VITE_AUTH_HEADER,
+            }
+          : {}),
         "Content-Type": "application/json",
       },
     },
@@ -58,7 +64,11 @@ const useSwrWithAuth = <T>(
     (...args) => {
       return fetchJSON(args[0], {
         ...(args.length > 1 && !!args[1] ? args[1] : {}),
-        credentials: "include",
+        // credentials: "include",
+        // Removing "credentials: include", since the server's 'Access-Control-Allow-Origin' header is "*".
+        // If this is kept in, there is a browser error:
+        //   The value of the 'Access-Control-Allow-Origin' header in the response must not be
+        //   the wildcard '*' when the request's credentials mode is 'include'
         headers: {
           ...(args.length > 1 && args[1].headers ? args[1].headers : {}),
           ...authHeaders,

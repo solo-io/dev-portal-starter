@@ -24,7 +24,7 @@ export function TeamSummaryGridCard({ team }: { team: Team }) {
   );
 
   return (
-    <GridCardStyles.GridCard to={getTeamDetailsLink(team)}>
+    <GridCardStyles.GridCardWithLink to={getTeamDetailsLink(team)}>
       <div className="content">
         <div className="apiImageHolder">
           <img src={defaultCardImage} alt="" role="banner" />
@@ -46,6 +46,6 @@ export function TeamSummaryGridCard({ team }: { team: Team }) {
           <Icon.TeamsIcon />
         </div>
       </div>
-    </GridCardStyles.GridCard>
+    </GridCardStyles.GridCardWithLink>
   );
 }

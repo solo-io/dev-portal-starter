@@ -18,7 +18,9 @@ export function AppsList({
   usingGridView: boolean;
 }) {
   di(useListApps);
-  const { isLoading, data: appsList } = useListApps("123");
+  const { isLoading, data: appsList } = useListApps(
+    "8e543407-cfdb-4061-b3ac-841faa715edf"
+  );
 
   //
   // Filter the list of apps.
