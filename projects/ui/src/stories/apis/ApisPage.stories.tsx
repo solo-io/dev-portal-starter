@@ -45,7 +45,7 @@ export const Loading: Story = {
 //
 const mockApisList: DeepPartialObject<APIProduct>[] = [
   {
-    apiProductId: "some-api-product-id",
+    apiProductId: "catstronauts-rest-api",
     apiProductDisplayName: "Mock API Product",
     apiVersions: [
       {
@@ -66,7 +66,7 @@ const mockApisList: DeepPartialObject<APIProduct>[] = [
   },
   {
     apiProductDisplayName: "API Product 2",
-    apiProductId: "api-product-2",
+    apiProductId: "catstronauts-rest-api",
     apiVersions: [
       {
         apiId: "some-api-2",

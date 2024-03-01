@@ -1,5 +1,6 @@
 // Manifest of all SVGs
 export { ReactComponent as Add } from "./add.svg";
+export { ReactComponent as AppIcon } from "./app-icon.svg";
 export { ReactComponent as BigX } from "./big-x.svg";
 export { ReactComponent as Bug } from "./bug.svg";
 export { ReactComponent as CircledKey } from "./circled-key.svg";

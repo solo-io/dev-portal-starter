@@ -1,32 +1,12 @@
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
+import { Box, Flex } from "@mantine/core";
 import { useMemo } from "react";
 import { di } from "react-magnetic-di";
 import { NavLink } from "react-router-dom";
 import { useListApis } from "../../../Apis/hooks";
-import { Subscription, SubscriptionState } from "../ApisPage";
+import { AppIcon } from "../../../Assets/Icons/Icons";
+import { Subscription, subscriptionStateMap } from "../ApisPage";
 import { getApiDetailsLink } from "../helpers";
-
-namespace SubscriptionInfoCardStyles {
-  export const Card = styled.div(
-    ({ theme }) => css`
-      width: 350px;
-      padding: 10px;
-      //
-      border: 1px solid ${theme.dropBlue};
-      background-color: white;
-      border-radius: 5px;
-      box-shadow: 1px 1px 5px ${theme.augustGrey};
-    `
-  );
-
-  export const CardTitle = styled.div(
-    ({ theme }) => css`
-      font-size: 1.5rem;
-      //
-    `
-  );
-}
+import { SubscriptionInfoCardStyles as Styles } from "./SubscriptionInfoCard.style";
 
 const SubscriptionInfoCard = ({
   subscription,
@@ -35,6 +15,7 @@ const SubscriptionInfoCard = ({
 }) => {
   di(useListApis);
   const { data: apisList } = useListApis();
+
   const subscribedApi = useMemo(() => {
     return apisList?.find(
       (api) => api.apiProductId === subscription.apiProductId
@@ -42,22 +23,30 @@ const SubscriptionInfoCard = ({
   }, [apisList, subscription]);
 
   return (
-    <SubscriptionInfoCardStyles.Card>
-      <SubscriptionInfoCardStyles.CardTitle>
-        {subscription.subscriptionName}
-      </SubscriptionInfoCardStyles.CardTitle>
-      {subscription.usagePlanName}
-      <br />
-      {subscription.appName}
-      <br />
-      {subscription.state === SubscriptionState.PENDING
-        ? "pending"
-        : "accepted"}
-      <br />
+    <Styles.Card subscriptionState={subscription.state}>
+      <Styles.Content>
+        <Flex justify="space-between">
+          <Styles.CardTitle>{subscription.subscriptionName}</Styles.CardTitle>
+          <Styles.SubscriptionCardBadge subscriptionState={subscription.state}>
+            {subscriptionStateMap[subscription.state].label}
+          </Styles.SubscriptionCardBadge>
+        </Flex>
+        <Flex align={"center"} justify={"flex-start"} gap={"8px"}>
+          <AppIcon width={20} />
+          <Styles.Text>{subscription.appName}</Styles.Text>
+        </Flex>
+        <Styles.Text>{subscription.usagePlanName}</Styles.Text>
+      </Styles.Content>
       {subscribedApi && (
-        <NavLink to={getApiDetailsLink(subscribedApi)}>Spec</NavLink>
+        <Styles.Footer>
+          <NavLink to={getApiDetailsLink(subscribedApi)}>SPEC</NavLink>
+          <Box>|</Box>
+          {/* // TODO: Update links to go to docs tab on api details page when we can specify that. */}
+          <NavLink to={getApiDetailsLink(subscribedApi)}>DOCS</NavLink>
+        </Styles.Footer>
       )}
-    </SubscriptionInfoCardStyles.Card>
+      {/* // TODO: Add cancel button (with cancel subscription modal) here. */}
+    </Styles.Card>
   );
 };
 
