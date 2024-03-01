@@ -1,12 +1,16 @@
 import { useMemo } from "react";
 import { di } from "react-magnetic-di";
 import { useListApis } from "../../../Apis/hooks";
+import {
+  FilterPair,
+  FilterType,
+  parsePairString,
+} from "../../../Utility/filter-utility";
 import { EmptyData } from "../../Common/EmptyData";
 import { Loading } from "../../Common/Loading";
 import { ApisPageStyles } from "../ApisPage.style";
 import { ApiSummaryGridCard } from "./ApiSummaryCards/ApiSummaryGridCard";
 import { ApiSummaryListCard } from "./ApiSummaryCards/ApiSummaryListCard";
-import { FilterPair, FilterType, parsePairString } from "./ApisFilter";
 
 export function ApisList({
   allFilters,

@@ -155,11 +155,24 @@ export function Header() {
   const routerLocation = useLocation();
   const { isLoggedIn } = useContext(PortalAuthContext);
 
-  const inAPIsArea = useMemo(() => {
-    return ["/apis", "/api-details/"].some((s) =>
-      routerLocation.pathname.includes(s)
-    );
-  }, [routerLocation.pathname]);
+  const inArea = (paths: string[]) => {
+    return paths.some((s) => routerLocation.pathname.includes(s));
+  };
+
+  const inAPIsArea = useMemo(
+    () => inArea(["/apis", "/api-details/"]),
+    [routerLocation.pathname]
+  );
+
+  const inAppsArea = useMemo(
+    () => inArea(["/apps", "/app-details/"]),
+    [routerLocation.pathname]
+  );
+
+  const inTeamsArea = useMemo(
+    () => inArea(["/teams", "/team-details/"]),
+    [routerLocation.pathname]
+  );
 
   const { pageContentIsWide } = useContext(AppContext);
 
@@ -181,6 +194,22 @@ export function Header() {
               className={`navLink ${inAPIsArea ? "active" : ""}`}
             >
               APIs
+            </NavLink>
+            {/* 
+
+            // TODO: Check which routes here require auth. 
+            */}
+            <NavLink
+              to={"/apps"}
+              className={`navLink ${inAppsArea ? "active" : ""}`}
+            >
+              Apps
+            </NavLink>
+            <NavLink
+              to={"/teams"}
+              className={`navLink ${inTeamsArea ? "active" : ""}`}
+            >
+              Teams
             </NavLink>
             <div className="divider" />
             <ErrorBoundary fallback="Access issues" class="horizontalError">

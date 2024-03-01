@@ -1,19 +1,13 @@
-import { Select, TextInput } from "@mantine/core";
-import { useState } from "react";
+import { TextInput } from "@mantine/core";
 import { Icon } from "../../../Assets/Icons";
 import { FilterStyles as Styles } from "../../../Styles/shared/Filters.style";
-import {
-  FilterPair,
-  FilterType,
-  getPairString,
-} from "../../../Utility/filter-utility";
-import { KeyValuePair } from "../../Common/DataPairPill";
+import { FilterPair, FilterType } from "../../../Utility/filter-utility";
 import GridListToggle from "../../Common/GridListToggle";
 
 /**
  * MAIN COMPONENT
  **/
-type ApisFiltrationProp = {
+type AppsFiltrationProp = {
   showingGrid: boolean;
   allFilters: FilterPair[];
   setAllFilters: (newFiltersList: FilterPair[]) => void;
@@ -22,11 +16,11 @@ type ApisFiltrationProp = {
   setNameFilter: (newNamesList: string) => void;
 };
 
-export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
-  const [pairFilter, setPairFilter] = useState<KeyValuePair>({
-    pairKey: "",
-    value: "",
-  });
+export function AppsFilter({ filters }: { filters: AppsFiltrationProp }) {
+  // const [pairFilter, setPairFilter] = useState<KeyValuePair>({
+  //   pairKey: "",
+  //   value: "",
+  // });
 
   const addNameFilter = (evt: { target: { value: string } }) => {
     const displayName = evt.target.value;
@@ -46,45 +40,45 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
     filters.setNameFilter("");
   };
 
-  const alterPairKey = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const newKey = evt.target.value;
-    setPairFilter({
-      pairKey: newKey,
-      value: pairFilter.value,
-    });
-  };
-  const alterKeyValuePair = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = evt.target.value;
-    setPairFilter({
-      pairKey: pairFilter.pairKey,
-      value: newValue,
-    });
-  };
+  // const alterPairKey = (evt: React.ChangeEvent<HTMLInputElement>) => {
+  //   const newKey = evt.target.value;
+  //   setPairFilter({
+  //     pairKey: newKey,
+  //     value: pairFilter.value,
+  //   });
+  // };
+  // const alterKeyValuePair = (evt: React.ChangeEvent<HTMLInputElement>) => {
+  //   const newValue = evt.target.value;
+  //   setPairFilter({
+  //     pairKey: pairFilter.pairKey,
+  //     value: newValue,
+  //   });
+  // };
 
-  const addKeyValuePairFilter = () => {
-    const displayName = getPairString(pairFilter);
-    if (displayName.trim() === ":") return;
-    // Check for duplicate filters.
-    const isDuplicateFilter = filters.allFilters.some(
-      (f) => f.type === FilterType.keyValuePair && f.displayName === displayName
-    );
-    if (isDuplicateFilter) {
-      return;
-    }
-    filters.setAllFilters([
-      ...filters.allFilters,
-      { displayName, type: FilterType.keyValuePair },
-    ]);
+  // const addKeyValuePairFilter = () => {
+  //   const displayName = getPairString(pairFilter);
+  //   if (displayName.trim() === ":") return;
+  //   // Check for duplicate filters.
+  //   const isDuplicateFilter = filters.allFilters.some(
+  //     (f) => f.type === FilterType.keyValuePair && f.displayName === displayName
+  //   );
+  //   if (isDuplicateFilter) {
+  //     return;
+  //   }
+  //   filters.setAllFilters([
+  //     ...filters.allFilters,
+  //     { displayName, type: FilterType.keyValuePair },
+  //   ]);
 
-    setPairFilter({ pairKey: "", value: "" });
-  };
+  //   setPairFilter({ pairKey: "", value: "" });
+  // };
 
-  const addTypeFilter = (addedType: string) => {
-    filters.setAllFilters([
-      ...filters.allFilters,
-      { displayName: addedType, type: FilterType.apiType },
-    ]);
-  };
+  // const addTypeFilter = (addedType: string) => {
+  //   filters.setAllFilters([
+  //     ...filters.allFilters,
+  //     { displayName: addedType, type: FilterType.apiType },
+  //   ]);
+  // };
 
   const removeFilter = (filterPair: FilterPair) => {
     filters.setAllFilters(
@@ -100,19 +94,19 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
     filters.setAllFilters([]);
   };
 
-  const selectableTypes = [
-    {
-      label: "OpenAPI",
-      value: "OpenAPI",
-    },
-  ].filter(
-    (selectableType) =>
-      !filters.allFilters.some(
-        (filter) =>
-          filter.type === FilterType.apiType &&
-          filter.displayName === selectableType.value
-      )
-  );
+  // const selectableTypes = [
+  //   {
+  //     label: "OpenAPI",
+  //     value: "OpenAPI",
+  //   },
+  // ].filter(
+  //   (selectableType) =>
+  //     !filters.allFilters.some(
+  //       (filter) =>
+  //         filter.type === FilterType.apiType &&
+  //         filter.displayName === selectableType.value
+  //     )
+  // );
 
   return (
     <Styles.FilterArea>
@@ -133,6 +127,8 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
           />
           <Icon.MagnifyingGlass style={{ pointerEvents: "none" }} />
         </form>
+        {/*
+        
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -163,8 +159,8 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
               <Icon.Add />
             </button>
           </div>
-        </form>
-        <div className="dropdownFilter">
+        </form> */}
+        {/* <div className="dropdownFilter">
           <div className="gearHolder">
             <Icon.CodeGear />
           </div>
@@ -177,7 +173,8 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
             value=""
             placeholder="API Type"
           />
-        </div>
+        </div> */}
+
         <GridListToggle
           onChange={(newIsList) => filters.setShowingGrid(!newIsList)}
           isList={!filters.showingGrid}

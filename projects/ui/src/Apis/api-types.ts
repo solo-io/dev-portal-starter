@@ -51,6 +51,28 @@ export type APIProduct = {
   apiVersions: APIVersion[];
 };
 
+export type App = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+  name: string;
+  description: string;
+  idpClientName: string;
+  idpClientId: string;
+  idpClientSecret: string;
+  teamId: string;
+};
+
+export type Team = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+  name: string;
+  description: string;
+};
+
 type SchemaPropertyType = "string" | "integer" | "array" | "object";
 export type APISchema = {
   components?: {

@@ -1,11 +1,11 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { NavLink } from "react-router-dom";
-import { makePrimaryTrimmedSmallWhiteContainerCSS } from "../../../../Styles/PrimaryTrimmedSmallWhiteContainer";
-import { borderRadiusConstants } from "../../../../Styles/constants";
+import { makePrimaryTrimmedSmallWhiteContainerCSS } from "../PrimaryTrimmedSmallWhiteContainer";
+import { borderRadiusConstants } from "../constants";
 
-export namespace ApiSummaryGridCardStyles {
-  export const ApiGridCardWithLink = styled(NavLink)(
+export namespace GridCardStyles {
+  export const GridCard = styled(NavLink)(
     ({ theme }) => css`
       display: flex;
       flex-direction: column;
@@ -113,4 +113,6 @@ export namespace ApiSummaryGridCardStyles {
       }
     `
   );
+
+  export const GridCardWithLink = styled(GridCard)().withComponent(NavLink);
 }

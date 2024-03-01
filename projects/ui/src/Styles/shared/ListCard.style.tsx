@@ -1,10 +1,10 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { makePrimaryTrimmedSmallWhiteContainerCSS } from "../../../../Styles/PrimaryTrimmedSmallWhiteContainer";
-import { borderRadiusConstants } from "../../../../Styles/constants";
+import { makePrimaryTrimmedSmallWhiteContainerCSS } from "../PrimaryTrimmedSmallWhiteContainer";
+import { borderRadiusConstants } from "../constants";
 
-export namespace ApiSummaryListCardStyles {
-  export const ApiListCardWithLink = styled.div(
+export namespace ListCardStyles {
+  export const ListCardWithLink = styled.div(
     ({ theme }) => css`
       margin-bottom: 30px;
       border-radius: ${borderRadiusConstants.small};

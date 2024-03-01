@@ -4,8 +4,8 @@ import { di } from "react-magnetic-di";
 import { NavLink } from "react-router-dom";
 import { useListApis } from "../../../Apis/hooks";
 import { AppIcon } from "../../../Assets/Icons/Icons";
+import { getApiDetailsLink } from "../../../Utility/link-builders";
 import { Subscription, subscriptionStateMap } from "../ApisPage";
-import { getApiDetailsLink } from "../helpers";
 import { SubscriptionInfoCardStyles as Styles } from "./SubscriptionInfoCard.style";
 
 const SubscriptionInfoCard = ({

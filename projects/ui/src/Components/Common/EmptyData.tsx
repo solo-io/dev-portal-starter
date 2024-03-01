@@ -7,6 +7,7 @@ const LoadingContainer = styled.div(
     flex-direction: column;
     align-items: center;
     width: 100%;
+    padding-bottom: 30px;
 
     // A pretty spinner while they wait...
     // .inner and .outer define the two circling balls, and

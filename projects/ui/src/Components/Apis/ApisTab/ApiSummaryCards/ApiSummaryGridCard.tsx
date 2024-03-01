@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { APIProduct } from "../../../../Apis/api-types";
 import { Icon } from "../../../../Assets/Icons";
+import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
+import { getApiDetailsLink } from "../../../../Utility/link-builders";
 import { DataPairPill, DataPairPillList } from "../../../Common/DataPairPill";
-import { getApiDetailsLink } from "../../helpers";
-import { ApiSummaryGridCardStyles } from "./ApiSummaryGridCard.style";
 
 /**
  * MAIN COMPONENT
@@ -24,7 +24,7 @@ export function ApiSummaryGridCard({ api }: { api: APIProduct }) {
   );
 
   return (
-    <ApiSummaryGridCardStyles.ApiGridCardWithLink to={getApiDetailsLink(api)}>
+    <GridCardStyles.GridCardWithLink to={getApiDetailsLink(api)}>
       <div className="content">
         <div className="apiImageHolder">
           <img src={defaultCardImage} alt="" role="banner" />
@@ -77,6 +77,6 @@ export function ApiSummaryGridCard({ api }: { api: APIProduct }) {
           <Icon.OpenApiIcon />
         </div>
       </div>
-    </ApiSummaryGridCardStyles.ApiGridCardWithLink>
+    </GridCardStyles.GridCardWithLink>
   );
 }

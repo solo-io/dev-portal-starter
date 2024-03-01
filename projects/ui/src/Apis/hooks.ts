@@ -2,7 +2,15 @@ import { useContext } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
 import { PortalAuthContext } from "../Context/PortalAuthContext";
-import { APIKey, APIProduct, APISchema, UsagePlan, User } from "./api-types";
+import {
+  APIKey,
+  APIProduct,
+  APISchema,
+  App,
+  Team,
+  UsagePlan,
+  User,
+} from "./api-types";
 
 let _portalServerUrl = import.meta.env.VITE_PORTAL_SERVER_URL;
 if (
@@ -72,6 +80,12 @@ export function useGetCurrentUser() {
 
 export function useListApis() {
   return useSwrWithAuth<APIProduct[]>("/apis");
+}
+export function useListApps(teamId: string) {
+  return useSwrWithAuth<App[]>(`/teams/${teamId}/apps`);
+}
+export function useListTeams() {
+  return useSwrWithAuth<Team[]>(`/teams`);
 }
 export function useGetApiDetails(id?: string) {
   return useSwrWithAuth<APISchema>(`/apis/${id}/schema`);

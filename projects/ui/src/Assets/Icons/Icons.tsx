@@ -30,6 +30,7 @@ export { ReactComponent as SmallX } from "./small-x.svg";
 export { ReactComponent as Speedometer } from "./speedometer.svg";
 export { ReactComponent as SuccessCheckmark } from "./success-checkmark.svg";
 export { ReactComponent as Tag } from "./tag-icon.svg";
+export { ReactComponent as TeamsIcon } from "./teams-icon.svg";
 export { ReactComponent as TileViewIcon } from "./tile-view.svg";
 export { ReactComponent as UpArrow } from "./up-arrow.svg";
 export { ReactComponent as UpstreamRipple } from "./upstream-ripple.svg";
