@@ -2,11 +2,12 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Select, TextInput } from "@mantine/core";
 import { useState } from "react";
-import { Icon } from "../../Assets/Icons";
-import { PrimaryTrimmedSmallWhiteContainer } from "../../Styles/PrimaryTrimmedSmallWhiteContainer";
-import { borderRadiusConstants } from "../../Styles/constants";
-import { KeyValuePair } from "../Common/DataPairPill";
-import GridListToggle from "../Common/GridListToggle";
+import { Icon } from "../../../Assets/Icons";
+import { PrimaryTrimmedSmallWhiteContainer } from "../../../Styles/PrimaryTrimmedSmallWhiteContainer";
+import { borderRadiusConstants } from "../../../Styles/constants";
+import { KeyValuePair } from "../../Common/DataPairPill";
+import GridListToggle from "../../Common/GridListToggle";
+import { ApisFilterStyles } from "./ApisFilter.style";
 
 const ActiveFiltersGrid = styled.div`
   flex: 1;
@@ -214,7 +215,7 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
   );
 
   return (
-    <div className="filterArea">
+    <ApisFilterStyles.FilterArea>
       <div className="choicesArea">
         <h3 className="title">Filters</h3>
         <form
@@ -307,6 +308,6 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
           </ClearAllButton>
         </div>
       )}
-    </div>
+    </ApisFilterStyles.FilterArea>
   );
 }

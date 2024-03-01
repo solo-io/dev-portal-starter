@@ -2,14 +2,7 @@ import { useContext } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
 import { PortalAuthContext } from "../Context/PortalAuthContext";
-import {
-  API,
-  APIKey,
-  APIProduct,
-  APISchema,
-  UsagePlan,
-  User,
-} from "./api-types";
+import { APIKey, APIProduct, APISchema, UsagePlan, User } from "./api-types";
 
 let _portalServerUrl = import.meta.env.VITE_PORTAL_SERVER_URL;
 if (
@@ -78,37 +71,7 @@ export function useGetCurrentUser() {
 }
 
 export function useListApis() {
-  const res = useSwrWithAuth<API[] | APIProduct[]>("/apis");
-  //
-  // The server returns the APIs grouped by APIProduct,
-  // so we can convert it back to a list here.
-  //
-  let processedAPIs = res.data as API[];
-  if (!!res.data?.length && "apiVersions" in res.data[0]) {
-    let apiProducts = res.data as APIProduct[];
-    processedAPIs = apiProducts.reduce((accum, curProd) => {
-      accum.push(
-        ...curProd.apiVersions.reduce((accum, api) => {
-          accum.push({
-            apiId: api.apiId,
-            apiProductDisplayName: curProd.apiProductDisplayName,
-            apiProductId: curProd.apiProductId,
-            apiVersion: api.apiVersion,
-            contact: api.contact,
-            customMetadata: api.customMetadata,
-            description: api.description,
-            license: api.license,
-            termsOfService: api.termsOfService,
-            title: api.title,
-            usagePlans: api.usagePlans,
-          });
-          return accum;
-        }, [] as API[])
-      );
-      return accum;
-    }, [] as API[]);
-  }
-  return { ...res, data: processedAPIs };
+  return useSwrWithAuth<APIProduct[]>("/apis");
 }
 export function useGetApiDetails(id?: string) {
   return useSwrWithAuth<APISchema>(`/apis/${id}/schema`);

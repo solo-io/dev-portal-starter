@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import SwaggerUIConstructor from "swagger-ui";
 import "swagger-ui/dist/swagger-ui.css";
-import { APISchema } from "../../Apis/api-types";
+import { APISchema } from "../../../../Apis/api-types";
 import { SwaggerDisplayContainer } from "./SwaggerDisplay.style";
 
 const sanitize = (id: string) => id.replaceAll(".", "-");

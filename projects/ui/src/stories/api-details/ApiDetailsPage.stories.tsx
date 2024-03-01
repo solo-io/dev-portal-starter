@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { DeepPartialObject, DiProvider, injectable } from "react-magnetic-di";
 import { MemoryRouter, useParams } from "react-router-dom";
-import { API } from "../../Apis/api-types";
+import { APIProduct } from "../../Apis/api-types";
 import { useGetApiDetails, useListApis } from "../../Apis/hooks";
 import { ApiDetailsPage } from "../../Components/ApiDetails/ApiDetailsPage";
 import { appContentDecorator } from "../decorators/decorators";
@@ -24,13 +24,19 @@ type Story = StoryObj<typeof meta>;
 // This uses an example schema from the OpenApi-Specification repository:
 // https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v2.0/json/uber.json
 //
-const mockApisList: DeepPartialObject<API>[] = [
+const mockApisList: DeepPartialObject<APIProduct>[] = [
   {
-    apiId: "uber-api",
-    contact: "uber-api-contact",
-    customMetadata: {},
-    description: "A mock API.",
-    title: "Uber API",
+    apiProductDisplayName: "Uber API",
+    apiProductId: "uber-api",
+    apiVersions: [
+      {
+        apiId: "uber-api",
+        contact: "uber-api-contact",
+        customMetadata: {},
+        description: "A mock API.",
+        title: "Uber API",
+      },
+    ],
   },
 ];
 export const Default: Story = {
@@ -42,7 +48,8 @@ export const Default: Story = {
         data: exampleOpenApiSchema,
       }));
       const useParamsDi = injectable(useParams, () => ({
-        apiId: mockApisList[0].apiId,
+        apiProductId: mockApisList[0].apiProductId,
+        apiVersion: mockApisList[0].apiVersions![0].apiVersion,
       }));
       const useListApisDi = injectable(useListApis, () => ({
         isLoading: false,

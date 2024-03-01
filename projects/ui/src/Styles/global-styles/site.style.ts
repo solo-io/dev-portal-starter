@@ -2,6 +2,9 @@ import { css } from "@emotion/react";
 import { colors } from "../colors";
 
 export const siteGlobalStyles = css`
+  * {
+    color: ${colors.neptuneBlue};
+  }
   //
   // Reset HTML buttons
   //
@@ -15,6 +18,7 @@ export const siteGlobalStyles = css`
     justify-content: center;
     color: currentColor;
     cursor: pointer;
+    /* color: ${colors.neptuneBlue}; */
 
     &.disabled {
       cursor: default;

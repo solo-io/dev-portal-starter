@@ -5,12 +5,11 @@ import {
   oidcAuthCodeConfigLogoutPath,
 } from "../user_variables.tmplr";
 import { ApiDetailsPage } from "./ApiDetails/ApiDetailsPage";
-import { ApisPage } from "./ApisList/ApisPage";
+import { ApisPage } from "./Apis/ApisPage";
 import { ErrorBoundary } from "./Common/ErrorBoundary";
 import LoggedOut from "./Common/LoggedOut";
 import { HomePage } from "./Home/HomePage";
 import { Footer } from "./Structure/Footer";
-import { UsagePlansPage } from "./UsagePlans/UsagePlansPage";
 
 const MainContentContainer = styled.div`
   grid-area: contentcontainer;
@@ -70,26 +69,10 @@ function AppContentRoutes() {
           }
         />
         <Route
-          path="/api-details/:apiId"
+          path="/api-details/:apiProductId/:apiVersion"
           element={
             <ErrorBoundary fallback="There was an issue displaying details about that API">
               <ApiDetailsPage />
-            </ErrorBoundary>
-          }
-        />
-        <Route
-          path="/usage-plans"
-          element={
-            <ErrorBoundary fallback="There was an issue displaying the list of Usage Plans">
-              <UsagePlansPage />
-            </ErrorBoundary>
-          }
-        />
-        <Route
-          path="/usage-plans/:apiId"
-          element={
-            <ErrorBoundary fallback="There was an issue displaying information about the Usage Plan">
-              <UsagePlansPage />
             </ErrorBoundary>
           }
         />

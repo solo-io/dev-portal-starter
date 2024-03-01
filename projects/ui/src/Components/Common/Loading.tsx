@@ -1,15 +1,13 @@
+import { Box, Flex, Loader, Text } from "@mantine/core";
+import { colors } from "../../Styles";
+
 export function Loading({ message }: { message?: string }) {
   return (
-    <div className="loadingContainer" aria-hidden="true">
-      <div className="loadingSpinner">
-        <div className="chasePlate outer">
-          <div className="circle"></div>
-        </div>
-        <div className="chasePlate inner">
-          <div className="circle"></div>
-        </div>
-      </div>
-      {!!message && <div className="loadingMessage">{message}</div>}
-    </div>
+    <Box p={"10px"}>
+      <Flex align="center" justify="center" direction="column" gap="20px">
+        <Loader size={"50px"} color={colors.seaBlue} />
+        {!!message && <Text color={colors.augustGrey}>{message}</Text>}
+      </Flex>
+    </Box>
   );
 }
