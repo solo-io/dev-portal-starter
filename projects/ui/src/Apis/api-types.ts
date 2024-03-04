@@ -73,6 +73,17 @@ export type Team = {
   description: string;
 };
 
+export type Member = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+  email: string;
+  name: string;
+  username: string;
+  synced: boolean;
+};
+
 type SchemaPropertyType = "string" | "integer" | "array" | "object";
 export type APISchema = {
   components?: {

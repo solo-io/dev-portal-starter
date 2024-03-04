@@ -1,14 +1,20 @@
+import { Box, Flex } from "@mantine/core";
 import { useMemo } from "react";
+import { di } from "react-magnetic-di";
 import { NavLink } from "react-router-dom";
 import { Team } from "../../../../Apis/api-types";
+import { useListApps, useListMembers } from "../../../../Apis/hooks";
 import { Icon } from "../../../../Assets/Icons";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { getTeamDetailsLink } from "../../../../Utility/link-builders";
+import { SubscriptionInfoCardStyles } from "../../../Apis/PendingSubscriptionsTab/SubscriptionInfoCard.style";
+import { Loading } from "../../../Common/Loading";
 
 /**
  * MAIN COMPONENT
  **/
 export function TeamSummaryGridCard({ team }: { team: Team }) {
+  di(useListApps, useListMembers);
   // In the future banner images may come through API data.
   //   Even when that is the case, a default image may be desired
   //   for when no image is available.
@@ -23,29 +29,52 @@ export function TeamSummaryGridCard({ team }: { team: Team }) {
     [team.id]
   );
 
+  const { isLoading: isLoadingApps, data: teamApps } = useListApps(team.id);
+  const { isLoading: isLoadingMembers, data: teamMembers } = useListMembers(
+    team.id
+  );
+
   return (
-    <GridCardStyles.GridCardWithLink to={getTeamDetailsLink(team)}>
+    <GridCardStyles.GridCard whiteBg>
       <div className="content">
-        <div className="apiImageHolder">
-          <img src={defaultCardImage} alt="" role="banner" />
-        </div>
-        <div className="details">
-          <div>
-            <h4 className="title">{team.name}</h4>
-          </div>
-        </div>
+        <Box p={"20px"}>
+          <Flex direction={"column"} align={"flex-start"} gap={"5px"}>
+            <SubscriptionInfoCardStyles.CardTitleSmall>
+              {team.name}
+            </SubscriptionInfoCardStyles.CardTitleSmall>
+            <Flex align={"center"} justify={"flex-start"} gap={"8px"}>
+              <Flex align={"center"} justify={"flex-start"} gap={"8px"}>
+                <Icon.AppIcon width={20} />
+                {isLoadingApps ? (
+                  <Loading small />
+                ) : (
+                  <SubscriptionInfoCardStyles.Text>
+                    {teamApps?.length} App{teamApps?.length === 1 ? "" : "s"}
+                  </SubscriptionInfoCardStyles.Text>
+                )}
+              </Flex>
+              |
+              <Flex align={"center"} justify={"flex-start"} gap={"8px"}>
+                <Icon.UserIcon width={20} />
+                {isLoadingMembers ? (
+                  <Loading small />
+                ) : (
+                  <SubscriptionInfoCardStyles.Text>
+                    {teamMembers?.length} Member
+                    {teamMembers?.length === 1 ? "" : "s"}
+                  </SubscriptionInfoCardStyles.Text>
+                )}
+              </Flex>
+            </Flex>
+            <GridCardStyles.Description>
+              {team.description}
+            </GridCardStyles.Description>
+          </Flex>
+        </Box>
       </div>
-      <div className="footer">
-        <div className="metaInfo">
-          <Icon.SmallCodeGear />
-          <div className="typeTitle">
-            <NavLink to={getTeamDetailsLink(team)}>MANAGE</NavLink>
-          </div>
-        </div>
-        <div className="typeIcon">
-          <Icon.TeamsIcon />
-        </div>
-      </div>
-    </GridCardStyles.GridCardWithLink>
+      <SubscriptionInfoCardStyles.Footer>
+        <NavLink to={getTeamDetailsLink(team)}>MANAGE</NavLink>
+      </SubscriptionInfoCardStyles.Footer>
+    </GridCardStyles.GridCard>
   );
 }

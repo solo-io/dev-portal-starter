@@ -5,5 +5,6 @@ export namespace TeamsPageStyles {
     display: grid;
     grid-gap: 30px;
     grid-template-columns: 1fr 1fr 1fr;
+    margin-bottom: 30px;
   `;
 }

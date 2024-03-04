@@ -40,7 +40,26 @@ export namespace SubscriptionInfoCardStyles {
       font-size: 0.95rem;
       gap: 10px;
       a {
+        position: relative;
         font-weight: 500;
+        padding-right: 5px;
+        :hover {
+          color: ${theme.seaBlue};
+          text-decoration: underline;
+        }
+        :active {
+          color: ${theme.oceanBlue};
+        }
+        :after {
+          content: "";
+          border-top: 2px solid;
+          border-right: 2px solid;
+          border-color: currentColor;
+          width: 10px;
+          height: 10px;
+          display: inline-block;
+          transform: translateX(2px) rotate(45deg);
+        }
       }
     `
   );
@@ -49,6 +68,13 @@ export namespace SubscriptionInfoCardStyles {
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 2px;
+  `;
+
+  export const CardTitleSmall = styled.div`
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 2px;
+    text-align: left;
   `;
 
   export const SubscriptionCardBadge = styled.div<{

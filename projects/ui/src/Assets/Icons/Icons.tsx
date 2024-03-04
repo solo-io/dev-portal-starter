@@ -32,6 +32,7 @@ export { ReactComponent as SuccessCheckmark } from "./success-checkmark.svg";
 export { ReactComponent as Tag } from "./tag-icon.svg";
 export { ReactComponent as TeamsIcon } from "./teams-icon.svg";
 export { ReactComponent as TileViewIcon } from "./tile-view.svg";
+export { ReactComponent as UserIcon } from "./user-icon.svg";
 export { ReactComponent as UpArrow } from "./up-arrow.svg";
 export { ReactComponent as UpstreamRipple } from "./upstream-ripple.svg";
 export { ReactComponent as UserProfile } from "./profile-icon.svg";

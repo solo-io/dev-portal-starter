@@ -23,14 +23,11 @@ export function AppSummaryListCard({ app }: { app: App }) {
         </div>
         <div className="footer">
           <div className="metaInfo">
-            <Icon.SmallCodeGear />
+            <Icon.TeamsIcon />
             {/* 
             // TODO: Add in team info from listTeams()
             */}
             Team: {app.teamId}
-          </div>
-          <div className="typeIcon">
-            <Icon.TeamsIcon />
           </div>
         </div>
       </ListCardStyles.ListCardWithLink>

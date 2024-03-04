@@ -36,15 +36,13 @@ export function AppSummaryGridCard({ app }: { app: App }) {
       </div>
       <div className="footer">
         <div className="metaInfo">
+          <Icon.TeamsIcon />
           <div className="typeTitle" aria-label="API Type">
             {/* 
             // TODO: Add in team info from listTeams()
             */}
-            Team: {app.teamId}
+            Team
           </div>
-        </div>
-        <div className="typeIcon">
-          <Icon.TeamsIcon />
         </div>
       </div>
     </GridCardStyles.GridCardWithLink>

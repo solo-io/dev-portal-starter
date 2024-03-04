@@ -7,6 +7,7 @@ import {
   APIProduct,
   APISchema,
   App,
+  Member,
   Team,
   UsagePlan,
   User,
@@ -93,6 +94,9 @@ export function useListApis() {
 }
 export function useListApps(teamId: string) {
   return useSwrWithAuth<App[]>(`/teams/${teamId}/apps`);
+}
+export function useListMembers(teamId: string) {
+  return useSwrWithAuth<Member[]>(`/teams/${teamId}/members`);
 }
 export function useListTeams() {
   return useSwrWithAuth<Team[]>(`/teams`);
