@@ -1,9 +1,5 @@
 import { css } from "@emotion/react";
 
-// export function cssProp(prop: string, value: string | number | undefined) {
-//   return value !== undefined ? `${prop}:${value};` : "";
-// }
-
 // HEX isn't made more specific as after a point it becomes "to complex" for the IDE to handle
 type HEX = `#${string}`;
 export type Color = HEX;
@@ -13,44 +9,6 @@ export type ColorOrAllowed =
   | "transparent"
   | "white"
   | "black";
-// export type ColorThemeFunc = (theme: Theme) => ColorOrAllowed;
-
-// /**
-//  * Adds hex to the end of a hex color
-//  * @param hex
-//  * @param alpha 0-1
-//  */
-// export function hexAddAlpha(hex: HEX, alpha: number): HEX {
-//   const hexAlpha = (Math.floor(255 * alpha) % 256)
-//     .toString(16)
-//     .padStart(2, "0");
-//   return (hex + hexAlpha) as HEX;
-// }
-
-// export function handleColorOrColorThemeFunc(
-//   color: ColorOrAllowed | ColorThemeFunc | undefined,
-//   tm: Theme
-// ): ColorOrAllowed | undefined {
-//   return typeof color === "function" ? color(tm) : color;
-// }
-
-// export function svgBasics(
-//   size?:
-//     | number
-//     | string
-//     | { width?: number | string; height?: number | string },
-//   color?: ColorOrAllowed
-// ) {
-//   const width = typeof size !== "object" ? size : size?.width;
-//   const height = typeof size !== "object" ? size : size?.height;
-//   return css`
-//     svg {
-//       ${cssProp("width", typeof width === "number" ? `${width}px` : width)}
-//       ${cssProp("height", typeof height === "number" ? `${height}px` : height)}
-//     }
-//     ${color !== undefined && svgColorReplace(color)}
-//   `;
-// }
 
 /**
  * An SVG color replace function that works on both stroke and fill automatically.
