@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { di } from "react-magnetic-di";
 import { useListApps } from "../../../Apis/hooks";
-import { FilterPair } from "../../../Utility/filter-utility";
+import { FilterPair, FilterType } from "../../../Utility/filter-utility";
 import { EmptyData } from "../../Common/EmptyData";
 import { Loading } from "../../Common/Loading";
 import { AppsPageStyles } from "../AppsPage.style";
@@ -30,29 +30,25 @@ export function AppsList({
       return [];
     }
     return appsList
-      .filter((api) => {
+      .filter((app) => {
         let passesNameFilter =
           !nameFilter ||
-          api.name.toLocaleLowerCase().includes(nameFilter.toLocaleLowerCase());
-        const passesFilterList = true;
-        // const passesFilterList =
-        //   !allFilters.length ||
-        //   api.apiVersions.some((apiVersion) => {
-        //     return allFilters.every((filter) => {
-        //       return (
-        //         (filter.type === FilterType.name &&
-        //           api.apiProductDisplayName
-        //             .toLocaleLowerCase()
-        //             .includes(filter.displayName.toLocaleLowerCase())) ||
-        //         (filter.type === FilterType.keyValuePair &&
-        //           apiVersion.customMetadata &&
-        //           apiVersion.customMetadata[
-        //             parsePairString(filter.displayName).pairKey
-        //           ] === parsePairString(filter.displayName).value) ||
-        //         (filter.type === FilterType.apiType && true) // This is the only type available for now
-        //       );
-        //     });
-        //   });
+          app.name.toLocaleLowerCase().includes(nameFilter.toLocaleLowerCase());
+        const passesFilterList = allFilters.every((filter) => {
+          return (
+            filter.type === FilterType.name &&
+            app.name
+              .toLocaleLowerCase()
+              .includes(filter.displayName.toLocaleLowerCase())
+            // ||
+            // (filter.type === FilterType.keyValuePair &&
+            //   apiVersion.customMetadata &&
+            //   apiVersion.customMetadata[
+            //     parsePairString(filter.displayName).pairKey
+            //   ] === parsePairString(filter.displayName).value) ||
+            // (filter.type === FilterType.apiType && true) // This is the only type available for now
+          );
+        });
         return passesNameFilter && passesFilterList;
       })
       .sort((a, b) => a.name.localeCompare(b.name));
