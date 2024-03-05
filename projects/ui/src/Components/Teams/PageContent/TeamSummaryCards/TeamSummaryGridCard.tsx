@@ -2,7 +2,7 @@ import { Box, Flex } from "@mantine/core";
 import { di } from "react-magnetic-di";
 import { NavLink } from "react-router-dom";
 import { Team } from "../../../../Apis/api-types";
-import { useListApps, useListMembers } from "../../../../Apis/hooks";
+import { useListAppsForTeam, useListMembers } from "../../../../Apis/hooks";
 import { Icon } from "../../../../Assets/Icons";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { getTeamDetailsLink } from "../../../../Utility/link-builders";
@@ -13,9 +13,9 @@ import { Loading } from "../../../Common/Loading";
  * MAIN COMPONENT
  **/
 export function TeamSummaryGridCard({ team }: { team: Team }) {
-  di(useListApps, useListMembers);
+  di(useListAppsForTeam, useListMembers);
 
-  const { isLoading: isLoadingApps, data: teamApps } = useListApps(team.id);
+  const { isLoading: isLoadingApps, data: teamApps } = useListAppsForTeam(team);
   const { isLoading: isLoadingMembers, data: teamMembers } = useListMembers(
     team.id
   );

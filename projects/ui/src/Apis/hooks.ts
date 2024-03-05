@@ -76,9 +76,42 @@ const useSwrWithAuth = <T>(
         },
       });
     },
-    {
-      ...(config ?? {}),
-    }
+    { ...(config ?? {}) }
+  );
+};
+
+/**
+ *  This is the same as useSwrWithAuth, but works for an array of paths.
+ * e.g.`["/apps/team-id-1/", "/apps/team-id-2", ...]` will return:
+ * `[getAppsReponseForTeam1, getAppsResponseForTeam2, ...]`
+ *
+ * The return values must be of the same type.
+ */
+const useMultiSwrWithAuth = <T>(
+  paths: string[],
+  config?: Parameters<typeof useSWR<T[]>>[2]
+) => {
+  const { latestAccessToken } = useContext(PortalAuthContext);
+  const authHeaders = {} as any;
+  if (!!latestAccessToken) {
+    authHeaders.Authorization = `Bearer ${latestAccessToken}`;
+  }
+  return useSWR<T[]>(
+    paths,
+    (...args) => {
+      return Promise.all(
+        args.map((a) =>
+          fetchJSON(a[0], {
+            ...(a.length > 1 && !!a[1] ? a[1] : {}),
+            headers: {
+              ...(a.length > 1 && a[1].headers ? a[1].headers : {}),
+              ...authHeaders,
+            },
+          })
+        )
+      );
+    },
+    { ...(config ?? {}) }
   );
 };
 
@@ -92,8 +125,11 @@ export function useGetCurrentUser() {
 export function useListApis() {
   return useSwrWithAuth<APIProduct[]>("/apis");
 }
-export function useListApps(teamId: string) {
-  return useSwrWithAuth<App[]>(`/teams/${teamId}/apps`);
+export function useListAppsForTeam(team: Team) {
+  return useSwrWithAuth<App[]>(`/teams/${team.id}/apps`);
+}
+export function useListAppsForTeams(teams: Team[]) {
+  return useMultiSwrWithAuth<App[]>(teams.map((t) => `/teams/${t.id}/apps`));
 }
 export function useListMembers(teamId: string) {
   return useSwrWithAuth<Member[]>(`/teams/${teamId}/members`);

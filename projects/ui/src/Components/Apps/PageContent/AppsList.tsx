@@ -1,6 +1,8 @@
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { di } from "react-magnetic-di";
-import { useListApps } from "../../../Apis/hooks";
+import { App, Team } from "../../../Apis/api-types";
+import { useListAppsForTeams } from "../../../Apis/hooks";
+import { AppContext } from "../../../Context/AppContext";
 import { FilterPair, FilterType } from "../../../Utility/filter-utility";
 import { EmptyData } from "../../Common/EmptyData";
 import { Loading } from "../../Common/Loading";
@@ -8,19 +10,38 @@ import { AppsPageStyles } from "../AppsPage.style";
 import { AppSummaryGridCard } from "./AppSummaryCards/AppSummaryGridCard";
 import { AppSummaryListCard } from "./AppSummaryCards/AppSummaryListCard";
 
+export type AppWithTeam = App & { team: Team };
+
 export function AppsList({
+  teams,
   allFilters,
   nameFilter,
-  usingGridView,
 }: {
+  teams: Team[];
   allFilters: FilterPair[];
   nameFilter: string;
-  usingGridView: boolean;
 }) {
-  di(useListApps);
-  const { isLoading, data: appsList } = useListApps(
-    "8e543407-cfdb-4061-b3ac-841faa715edf"
-  );
+  di(useListAppsForTeams);
+  const { preferGridView } = useContext(AppContext);
+
+  // This is the App[][] of apps per team.
+  const { isLoading, data: appsListPerTeam } = useListAppsForTeams(teams);
+  // This is the flattened App[] that includes team information.
+  const appsList = useMemo<AppWithTeam[]>(() => {
+    if (!appsListPerTeam) {
+      return [];
+    }
+    const newAppsWithTeamsList: AppWithTeam[] = [];
+    for (let i = 0; i < appsListPerTeam.length; i++) {
+      for (let j = 0; j < appsListPerTeam[i].length; j++) {
+        newAppsWithTeamsList.push({
+          ...appsListPerTeam[i][j],
+          team: teams[i],
+        });
+      }
+    }
+    return newAppsWithTeamsList;
+  }, [appsListPerTeam]);
 
   //
   // Filter the list of apps.
@@ -33,20 +54,21 @@ export function AppsList({
       .filter((app) => {
         let passesNameFilter =
           !nameFilter ||
-          app.name.toLocaleLowerCase().includes(nameFilter.toLocaleLowerCase());
+          app.name
+            .toLocaleLowerCase()
+            .includes(nameFilter.toLocaleLowerCase()) ||
+          app.team.name
+            .toLocaleLowerCase()
+            .includes(nameFilter.toLocaleLowerCase());
         const passesFilterList = allFilters.every((filter) => {
           return (
             filter.type === FilterType.name &&
-            app.name
+            (app.name
               .toLocaleLowerCase()
-              .includes(filter.displayName.toLocaleLowerCase())
-            // ||
-            // (filter.type === FilterType.keyValuePair &&
-            //   apiVersion.customMetadata &&
-            //   apiVersion.customMetadata[
-            //     parsePairString(filter.displayName).pairKey
-            //   ] === parsePairString(filter.displayName).value) ||
-            // (filter.type === FilterType.apiType && true) // This is the only type available for now
+              .includes(filter.displayName.toLocaleLowerCase()) ||
+              app.team.name
+                .toLocaleLowerCase()
+                .includes(filter.displayName.toLocaleLowerCase()))
           );
         });
         return passesNameFilter && passesFilterList;
@@ -63,7 +85,7 @@ export function AppsList({
   if (!filteredAppsList.length) {
     return <EmptyData topic="app" />;
   }
-  if (usingGridView) {
+  if (preferGridView) {
     return (
       <AppsPageStyles.AppGridList>
         {filteredAppsList.map((api) => (

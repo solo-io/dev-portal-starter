@@ -1,5 +1,7 @@
 import { TextInput } from "@mantine/core";
+import { useContext } from "react";
 import { Icon } from "../../../Assets/Icons";
+import { AppContext } from "../../../Context/AppContext";
 import { FilterStyles as Styles } from "../../../Styles/shared/Filters.style";
 import { FilterPair, FilterType } from "../../../Utility/filter-utility";
 import GridListToggle from "../../Common/GridListToggle";
@@ -8,15 +10,14 @@ import GridListToggle from "../../Common/GridListToggle";
  * MAIN COMPONENT
  **/
 type AppsFiltrationProp = {
-  showingGrid: boolean;
   allFilters: FilterPair[];
   setAllFilters: (newFiltersList: FilterPair[]) => void;
-  setShowingGrid: (showGrid: boolean) => void;
   nameFilter: string;
   setNameFilter: (newNamesList: string) => void;
 };
 
 export function AppsFilter({ filters }: { filters: AppsFiltrationProp }) {
+  const { preferGridView, setPreferGridView } = useContext(AppContext);
   // const [pairFilter, setPairFilter] = useState<KeyValuePair>({
   //   pairKey: "",
   //   value: "",
@@ -176,8 +177,8 @@ export function AppsFilter({ filters }: { filters: AppsFiltrationProp }) {
         </div> */}
 
         <GridListToggle
-          onChange={(newIsList) => filters.setShowingGrid(!newIsList)}
-          isList={!filters.showingGrid}
+          onChange={(newIsList) => setPreferGridView(!newIsList)}
+          isList={!preferGridView}
         />
       </div>
 

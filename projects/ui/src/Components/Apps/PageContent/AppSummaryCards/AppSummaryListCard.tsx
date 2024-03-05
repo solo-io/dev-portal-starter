@@ -1,13 +1,15 @@
+import { Box } from "@mantine/core";
 import { NavLink } from "react-router-dom";
-import { App } from "../../../../Apis/api-types";
 import { Icon } from "../../../../Assets/Icons";
+import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { ListCardStyles } from "../../../../Styles/shared/ListCard.style";
 import { getAppDetailsLink } from "../../../../Utility/link-builders";
+import { AppWithTeam } from "../AppsList";
 
 /**
  * MAIN COMPONENT
  **/
-export function AppSummaryListCard({ app }: { app: App }) {
+export function AppSummaryListCard({ app }: { app: AppWithTeam }) {
   return (
     <NavLink to={getAppDetailsLink(app)}>
       <ListCardStyles.ListCardWithLink>
@@ -15,19 +17,25 @@ export function AppSummaryListCard({ app }: { app: App }) {
           <div className="majorIconHolder">
             <Icon.WrenchGear className="colorIt" />
           </div>
-          <div className="details">
-            <div>
-              <h4 className="title">{app.name}</h4>
-            </div>
-          </div>
+          <Box p={"30px"}>
+            <GridCardStyles.Title>{app.name}</GridCardStyles.Title>
+            <GridCardStyles.Description>
+              {app.description}
+            </GridCardStyles.Description>
+          </Box>
+          {/* <div className="details">
+            <Flex direction={"column"}>
+              <GridCardStyles.Title>{app.name}</GridCardStyles.Title>
+              <GridCardStyles.Description>
+                {app.description}
+              </GridCardStyles.Description>
+            </Flex>
+          </div> */}
         </div>
         <div className="footer">
           <div className="metaInfo">
             <Icon.TeamsIcon />
-            {/* 
-            // TODO: Add in team info from listTeams()
-            */}
-            Team: {app.teamId}
+            <div className="typeTitle">{app.team.name}</div>
           </div>
         </div>
       </ListCardStyles.ListCardWithLink>

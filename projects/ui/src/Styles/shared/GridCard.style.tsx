@@ -5,11 +5,19 @@ import { makePrimaryTrimmedSmallWhiteContainerCSS } from "../PrimaryTrimmedSmall
 import { borderRadiusConstants } from "../constants";
 
 export namespace GridCardStyles {
+  export const Title = styled.div`
+    line-height: 30px;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  `;
+
   export const Description = styled.div(
     ({ theme }) => css`
       text-align: left;
       color: ${theme.septemberGrey};
-      font-size: 0.95rem;
+      font-size: 1rem;
+      margin-bottom: 10px;
     `
   );
 
@@ -19,12 +27,11 @@ export namespace GridCardStyles {
       flex-direction: column;
 
       height: 100%;
-      /* min-height: 260px; */
       min-height: 100px;
       border-radius: ${borderRadiusConstants.small};
       box-shadow: 1px 1px 5px ${theme.splashBlue};
-
       border: 1px solid ${theme.splashBlue};
+
       background: ${whiteBg ? "white" : theme.lightGreyTransparent};
       color: ${theme.defaultColoredText};
       text-align: center;
@@ -115,15 +122,19 @@ export namespace GridCardStyles {
       //
       // Shared styles between API summary cards
       //
+      box-shadow: 1px 1px 5px ${theme.splashBlue};
+      border: 1px solid ${theme.splashBlue};
       transition: 0.1s box-shadow, 0.1s outline-color;
       outline-offset: 2px;
       outline: 2px solid transparent;
       &:hover {
         outline-color: ${theme.lakeBlue};
+        outline-width: 2px;
       }
       &:active {
         outline-color: ${theme.pondBlue};
         box-shadow: 0 0 5px ${theme.pondBlue};
+        outline-width: 2px;
       }
     `
   ).withComponent(NavLink);
