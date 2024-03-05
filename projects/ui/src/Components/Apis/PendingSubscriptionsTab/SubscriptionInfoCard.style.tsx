@@ -26,10 +26,6 @@ export namespace SubscriptionInfoCardStyles {
     border-top-left-radius: inherit;
   `;
 
-  export const Text = styled.span`
-    font-size: 0.95rem;
-  `;
-
   export const Footer = styled(Flex)(
     ({ theme }) => css`
       padding: 6px 20px;

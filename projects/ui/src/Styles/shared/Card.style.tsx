@@ -18,4 +18,8 @@ export namespace CardStyles {
       margin-bottom: 10px;
     `
   );
+
+  export const SmallerText = styled.span`
+    font-size: 0.95rem;
+  `;
 }

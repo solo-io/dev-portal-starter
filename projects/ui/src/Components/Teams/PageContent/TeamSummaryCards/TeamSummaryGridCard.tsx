@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { Team } from "../../../../Apis/api-types";
 import { useListAppsForTeam, useListMembers } from "../../../../Apis/hooks";
 import { Icon } from "../../../../Assets/Icons";
+import { CardStyles } from "../../../../Styles/shared/Card.style";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { getTeamDetailsLink } from "../../../../Utility/link-builders";
 import { SubscriptionInfoCardStyles } from "../../../Apis/PendingSubscriptionsTab/SubscriptionInfoCard.style";
@@ -34,9 +35,9 @@ export function TeamSummaryGridCard({ team }: { team: Team }) {
                 {isLoadingApps ? (
                   <Loading small />
                 ) : (
-                  <SubscriptionInfoCardStyles.Text>
+                  <CardStyles.SmallerText>
                     {teamApps?.length} App{teamApps?.length === 1 ? "" : "s"}
-                  </SubscriptionInfoCardStyles.Text>
+                  </CardStyles.SmallerText>
                 )}
               </Flex>
               |
@@ -45,16 +46,14 @@ export function TeamSummaryGridCard({ team }: { team: Team }) {
                 {isLoadingMembers ? (
                   <Loading small />
                 ) : (
-                  <SubscriptionInfoCardStyles.Text>
+                  <CardStyles.SmallerText>
                     {teamMembers?.length} Member
                     {teamMembers?.length === 1 ? "" : "s"}
-                  </SubscriptionInfoCardStyles.Text>
+                  </CardStyles.SmallerText>
                 )}
               </Flex>
             </Flex>
-            <GridCardStyles.Description>
-              {team.description}
-            </GridCardStyles.Description>
+            <CardStyles.Description>{team.description}</CardStyles.Description>
           </Flex>
         </Box>
       </div>

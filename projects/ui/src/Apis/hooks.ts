@@ -82,7 +82,7 @@ const useSwrWithAuth = <T>(
 
 /**
  *  This is the same as useSwrWithAuth, but works for an array of paths.
- * e.g.`["/apps/team-id-1/", "/apps/team-id-2", ...]` will return:
+ * e.g.`["/teams/team-id-1/apps", "/teams/team-id-2/apps", ...]` will return:
  * `[getAppsReponseForTeam1, getAppsResponseForTeam2, ...]`
  *
  * The return values must be of the same type.
