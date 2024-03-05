@@ -62,13 +62,15 @@ export function AppsList({
             .includes(nameFilter.toLocaleLowerCase());
         const passesFilterList = allFilters.every((filter) => {
           return (
-            filter.type === FilterType.name &&
-            (app.name
-              .toLocaleLowerCase()
-              .includes(filter.displayName.toLocaleLowerCase()) ||
-              app.team.name
+            (filter.type === FilterType.name &&
+              (app.name
                 .toLocaleLowerCase()
-                .includes(filter.displayName.toLocaleLowerCase()))
+                .includes(filter.displayName.toLocaleLowerCase()) ||
+                app.team.name
+                  .toLocaleLowerCase()
+                  .includes(filter.displayName.toLocaleLowerCase()))) ||
+            (filter.type === FilterType.team &&
+              app.team.name === filter.displayName)
           );
         });
         return passesNameFilter && passesFilterList;

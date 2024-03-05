@@ -13,27 +13,32 @@ export function AppsPageContent() {
 
   const [allFilters, setAllFilters] = useState<FilterPair[]>([]);
   const [nameFilter, setNameFilter] = useState<string>("");
+  const [teamFilter, setTeamFilter] = useState<string>("");
 
   const filters = {
     allFilters,
     setAllFilters,
     nameFilter,
     setNameFilter,
+    teamFilter,
+    setTeamFilter,
   };
 
   return (
     <div>
-      <AppsFilter filters={filters} />
       <ErrorBoundary fallback="There was an issue loading the list of Apps">
         {isLoading || teams === undefined ? (
           // Make sure the teams are finished loading since they are a dependency.
           <Loading message="Loading..." />
         ) : (
-          <AppsList
-            teams={teams}
-            allFilters={allFilters}
-            nameFilter={nameFilter}
-          />
+          <>
+            <AppsFilter filters={filters} teams={teams} />
+            <AppsList
+              teams={teams}
+              allFilters={allFilters}
+              nameFilter={nameFilter}
+            />
+          </>
         )}
       </ErrorBoundary>
     </div>

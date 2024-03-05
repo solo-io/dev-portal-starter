@@ -1,5 +1,6 @@
-import { TextInput } from "@mantine/core";
+import { Select, TextInput } from "@mantine/core";
 import { useContext } from "react";
+import { Team } from "../../../Apis/api-types";
 import { Icon } from "../../../Assets/Icons";
 import { AppContext } from "../../../Context/AppContext";
 import { FilterStyles as Styles } from "../../../Styles/shared/Filters.style";
@@ -16,7 +17,13 @@ type AppsFiltrationProp = {
   setNameFilter: (newNamesList: string) => void;
 };
 
-export function AppsFilter({ filters }: { filters: AppsFiltrationProp }) {
+export function AppsFilter({
+  filters,
+  teams,
+}: {
+  filters: AppsFiltrationProp;
+  teams: Team[];
+}) {
   const { preferGridView, setPreferGridView } = useContext(AppContext);
   // const [pairFilter, setPairFilter] = useState<KeyValuePair>({
   //   pairKey: "",
@@ -74,12 +81,12 @@ export function AppsFilter({ filters }: { filters: AppsFiltrationProp }) {
   //   setPairFilter({ pairKey: "", value: "" });
   // };
 
-  // const addTypeFilter = (addedType: string) => {
-  //   filters.setAllFilters([
-  //     ...filters.allFilters,
-  //     { displayName: addedType, type: FilterType.apiType },
-  //   ]);
-  // };
+  const addTeamFilter = (addedTeam: string) => {
+    filters.setAllFilters([
+      ...filters.allFilters,
+      { displayName: addedTeam, type: FilterType.team },
+    ]);
+  };
 
   const removeFilter = (filterPair: FilterPair) => {
     filters.setAllFilters(
@@ -95,19 +102,19 @@ export function AppsFilter({ filters }: { filters: AppsFiltrationProp }) {
     filters.setAllFilters([]);
   };
 
-  // const selectableTypes = [
-  //   {
-  //     label: "OpenAPI",
-  //     value: "OpenAPI",
-  //   },
-  // ].filter(
-  //   (selectableType) =>
-  //     !filters.allFilters.some(
-  //       (filter) =>
-  //         filter.type === FilterType.apiType &&
-  //         filter.displayName === selectableType.value
-  //     )
-  // );
+  const selectableTypes = teams
+    .map((t) => ({
+      label: t.name,
+      value: t.name,
+    }))
+    .filter(
+      (selectableType) =>
+        !filters.allFilters.some(
+          (filter) =>
+            filter.type === FilterType.team &&
+            filter.displayName === selectableType.value
+        )
+    );
 
   return (
     <Styles.FilterArea>
@@ -161,20 +168,20 @@ export function AppsFilter({ filters }: { filters: AppsFiltrationProp }) {
             </button>
           </div>
         </form> */}
-        {/* <div className="dropdownFilter">
+        <div className="dropdownFilter">
           <div className="gearHolder">
-            <Icon.CodeGear />
+            <Icon.TeamsIcon />
           </div>
           <Select
             className="addTypeFilterSelect"
             size="xs"
             disabled={(selectableTypes ?? []).length === 0}
             data={selectableTypes}
-            onChange={addTypeFilter}
+            onChange={addTeamFilter}
             value=""
-            placeholder="API Type"
+            placeholder="Team"
           />
-        </div> */}
+        </div>
 
         <GridListToggle
           onChange={(newIsList) => setPreferGridView(!newIsList)}

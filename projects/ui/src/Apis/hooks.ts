@@ -2,16 +2,7 @@ import { useContext } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
 import { PortalAuthContext } from "../Context/PortalAuthContext";
-import {
-  APIKey,
-  APIProduct,
-  APISchema,
-  App,
-  Member,
-  Team,
-  UsagePlan,
-  User,
-} from "./api-types";
+import { APIProduct, APISchema, App, Member, Team, User } from "./api-types";
 
 let _portalServerUrl = import.meta.env.VITE_PORTAL_SERVER_URL;
 if (
@@ -91,25 +82,10 @@ const useMultiSwrWithAuth = <T>(
   paths: string[],
   config?: Parameters<typeof useSWR<T[]>>[2]
 ) => {
-  const { latestAccessToken } = useContext(PortalAuthContext);
-  const authHeaders = {} as any;
-  if (!!latestAccessToken) {
-    authHeaders.Authorization = `Bearer ${latestAccessToken}`;
-  }
   return useSWR<T[]>(
     paths,
     (...args) => {
-      return Promise.all(
-        args.map((a) =>
-          fetchJSON(a[0], {
-            ...(a.length > 1 && !!a[1] ? a[1] : {}),
-            headers: {
-              ...(a.length > 1 && a[1].headers ? a[1].headers : {}),
-              ...authHeaders,
-            },
-          })
-        )
-      );
+      return Promise.all((args[0] as string[]).map((path) => fetchJSON(path)));
     },
     { ...(config ?? {}) }
   );
@@ -141,85 +117,35 @@ export function useGetApiDetails(id?: string) {
   return useSwrWithAuth<APISchema>(`/apis/${id}/schema`);
 }
 
-export function useListUsagePlans() {
-  return useSwrWithAuth<UsagePlan[]>(`/usage-plans`);
-}
-
-export function useListApiKeys(usagePlan: string) {
-  // const optionsString = !!usagePlans?.length
-  //   ? `?usagePlans=${usagePlans.join(",")}`
-  //   : "";
-
-  // TODO: Add support for getting keys for multiple usage plans.
-  // TODO: While also having the cache invalidation work (see useAddKeyMutation).
-  return useSwrWithAuth<{ usagePlan: string; apiKeys: APIKey[] }[]>(
-    `/api-keys?usagePlans=${usagePlan}`
-  );
-}
-
 //
 // Mutations
 //
 
-export function useCreateKeyMutation() {
+const getLatestAuthHeaders = (latestAccessToken: string | undefined) => {
+  const authHeaders = {} as any;
+  if (!!latestAccessToken) {
+    authHeaders.Authorization = `Bearer ${latestAccessToken}`;
+  }
+  return authHeaders;
+};
+
+type MutationWithArgs<T> = { arg: T };
+type CreateTeamParams = MutationWithArgs<{ name: string; description: string }>;
+
+export function useCreateTeamMutation() {
   const { latestAccessToken } = useContext(PortalAuthContext);
   const { mutate } = useSWRConfig();
-
-  const createKey = async (
+  const createTeam = async (
     url: string,
-    {
-      arg: { usagePlanName, apiKeyName },
-    }: { arg: { usagePlanName: string; apiKeyName: string } }
+    { arg: { name, description } }: CreateTeamParams
   ) => {
-    const authHeaders = {} as any;
-    if (!!latestAccessToken) {
-      authHeaders.Authorization = `Bearer ${latestAccessToken}`;
-    }
     const res = await fetchJSON(url, {
       method: "POST",
-      headers: authHeaders,
-      credentials: "include",
-      body: JSON.stringify({
-        usagePlan: usagePlanName,
-        apiKeyName,
-        //customMetadata, // Coming soon
-      }),
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify({ name, description }),
     });
-    // TODO: Mutation should invalidate all usage plans that this api key is in.
-    mutate(`/api-keys?usagePlans=${usagePlanName}`);
-    return res as APIKey;
+    mutate(`/teams`);
+    return res as Team;
   };
-
-  return useSWRMutation(`/api-keys`, createKey);
-}
-
-export function useDeleteKeyMutation() {
-  const { latestAccessToken } = useContext(PortalAuthContext);
-  const { mutate } = useSWRConfig();
-
-  const deleteKey = async (
-    url: string,
-    {
-      arg: { apiKeyId, usagePlanName },
-    }: { arg: { apiKeyId: string; usagePlanName: string } }
-  ) => {
-    const authHeaders = {} as any;
-    if (!!latestAccessToken) {
-      authHeaders.Authorization = `Bearer ${latestAccessToken}`;
-    }
-    try {
-      await fetch(`${portalServerUrl}${url}/${apiKeyId}`, {
-        method: "DELETE",
-        headers: authHeaders,
-        credentials: "include",
-      });
-      // TODO: Mutation should invalidate all usage plans that this api key is in.
-      mutate(`/api-keys?usagePlans=${usagePlanName}`);
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error((e as any)?.message);
-    }
-  };
-
-  return useSWRMutation(`/api-keys`, deleteKey);
+  return useSWRMutation(`/teams`, createTeam);
 }
