@@ -1,21 +1,31 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { NavLink } from "react-router-dom";
-import { makePrimaryTrimmedSmallWhiteContainerCSS } from "../../../../Styles/PrimaryTrimmedSmallWhiteContainer";
-import { borderRadiusConstants } from "../../../../Styles/constants";
+import { makePrimaryTrimmedSmallWhiteContainerCSS } from "../PrimaryTrimmedSmallWhiteContainer";
+import { borderRadiusConstants } from "../constants";
 
-export namespace ApiSummaryGridCardStyles {
-  export const ApiGridCardWithLink = styled(NavLink)(
+export namespace GridCardStyles {
+  export const Description = styled.div(
     ({ theme }) => css`
+      text-align: left;
+      color: ${theme.septemberGrey};
+      font-size: 0.95rem;
+    `
+  );
+
+  export const GridCard = styled.div<{ whiteBg?: boolean }>(
+    ({ theme, whiteBg }) => css`
       display: flex;
       flex-direction: column;
 
       height: 100%;
-      min-height: 260px;
+      /* min-height: 260px; */
+      min-height: 100px;
       border-radius: ${borderRadiusConstants.small};
+      box-shadow: 1px 1px 5px ${theme.splashBlue};
 
       border: 1px solid ${theme.splashBlue};
-      background: ${theme.lightGreyTransparent};
+      background: ${whiteBg ? "white" : theme.lightGreyTransparent};
       color: ${theme.defaultColoredText};
       text-align: center;
 
@@ -97,7 +107,11 @@ export namespace ApiSummaryGridCardStyles {
           }
         }
       }
+    `
+  );
 
+  export const GridCardWithLink = styled(GridCard)(
+    ({ theme }) => css`
       //
       // Shared styles between API summary cards
       //
@@ -112,5 +126,5 @@ export namespace ApiSummaryGridCardStyles {
         box-shadow: 0 0 5px ${theme.pondBlue};
       }
     `
-  );
+  ).withComponent(NavLink);
 }

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { FilterPair } from "../../../Utility/filter-utility";
 import { ErrorBoundary } from "../../Common/ErrorBoundary";
-import { ApisFilter } from "./ApisFilter";
-import { ApisList } from "./ApisList";
+import { AppsFilter } from "./AppsFilter";
+import { AppsList } from "./AppsList";
 
-export function ApisTabContent() {
+export function AppsPageContent() {
   const [allFilters, setAllFilters] = useState<FilterPair[]>([]);
   const [nameFilter, setNameFilter] = useState<string>("");
 
@@ -21,9 +21,9 @@ export function ApisTabContent() {
 
   return (
     <div>
-      <ApisFilter filters={filters} />
+      <AppsFilter filters={filters} />
       <ErrorBoundary fallback="There was an issue loading the list of APIs">
-        <ApisList
+        <AppsList
           allFilters={allFilters}
           nameFilter={nameFilter}
           usingGridView={usingGridView}

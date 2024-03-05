@@ -6,10 +6,12 @@ import {
 } from "../user_variables.tmplr";
 import { ApiDetailsPage } from "./ApiDetails/ApiDetailsPage";
 import { ApisPage } from "./Apis/ApisPage";
+import { AppsPage } from "./Apps/AppsPage";
 import { ErrorBoundary } from "./Common/ErrorBoundary";
 import LoggedOut from "./Common/LoggedOut";
 import { HomePage } from "./Home/HomePage";
 import { Footer } from "./Structure/Footer";
+import { TeamsPage } from "./Teams/TeamsPage";
 
 const MainContentContainer = styled.div`
   grid-area: contentcontainer;
@@ -65,6 +67,22 @@ function AppContentRoutes() {
           element={
             <ErrorBoundary fallback="There was an issue displaying the list of APIs">
               <ApisPage />
+            </ErrorBoundary>
+          }
+        />
+        <Route
+          path="/apps"
+          element={
+            <ErrorBoundary fallback="There was an issue displaying the list of Apps">
+              <AppsPage />
+            </ErrorBoundary>
+          }
+        />
+        <Route
+          path="/teams"
+          element={
+            <ErrorBoundary fallback="There was an issue displaying the list of Teams">
+              <TeamsPage />
             </ErrorBoundary>
           }
         />

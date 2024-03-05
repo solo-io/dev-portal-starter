@@ -2,7 +2,16 @@ import { useContext } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
 import { PortalAuthContext } from "../Context/PortalAuthContext";
-import { APIKey, APIProduct, APISchema, UsagePlan, User } from "./api-types";
+import {
+  APIKey,
+  APIProduct,
+  APISchema,
+  App,
+  Member,
+  Team,
+  UsagePlan,
+  User,
+} from "./api-types";
 
 let _portalServerUrl = import.meta.env.VITE_PORTAL_SERVER_URL;
 if (
@@ -24,6 +33,12 @@ async function fetchJSON(...args: Parameters<typeof fetch>) {
       ...args[1],
       headers: {
         ...args[1]?.headers,
+        // TODO: Could remove this once auth is working.
+        ...(import.meta.env.VITE_AUTH_HEADER
+          ? {
+              Authorization: import.meta.env.VITE_AUTH_HEADER,
+            }
+          : {}),
         "Content-Type": "application/json",
       },
     },
@@ -50,7 +65,11 @@ const useSwrWithAuth = <T>(
     (...args) => {
       return fetchJSON(args[0], {
         ...(args.length > 1 && !!args[1] ? args[1] : {}),
-        credentials: "include",
+        // credentials: "include",
+        // Removing "credentials: include", since the server's 'Access-Control-Allow-Origin' header is "*".
+        // If this is kept in, there is a browser error:
+        //   The value of the 'Access-Control-Allow-Origin' header in the response must not be
+        //   the wildcard '*' when the request's credentials mode is 'include'
         headers: {
           ...(args.length > 1 && args[1].headers ? args[1].headers : {}),
           ...authHeaders,
@@ -72,6 +91,15 @@ export function useGetCurrentUser() {
 
 export function useListApis() {
   return useSwrWithAuth<APIProduct[]>("/apis");
+}
+export function useListApps(teamId: string) {
+  return useSwrWithAuth<App[]>(`/teams/${teamId}/apps`);
+}
+export function useListMembers(teamId: string) {
+  return useSwrWithAuth<Member[]>(`/teams/${teamId}/members`);
+}
+export function useListTeams() {
+  return useSwrWithAuth<Team[]>(`/teams`);
 }
 export function useGetApiDetails(id?: string) {
   return useSwrWithAuth<APISchema>(`/apis/${id}/schema`);

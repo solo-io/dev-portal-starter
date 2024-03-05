@@ -1,6 +1,7 @@
 import { Theme, css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { borderRadiusConstants } from "../../../Styles/constants";
+import { PrimaryTrimmedSmallWhiteContainer } from "../PrimaryTrimmedSmallWhiteContainer";
+import { borderRadiusConstants } from "../constants";
 
 const makeFilterPlaceholderTextsCSS = (theme: Theme) => css`
   color: ${theme.augustGrey};
@@ -37,7 +38,7 @@ const makeFilterBoxCSS = (theme: Theme) => css`
   background: white;
 `;
 
-export namespace ApisFilterStyles {
+export namespace FilterStyles {
   export const FilterArea = styled.div(
     ({ theme }) => css`
       margin-bottom: 30px;
@@ -214,6 +215,83 @@ export namespace ApisFilterStyles {
         padding: 8px 15px 0 25px;
         border-radius: ${`0 0 ${borderRadiusConstants.small} ${borderRadiusConstants.small}`};
         background: ${theme.splashBlue};
+      }
+    `
+  );
+
+  export const ActiveFiltersGrid = styled.div`
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+  `;
+
+  export const ActiveFilter = styled(PrimaryTrimmedSmallWhiteContainer)(
+    ({ theme }) => css`
+      display: inline-flex;
+      align-items: center;
+      font-size: 12px;
+      line-height: 22px;
+      height: 22px;
+      margin: 0 8px 8px 0;
+      font-size: 13px;
+      padding-right: 2px;
+
+      button.closingX {
+        margin-left: 5px;
+        border-radius: 50%;
+        padding: 5px;
+        svg {
+          width: 8px;
+          height: 8px;
+          margin-left: 0px !important;
+          * {
+            stroke: ${theme.primary};
+          }
+        }
+        &:hover {
+          background: ${theme.splashBlueLight7};
+          svg * {
+            fill: white;
+          }
+        }
+        &:active {
+          background: ${theme.splashBlue};
+        }
+      }
+    `
+  );
+
+  export const ClearAllButton = styled.button(
+    ({ theme }) => css`
+      border: 1px solid ${theme.primary};
+      color: ${theme.primary};
+      background-color: ${theme.background};
+      display: inline-block;
+      padding: 0 10px;
+      border-radius: ${borderRadiusConstants.standard};
+
+      display: inline-flex;
+      align-items: center;
+      font-size: 12px;
+      line-height: 22px;
+      height: 22px;
+      margin: 0 8px 8px 0;
+      font-size: 13px;
+
+      background: ${theme.primary};
+      color: white;
+      margin: 0;
+
+      svg {
+        stroke: white;
+      }
+      &:hover {
+        border-color: ${theme.primaryLight10};
+        background: ${theme.primaryLight10};
+      }
+      &:active {
+        border-color: ${theme.primaryLight20};
+        background: ${theme.primaryLight20};
       }
     `
   );
