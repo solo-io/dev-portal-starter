@@ -1,6 +1,7 @@
 import { Box } from "@mantine/core";
 import { useMemo } from "react";
 import { Icon } from "../../../../Assets/Icons";
+import { CardStyles } from "../../../../Styles/shared/Card.style";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { getAppDetailsLink } from "../../../../Utility/link-builders";
 import { AppWithTeam } from "../AppsList";
@@ -30,10 +31,8 @@ export function AppSummaryGridCard({ app }: { app: AppWithTeam }) {
           <img src={defaultCardImage} alt="" role="banner" />
         </div>
         <Box px={"20px"}>
-          <GridCardStyles.Title>{app.name}</GridCardStyles.Title>
-          <GridCardStyles.Description>
-            {app.description}
-          </GridCardStyles.Description>
+          <CardStyles.Title>{app.name}</CardStyles.Title>
+          <CardStyles.Description>{app.description}</CardStyles.Description>
         </Box>
       </div>
       <div className="footer">

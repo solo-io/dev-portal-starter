@@ -5,22 +5,6 @@ import { makePrimaryTrimmedSmallWhiteContainerCSS } from "../PrimaryTrimmedSmall
 import { borderRadiusConstants } from "../constants";
 
 export namespace GridCardStyles {
-  export const Title = styled.div`
-    line-height: 30px;
-    font-size: 28px;
-    font-weight: 600;
-    margin-bottom: 10px;
-  `;
-
-  export const Description = styled.div(
-    ({ theme }) => css`
-      text-align: left;
-      color: ${theme.septemberGrey};
-      font-size: 1rem;
-      margin-bottom: 10px;
-    `
-  );
-
   export const GridCard = styled.div<{ whiteBg?: boolean }>(
     ({ theme, whiteBg }) => css`
       display: flex;
