@@ -76,17 +76,18 @@ const useSwrWithAuth = <T>(
  * e.g.`["/teams/team-id-1/apps", "/teams/team-id-2/apps", ...]` will return:
  * `[getAppsReponseForTeam1, getAppsResponseForTeam2, ...]`
  *
+ * The entire array of requests can be invalidated by mutating the `swrKey`.
+ *
  * The return values must be of the same type.
  */
 const useMultiSwrWithAuth = <T>(
+  swrKey: string,
   paths: string[],
   config?: Parameters<typeof useSWR<T[]>>[2]
 ) => {
   return useSWR<T[]>(
-    paths,
-    (...args) => {
-      return Promise.all((args[0] as string[]).map((path) => fetchJSON(path)));
-    },
+    swrKey,
+    () => Promise.all(paths.map((path) => fetchJSON(path))),
     { ...(config ?? {}) }
   );
 };
@@ -105,7 +106,10 @@ export function useListAppsForTeam(team: Team) {
   return useSwrWithAuth<App[]>(`/teams/${team.id}/apps`);
 }
 export function useListAppsForTeams(teams: Team[]) {
-  return useMultiSwrWithAuth<App[]>(teams.map((t) => `/teams/${t.id}/apps`));
+  return useMultiSwrWithAuth<App[]>(
+    "team-apps",
+    teams.map((t) => `/teams/${t.id}/apps`)
+  );
 }
 export function useListMembers(teamId: string) {
   return useSwrWithAuth<Member[]>(`/teams/${teamId}/members`);
@@ -130,22 +134,48 @@ const getLatestAuthHeaders = (latestAccessToken: string | undefined) => {
 };
 
 type MutationWithArgs<T> = { arg: T };
+
+// ------------------------ //
+// Create Team
+
 type CreateTeamParams = MutationWithArgs<{ name: string; description: string }>;
 
 export function useCreateTeamMutation() {
   const { latestAccessToken } = useContext(PortalAuthContext);
   const { mutate } = useSWRConfig();
-  const createTeam = async (
-    url: string,
-    { arg: { name, description } }: CreateTeamParams
-  ) => {
+  const createTeam = async (url: string, { arg }: CreateTeamParams) => {
     const res = await fetchJSON(url, {
       method: "POST",
       headers: getLatestAuthHeaders(latestAccessToken),
-      body: JSON.stringify({ name, description }),
+      body: JSON.stringify(arg),
     });
     mutate(`/teams`);
     return res as Team;
   };
   return useSWRMutation(`/teams`, createTeam);
+}
+
+// ------------------------ //
+// Create App
+
+type CreateAppParams = MutationWithArgs<{ name: string; description: string }>;
+
+export function useCreateAppMutation(teamId: string | undefined) {
+  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { mutate } = useSWRConfig();
+  const createApp = async (url: string, { arg }: CreateAppParams) => {
+    if (!teamId) {
+      // eslint-disable-next-line no-console
+      console.error("Tried to create an app without a teamId.");
+      throw new Error();
+    }
+    const res = await fetchJSON(url, {
+      method: "POST",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify(arg),
+    });
+    mutate("team-apps");
+    return res as Team;
+  };
+  return useSWRMutation(`/teams/${teamId}/apps`, createApp);
 }

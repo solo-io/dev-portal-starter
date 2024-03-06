@@ -13,6 +13,7 @@ export namespace FormModalStyles {
     // Resets the mantine modal extra styles.
     .mantine-Modal-content {
       border-radius: ${borderRadiusConstants.small};
+      overflow: visible;
     }
     .mantine-Modal-body {
       display: contents;
