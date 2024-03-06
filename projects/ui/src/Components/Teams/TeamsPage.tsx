@@ -28,7 +28,6 @@ export function TeamsPage() {
         breadcrumbItems={[{ label: "Home", link: "/" }, { label: "Teams" }]}
       />
       <TeamsList />
-      {/* {modalOpen && <CreateNewTeamModal onClose={() => setModalOpen(false)} />} */}
       <CreateNewTeamModal
         opened={modalOpen}
         onClose={() => setModalOpen(false)}
