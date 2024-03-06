@@ -11,9 +11,6 @@ import {
 import { KeyValuePair } from "../../Common/DataPairPill";
 import GridListToggle from "../../Common/GridListToggle";
 
-/**
- * MAIN COMPONENT
- **/
 type ApisFiltrationProp = {
   allFilters: FilterPair[];
   setAllFilters: (newFiltersList: FilterPair[]) => void;
