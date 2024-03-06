@@ -7,9 +7,6 @@ import { FilterStyles as Styles } from "../../../Styles/shared/Filters.style";
 import { FilterPair, FilterType } from "../../../Utility/filter-utility";
 import GridListToggle from "../../Common/GridListToggle";
 
-/**
- * MAIN COMPONENT
- **/
 type AppsFiltrationProp = {
   allFilters: FilterPair[];
   setAllFilters: (newFiltersList: FilterPair[]) => void;
@@ -25,10 +22,6 @@ export function AppsFilter({
   teams: Team[];
 }) {
   const { preferGridView, setPreferGridView } = useContext(AppContext);
-  // const [pairFilter, setPairFilter] = useState<KeyValuePair>({
-  //   pairKey: "",
-  //   value: "",
-  // });
 
   const addNameFilter = (evt: { target: { value: string } }) => {
     const displayName = evt.target.value;
@@ -47,39 +40,6 @@ export function AppsFilter({
     }
     filters.setNameFilter("");
   };
-
-  // const alterPairKey = (evt: React.ChangeEvent<HTMLInputElement>) => {
-  //   const newKey = evt.target.value;
-  //   setPairFilter({
-  //     pairKey: newKey,
-  //     value: pairFilter.value,
-  //   });
-  // };
-  // const alterKeyValuePair = (evt: React.ChangeEvent<HTMLInputElement>) => {
-  //   const newValue = evt.target.value;
-  //   setPairFilter({
-  //     pairKey: pairFilter.pairKey,
-  //     value: newValue,
-  //   });
-  // };
-
-  // const addKeyValuePairFilter = () => {
-  //   const displayName = getPairString(pairFilter);
-  //   if (displayName.trim() === ":") return;
-  //   // Check for duplicate filters.
-  //   const isDuplicateFilter = filters.allFilters.some(
-  //     (f) => f.type === FilterType.keyValuePair && f.displayName === displayName
-  //   );
-  //   if (isDuplicateFilter) {
-  //     return;
-  //   }
-  //   filters.setAllFilters([
-  //     ...filters.allFilters,
-  //     { displayName, type: FilterType.keyValuePair },
-  //   ]);
-
-  //   setPairFilter({ pairKey: "", value: "" });
-  // };
 
   const addTeamFilter = (addedTeam: string) => {
     filters.setAllFilters([
@@ -135,39 +95,6 @@ export function AppsFilter({
           />
           <Icon.MagnifyingGlass style={{ pointerEvents: "none" }} />
         </form>
-        {/*
-        
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            addKeyValuePairFilter();
-          }}
-          className="pairsFilter"
-        >
-          <div className="tagHolder">
-            <Icon.Tag />
-          </div>
-          <div className="pairHolder">
-            <TextInput
-              size="xs"
-              placeholder="Key"
-              onChange={alterPairKey}
-              value={pairFilter.pairKey}
-            />
-            <span>:</span>
-            <TextInput
-              size="xs"
-              placeholder="Value"
-              onChange={alterKeyValuePair}
-              value={pairFilter.value}
-            />
-          </div>
-          <div className="addButtonHolder">
-            <button type="submit" aria-label="Add Pair Filter">
-              <Icon.Add />
-            </button>
-          </div>
-        </form> */}
         <div className="dropdownFilter">
           <div className="gearHolder">
             <Icon.TeamsIcon />

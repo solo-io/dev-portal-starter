@@ -26,7 +26,7 @@ export function AppsList({
 
   // This is the App[][] of apps per team.
   const { isLoading, data: appsListPerTeam } = useListAppsForTeams(teams);
-  // This is the flattened App[] that includes team information.
+  // This is the flattened AppWithTeam[] that includes team information.
   const appsList = useMemo<AppWithTeam[]>(() => {
     if (!appsListPerTeam) {
       return [];
