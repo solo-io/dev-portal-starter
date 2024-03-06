@@ -75,6 +75,7 @@ const CreateNewAppModal = ({
             <label htmlFor="app-team-select">Team</label>
             <Select
               id="app-team-select"
+              // This className="" is intentional and removes the antd select dropdown classname.
               className=""
               value={appTeamId}
               onChange={(value) => {
