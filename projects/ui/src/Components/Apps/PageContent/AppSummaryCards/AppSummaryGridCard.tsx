@@ -1,13 +1,15 @@
+import { Box } from "@mantine/core";
 import { useMemo } from "react";
-import { App } from "../../../../Apis/api-types";
 import { Icon } from "../../../../Assets/Icons";
+import { CardStyles } from "../../../../Styles/shared/Card.style";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { getAppDetailsLink } from "../../../../Utility/link-builders";
+import { AppWithTeam } from "../AppsList";
 
 /**
  * MAIN COMPONENT
  **/
-export function AppSummaryGridCard({ app }: { app: App }) {
+export function AppSummaryGridCard({ app }: { app: AppWithTeam }) {
   // In the future banner images may come through API data.
   //   Even when that is the case, a default image may be desired
   //   for when no image is available.
@@ -28,21 +30,15 @@ export function AppSummaryGridCard({ app }: { app: App }) {
         <div className="apiImageHolder">
           <img src={defaultCardImage} alt="" role="banner" />
         </div>
-        <div className="details">
-          <div>
-            <h4 className="title">{app.name}</h4>
-          </div>
-        </div>
+        <Box px={"20px"}>
+          <CardStyles.Title>{app.name}</CardStyles.Title>
+          <CardStyles.Description>{app.description}</CardStyles.Description>
+        </Box>
       </div>
       <div className="footer">
         <div className="metaInfo">
           <Icon.TeamsIcon />
-          <div className="typeTitle" aria-label="API Type">
-            {/* 
-            // TODO: Add in team info from listTeams()
-            */}
-            Team
-          </div>
+          <div className="typeTitle">{app.team.name}</div>
         </div>
       </div>
     </GridCardStyles.GridCardWithLink>

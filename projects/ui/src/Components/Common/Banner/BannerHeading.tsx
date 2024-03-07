@@ -127,7 +127,7 @@ export function BannerHeading({
   breadcrumbItems,
 }: {
   title: React.ReactNode;
-  description: string;
+  description: React.ReactNode;
   fullIcon?: React.ReactNode;
   additionalContent?: React.ReactNode;
   tall?: boolean;

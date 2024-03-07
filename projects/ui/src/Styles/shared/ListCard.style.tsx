@@ -9,9 +9,7 @@ export namespace ListCardStyles {
       margin-bottom: 30px;
       border-radius: ${borderRadiusConstants.small};
 
-      border: 1px solid ${theme.splashBlue};
       background: ${theme.lightGreyTransparent};
-      box-shadow: 0px 2px 8px ${theme.darkGreyTransparent};
 
       .content {
         display: flex;
@@ -121,6 +119,8 @@ export namespace ListCardStyles {
       //
       // Shared styles between API summary cards
       //
+      box-shadow: 1px 1px 5px ${theme.splashBlue};
+      border: 1px solid ${theme.splashBlue};
       transition: 0.1s box-shadow, 0.1s outline-color;
       outline-offset: 2px;
       outline: 2px solid transparent;

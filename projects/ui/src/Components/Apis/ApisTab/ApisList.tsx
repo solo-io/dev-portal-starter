@@ -1,6 +1,7 @@
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { di } from "react-magnetic-di";
 import { useListApis } from "../../../Apis/hooks";
+import { AppContext } from "../../../Context/AppContext";
 import {
   FilterPair,
   FilterType,
@@ -15,13 +16,12 @@ import { ApiSummaryListCard } from "./ApiSummaryCards/ApiSummaryListCard";
 export function ApisList({
   allFilters,
   nameFilter,
-  usingGridView,
 }: {
   allFilters: FilterPair[];
   nameFilter: string;
-  usingGridView: boolean;
 }) {
   di(useListApis);
+  const { preferGridView } = useContext(AppContext);
   const { isLoading, data: apisList } = useListApis();
 
   //
@@ -72,7 +72,7 @@ export function ApisList({
   if (!filteredApisList.length) {
     return <EmptyData topic="API" />;
   }
-  if (usingGridView) {
+  if (preferGridView) {
     return (
       <ApisPageStyles.ApiGridList>
         {filteredApisList.map((api) => (

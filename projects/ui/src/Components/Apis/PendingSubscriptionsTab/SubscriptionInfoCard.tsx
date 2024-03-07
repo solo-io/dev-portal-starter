@@ -4,6 +4,7 @@ import { di } from "react-magnetic-di";
 import { NavLink } from "react-router-dom";
 import { useListApis } from "../../../Apis/hooks";
 import { AppIcon } from "../../../Assets/Icons/Icons";
+import { CardStyles } from "../../../Styles/shared/Card.style";
 import { getApiDetailsLink } from "../../../Utility/link-builders";
 import { Subscription, subscriptionStateMap } from "../ApisPage";
 import { SubscriptionInfoCardStyles as Styles } from "./SubscriptionInfoCard.style";
@@ -33,9 +34,13 @@ const SubscriptionInfoCard = ({
         </Flex>
         <Flex align={"center"} justify={"flex-start"} gap={"8px"}>
           <AppIcon width={20} />
-          <Styles.Text>{subscription.appName}</Styles.Text>
+          <CardStyles.SmallerText>
+            {subscription.appName}
+          </CardStyles.SmallerText>
         </Flex>
-        <Styles.Text>{subscription.usagePlanName}</Styles.Text>
+        <CardStyles.SmallerText>
+          {subscription.usagePlanName}
+        </CardStyles.SmallerText>
       </Styles.Content>
       {subscribedApi && (
         <Styles.Footer>

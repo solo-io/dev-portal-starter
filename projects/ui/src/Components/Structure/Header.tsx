@@ -200,16 +200,16 @@ export function Header() {
             // TODO: Check which routes here require auth. 
             */}
             <NavLink
-              to={"/apps"}
-              className={`navLink ${inAppsArea ? "active" : ""}`}
-            >
-              Apps
-            </NavLink>
-            <NavLink
               to={"/teams"}
               className={`navLink ${inTeamsArea ? "active" : ""}`}
             >
               Teams
+            </NavLink>
+            <NavLink
+              to={"/apps"}
+              className={`navLink ${inAppsArea ? "active" : ""}`}
+            >
+              Apps
             </NavLink>
             <div className="divider" />
             <ErrorBoundary fallback="Access issues" class="horizontalError">

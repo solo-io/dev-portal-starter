@@ -2,16 +2,7 @@ import { useContext } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
 import { PortalAuthContext } from "../Context/PortalAuthContext";
-import {
-  APIKey,
-  APIProduct,
-  APISchema,
-  App,
-  Member,
-  Team,
-  UsagePlan,
-  User,
-} from "./api-types";
+import { APIProduct, APISchema, App, Member, Team, User } from "./api-types";
 
 let _portalServerUrl = import.meta.env.VITE_PORTAL_SERVER_URL;
 if (
@@ -76,9 +67,28 @@ const useSwrWithAuth = <T>(
         },
       });
     },
-    {
-      ...(config ?? {}),
-    }
+    { ...(config ?? {}) }
+  );
+};
+
+/**
+ *  This is the same as useSwrWithAuth, but works for an array of paths.
+ * e.g.`["/teams/team-id-1/apps", "/teams/team-id-2/apps", ...]` will return:
+ * `[getAppsReponseForTeam1, getAppsResponseForTeam2, ...]`
+ *
+ * The entire array of requests can be invalidated by mutating the `swrKey`.
+ *
+ * The return values must be of the same type.
+ */
+const useMultiSwrWithAuth = <T>(
+  swrKey: string,
+  paths: string[],
+  config?: Parameters<typeof useSWR<T[]>>[2]
+) => {
+  return useSWR<T[]>(
+    swrKey,
+    () => Promise.all(paths.map((path) => fetchJSON(path))),
+    { ...(config ?? {}) }
   );
 };
 
@@ -92,8 +102,14 @@ export function useGetCurrentUser() {
 export function useListApis() {
   return useSwrWithAuth<APIProduct[]>("/apis");
 }
-export function useListApps(teamId: string) {
-  return useSwrWithAuth<App[]>(`/teams/${teamId}/apps`);
+export function useListAppsForTeam(team: Team) {
+  return useSwrWithAuth<App[]>(`/teams/${team.id}/apps`);
+}
+export function useListAppsForTeams(teams: Team[]) {
+  return useMultiSwrWithAuth<App[]>(
+    "team-apps",
+    teams.map((t) => `/teams/${t.id}/apps`)
+  );
 }
 export function useListMembers(teamId: string) {
   return useSwrWithAuth<Member[]>(`/teams/${teamId}/members`);
@@ -105,85 +121,61 @@ export function useGetApiDetails(id?: string) {
   return useSwrWithAuth<APISchema>(`/apis/${id}/schema`);
 }
 
-export function useListUsagePlans() {
-  return useSwrWithAuth<UsagePlan[]>(`/usage-plans`);
-}
-
-export function useListApiKeys(usagePlan: string) {
-  // const optionsString = !!usagePlans?.length
-  //   ? `?usagePlans=${usagePlans.join(",")}`
-  //   : "";
-
-  // TODO: Add support for getting keys for multiple usage plans.
-  // TODO: While also having the cache invalidation work (see useAddKeyMutation).
-  return useSwrWithAuth<{ usagePlan: string; apiKeys: APIKey[] }[]>(
-    `/api-keys?usagePlans=${usagePlan}`
-  );
-}
-
 //
 // Mutations
 //
 
-export function useCreateKeyMutation() {
+const getLatestAuthHeaders = (latestAccessToken: string | undefined) => {
+  const authHeaders = {} as any;
+  if (!!latestAccessToken) {
+    authHeaders.Authorization = `Bearer ${latestAccessToken}`;
+  }
+  return authHeaders;
+};
+
+type MutationWithArgs<T> = { arg: T };
+
+// ------------------------ //
+// Create Team
+
+type CreateTeamParams = MutationWithArgs<{ name: string; description: string }>;
+
+export function useCreateTeamMutation() {
   const { latestAccessToken } = useContext(PortalAuthContext);
   const { mutate } = useSWRConfig();
+  const createTeam = async (url: string, { arg }: CreateTeamParams) => {
+    const res = await fetchJSON(url, {
+      method: "POST",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify(arg),
+    });
+    mutate(`/teams`);
+    return res as Team;
+  };
+  return useSWRMutation(`/teams`, createTeam);
+}
 
-  const createKey = async (
-    url: string,
-    {
-      arg: { usagePlanName, apiKeyName },
-    }: { arg: { usagePlanName: string; apiKeyName: string } }
-  ) => {
-    const authHeaders = {} as any;
-    if (!!latestAccessToken) {
-      authHeaders.Authorization = `Bearer ${latestAccessToken}`;
+// ------------------------ //
+// Create App
+
+type CreateAppParams = MutationWithArgs<{ name: string; description: string }>;
+
+export function useCreateAppMutation(teamId: string | undefined) {
+  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { mutate } = useSWRConfig();
+  const createApp = async (url: string, { arg }: CreateAppParams) => {
+    if (!teamId) {
+      // eslint-disable-next-line no-console
+      console.error("Tried to create an app without a teamId.");
+      throw new Error();
     }
     const res = await fetchJSON(url, {
       method: "POST",
-      headers: authHeaders,
-      credentials: "include",
-      body: JSON.stringify({
-        usagePlan: usagePlanName,
-        apiKeyName,
-        //customMetadata, // Coming soon
-      }),
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify(arg),
     });
-    // TODO: Mutation should invalidate all usage plans that this api key is in.
-    mutate(`/api-keys?usagePlans=${usagePlanName}`);
-    return res as APIKey;
+    mutate("team-apps");
+    return res as Team;
   };
-
-  return useSWRMutation(`/api-keys`, createKey);
-}
-
-export function useDeleteKeyMutation() {
-  const { latestAccessToken } = useContext(PortalAuthContext);
-  const { mutate } = useSWRConfig();
-
-  const deleteKey = async (
-    url: string,
-    {
-      arg: { apiKeyId, usagePlanName },
-    }: { arg: { apiKeyId: string; usagePlanName: string } }
-  ) => {
-    const authHeaders = {} as any;
-    if (!!latestAccessToken) {
-      authHeaders.Authorization = `Bearer ${latestAccessToken}`;
-    }
-    try {
-      await fetch(`${portalServerUrl}${url}/${apiKeyId}`, {
-        method: "DELETE",
-        headers: authHeaders,
-        credentials: "include",
-      });
-      // TODO: Mutation should invalidate all usage plans that this api key is in.
-      mutate(`/api-keys?usagePlans=${usagePlanName}`);
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error((e as any)?.message);
-    }
-  };
-
-  return useSWRMutation(`/api-keys`, deleteKey);
+  return useSWRMutation(`/teams/${teamId}/apps`, createApp);
 }
