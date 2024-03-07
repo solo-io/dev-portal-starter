@@ -84,6 +84,19 @@ export type Member = {
   synced: boolean;
 };
 
+export type Subscription = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+  requestedAt: string;
+  approved: boolean;
+  approvedAt: string;
+  applicationId: string;
+  apiProductId: string;
+  usagePlanId: string;
+};
+
 type SchemaPropertyType = "string" | "integer" | "array" | "object";
 export type APISchema = {
   components?: {

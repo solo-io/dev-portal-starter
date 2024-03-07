@@ -2,7 +2,15 @@ import { useContext } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
 import { PortalAuthContext } from "../Context/PortalAuthContext";
-import { APIProduct, APISchema, App, Member, Team, User } from "./api-types";
+import {
+  APIProduct,
+  APISchema,
+  App,
+  Member,
+  Subscription,
+  Team,
+  User,
+} from "./api-types";
 
 let _portalServerUrl = import.meta.env.VITE_PORTAL_SERVER_URL;
 if (
@@ -99,9 +107,7 @@ export function useGetCurrentUser() {
   return useSwrWithAuth<User>("/me");
 }
 
-export function useListApis() {
-  return useSwrWithAuth<APIProduct[]>("/apis");
-}
+// Apps
 export function useListAppsForTeam(team: Team) {
   return useSwrWithAuth<App[]>(`/teams/${team.id}/apps`);
 }
@@ -111,14 +117,32 @@ export function useListAppsForTeams(teams: Team[]) {
     teams.map((t) => `/teams/${t.id}/apps`)
   );
 }
-export function useListMembers(teamId: string) {
-  return useSwrWithAuth<Member[]>(`/teams/${teamId}/members`);
+export function useGetAppDetails(id?: string) {
+  return useSwrWithAuth<App>(`/apps/${id}`);
 }
+
+// Teams
 export function useListTeams() {
   return useSwrWithAuth<Team[]>(`/teams`);
 }
+export function useListMembers(teamId: string) {
+  return useSwrWithAuth<Member[]>(`/teams/${teamId}/members`);
+}
+export function useGetTeamDetails(id?: string) {
+  return useSwrWithAuth<Team>(`/teams/${id}`);
+}
+
+// APIs
+export function useListApis() {
+  return useSwrWithAuth<APIProduct[]>("/apis");
+}
 export function useGetApiDetails(id?: string) {
   return useSwrWithAuth<APISchema>(`/apis/${id}/schema`);
+}
+
+// Subscriptions
+export function useListSubscriptions() {
+  return useSwrWithAuth<Subscription[]>(`/subscriptions`);
 }
 
 //
