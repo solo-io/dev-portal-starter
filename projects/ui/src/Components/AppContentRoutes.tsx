@@ -7,10 +7,12 @@ import {
 import { ApiDetailsPage } from "./ApiDetails/ApiDetailsPage";
 import { ApisPage } from "./Apis/ApisPage";
 import { AppsPage } from "./Apps/AppsPage";
+import AppDetailsPage from "./Apps/Details/AppDetailsPage";
 import { ErrorBoundary } from "./Common/ErrorBoundary";
 import LoggedOut from "./Common/LoggedOut";
 import { HomePage } from "./Home/HomePage";
 import { Footer } from "./Structure/Footer";
+import TeamDetailsPage from "./Teams/Details/TeamDetailsPage";
 import { TeamsPage } from "./Teams/TeamsPage";
 
 const MainContentContainer = styled.div`
@@ -79,10 +81,26 @@ function AppContentRoutes() {
           }
         />
         <Route
+          path="/apps/:appId"
+          element={
+            <ErrorBoundary fallback="There was an issue displaying the App details">
+              <AppDetailsPage />
+            </ErrorBoundary>
+          }
+        />
+        <Route
           path="/teams"
           element={
             <ErrorBoundary fallback="There was an issue displaying the list of Teams">
               <TeamsPage />
+            </ErrorBoundary>
+          }
+        />
+        <Route
+          path="/teams/:teamId"
+          element={
+            <ErrorBoundary fallback="There was an issue displaying the Team details">
+              <TeamDetailsPage />
             </ErrorBoundary>
           }
         />
