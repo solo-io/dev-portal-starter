@@ -30,7 +30,9 @@ const SubscriptionInfoCard = ({
       <Styles.Content>
         <Flex justify="space-between">
           {/* <Styles.CardTitle>{subscription.subscriptionName}</Styles.CardTitle> */}
-          <Styles.CardTitle>{subscription.id}</Styles.CardTitle>
+          <CardStyles.TitleMedium bold>
+            {subscription.id}
+          </CardStyles.TitleMedium>
           {/* <Styles.SubscriptionCardBadge subscriptionState={subscription.state}>
             {subscriptionStateMap[subscription.state].label}
           </Styles.SubscriptionCardBadge> */}

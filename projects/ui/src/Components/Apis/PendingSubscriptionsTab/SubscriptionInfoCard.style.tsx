@@ -60,19 +60,6 @@ export namespace SubscriptionInfoCardStyles {
     `
   );
 
-  export const CardTitle = styled.div`
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 2px;
-  `;
-
-  export const CardTitleSmall = styled.div`
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 2px;
-    text-align: left;
-  `;
-
   export const SubscriptionCardBadge = styled.div<{
     subscriptionState: SubscriptionState;
   }>(

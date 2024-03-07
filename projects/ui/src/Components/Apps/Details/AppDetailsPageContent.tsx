@@ -26,8 +26,8 @@ const AppDetailsPageContent = ({ app }: { app: App }) => {
           { label: app.name },
         ]}
       />
-      <AppAuthenticationSection />
-      <ApiSubscriptionsSection />
+      <AppAuthenticationSection app={app} />
+      <ApiSubscriptionsSection app={app} />
     </PageContainer>
   );
 };

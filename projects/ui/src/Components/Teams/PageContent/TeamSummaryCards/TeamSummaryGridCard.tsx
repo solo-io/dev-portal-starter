@@ -26,9 +26,7 @@ export function TeamSummaryGridCard({ team }: { team: Team }) {
       <div className="content">
         <Box p={"20px"}>
           <Flex direction={"column"} align={"flex-start"} gap={"5px"}>
-            <SubscriptionInfoCardStyles.CardTitleSmall>
-              {team.name}
-            </SubscriptionInfoCardStyles.CardTitleSmall>
+            <CardStyles.TitleSmall bold>{team.name}</CardStyles.TitleSmall>
             <Flex align={"center"} justify={"flex-start"} gap={"8px"}>
               <Flex align={"center"} justify={"flex-start"} gap={"8px"}>
                 <Icon.AppIcon width={20} />
