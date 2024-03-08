@@ -1,4 +1,4 @@
-import { Loader } from "@mantine/core";
+import { Box, Flex, Loader } from "@mantine/core";
 import { di } from "react-magnetic-di";
 import { App } from "../../../Apis/api-types";
 import { useListSubscriptionsForApp } from "../../../Apis/hooks";
@@ -16,6 +16,10 @@ const AppDetailsPageContent = ({ app }: { app: App }) => {
   const subscriptionsError =
     subscriptions !== undefined && "message" in subscriptions;
 
+  // Mock data for testing
+  // app.idpClientId = "4df81266-f855-466d-8ded-699056780850";
+  // app.idpClientName = "test-idp";
+  // app.idpClientSecret = "hidden";
   const appHasOAuthClient =
     app.idpClientId && app.idpClientName && app.idpClientSecret;
 
@@ -44,13 +48,17 @@ const AppDetailsPageContent = ({ app }: { app: App }) => {
           message="Only admins may view app subscription data."
         />
       )}
-      {appHasOAuthClient && <AppAuthenticationSection app={app} />}
-      {isLoadingSubscriptions ? (
-        <Loader />
-      ) : // TODO: Figure out view for when the user isn't an admin. Currently just hides the section.
-      !!subscriptionsError ? null : (
-        <ApiSubscriptionsSection app={app} subscriptions={subscriptions!} />
-      )}
+      <Box px={30}>
+        <Flex gap={"30px"} direction={"column"}>
+          {appHasOAuthClient && <AppAuthenticationSection app={app} />}
+          {isLoadingSubscriptions ? (
+            <Loader />
+          ) : // TODO: Figure out view for when the user isn't an admin. Currently just hides the section.
+          !!subscriptionsError ? null : (
+            <ApiSubscriptionsSection app={app} subscriptions={subscriptions!} />
+          )}
+        </Flex>
+      </Box>
     </PageContainer>
   );
 };
