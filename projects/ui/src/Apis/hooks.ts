@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
 import { PortalAuthContext } from "../Context/PortalAuthContext";
@@ -6,8 +6,10 @@ import {
   APIProduct,
   APISchema,
   App,
+  ErrorMessageResponse,
   Member,
   Subscription,
+  SubscriptionStatus,
   Team,
   User,
 } from "./api-types";
@@ -141,8 +143,56 @@ export function useGetApiDetails(id?: string) {
 }
 
 // Subscriptions
-export function useListSubscriptions() {
-  return useSwrWithAuth<Subscription[]>(`/subscriptions`);
+export function useListSubscriptionsForStatus(status: SubscriptionStatus) {
+  const swrResponse = useSwrWithAuth<Subscription[] | ErrorMessageResponse>(
+    `/subscriptions?status=${status}`
+  );
+  useEffect(() => {
+    if (!!swrResponse.data && "message" in swrResponse.data) {
+      // eslint-disable-next-line no-console
+      console.warn(swrResponse.data.message);
+    }
+  }, [swrResponse.data]);
+  return swrResponse;
+}
+
+export function useListSubscriptions(): {
+  isLoading: boolean;
+  data: Subscription[];
+  error?: boolean;
+} {
+  // Get the pending and approved subscriptions.
+  const {
+    isLoading: isLoadingApprovedSubscriptions,
+    data: approvedSubscriptions,
+  } = useListSubscriptionsForStatus(SubscriptionStatus.APPROVED);
+  const {
+    isLoading: isLoadingPendingSubscriptions,
+    data: pendingSubscriptions,
+  } = useListSubscriptionsForStatus(SubscriptionStatus.PENDING);
+
+  // Combine the subscriptions.
+  const isLoading =
+    isLoadingApprovedSubscriptions || isLoadingPendingSubscriptions;
+  const subscriptions = useMemo(
+    () => [
+      ...(Array.isArray(pendingSubscriptions) ? pendingSubscriptions : []),
+      ...(Array.isArray(approvedSubscriptions) ? approvedSubscriptions : []),
+    ],
+    [approvedSubscriptions, pendingSubscriptions]
+  );
+
+  // If there is an error message, return that.
+  if (!!approvedSubscriptions && "message" in approvedSubscriptions) {
+    return {
+      isLoading,
+      data: [],
+      error: !!approvedSubscriptions.message,
+    };
+  }
+
+  // Otherwise return the full subscriptions response.
+  return { isLoading, data: subscriptions };
 }
 
 //

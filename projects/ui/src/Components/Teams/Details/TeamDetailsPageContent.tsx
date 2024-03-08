@@ -18,7 +18,6 @@ const TeamDetailsPageContent = ({ team }: { team: Team }) => {
             }}
           />
         }
-        // fullIcon={<Icon.Bug />}
         description={team.description}
         breadcrumbItems={[
           { label: "Home", link: "/" },

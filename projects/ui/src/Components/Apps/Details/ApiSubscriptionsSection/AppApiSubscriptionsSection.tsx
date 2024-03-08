@@ -2,10 +2,11 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Button, Flex } from "@mantine/core";
 import { useMemo, useState } from "react";
-import { App } from "../../../../Apis/api-types";
-import { useListSubscriptions } from "../../../../Apis/hooks";
+import { App, Subscription } from "../../../../Apis/api-types";
 import { Icon } from "../../../../Assets/Icons";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
+import SubscriptionInfoCard from "../../../Apis/PendingSubscriptionsTab/SubscriptionInfoCard";
+import { EmptyData } from "../../../Common/EmptyData";
 
 const AddSubscriptionButtonContents = styled.div(
   ({ theme }) => css`
@@ -28,29 +29,20 @@ const AddSubscriptionButton = (props: typeof Button.defaultProps) => {
   );
 };
 
-const AppSubscriptionsSection = ({ app }: { app: App }) => {
-  const { isLoading: isLoadingSubscriptions, data: subscriptions } =
-    useListSubscriptions();
-
+const AppSubscriptionsSection = ({
+  app,
+  subscriptions,
+}: {
+  app: App;
+  subscriptions: Subscription[];
+}) => {
   const [showAddSubscriptionModal, setShowAddSubscriptionModal] =
     useState(false);
 
-  const [errorMessage, setErrorMessage] = useState<string>();
   const appSubscriptions = useMemo(() => {
-    try {
-      return subscriptions?.filter((s) => s.applicationId === app.id);
-    } catch {
-      const errMsg = (subscriptions as any).message;
-      if (!!errMsg) {
-        console.error(errMsg);
-        setErrorMessage(errMsg);
-      }
-    }
+    return subscriptions?.filter((s) => s.applicationId === app.id);
   }, [subscriptions, app]);
 
-  // if (!!errorMessage) {
-  //   return null;
-  // }
   return (
     <DetailsPageStyles.Section>
       <Flex justify={"space-between"}>
@@ -59,18 +51,12 @@ const AppSubscriptionsSection = ({ app }: { app: App }) => {
           onClick={() => setShowAddSubscriptionModal(true)}
         />
       </Flex>
-      {/* {isLoadingSubscriptions || appSubscriptions === undefined ? (
-        <Loading message="Loading Subscriptions" />
-      ) : ( */}
-      <>
-        <Flex justify={"flex-end"}></Flex>
-        <Flex wrap="wrap" gap={"20px"}>
-          {/* {appSubscriptions.map((s) => (
-            <SubscriptionInfoCard subscription={s} />
-          ))} */}
-        </Flex>
-      </>
-      {/* )} */}
+      {subscriptions.length === 0 && <EmptyData topic={"Subscriptions"} />}
+      <Flex wrap="wrap" gap={"20px"}>
+        {appSubscriptions.map((s) => (
+          <SubscriptionInfoCard subscription={s} />
+        ))}
+      </Flex>
     </DetailsPageStyles.Section>
   );
 };

@@ -5,11 +5,6 @@ import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { DataPairPill } from "../../../Common/DataPairPill";
 
 const AppAuthenticationSection = ({ app }: { app: App }) => {
-  const hasOAuthClient =
-    app.idpClientId && app.idpClientName && app.idpClientSecret;
-  if (!hasOAuthClient) {
-    return null;
-  }
   return (
     <DetailsPageStyles.Section>
       <DetailsPageStyles.Title>Authentication</DetailsPageStyles.Title>

@@ -115,13 +115,19 @@ const LoadingContainer = styled.div(
   `
 );
 
-export function EmptyData({
-  topic,
-  message,
-}: {
-  topic: string;
-  message?: string;
-}) {
+export function EmptyData(
+  props:
+    | (
+        | {
+            topic: string;
+          }
+        | {
+            topicMessageOverride: string;
+          }
+      ) & {
+        message?: string;
+      }
+) {
   return (
     <LoadingContainer aria-hidden="true">
       <div className="emptyCircle">
@@ -132,8 +138,16 @@ export function EmptyData({
           <div className="circle"></div>
         </div>
       </div>
-      <div className="emptyMainMessage">No {topic} results were found</div>
-      {!!message && <div className="emptyDetailsMessage">{message}</div>}
+      {"topicMessageOverride" in props ? (
+        <div className="emptyMainMessage">{props.topicMessageOverride}</div>
+      ) : (
+        <div className="emptyMainMessage">
+          No {props.topic} results were found
+        </div>
+      )}
+      {!!props.message && (
+        <div className="emptyDetailsMessage">{props.message}</div>
+      )}
     </LoadingContainer>
   );
 }

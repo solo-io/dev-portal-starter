@@ -1,11 +1,25 @@
+import { Loader } from "@mantine/core";
+import { di } from "react-magnetic-di";
 import { App } from "../../../Apis/api-types";
+import { useListSubscriptions } from "../../../Apis/hooks";
 import { BannerHeading } from "../../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../../Common/Banner/BannerHeadingTitle";
+import { EmptyData } from "../../Common/EmptyData";
 import { PageContainer } from "../../Common/PageContainer";
 import ApiSubscriptionsSection from "./ApiSubscriptionsSection/AppApiSubscriptionsSection";
 import AppAuthenticationSection from "./AuthenticationSection/AppAuthenticationSection";
 
 const AppDetailsPageContent = ({ app }: { app: App }) => {
+  di(useListSubscriptions);
+  const {
+    isLoading: isLoadingSubscriptions,
+    data: subscriptions,
+    error: subscriptionsError,
+  } = useListSubscriptions();
+
+  const appHasOAuthClient =
+    app.idpClientId && app.idpClientName && app.idpClientSecret;
+
   return (
     <PageContainer>
       <BannerHeading
@@ -18,7 +32,6 @@ const AppDetailsPageContent = ({ app }: { app: App }) => {
             }}
           />
         }
-        // fullIcon={<Icon.Bug />}
         description={app.description}
         breadcrumbItems={[
           { label: "Home", link: "/" },
@@ -26,8 +39,19 @@ const AppDetailsPageContent = ({ app }: { app: App }) => {
           { label: app.name },
         ]}
       />
-      <AppAuthenticationSection app={app} />
-      <ApiSubscriptionsSection app={app} />
+      {!appHasOAuthClient && !subscriptions.length && (
+        <EmptyData
+          topicMessageOverride="App details unavailable."
+          message="Only admins may view app subscription data."
+        />
+      )}
+      {appHasOAuthClient && <AppAuthenticationSection app={app} />}
+      {isLoadingSubscriptions ? (
+        <Loader />
+      ) : // TODO: Figure out view for when the user isn't an admin. Currently just hides the section.
+      !!subscriptionsError ? null : (
+        <ApiSubscriptionsSection app={app} subscriptions={subscriptions} />
+      )}
     </PageContainer>
   );
 };

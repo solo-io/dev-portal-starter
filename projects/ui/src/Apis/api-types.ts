@@ -84,6 +84,10 @@ export type Member = {
   synced: boolean;
 };
 
+export enum SubscriptionStatus {
+  APPROVED = "approved",
+  PENDING = "pending",
+}
 export type Subscription = {
   id: string;
   createdAt: string;
@@ -95,6 +99,10 @@ export type Subscription = {
   applicationId: string;
   apiProductId: string;
   usagePlanId: string;
+};
+
+export type ErrorMessageResponse = {
+  message: string;
 };
 
 type SchemaPropertyType = "string" | "integer" | "array" | "object";
