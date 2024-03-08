@@ -169,6 +169,7 @@ export function useGetApiProductDetails(id?: string) {
 
 // Subscriptions
 const SUBSCRIPTIONS_SWR_KEY = "subscriptions";
+// this is an admin endpoint
 export function useListSubscriptionsForStatus(status: SubscriptionStatus) {
   const swrResponse = useSwrWithAuth<Subscription[] | ErrorMessageResponse>(
     `/subscriptions?status=${status}`,
@@ -182,19 +183,12 @@ export function useListSubscriptionsForStatus(status: SubscriptionStatus) {
   }, [swrResponse.data]);
   return swrResponse;
 }
-
+// this is NOT an admin endpoint
 export function useListSubscriptionsForApp(appId: string) {
-  const swrResponse = useSwrWithAuth<Subscription[] | ErrorMessageResponse>(
+  return useSwrWithAuth<Subscription[]>(
     `/apps/${appId}/subscriptions`,
     SUBSCRIPTIONS_SWR_KEY
   );
-  useEffect(() => {
-    if (!!swrResponse.data && "message" in swrResponse.data) {
-      // eslint-disable-next-line no-console
-      console.warn(swrResponse.data.message);
-    }
-  }, [swrResponse.data]);
-  return swrResponse;
 }
 
 //
