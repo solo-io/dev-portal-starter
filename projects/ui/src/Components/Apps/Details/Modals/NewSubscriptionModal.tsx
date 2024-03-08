@@ -14,6 +14,13 @@ import { FormModalStyles } from "../../../../Styles/shared/FormModalStyles";
 import { Button } from "../../../Common/Button";
 import { Loading } from "../../../Common/Loading";
 
+/**
+ * This modal is used to add `App -> API Product` subscriptions and is reusable in different contexts.
+ *
+ *   - Creating a subscription requires an App ID and API Product ID.
+ *   - If `app` is supplied, the app selection won't be shown since it will use the supplied `app.id`.
+ *   - Similarly, if `apiProduct` is supplied, the API Product selection won't be shown since it will use the supplied `apiProduct.id`.
+ */
 const NewSubscriptionModal = ({
   opened,
   onClose,
