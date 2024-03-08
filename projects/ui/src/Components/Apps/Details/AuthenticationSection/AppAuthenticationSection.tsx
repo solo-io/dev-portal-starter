@@ -18,7 +18,15 @@ const AppAuthenticationSection = ({ app }: { app: App }) => {
             <DetailsPageStyles.OAuthClientId>
               {app.idpClientId}
             </DetailsPageStyles.OAuthClientId>
+            {/*
+            // Designs show this "hidden" field, but we have the value.
+            // TODO: Figure out what to show here.
             <DataPairPill pairKey={"Client Secret"} value={"hidden"} />
+            */}
+            <DataPairPill
+              pairKey={"Client Secret"}
+              value={app.idpClientSecret}
+            />
           </DetailsPageStyles.OAuthClientRow>
         </Box>
       </GridCardStyles.GridCard>

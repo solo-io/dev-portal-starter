@@ -1,6 +1,7 @@
 import { Box, Flex, Loader, Tabs } from "@mantine/core";
 import { di } from "react-magnetic-di";
-import { useListApis, useListSubscriptions } from "../../Apis/hooks";
+import { SubscriptionStatus } from "../../Apis/api-types";
+import { useListApis, useListSubscriptionsForStatus } from "../../Apis/hooks";
 import { Icon } from "../../Assets/Icons";
 import { colors } from "../../Styles";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
@@ -36,9 +37,11 @@ export const subscriptionStateMap = {
 
 export function ApisPage() {
   di(useListApis);
-  const { isLoading } = useListApis();
+  const { isLoading: isLoadingApis } = useListApis();
   const { isLoading: isLoadingSubscriptions, data: subscriptions } =
-    useListSubscriptions();
+    useListSubscriptionsForStatus(SubscriptionStatus.PENDING);
+  const subscriptionsError = subscriptions && "message" in subscriptions;
+  const isLoading = isLoadingApis || isLoadingSubscriptions;
 
   return (
     <PageContainer>
@@ -54,6 +57,9 @@ export function ApisPage() {
         {isLoading ? (
           // Make sure the APIs are finished loading since they are a dependency of both tabs.
           <Loading message="Getting list of apis..." />
+        ) : subscriptionsError ? (
+          // If there was a subscriptions error message (aka if we aren't an admin), don't show the subscriptions.
+          <ApisTabContent />
         ) : (
           <Tabs defaultValue="apis">
             {/*
@@ -70,7 +76,7 @@ export function ApisPage() {
                       <Loader size={"20px"} color={colors.seaBlue} />
                     </Box>
                   ) : (
-                    subscriptions.length && (
+                    subscriptions.length > 0 && (
                       <ApisPageStyles.NumberInCircle>
                         {subscriptions.length}
                       </ApisPageStyles.NumberInCircle>

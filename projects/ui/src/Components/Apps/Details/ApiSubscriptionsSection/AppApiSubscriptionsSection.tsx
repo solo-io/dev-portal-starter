@@ -7,6 +7,7 @@ import { Icon } from "../../../../Assets/Icons";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
 import SubscriptionInfoCard from "../../../Apis/PendingSubscriptionsTab/SubscriptionInfoCard";
 import { EmptyData } from "../../../Common/EmptyData";
+import NewSubscriptionModal from "../Modals/NewSubscriptionModal";
 
 const AddSubscriptionButtonContents = styled.div(
   ({ theme }) => css`
@@ -57,6 +58,11 @@ const AppSubscriptionsSection = ({
           <SubscriptionInfoCard subscription={s} />
         ))}
       </Flex>
+      <NewSubscriptionModal
+        app={app}
+        opened={showAddSubscriptionModal}
+        onClose={() => setShowAddSubscriptionModal(false)}
+      />
     </DetailsPageStyles.Section>
   );
 };

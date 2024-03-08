@@ -1,7 +1,7 @@
 import { Loader } from "@mantine/core";
 import { di } from "react-magnetic-di";
 import { App } from "../../../Apis/api-types";
-import { useListSubscriptions } from "../../../Apis/hooks";
+import { useListSubscriptionsForApp } from "../../../Apis/hooks";
 import { BannerHeading } from "../../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../../Common/Banner/BannerHeadingTitle";
 import { EmptyData } from "../../Common/EmptyData";
@@ -10,12 +10,11 @@ import ApiSubscriptionsSection from "./ApiSubscriptionsSection/AppApiSubscriptio
 import AppAuthenticationSection from "./AuthenticationSection/AppAuthenticationSection";
 
 const AppDetailsPageContent = ({ app }: { app: App }) => {
-  di(useListSubscriptions);
-  const {
-    isLoading: isLoadingSubscriptions,
-    data: subscriptions,
-    error: subscriptionsError,
-  } = useListSubscriptions();
+  di(useListSubscriptionsForApp);
+  const { isLoading: isLoadingSubscriptions, data: subscriptions } =
+    useListSubscriptionsForApp(app.id);
+  const subscriptionsError =
+    subscriptions !== undefined && "message" in subscriptions;
 
   const appHasOAuthClient =
     app.idpClientId && app.idpClientName && app.idpClientSecret;
@@ -39,7 +38,7 @@ const AppDetailsPageContent = ({ app }: { app: App }) => {
           { label: app.name },
         ]}
       />
-      {!appHasOAuthClient && !subscriptions.length && subscriptionsError && (
+      {!appHasOAuthClient && subscriptionsError && (
         <EmptyData
           topicMessageOverride="App details unavailable."
           message="Only admins may view app subscription data."
@@ -50,7 +49,7 @@ const AppDetailsPageContent = ({ app }: { app: App }) => {
         <Loader />
       ) : // TODO: Figure out view for when the user isn't an admin. Currently just hides the section.
       !!subscriptionsError ? null : (
-        <ApiSubscriptionsSection app={app} subscriptions={subscriptions} />
+        <ApiSubscriptionsSection app={app} subscriptions={subscriptions!} />
       )}
     </PageContainer>
   );
