@@ -51,7 +51,7 @@ const AppSubscriptionsSection = ({
           onClick={() => setShowAddSubscriptionModal(true)}
         />
       </Flex>
-      {subscriptions.length === 0 && <EmptyData topic={"Subscriptions"} />}
+      {subscriptions.length === 0 && <EmptyData topic={"API Subscription"} />}
       <Flex wrap="wrap" gap={"20px"}>
         {appSubscriptions.map((s) => (
           <SubscriptionInfoCard subscription={s} />

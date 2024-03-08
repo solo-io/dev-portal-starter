@@ -39,7 +39,7 @@ const AppDetailsPageContent = ({ app }: { app: App }) => {
           { label: app.name },
         ]}
       />
-      {!appHasOAuthClient && !subscriptions.length && (
+      {!appHasOAuthClient && !subscriptions.length && subscriptionsError && (
         <EmptyData
           topicMessageOverride="App details unavailable."
           message="Only admins may view app subscription data."
