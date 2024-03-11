@@ -4,17 +4,16 @@ import {
   Table as MantineTable,
   TableProps as MantineTableProps,
 } from "@mantine/core";
+import { borderRadiusConstants } from "../../Styles/constants";
 
 const StyledMantineTable = styled(MantineTable)(
   ({ theme }) => css`
-    border: 1px solid ${theme.splashBlue};
-    tr {
-      padding: 0.4rem 0.6rem;
-    }
+    overflow: auto;
     thead {
       background-color: ${theme.dropBlue};
       tr th {
         border-bottom: 1px solid ${theme.splashBlue};
+        padding: 10px;
       }
     }
     tbody {
@@ -39,10 +38,22 @@ const StyledMantineTable = styled(MantineTable)(
   `
 );
 
+const StyledTableContainer = styled.div(
+  ({ theme }) => css`
+    border: 1px solid ${theme.splashBlue};
+    border-radius: ${borderRadiusConstants.small};
+    overflow: hidden;
+  `
+);
+
 // type TableProps = {};
 // const Table = (props: MantineTableProps & TableProps) => {
 const Table = (props: MantineTableProps) => {
-  return <StyledMantineTable {...props}>{props.children}</StyledMantineTable>;
+  return (
+    <StyledTableContainer>
+      <StyledMantineTable {...props}>{props.children}</StyledMantineTable>
+    </StyledTableContainer>
+  );
 };
 
 export default Table;

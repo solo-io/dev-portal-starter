@@ -67,6 +67,9 @@ type PaginationProps = {
   onChange: MantinePaginationProps["onChange"];
 };
 const Pagination = ({ dataCount, totalPages, onChange }: PaginationProps) => {
+  if (totalPages <= 1) {
+    return null;
+  }
   return (
     <StyledPaginationContainer>
       <TotalText>Total: {dataCount}</TotalText>

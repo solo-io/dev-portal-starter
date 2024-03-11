@@ -5,13 +5,12 @@ import { Flex } from "@mantine/core";
 export namespace DetailsPageStyles {
   export const Section = styled(Flex)`
     flex-direction: column;
-    gap: 30px;
   `;
 
   export const Title = styled.h2`
     font-size: 1.4rem;
     font-weight: 500;
-    margin-bottom: -15px;
+    padding-bottom: 15px;
   `;
 
   export const CardTitleSmall = styled.div`

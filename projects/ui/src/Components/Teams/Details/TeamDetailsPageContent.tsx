@@ -28,8 +28,8 @@ const TeamDetailsPageContent = ({ team }: { team: Team }) => {
       />
       <Box px={"30px"} pb={"30px"}>
         <Flex gap={"30px"} direction={"column"}>
-          <TeamAppsSection team={team} />
           <TeamUsersSection team={team} />
+          <TeamAppsSection team={team} />
         </Flex>
       </Box>
     </PageContainer>

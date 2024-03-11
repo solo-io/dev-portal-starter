@@ -26,6 +26,9 @@ const TeamUsersSection = ({ team }: { team: Team }) => {
         (
           <tr key={member.id}>
             <td>{member.email}</td>
+            {/* <td>{JSON.stringify(member)}</td>
+            // TODO: created/updated/deleted at
+            */}
             <td>{member.username}</td>
             <td>{member.name}</td>
             <td>{member.synced}</td>
@@ -41,7 +44,9 @@ const TeamUsersSection = ({ team }: { team: Team }) => {
     <DetailsPageStyles.Section>
       <DetailsPageStyles.Title>Users</DetailsPageStyles.Title>
       {!members?.length ? (
-        <EmptyData topic="Members" />
+        <Box mb={"-30px"}>
+          <EmptyData topic="Members" />
+        </Box>
       ) : (
         <GridCardStyles.GridCard whiteBg>
           <Box p={"20px"}>

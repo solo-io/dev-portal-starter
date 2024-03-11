@@ -1,31 +1,20 @@
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
-import { Button, Flex } from "@mantine/core";
+import { Box, Button, Flex } from "@mantine/core";
 import { useMemo, useState } from "react";
 import { App, Subscription } from "../../../../Apis/api-types";
 import { Icon } from "../../../../Assets/Icons";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
+import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
 import SubscriptionInfoCard from "../../../Apis/PendingSubscriptionsTab/SubscriptionInfoCard";
 import { EmptyData } from "../../../Common/EmptyData";
 import NewSubscriptionModal from "../Modals/NewSubscriptionModal";
 
-const AddSubscriptionButtonContents = styled.div(
-  ({ theme }) => css`
-    display: flex;
-    align-items: center;
-    color: ${theme.lakeBlue};
-    font-size: 0.8rem;
-    gap: 10px;
-  `
-);
-
 const AddSubscriptionButton = (props: typeof Button.defaultProps) => {
   return (
     <Button {...props} variant="subtle">
-      <AddSubscriptionButtonContents>
+      <UtilityStyles.StyledButtonContentsWithIcon>
         ADD SUBSCRIPTION
         <Icon.PlusIcon />
-      </AddSubscriptionButtonContents>
+      </UtilityStyles.StyledButtonContentsWithIcon>
     </Button>
   );
 };
@@ -52,7 +41,11 @@ const AppSubscriptionsSection = ({
           onClick={() => setShowAddSubscriptionModal(true)}
         />
       </Flex>
-      {subscriptions.length === 0 && <EmptyData topic={"API Subscription"} />}
+      {subscriptions.length === 0 && (
+        <Box pt="30px">
+          <EmptyData topic={"API Subscription"} />
+        </Box>
+      )}
       <Flex wrap="wrap" gap={"20px"}>
         {appSubscriptions.map((s) => (
           <SubscriptionInfoCard subscription={s} />

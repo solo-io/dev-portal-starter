@@ -1,18 +1,34 @@
-import { Box } from "@mantine/core";
-import { useMemo } from "react";
+import { Box, Button, Flex } from "@mantine/core";
+import { useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
 import { Team } from "../../../../Apis/api-types";
 import { useListAppsForTeam } from "../../../../Apis/hooks";
+import { Icon } from "../../../../Assets/Icons";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
+import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
 import { EmptyData } from "../../../Common/EmptyData";
 import { Loading } from "../../../Common/Loading";
 import Pagination, { usePagination } from "../../../Common/Pagination";
 import Table from "../../../Common/Table";
+import AddTeamAppSubSection from "./AddTeamAppSubsection";
+
+const AddTeamAppButton = (props: typeof Button.defaultProps) => {
+  return (
+    <Button {...props} variant="subtle">
+      <UtilityStyles.StyledButtonContentsWithIcon>
+        ADD APP
+        <Icon.PlusIcon />
+      </UtilityStyles.StyledButtonContentsWithIcon>
+    </Button>
+  );
+};
 
 const TeamAppsSection = ({ team }: { team: Team }) => {
   di(useListAppsForTeam);
   const { isLoading, data: apps } = useListAppsForTeam(team);
+  const [showAddTeamAppSubSection, setShowAddTeamAppSubSection] =
+    useState(false);
 
   const {
     paginatedDataSlice: paginatedApps,
@@ -37,7 +53,15 @@ const TeamAppsSection = ({ team }: { team: Team }) => {
   }
   return (
     <DetailsPageStyles.Section>
-      <DetailsPageStyles.Title>Apps</DetailsPageStyles.Title>
+      <Flex justify={"space-between"}>
+        <DetailsPageStyles.Title>Apps</DetailsPageStyles.Title>
+        <AddTeamAppButton onClick={() => setShowAddTeamAppSubSection(true)} />
+      </Flex>
+      {showAddTeamAppSubSection && (
+        <AddTeamAppSubSection
+          onClose={() => setShowAddTeamAppSubSection(false)}
+        />
+      )}
       {!apps?.length ? (
         <Box mb={"-30px"}>
           <EmptyData topic="App" />
