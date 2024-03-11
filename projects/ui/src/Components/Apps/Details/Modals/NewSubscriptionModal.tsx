@@ -109,7 +109,7 @@ const NewSubscriptionModal = ({
             Create a new Subscription.
           </FormModalStyles.Subtitle>
         </div>
-        <CloseButton title="Close modal" size={"30px"} />
+        <CloseButton onClick={onClose} title="Close modal" size={"30px"} />
       </FormModalStyles.HeaderContainer>
       <FormModalStyles.HorizLine />
       {isLoadingTeams || teams === undefined ? (
