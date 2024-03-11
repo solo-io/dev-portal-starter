@@ -1,7 +1,6 @@
 //
 // From https://stackoverflow.com/a/65996386
 // navigator.clipboard.writeText doesn't always work.
-
 //
 export async function copyToClipboard(textToCopy: string) {
   // Navigator clipboard api needs a secure context (https)
