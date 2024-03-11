@@ -5,7 +5,7 @@ import { Loading } from "../../Common/Loading";
 import TeamDetailsPageContent from "./TeamDetailsPageContent";
 
 const TeamDetailsPage = () => {
-  di(useParams);
+  di(useParams, useGetTeamDetails);
   const { teamId } = useParams();
   const { isLoading, data: team } = useGetTeamDetails(teamId);
 

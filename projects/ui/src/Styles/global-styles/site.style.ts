@@ -40,19 +40,4 @@ export const siteGlobalStyles = css`
       transform: rotate(180deg);
     }
   }
-
-  //
-  // Animations
-  //
-  @keyframes animateCircles {
-    to {
-      transform: rotate(1turn);
-    }
-  }
-  @keyframes shadowFade {
-    to {
-      box-shadow: 0 0 2em transparent, 0 0 4em, 0 0 6em, 0 0 8em, 0 0 10em,
-        0 0 0 0.5em transparent;
-    }
-  }
 `;

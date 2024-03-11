@@ -39,7 +39,7 @@ const AppDetailsPageContent = ({ app }: { app: App }) => {
           { label: app.name },
         ]}
       />
-      <Box px={30}>
+      <Box px={"30px"}>
         <Flex gap={"30px"} direction={"column"}>
           {appHasOAuthClient && <AppAuthenticationSection app={app} />}
           {isLoadingSubscriptions || subscriptions === undefined ? (

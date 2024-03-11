@@ -19,8 +19,10 @@ const LoadingContainer = styled.div(
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 180px;
-      height: 180px;
+      /* width: 180px;
+      height: 180px; */
+      width: 100px;
+      height: 100px;
 
       .chasePlate {
         position: absolute;
@@ -61,15 +63,17 @@ const LoadingContainer = styled.div(
 
         .circle::before {
           position: absolute;
-          top: -0.5em;
-          right: -0.5em;
           content: "";
-          width: 1em;
+          /* width: 1em;
           height: 1em;
+          top: -0.5em;
+          right: -0.5em; */
+          width: 12px;
+          height: 12px;
+          top: -6px;
+          right: -8px;
           background-color: currentColor;
           border-radius: 50%;
-          box-shadow: 0 0 2em, 0 0 4em, 0 0 6em, 0 0 8em, 0 0 10em,
-            0 0 0 0.5em rgba(255, 255, 0, 0.1);
         }
       }
     }
@@ -87,11 +91,6 @@ const LoadingContainer = styled.div(
         }
         &.outer {
           --deg: -90deg;
-        }
-
-        .circle::before {
-          animation: shadowFade 1.5s ease-in;
-          animation-fill-mode: forwards;
         }
       }
     }
@@ -111,6 +110,15 @@ const LoadingContainer = styled.div(
       font-size: 16px;
       line-height: 20px;
       font-weight: 400;
+    }
+
+    //
+    // Animations
+    //
+    @keyframes animateCircles {
+      to {
+        transform: rotate(1turn);
+      }
     }
   `
 );

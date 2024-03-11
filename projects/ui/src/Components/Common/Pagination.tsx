@@ -11,7 +11,7 @@ import { useMemo, useState } from "react";
  * This improves on Mantine's usePagination hook and returns the paginated data slice
  * as well as the props needed for the following `Pagination` component.
  **/
-export const usePagination = (data: undefined | any[], pageSize = 5) => {
+export function usePagination<T>(data: undefined | T[], pageSize = 5) {
   const [curPage, setCurPage] = useState(1);
   const totalPages = Math.ceil((data?.length ?? 0) / pageSize);
   // Mantine Pagination starts at 1, so (curPage-1) gets the 0-based page index here.
@@ -30,7 +30,7 @@ export const usePagination = (data: undefined | any[], pageSize = 5) => {
     startIdx,
     endIdx,
   };
-};
+}
 
 const StyledMantinePagination = styled(MantinePagination)(
   ({ theme }) => css`
