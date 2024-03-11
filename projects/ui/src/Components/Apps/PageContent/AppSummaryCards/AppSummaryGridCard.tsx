@@ -31,7 +31,7 @@ export function AppSummaryGridCard({ app }: { app: AppWithTeam }) {
           <img src={defaultCardImage} alt="" role="banner" />
         </div>
         <Box px={"20px"}>
-          <CardStyles.Title>{app.name}</CardStyles.Title>
+          <CardStyles.TitleLarge>{app.name}</CardStyles.TitleLarge>
           <CardStyles.Description>{app.description}</CardStyles.Description>
         </Box>
       </div>

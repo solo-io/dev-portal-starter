@@ -18,7 +18,7 @@ export function AppSummaryListCard({ app }: { app: AppWithTeam }) {
             <Icon.WrenchGear className="colorIt" />
           </div>
           <Box p={"30px"}>
-            <CardStyles.Title>{app.name}</CardStyles.Title>
+            <CardStyles.TitleLarge>{app.name}</CardStyles.TitleLarge>
             <CardStyles.Description>{app.description}</CardStyles.Description>
           </Box>
         </div>

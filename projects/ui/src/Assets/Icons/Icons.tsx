@@ -21,6 +21,7 @@ export { ReactComponent as NetworkOfCircles } from "./network-of-circles.svg";
 export { ReactComponent as NetworkHub } from "./network-hub.svg";
 export { ReactComponent as OpenApiIcon } from "./OpenAPI-icon.svg";
 export { ReactComponent as Pencil } from "./pencil.svg";
+export { ReactComponent as PlusIcon } from "./plus-icon.svg";
 export { ReactComponent as Refresh } from "./refresh-icon.svg";
 export { ReactComponent as RightArrow } from "./right-arrow.svg";
 export { ReactComponent as SlashedCopy } from "./slashed-copy.svg";

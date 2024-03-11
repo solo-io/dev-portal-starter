@@ -9,9 +9,9 @@ export function getApiDetailsLink<
 }
 
 export function getAppDetailsLink(app: App) {
-  return `/app-details/${app.id}`;
+  return `/apps/${app.id}`;
 }
 
 export function getTeamDetailsLink(team: Team) {
-  return `/team-details/${team.id}`;
+  return `/teams/${team.id}`;
 }

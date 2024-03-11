@@ -8,32 +8,15 @@ export type User = {
   name: string;
   email: string;
   username: string;
+  // TODO: Once auth is working, check if we can get admin info here and update the areas that use admin endpoints (e.g. subscriptions areas).
+  // admin: string;
 };
 
-type RateLimitPolicy = {
-  unit: "UNKNOWN" | "SECOND" | "MINUTE" | "HOUR" | "DAY";
-  requestsPerUnit: number;
-};
-
-type AuthPolicy = {
-  authType: string;
-};
-
-export type UsagePlan = {
-  name: string;
-  authPolicies: AuthPolicy[];
-  rateLimitPolicy: RateLimitPolicy;
-  apiIds: string[];
-};
-
-export type APIKey = {
-  name: string;
-  id: string;
-  // APIKey is returned only once when the API key is created.
-  apiKey: string | undefined;
-  metadata?: Record<string, string> | undefined;
-};
-
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+// TODO: Remove these old types and update API pages.
 export type APIVersion = {
   apiId: string;
   apiVersion: string;
@@ -49,6 +32,58 @@ export type APIProduct = {
   apiProductId: string;
   apiProductDisplayName: string;
   apiVersions: APIVersion[];
+};
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+
+export type ApiProductSummary = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+  name: string;
+  description: string;
+  versionsCount: number;
+};
+
+export type ApiProductDetails = Omit<ApiProductSummary, "versionsCount"> & {
+  // Inherited fields, same as ApiProductSummary
+  // id: string;
+  // createdAt: string;
+  // updatedAt: string;
+  // deletedAt: string;
+  // name: string;
+  // description: string;
+  autoApproval: boolean;
+  contactEmail: string;
+  metadata: Record<string, string>;
+  public: boolean;
+  versions: ApiVersion[];
+  subscriptions: Subscription[];
+};
+
+export type ApiVersion = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+  name: string;
+  title: string;
+  documentation: string;
+  termsOfService: string;
+  license: string;
+  lifecycle: string;
+  status: string; // 'published',
+  backingService: string;
+  apiSpec: string;
+  visible: boolean;
+  oauthEnabled: boolean;
+  apiKeyEnabled: boolean;
+  public: boolean;
+  metadata: Record<string, string>;
+  apiProductId: string;
 };
 
 export type App = {
@@ -82,6 +117,27 @@ export type Member = {
   name: string;
   username: string;
   synced: boolean;
+};
+
+export enum SubscriptionStatus {
+  APPROVED = "approved",
+  PENDING = "pending",
+}
+export type Subscription = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+  requestedAt: string;
+  approved: boolean;
+  approvedAt: string;
+  applicationId: string;
+  apiProductId: string;
+  usagePlanId: string;
+};
+
+export type ErrorMessageResponse = {
+  message: string;
 };
 
 type SchemaPropertyType = "string" | "integer" | "array" | "object";

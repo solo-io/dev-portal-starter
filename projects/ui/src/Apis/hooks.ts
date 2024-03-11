@@ -1,8 +1,20 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
 import { PortalAuthContext } from "../Context/PortalAuthContext";
-import { APIProduct, APISchema, App, Member, Team, User } from "./api-types";
+import {
+  APIProduct,
+  APISchema,
+  ApiProductDetails,
+  ApiProductSummary,
+  App,
+  ErrorMessageResponse,
+  Member,
+  Subscription,
+  SubscriptionStatus,
+  Team,
+  User,
+} from "./api-types";
 
 let _portalServerUrl = import.meta.env.VITE_PORTAL_SERVER_URL;
 if (
@@ -40,9 +52,12 @@ async function fetchJSON(...args: Parameters<typeof fetch>) {
 /**
  * Returns `useSwr` with `fetchJson`, but adds the auth tokens
  * from the `PortalAuthContext` in the headers.
+ *
+ * To skip the request, set `swrKey` to `null`.
  */
 const useSwrWithAuth = <T>(
   path: string,
+  swrKey?: string,
   config?: Parameters<typeof useSWR<T>>[2]
 ) => {
   const { latestAccessToken } = useContext(PortalAuthContext);
@@ -52,9 +67,9 @@ const useSwrWithAuth = <T>(
     authHeaders.Authorization = `Bearer ${latestAccessToken}`;
   }
   return useSWR<T>(
-    path,
+    swrKey === undefined ? path : swrKey,
     (...args) => {
-      return fetchJSON(args[0], {
+      return fetchJSON(path, {
         ...(args.length > 1 && !!args[1] ? args[1] : {}),
         // credentials: "include",
         // Removing "credentials: include", since the server's 'Access-Control-Allow-Origin' header is "*".
@@ -81,8 +96,8 @@ const useSwrWithAuth = <T>(
  * The return values must be of the same type.
  */
 const useMultiSwrWithAuth = <T>(
-  swrKey: string,
   paths: string[],
+  swrKey: string | null,
   config?: Parameters<typeof useSWR<T[]>>[2]
 ) => {
   return useSWR<T[]>(
@@ -95,30 +110,85 @@ const useMultiSwrWithAuth = <T>(
 //
 // Queries
 //
+
+// User
 export function useGetCurrentUser() {
   return useSwrWithAuth<User>("/me");
 }
 
-export function useListApis() {
-  return useSwrWithAuth<APIProduct[]>("/apis");
-}
+// Apps
 export function useListAppsForTeam(team: Team) {
   return useSwrWithAuth<App[]>(`/teams/${team.id}/apps`);
 }
+const TEAM_APPS_SWR_KEY = "team-apps";
 export function useListAppsForTeams(teams: Team[]) {
+  const skipFetching = teams.length === 0;
   return useMultiSwrWithAuth<App[]>(
-    "team-apps",
-    teams.map((t) => `/teams/${t.id}/apps`)
+    teams.map((t) => `/teams/${t.id}/apps`),
+    skipFetching ? null : TEAM_APPS_SWR_KEY
   );
+}
+export function useGetAppDetails(id?: string) {
+  return useSwrWithAuth<App>(`/apps/${id}`);
+}
+
+// Teams
+const TEAMS_SWR_KEY = "teams";
+export function useListTeams() {
+  return useSwrWithAuth<Team[]>(`/teams`, TEAMS_SWR_KEY);
 }
 export function useListMembers(teamId: string) {
   return useSwrWithAuth<Member[]>(`/teams/${teamId}/members`);
 }
-export function useListTeams() {
-  return useSwrWithAuth<Team[]>(`/teams`);
+export function useGetTeamDetails(id?: string) {
+  return useSwrWithAuth<Team>(`/teams/${id}`);
+}
+
+// APIs
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+// TODO: Remove these old funtions and update API pages.
+export function useListApis() {
+  return useSwrWithAuth<APIProduct[]>("/apis");
 }
 export function useGetApiDetails(id?: string) {
   return useSwrWithAuth<APISchema>(`/apis/${id}/schema`);
+}
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+
+// Api Products
+export function useListApiProducts() {
+  return useSwrWithAuth<ApiProductSummary[]>("/api-products");
+}
+export function useGetApiProductDetails(id?: string) {
+  return useSwrWithAuth<ApiProductDetails>(`/api-products/${id}`);
+}
+
+// Subscriptions
+const SUBSCRIPTIONS_SWR_KEY = "subscriptions";
+// this is an admin endpoint
+export function useListSubscriptionsForStatus(status: SubscriptionStatus) {
+  const swrResponse = useSwrWithAuth<Subscription[] | ErrorMessageResponse>(
+    `/subscriptions?status=${status}`,
+    SUBSCRIPTIONS_SWR_KEY
+  );
+  useEffect(() => {
+    if (!!swrResponse.data && "message" in swrResponse.data) {
+      // eslint-disable-next-line no-console
+      console.warn(swrResponse.data.message);
+    }
+  }, [swrResponse.data]);
+  return swrResponse;
+}
+// this is NOT an admin endpoint
+export function useListSubscriptionsForApp(appId: string) {
+  return useSwrWithAuth<Subscription[]>(
+    `/apps/${appId}/subscriptions`,
+    SUBSCRIPTIONS_SWR_KEY
+  );
 }
 
 //
@@ -149,7 +219,7 @@ export function useCreateTeamMutation() {
       headers: getLatestAuthHeaders(latestAccessToken),
       body: JSON.stringify(arg),
     });
-    mutate(`/teams`);
+    mutate(TEAMS_SWR_KEY);
     return res as Team;
   };
   return useSWRMutation(`/teams`, createTeam);
@@ -174,8 +244,36 @@ export function useCreateAppMutation(teamId: string | undefined) {
       headers: getLatestAuthHeaders(latestAccessToken),
       body: JSON.stringify(arg),
     });
-    mutate("team-apps");
+    mutate(TEAM_APPS_SWR_KEY);
+    mutate(`/teams/${teamId}/apps`);
     return res as Team;
   };
   return useSWRMutation(`/teams/${teamId}/apps`, createApp);
+}
+
+// ------------------------ //
+// Create Subscription
+
+type CreateSubscriptionParams = MutationWithArgs<{
+  apiProductId: string;
+}>;
+
+export function useCreateSubscriptionMutation(appId: string) {
+  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { mutate } = useSWRConfig();
+  const createApp = async (url: string, { arg }: CreateSubscriptionParams) => {
+    if (!appId) {
+      // eslint-disable-next-line no-console
+      console.error("Tried to subscribe without an appId.");
+      throw new Error();
+    }
+    const res = await fetchJSON(url, {
+      method: "POST",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify(arg),
+    });
+    mutate(SUBSCRIPTIONS_SWR_KEY);
+    return res as Team;
+  };
+  return useSWRMutation(`/apps/${appId}/subscription`, createApp);
 }
