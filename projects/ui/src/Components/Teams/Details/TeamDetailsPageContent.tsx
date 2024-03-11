@@ -26,7 +26,7 @@ const TeamDetailsPageContent = ({ team }: { team: Team }) => {
         ]}
       />
       <TeamAppsSection />
-      <TeamUsersSection />
+      <TeamUsersSection team={team} />
     </PageContainer>
   );
 };

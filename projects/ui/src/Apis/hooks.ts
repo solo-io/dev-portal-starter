@@ -137,7 +137,7 @@ const TEAMS_SWR_KEY = "teams";
 export function useListTeams() {
   return useSwrWithAuth<Team[]>(`/teams`, TEAMS_SWR_KEY);
 }
-export function useListMembers(teamId: string) {
+export function useListMembersForTeam(teamId: string) {
   return useSwrWithAuth<Member[]>(`/teams/${teamId}/members`);
 }
 export function useGetTeamDetails(id?: string) {
