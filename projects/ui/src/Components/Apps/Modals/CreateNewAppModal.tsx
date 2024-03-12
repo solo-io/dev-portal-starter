@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
 import { useCreateAppMutation, useListTeams } from "../../../Apis/hooks";
 import { FormModalStyles } from "../../../Styles/shared/FormModalStyles";
+import { Accordion } from "../../Common/Accordion";
 import { Button } from "../../Common/Button";
 import { Loading } from "../../Common/Loading";
 
@@ -94,34 +95,34 @@ const CreateNewAppModal = ({
               ]}
             />
           </FormModalStyles.InputContainer>
-          {appTeamId && (
-            <>
-              <FormModalStyles.InputContainer>
-                <label htmlFor="app-name-input">App Name</label>
-                <Input
-                  id="app-name-input"
-                  required
-                  autoComplete="off"
-                  value={appName}
-                  onChange={(e) => setAppName(e.target.value)}
-                />
-              </FormModalStyles.InputContainer>
-              <FormModalStyles.InputContainer>
-                <label htmlFor="app-description-input">App Description</label>
-                <Input
-                  // This could be a Textarea if newlines exist in the description.
-                  // Then we would need to get the text content using a ref
-                  // so that newlines are preserved when saved.
-                  // <Textarea
-                  id="app-description-input"
-                  required
-                  autoComplete="off"
-                  value={appDescription}
-                  onChange={(e) => setAppDescription(e.target.value)}
-                />
-              </FormModalStyles.InputContainer>
-            </>
-          )}
+          <Accordion open={!!appTeamId}>
+            <FormModalStyles.InputContainer>
+              <label htmlFor="app-name-input">App Name</label>
+              <Input
+                id="app-name-input"
+                required
+                disabled={!appTeamId}
+                autoComplete="off"
+                value={appName}
+                onChange={(e) => setAppName(e.target.value)}
+              />
+            </FormModalStyles.InputContainer>
+            <FormModalStyles.InputContainer>
+              <label htmlFor="app-description-input">App Description</label>
+              <Input
+                // This could be a Textarea if newlines exist in the description.
+                // Then we would need to get the text content using a ref
+                // so that newlines are preserved when saved.
+                // <Textarea
+                id="app-description-input"
+                required
+                disabled={!appTeamId}
+                autoComplete="off"
+                value={appDescription}
+                onChange={(e) => setAppDescription(e.target.value)}
+              />
+            </FormModalStyles.InputContainer>
+          </Accordion>
           <Flex justify={"flex-end"} gap="20px">
             <Button className="outline" onClick={onClose} type="button">
               Cancel

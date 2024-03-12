@@ -1,7 +1,7 @@
 import { Box } from "@mantine/core";
 import { Accordion } from "../../../Common/Accordion";
 
-const AddTeamAppSubSection = ({
+const AddTeamUserSubSection = ({
   open,
 }: {
   open: boolean;
@@ -9,9 +9,9 @@ const AddTeamAppSubSection = ({
 }) => {
   return (
     <Accordion open={open}>
-      <Box pb={"10px"}>AddTeamAppSubsection</Box>
+      <Box pb={"10px"}>AddTeamUserSubsection</Box>
     </Accordion>
   );
 };
 
-export default AddTeamAppSubSection;
+export default AddTeamUserSubSection;

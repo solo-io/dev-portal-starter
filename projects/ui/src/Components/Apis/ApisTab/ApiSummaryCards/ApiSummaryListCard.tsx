@@ -1,16 +1,19 @@
 import { NavLink } from "react-router-dom";
-import { APIProduct } from "../../../../Apis/api-types";
+import { ApiProductSummary } from "../../../../Apis/api-types";
 import { Icon } from "../../../../Assets/Icons";
 import { ListCardStyles } from "../../../../Styles/shared/ListCard.style";
-import { getApiDetailsLink } from "../../../../Utility/link-builders";
-import { DataPairPill, DataPairPillList } from "../../../Common/DataPairPill";
+import { getApiDetailsLinkWithId } from "../../../../Utility/link-builders";
 
 /**
  * MAIN COMPONENT
  **/
-export function ApiSummaryListCard({ api }: { api: APIProduct }) {
+export function ApiSummaryListCard({
+  apiProduct,
+}: {
+  apiProduct: ApiProductSummary;
+}) {
   return (
-    <NavLink to={getApiDetailsLink(api)}>
+    <NavLink to={getApiDetailsLinkWithId(apiProduct.id)}>
       <ListCardStyles.ListCardWithLink>
         <div className="content">
           <div className="majorIconHolder">
@@ -18,7 +21,7 @@ export function ApiSummaryListCard({ api }: { api: APIProduct }) {
           </div>
           <div className="details">
             <div>
-              <h4 className="title">{api.apiProductDisplayName}</h4>
+              <h4 className="title">{apiProduct.name}</h4>
               {/* <div className="subtitle-list">
                 {!!api.apiProductDisplayName && (
                   <div className="subtitle-item">
@@ -32,7 +35,7 @@ export function ApiSummaryListCard({ api }: { api: APIProduct }) {
                 )}
               </div> */}
               {/* <div className="description">{api.description}</div> */}
-              {api.apiVersions.map((apiVersion) => {
+              {/* {api.apiVersions.map((apiVersion) => {
                 if (!apiVersion.customMetadata) {
                   return null;
                 }
@@ -52,7 +55,7 @@ export function ApiSummaryListCard({ api }: { api: APIProduct }) {
                     )}
                   </DataPairPillList>
                 );
-              })}
+              })} */}
             </div>
           </div>
         </div>

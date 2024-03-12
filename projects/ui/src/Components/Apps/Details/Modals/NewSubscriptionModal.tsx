@@ -86,10 +86,14 @@ const NewSubscriptionModal = ({
     onClose();
   };
 
-  // Reset the form on close.
   useEffect(() => {
-    if (!opened) resetForm();
-  }, [opened]);
+    if (!opened) {
+      // Reset the form on close.
+      resetForm();
+    }
+    setFormApiProductId(apiProduct?.id ?? "");
+    setFormAppId(app?.id ?? "");
+  }, [apiProduct, app, opened]);
 
   //
   // Render

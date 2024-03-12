@@ -1,14 +1,17 @@
 import { useMemo } from "react";
-import { APIProduct } from "../../../../Apis/api-types";
+import { ApiProductSummary } from "../../../../Apis/api-types";
 import { Icon } from "../../../../Assets/Icons";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
-import { getApiDetailsLink } from "../../../../Utility/link-builders";
-import { DataPairPill, DataPairPillList } from "../../../Common/DataPairPill";
+import { getApiDetailsLinkWithId } from "../../../../Utility/link-builders";
 
 /**
  * MAIN COMPONENT
  **/
-export function ApiSummaryGridCard({ api }: { api: APIProduct }) {
+export function ApiSummaryGridCard({
+  apiProduct,
+}: {
+  apiProduct: ApiProductSummary;
+}) {
   // In the future banner images may come through API data.
   //   Even when that is the case, a default image may be desired
   //   for when no image is available.
@@ -20,18 +23,21 @@ export function ApiSummaryGridCard({ api }: { api: APIProduct }) {
     },
     // Currently we don't need to change images unless the api itself has changed.
     //   Depending on the function within the memo, this may not always be the case.
-    [api.apiProductId]
+    [apiProduct.id]
   );
 
   return (
-    <GridCardStyles.GridCardWithLink to={getApiDetailsLink(api)}>
+    <GridCardStyles.GridCardWithLink
+      to={getApiDetailsLinkWithId(apiProduct.id)}
+    >
       <div className="content">
         <div className="apiImageHolder">
           <img src={defaultCardImage} alt="" role="banner" />
         </div>
         <div className="details">
           <div>
-            <h4 className="title">{api.apiProductDisplayName}</h4>
+            <h4 className="title">{apiProduct.name}</h4>
+
             {/* <div className="subtitle-list">
               {!!api.apiVersion && (
                 <div className="subtitle-item">
@@ -42,7 +48,7 @@ export function ApiSummaryGridCard({ api }: { api: APIProduct }) {
             {/* 
             // TODO: There may be a description in the new API.
             <div className="description">{api.description}</div> */}
-            {api.apiVersions.map((apiVersion) => {
+            {/* {api.apiVersions.map((apiVersion) => {
               if (!apiVersion.customMetadata) {
                 return null;
               }
@@ -62,7 +68,7 @@ export function ApiSummaryGridCard({ api }: { api: APIProduct }) {
                   )}
                 </DataPairPillList>
               );
-            })}
+            })} */}
           </div>
         </div>
       </div>

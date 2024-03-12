@@ -11,6 +11,7 @@ export { ReactComponent as Copy } from "./copy.svg";
 export { ReactComponent as DireX } from "./dire-x.svg";
 export { ReactComponent as DownArrow } from "./down-arrow.svg";
 export { ReactComponent as Eye } from "./eye.svg";
+export { ReactComponent as FilledGrayXIcon } from "./filled-gray-x-icon.svg";
 export { ReactComponent as HtmlTag } from "./html-tag.svg";
 export { ReactComponent as InfoExclamation } from "./info-exclamation.svg";
 export { ReactComponent as Key } from "./key.svg";

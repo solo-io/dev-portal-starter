@@ -3,10 +3,10 @@ import { useMemo } from "react";
 import { di } from "react-magnetic-di";
 import { NavLink } from "react-router-dom";
 import { Subscription } from "../../../Apis/api-types";
-import { useListApis } from "../../../Apis/hooks";
+import { useListApiProducts, useListApis } from "../../../Apis/hooks";
 import { AppIcon } from "../../../Assets/Icons/Icons";
 import { CardStyles } from "../../../Styles/shared/Card.style";
-import { getApiDetailsLink } from "../../../Utility/link-builders";
+import { getApiDetailsLinkWithId } from "../../../Utility/link-builders";
 import { SubscriptionState } from "../ApisPage";
 import { SubscriptionInfoCardStyles as Styles } from "./SubscriptionInfoCard.style";
 
@@ -16,13 +16,13 @@ const SubscriptionInfoCard = ({
   subscription: Subscription;
 }) => {
   di(useListApis);
-  const { data: apisList } = useListApis();
+  const { data: apiProductsList } = useListApiProducts();
 
-  const subscribedApi = useMemo(() => {
-    return apisList?.find(
-      (api) => api.apiProductId === subscription.apiProductId
+  const subscribedApiProduct = useMemo(() => {
+    return apiProductsList?.find(
+      (apiProduct) => apiProduct.id === subscription.apiProductId
     );
-  }, [apisList, subscription]);
+  }, [apiProductsList, subscription]);
 
   return (
     // <Styles.Card subscriptionState={subscription.state}>
@@ -49,12 +49,16 @@ const SubscriptionInfoCard = ({
           {subscription.id}
         </CardStyles.SmallerText>
       </Styles.Content>
-      {subscribedApi && (
+      {subscribedApiProduct && (
         <Styles.Footer>
-          <NavLink to={getApiDetailsLink(subscribedApi)}>SPEC</NavLink>
+          <NavLink to={getApiDetailsLinkWithId(subscribedApiProduct.id)}>
+            SPEC
+          </NavLink>
           <Box>|</Box>
           {/* // TODO: Update links to go to docs tab on api details page when we can specify that. */}
-          <NavLink to={getApiDetailsLink(subscribedApi)}>DOCS</NavLink>
+          <NavLink to={getApiDetailsLinkWithId(subscribedApiProduct.id)}>
+            DOCS
+          </NavLink>
         </Styles.Footer>
       )}
       {/* // TODO: Add cancel button (with cancel subscription modal) here. */}

@@ -27,7 +27,7 @@ if (
 }
 export const portalServerUrl: string = _portalServerUrl ?? "/v1";
 
-async function fetchJSON(...args: Parameters<typeof fetch>) {
+async function doFetch(...args: Parameters<typeof fetch>) {
   if (typeof args[0] !== "string") return;
   let url = portalServerUrl + args[0];
   const newArgs: typeof args = [
@@ -46,7 +46,11 @@ async function fetchJSON(...args: Parameters<typeof fetch>) {
       },
     },
   ];
-  return fetch(...newArgs).then((res) => res.json());
+  return fetch(...newArgs);
+}
+
+async function fetchJSON(...args: Parameters<typeof fetch>) {
+  return doFetch(...args).then((res) => res?.json());
 }
 
 /**
@@ -267,13 +271,12 @@ export function useCreateSubscriptionMutation(appId: string) {
       console.error("Tried to subscribe without an appId.");
       throw new Error();
     }
-    const res = await fetchJSON(url, {
+    await doFetch(url, {
       method: "POST",
       headers: getLatestAuthHeaders(latestAccessToken),
       body: JSON.stringify(arg),
     });
     mutate(SUBSCRIPTIONS_SWR_KEY);
-    return res as Team;
   };
-  return useSWRMutation(`/apps/${appId}/subscription`, createApp);
+  return useSWRMutation(`/apps/${appId}/subscriptions`, createApp);
 }

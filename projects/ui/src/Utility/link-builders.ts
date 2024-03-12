@@ -1,5 +1,9 @@
 import { APIVersion, App, Team } from "../Apis/api-types";
 
+export function getApiDetailsLinkWithId(id: string) {
+  return `/api-details/${id}`;
+}
+
 export function getApiDetailsLink<
   T extends { apiProductId: string; apiVersions: APIVersion[] }
 >(api: T) {

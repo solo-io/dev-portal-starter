@@ -1,7 +1,10 @@
 import { Box, Flex, Loader, Tabs } from "@mantine/core";
 import { di } from "react-magnetic-di";
 import { SubscriptionStatus } from "../../Apis/api-types";
-import { useListApis, useListSubscriptionsForStatus } from "../../Apis/hooks";
+import {
+  useListApiProducts,
+  useListSubscriptionsForStatus,
+} from "../../Apis/hooks";
 import { Icon } from "../../Assets/Icons";
 import { colors } from "../../Styles";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
@@ -36,12 +39,12 @@ export const subscriptionStateMap = {
 };
 
 export function ApisPage() {
-  di(useListApis);
-  const { isLoading: isLoadingApis } = useListApis();
+  di(useListApiProducts);
+  const { isLoading: isLoadingApiProducts } = useListApiProducts();
   const { isLoading: isLoadingSubscriptions, data: subscriptions } =
     useListSubscriptionsForStatus(SubscriptionStatus.PENDING);
   const subscriptionsError = subscriptions && "message" in subscriptions;
-  const isLoading = isLoadingApis || isLoadingSubscriptions;
+  const isLoading = isLoadingApiProducts || isLoadingSubscriptions;
 
   return (
     <PageContainer>

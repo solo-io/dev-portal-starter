@@ -48,7 +48,7 @@ const AppSubscriptionsSection = ({
       )}
       <Flex wrap="wrap" gap={"20px"}>
         {appSubscriptions.map((s) => (
-          <SubscriptionInfoCard subscription={s} />
+          <SubscriptionInfoCard key={s.id} subscription={s} />
         ))}
       </Flex>
       <NewSubscriptionModal
