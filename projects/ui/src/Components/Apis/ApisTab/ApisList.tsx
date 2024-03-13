@@ -34,12 +34,14 @@ export function ApisList({
           api.name.toLocaleLowerCase().includes(nameFilter.toLocaleLowerCase());
         const passesFilterList =
           !allFilters.length ||
-          allFilters.every((filter) => {
-            filter.type === FilterType.name &&
-              api.name
-                .toLocaleLowerCase()
-                .includes(filter.displayName.toLocaleLowerCase());
-          });
+          allFilters.every(
+            (filter) =>
+              (filter.type === FilterType.name &&
+                api.name
+                  .toLocaleLowerCase()
+                  .includes(filter.displayName.toLocaleLowerCase())) ||
+              filter.type !== FilterType.name
+          );
         // api.apiVersions.some((apiVersion) => {
         //   return allFilters.every((filter) => {
         //     return (

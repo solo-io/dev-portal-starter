@@ -7,10 +7,10 @@ import { FormModalStyles } from "../../../Styles/shared/FormModalStyles";
 import { Button } from "../../Common/Button";
 
 const CreateNewTeamModal = ({
-  opened,
+  open,
   onClose,
 }: {
-  opened: boolean;
+  open: boolean;
   onClose: () => void;
 }) => {
   di(useCreateTeamMutation);
@@ -18,7 +18,8 @@ const CreateNewTeamModal = ({
   const [teamDescription, setTeamDescription] = useState("");
 
   const formRef = useRef<HTMLFormElement>(null);
-  const isFormDisabled = !formRef.current?.checkValidity();
+  const isFormDisabled =
+    !formRef.current?.checkValidity() || !open || !teamName || !teamDescription;
   const resetForm = () => {
     setTeamName("");
     setTeamDescription("");
@@ -46,15 +47,11 @@ const CreateNewTeamModal = ({
 
   // Reset the form on close.
   useEffect(() => {
-    if (!opened) resetForm();
-  }, [opened]);
+    if (!open) resetForm();
+  }, [open]);
 
   return (
-    <FormModalStyles.CustomModal
-      onClose={onClose}
-      opened={opened}
-      size={"800px"}
-    >
+    <FormModalStyles.CustomModal onClose={onClose} opened={open} size={"800px"}>
       <FormModalStyles.HeaderContainer>
         <div>
           <FormModalStyles.Title>Create a New Team</FormModalStyles.Title>

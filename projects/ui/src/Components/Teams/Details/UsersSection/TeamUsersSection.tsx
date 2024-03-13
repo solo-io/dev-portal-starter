@@ -60,6 +60,7 @@ const TeamUsersSection = ({ team }: { team: Team }) => {
         />
       </Flex>
       <AddTeamUserSubSection
+        team={team}
         open={showAddTeamUserSubSection}
         onClose={() => setShowAddTeamUserSubSection(false)}
       />

@@ -29,7 +29,7 @@ export function TeamsPage() {
       />
       <TeamsList />
       <CreateNewTeamModal
-        opened={modalOpen}
+        open={modalOpen}
         onClose={() => setModalOpen(false)}
       />
     </PageContainer>

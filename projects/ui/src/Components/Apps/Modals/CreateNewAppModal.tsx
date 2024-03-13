@@ -9,10 +9,10 @@ import { Button } from "../../Common/Button";
 import { Loading } from "../../Common/Loading";
 
 const CreateNewAppModal = ({
-  opened,
+  open,
   onClose,
 }: {
-  opened: boolean;
+  open: boolean;
   onClose: () => void;
 }) => {
   di(useListTeams, useCreateAppMutation);
@@ -21,7 +21,12 @@ const CreateNewAppModal = ({
   const [appTeamId, setTeamId] = useState("");
 
   const formRef = useRef<HTMLFormElement>(null);
-  const isFormDisabled = !formRef.current?.checkValidity();
+  const isFormDisabled =
+    !formRef.current?.checkValidity() ||
+    !open ||
+    !appName ||
+    !appDescription ||
+    !appTeamId;
   const resetForm = () => {
     setTeamId("");
     setAppName("");
@@ -51,15 +56,11 @@ const CreateNewAppModal = ({
 
   // Reset the form on close.
   useEffect(() => {
-    if (!opened) resetForm();
-  }, [opened]);
+    if (!open) resetForm();
+  }, [open]);
 
   return (
-    <FormModalStyles.CustomModal
-      onClose={onClose}
-      opened={opened}
-      size={"800px"}
-    >
+    <FormModalStyles.CustomModal onClose={onClose} opened={open} size={"800px"}>
       <FormModalStyles.HeaderContainer>
         <div>
           <FormModalStyles.Title>Create a New App</FormModalStyles.Title>

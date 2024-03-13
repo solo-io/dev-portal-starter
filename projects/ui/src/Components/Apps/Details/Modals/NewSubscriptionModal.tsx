@@ -1,5 +1,12 @@
 import { CloseButton, Flex, Loader, Select } from "@mantine/core";
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import {
+  FormEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
 import { ApiProductSummary, App } from "../../../../Apis/api-types";
@@ -44,10 +51,15 @@ const NewSubscriptionModal = ({
 
   const formRef = useRef<HTMLFormElement>(null);
   const isFormDisabled = !formRef.current?.checkValidity();
-  const resetForm = () => {
-    setFormApiProductId("");
-    setFormAppId("");
-  };
+  const resetForm = useCallback(() => {
+    setFormApiProductId(apiProduct?.id ?? "");
+    setFormAppId(app?.id ?? "");
+  }, [apiProduct, app]);
+
+  // Reset the form when the default form state changes.
+  useEffect(() => {
+    resetForm();
+  }, [resetForm, opened]);
 
   //
   //  Get App and APIProduct selection options
@@ -85,15 +97,6 @@ const NewSubscriptionModal = ({
     );
     onClose();
   };
-
-  useEffect(() => {
-    if (!opened) {
-      // Reset the form on close.
-      resetForm();
-    }
-    setFormApiProductId(apiProduct?.id ?? "");
-    setFormAppId(app?.id ?? "");
-  }, [apiProduct, app, opened]);
 
   //
   // Render

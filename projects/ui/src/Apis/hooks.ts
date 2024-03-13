@@ -141,8 +141,9 @@ const TEAMS_SWR_KEY = "teams";
 export function useListTeams() {
   return useSwrWithAuth<Team[]>(`/teams`, TEAMS_SWR_KEY);
 }
+const MEMBERS_SWR_KEY = "members";
 export function useListMembersForTeam(teamId: string) {
-  return useSwrWithAuth<Member[]>(`/teams/${teamId}/members`);
+  return useSwrWithAuth<Member[]>(`/teams/${teamId}/members`, MEMBERS_SWR_KEY);
 }
 export function useGetTeamDetails(id?: string) {
   return useSwrWithAuth<Team>(`/teams/${id}`);
@@ -230,6 +231,31 @@ export function useCreateTeamMutation() {
 }
 
 // ------------------------ //
+// Create Team Member
+
+type AddTeamMemberParams = MutationWithArgs<{ email: string }>;
+
+export function useAddTeamMemberMutation(teamId: string | undefined) {
+  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { mutate } = useSWRConfig();
+  const addTeamMember = async (url: string, { arg }: AddTeamMemberParams) => {
+    if (!teamId) {
+      // eslint-disable-next-line no-console
+      console.error("Tried to add a team member without a teamId.");
+      throw new Error();
+    }
+    const res = await fetchJSON(url, {
+      method: "POST",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify(arg),
+    });
+    mutate(MEMBERS_SWR_KEY);
+    return res as Member;
+  };
+  return useSWRMutation(`/teams/${teamId}/members`, addTeamMember);
+}
+
+// ------------------------ //
 // Create App
 
 type CreateAppParams = MutationWithArgs<{ name: string; description: string }>;
@@ -248,7 +274,7 @@ export function useCreateAppMutation(teamId: string | undefined) {
       headers: getLatestAuthHeaders(latestAccessToken),
       body: JSON.stringify(arg),
     });
-    mutate(TEAM_APPS_SWR_KEY);
+    mutate(TEAMS_SWR_KEY);
     mutate(`/teams/${teamId}/apps`);
     return res as Team;
   };

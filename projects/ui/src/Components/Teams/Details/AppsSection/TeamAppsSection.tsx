@@ -52,6 +52,7 @@ const TeamAppsSection = ({ team }: { team: Team }) => {
         />
       </Flex>
       <AddTeamAppSubSection
+        team={team}
         open={showAddTeamAppSubSection}
         onClose={() => setShowAddTeamAppSubSection(false)}
       />

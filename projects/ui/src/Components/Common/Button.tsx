@@ -150,6 +150,7 @@ export function Button(
     <StyledButton
       {...rest}
       aria-disabled={disabled}
+      tabIndex={disabled ? -1 : 0}
       className={`styledButton ${rest.className ?? ""} ${
         disabled ? "disabled" : ""
       }`}

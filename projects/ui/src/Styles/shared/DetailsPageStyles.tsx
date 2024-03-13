@@ -33,4 +33,18 @@ export namespace DetailsPageStyles {
       margin-right: 5px;
     `
   );
+
+  export const AddItemForm = styled.form(
+    () => css`
+      padding: 10px 0px;
+      display: flex;
+      gap: 15px;
+      .mantine-Input-wrapper {
+        input {
+          height: 100%;
+        }
+        flex-grow: 1;
+      }
+    `
+  );
 }
