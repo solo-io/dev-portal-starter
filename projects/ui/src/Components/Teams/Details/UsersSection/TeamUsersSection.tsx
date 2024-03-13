@@ -3,8 +3,10 @@ import { useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
 import { Team } from "../../../../Apis/api-types";
 import { useListMembersForTeam } from "../../../../Apis/hooks";
+import { Icon } from "../../../../Assets/Icons";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
+import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
 import { formatDateToMMDDYYYY } from "../../../../Utility/utility";
 import { EmptyData } from "../../../Common/EmptyData";
 import { Loading } from "../../../Common/Loading";
@@ -39,6 +41,9 @@ const TeamUsersSection = ({ team }: { team: Team }) => {
               {member.deletedAt &&
                 formatDateToMMDDYYYY(new Date(member.deletedAt))}
             </td>
+            <UtilityStyles.CenteredTD>
+              {member.synced ? <Icon.SmallGreenCheck /> : <Icon.SmallRedX />}
+            </UtilityStyles.CenteredTD>
           </tr>
         ) ?? []
     );
@@ -80,7 +85,9 @@ const TeamUsersSection = ({ team }: { team: Team }) => {
                   <th>Created</th>
                   <th>Updated</th>
                   <th>Deleted</th>
-                  {/* <th>Synced (confirmed?)</th> */}
+                  <UtilityStyles.CenteredTH>
+                    Confirmed Login
+                  </UtilityStyles.CenteredTH>
                 </tr>
               </thead>
               <tbody>{rows}</tbody>

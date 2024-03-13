@@ -1,10 +1,14 @@
 import { Box, Flex } from "@mantine/core";
 import { useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
+import { NavLink } from "react-router-dom";
 import { Team } from "../../../../Apis/api-types";
 import { useListAppsForTeam } from "../../../../Apis/hooks";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
+import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
+import { getAppDetailsLink } from "../../../../Utility/link-builders";
+import { formatDateToMMDDYYYY } from "../../../../Utility/utility";
 import { EmptyData } from "../../../Common/EmptyData";
 import { Loading } from "../../../Common/Loading";
 import Pagination, { usePagination } from "../../../Common/Pagination";
@@ -29,8 +33,19 @@ const TeamAppsSection = ({ team }: { team: Team }) => {
       (app) =>
         (
           <tr key={app.id}>
-            <td>{app.id}</td>
             <td>{app.name}</td>
+            <td>{formatDateToMMDDYYYY(new Date(app.createdAt))}</td>
+            <td>{formatDateToMMDDYYYY(new Date(app.updatedAt))}</td>
+            <td>
+              {app.deletedAt && formatDateToMMDDYYYY(new Date(app.deletedAt))}
+            </td>
+            <UtilityStyles.CenteredTD>
+              <Box mr={"-2%"}>
+                <UtilityStyles.NavLinkContainer>
+                  <NavLink to={getAppDetailsLink(app)}>DETAILS</NavLink>
+                </UtilityStyles.NavLinkContainer>
+              </Box>
+            </UtilityStyles.CenteredTD>
           </tr>
         ) ?? []
     );
@@ -66,8 +81,11 @@ const TeamAppsSection = ({ team }: { team: Team }) => {
             <Table>
               <thead>
                 <tr>
-                  <th>ID</th>
                   <th>Name</th>
+                  <th>Created</th>
+                  <th>Updated</th>
+                  <th>Deleted</th>
+                  <UtilityStyles.CenteredTH>Details</UtilityStyles.CenteredTH>
                 </tr>
               </thead>
               <tbody>{rows}</tbody>

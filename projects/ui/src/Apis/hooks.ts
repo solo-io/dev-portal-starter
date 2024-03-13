@@ -173,19 +173,20 @@ export function useGetApiProductDetails(id?: string) {
 }
 
 // Subscriptions
+const SUBSCRIPTIONS_FILTERED_SWR_KEY = "subscriptions_filtered";
 const SUBSCRIPTIONS_SWR_KEY = "subscriptions";
 // this is an admin endpoint
 export function useListSubscriptionsForStatus(status: SubscriptionStatus) {
   const swrResponse = useSwrWithAuth<Subscription[] | ErrorMessageResponse>(
     `/subscriptions?status=${status}`,
-    SUBSCRIPTIONS_SWR_KEY
+    SUBSCRIPTIONS_FILTERED_SWR_KEY
   );
   useEffect(() => {
     if (!!swrResponse.data && "message" in swrResponse.data) {
       // eslint-disable-next-line no-console
       console.warn(swrResponse.data.message);
     }
-  }, [swrResponse.data]);
+  }, [swrResponse]);
   return swrResponse;
 }
 // this is NOT an admin endpoint
@@ -303,6 +304,7 @@ export function useCreateSubscriptionMutation(appId: string) {
       body: JSON.stringify(arg),
     });
     mutate(SUBSCRIPTIONS_SWR_KEY);
+    mutate(SUBSCRIPTIONS_FILTERED_SWR_KEY);
   };
   return useSWRMutation(`/apps/${appId}/subscriptions`, createApp);
 }

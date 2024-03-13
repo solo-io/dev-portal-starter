@@ -6,6 +6,7 @@ import { Subscription } from "../../../Apis/api-types";
 import { useListApiProducts, useListApis } from "../../../Apis/hooks";
 import { AppIcon } from "../../../Assets/Icons/Icons";
 import { CardStyles } from "../../../Styles/shared/Card.style";
+import { UtilityStyles } from "../../../Styles/shared/Utility.style";
 import { getApiDetailsLinkWithId } from "../../../Utility/link-builders";
 import { SubscriptionState } from "../ApisPage";
 import { SubscriptionInfoCardStyles as Styles } from "./SubscriptionInfoCard.style";
@@ -51,14 +52,18 @@ const SubscriptionInfoCard = ({
       </Styles.Content>
       {subscribedApiProduct && (
         <Styles.Footer>
-          <NavLink to={getApiDetailsLinkWithId(subscribedApiProduct.id)}>
-            SPEC
-          </NavLink>
+          <UtilityStyles.NavLinkContainer>
+            <NavLink to={getApiDetailsLinkWithId(subscribedApiProduct.id)}>
+              SPEC
+            </NavLink>
+          </UtilityStyles.NavLinkContainer>
           <Box>|</Box>
           {/* // TODO: Update links to go to docs tab on api details page when we can specify that. */}
-          <NavLink to={getApiDetailsLinkWithId(subscribedApiProduct.id)}>
-            DOCS
-          </NavLink>
+          <UtilityStyles.NavLinkContainer>
+            <NavLink to={getApiDetailsLinkWithId(subscribedApiProduct.id)}>
+              DOCS
+            </NavLink>
+          </UtilityStyles.NavLinkContainer>
         </Styles.Footer>
       )}
       {/* // TODO: Add cancel button (with cancel subscription modal) here. */}

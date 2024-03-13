@@ -11,10 +11,10 @@ import NewSubscriptionModal from "../Modals/NewSubscriptionModal";
 const AddSubscriptionButton = (props: typeof Button.defaultProps) => {
   return (
     <Button {...props} variant="subtle">
-      <UtilityStyles.StyledButtonContentsWithIcon>
+      <UtilityStyles.ButtonContentsWithIcon>
         ADD SUBSCRIPTION
         <Icon.PlusIcon />
-      </UtilityStyles.StyledButtonContentsWithIcon>
+      </UtilityStyles.ButtonContentsWithIcon>
     </Button>
   );
 };

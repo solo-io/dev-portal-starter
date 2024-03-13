@@ -16,7 +16,7 @@ const ToggleAddButton = ({
 }) => {
   return (
     <Button variant="subtle" onClick={toggleAdding}>
-      <UtilityStyles.StyledButtonContentsWithIcon>
+      <UtilityStyles.ButtonContentsWithIcon>
         {isAdding ? (
           <>
             CANCEL
@@ -28,7 +28,7 @@ const ToggleAddButton = ({
             <Icon.PlusIcon />
           </>
         )}
-      </UtilityStyles.StyledButtonContentsWithIcon>
+      </UtilityStyles.ButtonContentsWithIcon>
     </Button>
   );
 };
