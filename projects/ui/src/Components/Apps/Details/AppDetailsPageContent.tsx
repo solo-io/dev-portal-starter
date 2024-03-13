@@ -5,10 +5,10 @@ import { useListSubscriptionsForApp } from "../../../Apis/hooks";
 import { BannerHeading } from "../../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../../Common/Banner/BannerHeadingTitle";
 import { PageContainer } from "../../Common/PageContainer";
-import ApiSubscriptionsSection from "./ApiSubscriptionsSection/AppApiSubscriptionsSection";
+import AppApiSubscriptionsSection from "./ApiSubscriptionsSection/AppApiSubscriptionsSection";
 import AppAuthenticationSection from "./AuthenticationSection/AppAuthenticationSection";
 
-const AppDetailsPageContent = ({ app }: { app: App }) => {
+export const AppDetailsPageContent = ({ app }: { app: App }) => {
   di(useListSubscriptionsForApp);
   const { isLoading: isLoadingSubscriptions, data: subscriptions } =
     useListSubscriptionsForApp(app.id);
@@ -45,12 +45,13 @@ const AppDetailsPageContent = ({ app }: { app: App }) => {
           {isLoadingSubscriptions || subscriptions === undefined ? (
             <Loader />
           ) : (
-            <ApiSubscriptionsSection app={app} subscriptions={subscriptions} />
+            <AppApiSubscriptionsSection
+              app={app}
+              subscriptions={!Array.isArray(subscriptions) ? [] : subscriptions}
+            />
           )}
         </Flex>
       </Box>
     </PageContainer>
   );
 };
-
-export default AppDetailsPageContent;

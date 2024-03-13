@@ -2,7 +2,7 @@ import { di } from "react-magnetic-di";
 import { useParams } from "react-router-dom";
 import { useGetAppDetails } from "../../../Apis/hooks";
 import { Loading } from "../../Common/Loading";
-import AppDetailsPageContent from "./AppDetailsPageContent";
+import { AppDetailsPageContent } from "./AppDetailsPageContent";
 
 const AppDetailsPage = () => {
   di(useParams);

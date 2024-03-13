@@ -19,7 +19,7 @@ const AddSubscriptionButton = (props: typeof Button.defaultProps) => {
   );
 };
 
-const AppSubscriptionsSection = ({
+const AppApiSubscriptionsSection = ({
   app,
   subscriptions,
 }: {
@@ -30,7 +30,7 @@ const AppSubscriptionsSection = ({
     useState(false);
 
   const appSubscriptions = useMemo(() => {
-    return subscriptions?.filter((s) => s.applicationId === app.id);
+    return subscriptions.filter((s) => s.applicationId === app.id);
   }, [subscriptions, app]);
 
   return (
@@ -60,4 +60,4 @@ const AppSubscriptionsSection = ({
   );
 };
 
-export default AppSubscriptionsSection;
+export default AppApiSubscriptionsSection;

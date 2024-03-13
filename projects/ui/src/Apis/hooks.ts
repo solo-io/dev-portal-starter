@@ -190,7 +190,7 @@ export function useListSubscriptionsForStatus(status: SubscriptionStatus) {
 }
 // this is NOT an admin endpoint
 export function useListSubscriptionsForApp(appId: string) {
-  return useSwrWithAuth<Subscription[]>(
+  return useSwrWithAuth<Subscription[] | { message: string }>(
     `/apps/${appId}/subscriptions`,
     SUBSCRIPTIONS_SWR_KEY
   );
@@ -274,7 +274,7 @@ export function useCreateAppMutation(teamId: string | undefined) {
       headers: getLatestAuthHeaders(latestAccessToken),
       body: JSON.stringify(arg),
     });
-    mutate(TEAMS_SWR_KEY);
+    mutate(TEAM_APPS_SWR_KEY);
     mutate(`/teams/${teamId}/apps`);
     return res as Team;
   };
