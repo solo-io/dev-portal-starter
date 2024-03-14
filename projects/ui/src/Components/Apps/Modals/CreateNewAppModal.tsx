@@ -30,12 +30,12 @@ const CreateNewAppModal = ({
   //
   const formRef = useRef<HTMLFormElement>(null);
   const isFormDisabled = !open || !appName || !appDescription || !appTeamId;
-  const resetForm = () => {
+  useEffect(() => {
+    // The form resets here when `open` changes.
     setTeamId("");
     setAppName("");
     setAppDescription("");
-  };
-  useEffect(resetForm, [open]);
+  }, [open]);
 
   //
   // Form Submit

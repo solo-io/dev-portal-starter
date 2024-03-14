@@ -30,11 +30,11 @@ const AddTeamAppSubSection = ({
   //
   const formRef = useRef<HTMLFormElement>(null);
   const isFormDisabled = !open || !formAppName || !formAppDescription;
-  const resetForm = () => {
+  useEffect(() => {
+    // The form resets here when `open` changes.
     setFormAppName("");
     setFormAppDescription("");
-  };
-  useEffect(resetForm, [open]);
+  }, [open]);
 
   //
   // Form Submit

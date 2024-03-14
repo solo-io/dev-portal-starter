@@ -26,11 +26,11 @@ const CreateNewTeamModal = ({
   //
   const formRef = useRef<HTMLFormElement>(null);
   const isFormDisabled = !open || !teamName || !teamDescription;
-  const resetForm = () => {
+  useEffect(() => {
+    // The form resets here when `open` changes.
     setTeamName("");
     setTeamDescription("");
-  };
-  useEffect(resetForm, [open]);
+  }, [open]);
 
   //
   // Form Submit

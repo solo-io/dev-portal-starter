@@ -1,12 +1,5 @@
 import { CloseButton, Flex, Loader, Select } from "@mantine/core";
-import {
-  FormEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
 import { ApiProductSummary, App } from "../../../../Apis/api-types";
@@ -39,52 +32,48 @@ const NewSubscriptionModal = ({
   app?: App;
   apiProduct?: ApiProductSummary;
 }) => {
-  di(useListTeams, useCreateAppMutation);
+  di(
+    useListTeams,
+    useListApiProducts,
+    useListAppsForTeams,
+    useCreateAppMutation
+  );
+  const { isLoading: isLoadingApiProducts, data: apiProducts } =
+    useListApiProducts();
+  const { isLoading: isLoadingTeams, data: teams } = useListTeams();
+  const { isLoading: isLoadingApps, data: appsForTeams } = useListAppsForTeams(
+    teams ?? []
+  );
+  const apps = useMemo(() => appsForTeams?.flat() ?? [], [appsForTeams]);
 
   //
-  //  Form state
+  // Form Fields
   //
   const [formApiProductId, setFormApiProductId] = useState(
     apiProduct?.id ?? ""
   );
   const [formAppId, setFormAppId] = useState(app?.id ?? "");
 
+  //
+  // Form
+  //
   const formRef = useRef<HTMLFormElement>(null);
   const isFormDisabled = !formRef.current?.checkValidity();
-  const resetForm = useCallback(() => {
+  useEffect(() => {
+    // The form resets here when `open` or the default fields change.
     setFormApiProductId(apiProduct?.id ?? "");
     setFormAppId(app?.id ?? "");
-  }, [apiProduct, app]);
-
-  // Reset the form when the default form state changes.
-  useEffect(() => {
-    resetForm();
-  }, [resetForm, opened]);
+  }, [apiProduct, app, opened]);
 
   //
-  //  Get App and APIProduct selection options
+  //  Form Submit
   //
-  const { isLoading: isLoadingTeams, data: teams } = useListTeams();
-  const { isLoading: isLoadingApps, data: appsForTeams } = useListAppsForTeams(
-    teams ?? []
-  );
-  const apps = useMemo(() => {
-    return appsForTeams?.flat() ?? [];
-  }, [appsForTeams]);
-
-  //
-  //  Form Submit logic
-  //
-  const { isLoading: isLoadingApiProducts, data: apiProducts } =
-    useListApiProducts();
   const { trigger: createSubscription } =
     useCreateSubscriptionMutation(formAppId);
-
   const onSubmit = async (e?: FormEvent) => {
     e?.preventDefault();
-    // Do HTML form validation.
-    formRef.current?.reportValidity();
-    if (isFormDisabled) {
+    const isValid = formRef.current?.reportValidity();
+    if (!isValid || isFormDisabled) {
       return;
     }
     await toast.promise(

@@ -29,10 +29,10 @@ const AddTeamUserSubSection = ({
   //
   const formRef = useRef<HTMLFormElement>(null);
   const isFormDisabled = !open || !formEmail;
-  const resetForm = () => {
+  useEffect(() => {
+    // The form resets here when `open` changes.
     setFormEmail("");
-  };
-  useEffect(resetForm, [open]);
+  }, [open]);
 
   //
   // Form Submit
