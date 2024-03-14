@@ -26,10 +26,7 @@ export function AppsPage() {
         breadcrumbItems={[{ label: "Home", link: "/" }, { label: "Apps" }]}
       />
       <AppsPageContent />
-      <CreateNewAppModal
-        opened={modalOpen}
-        onClose={() => setModalOpen(false)}
-      />
+      <CreateNewAppModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </PageContainer>
   );
 }

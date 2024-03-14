@@ -1,14 +1,9 @@
 import { Select, TextInput } from "@mantine/core";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Icon } from "../../../Assets/Icons";
 import { AppContext } from "../../../Context/AppContext";
 import { FilterStyles as Styles } from "../../../Styles/shared/Filters.style";
-import {
-  FilterPair,
-  FilterType,
-  getPairString,
-} from "../../../Utility/filter-utility";
-import { KeyValuePair } from "../../Common/DataPairPill";
+import { FilterPair, FilterType } from "../../../Utility/filter-utility";
 import GridListToggle from "../../Common/GridListToggle";
 
 type ApisFiltrationProp = {
@@ -21,10 +16,10 @@ type ApisFiltrationProp = {
 export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
   const { preferGridView, setPreferGridView } = useContext(AppContext);
 
-  const [pairFilter, setPairFilter] = useState<KeyValuePair>({
-    pairKey: "",
-    value: "",
-  });
+  // const [pairFilter, setPairFilter] = useState<KeyValuePair>({
+  //   pairKey: "",
+  //   value: "",
+  // });
 
   const addNameFilter = (evt: { target: { value: string } }) => {
     const displayName = evt.target.value;
@@ -44,38 +39,38 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
     filters.setNameFilter("");
   };
 
-  const alterPairKey = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const newKey = evt.target.value;
-    setPairFilter({
-      pairKey: newKey,
-      value: pairFilter.value,
-    });
-  };
-  const alterKeyValuePair = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = evt.target.value;
-    setPairFilter({
-      pairKey: pairFilter.pairKey,
-      value: newValue,
-    });
-  };
+  // const alterPairKey = (evt: React.ChangeEvent<HTMLInputElement>) => {
+  //   const newKey = evt.target.value;
+  //   setPairFilter({
+  //     pairKey: newKey,
+  //     value: pairFilter.value,
+  //   });
+  // };
+  // const alterKeyValuePair = (evt: React.ChangeEvent<HTMLInputElement>) => {
+  //   const newValue = evt.target.value;
+  //   setPairFilter({
+  //     pairKey: pairFilter.pairKey,
+  //     value: newValue,
+  //   });
+  // };
 
-  const addKeyValuePairFilter = () => {
-    const displayName = getPairString(pairFilter);
-    if (displayName.trim() === ":") return;
-    // Check for duplicate filters.
-    const isDuplicateFilter = filters.allFilters.some(
-      (f) => f.type === FilterType.keyValuePair && f.displayName === displayName
-    );
-    if (isDuplicateFilter) {
-      return;
-    }
-    filters.setAllFilters([
-      ...filters.allFilters,
-      { displayName, type: FilterType.keyValuePair },
-    ]);
+  // const addKeyValuePairFilter = () => {
+  //   const displayName = getPairString(pairFilter);
+  //   if (displayName.trim() === ":") return;
+  //   // Check for duplicate filters.
+  //   const isDuplicateFilter = filters.allFilters.some(
+  //     (f) => f.type === FilterType.keyValuePair && f.displayName === displayName
+  //   );
+  //   if (isDuplicateFilter) {
+  //     return;
+  //   }
+  //   filters.setAllFilters([
+  //     ...filters.allFilters,
+  //     { displayName, type: FilterType.keyValuePair },
+  //   ]);
 
-    setPairFilter({ pairKey: "", value: "" });
-  };
+  //   setPairFilter({ pairKey: "", value: "" });
+  // };
 
   const addTypeFilter = (addedType: string) => {
     filters.setAllFilters([
@@ -131,7 +126,7 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
           />
           <Icon.MagnifyingGlass style={{ pointerEvents: "none" }} />
         </form>
-        <form
+        {/* <form
           onSubmit={(e) => {
             e.preventDefault();
             addKeyValuePairFilter();
@@ -161,7 +156,7 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
               <Icon.Add />
             </button>
           </div>
-        </form>
+        </form> */}
         <div className="dropdownFilter">
           <div className="gearHolder">
             <Icon.CodeGear />

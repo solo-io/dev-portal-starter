@@ -27,7 +27,7 @@ if (
 }
 export const portalServerUrl: string = _portalServerUrl ?? "/v1";
 
-async function fetchJSON(...args: Parameters<typeof fetch>) {
+async function doFetch(...args: Parameters<typeof fetch>) {
   if (typeof args[0] !== "string") return;
   let url = portalServerUrl + args[0];
   const newArgs: typeof args = [
@@ -46,7 +46,11 @@ async function fetchJSON(...args: Parameters<typeof fetch>) {
       },
     },
   ];
-  return fetch(...newArgs).then((res) => res.json());
+  return fetch(...newArgs);
+}
+
+async function fetchJSON(...args: Parameters<typeof fetch>) {
+  return doFetch(...args).then((res) => res?.json());
 }
 
 /**
@@ -137,8 +141,9 @@ const TEAMS_SWR_KEY = "teams";
 export function useListTeams() {
   return useSwrWithAuth<Team[]>(`/teams`, TEAMS_SWR_KEY);
 }
-export function useListMembers(teamId: string) {
-  return useSwrWithAuth<Member[]>(`/teams/${teamId}/members`);
+const MEMBERS_SWR_KEY = "members";
+export function useListMembersForTeam(teamId: string) {
+  return useSwrWithAuth<Member[]>(`/teams/${teamId}/members`, MEMBERS_SWR_KEY);
 }
 export function useGetTeamDetails(id?: string) {
   return useSwrWithAuth<Team>(`/teams/${id}`);
@@ -168,24 +173,25 @@ export function useGetApiProductDetails(id?: string) {
 }
 
 // Subscriptions
+const SUBSCRIPTIONS_FILTERED_SWR_KEY = "subscriptions_filtered";
 const SUBSCRIPTIONS_SWR_KEY = "subscriptions";
 // this is an admin endpoint
 export function useListSubscriptionsForStatus(status: SubscriptionStatus) {
   const swrResponse = useSwrWithAuth<Subscription[] | ErrorMessageResponse>(
     `/subscriptions?status=${status}`,
-    SUBSCRIPTIONS_SWR_KEY
+    SUBSCRIPTIONS_FILTERED_SWR_KEY
   );
   useEffect(() => {
     if (!!swrResponse.data && "message" in swrResponse.data) {
       // eslint-disable-next-line no-console
       console.warn(swrResponse.data.message);
     }
-  }, [swrResponse.data]);
+  }, [swrResponse]);
   return swrResponse;
 }
 // this is NOT an admin endpoint
 export function useListSubscriptionsForApp(appId: string) {
-  return useSwrWithAuth<Subscription[]>(
+  return useSwrWithAuth<Subscription[] | { message: string }>(
     `/apps/${appId}/subscriptions`,
     SUBSCRIPTIONS_SWR_KEY
   );
@@ -223,6 +229,31 @@ export function useCreateTeamMutation() {
     return res as Team;
   };
   return useSWRMutation(`/teams`, createTeam);
+}
+
+// ------------------------ //
+// Create Team Member
+
+type AddTeamMemberParams = MutationWithArgs<{ email: string }>;
+
+export function useAddTeamMemberMutation(teamId: string | undefined) {
+  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { mutate } = useSWRConfig();
+  const addTeamMember = async (url: string, { arg }: AddTeamMemberParams) => {
+    if (!teamId) {
+      // eslint-disable-next-line no-console
+      console.error("Tried to add a team member without a teamId.");
+      throw new Error();
+    }
+    const res = await fetchJSON(url, {
+      method: "POST",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify(arg),
+    });
+    mutate(MEMBERS_SWR_KEY);
+    return res as Member;
+  };
+  return useSWRMutation(`/teams/${teamId}/members`, addTeamMember);
 }
 
 // ------------------------ //
@@ -267,13 +298,13 @@ export function useCreateSubscriptionMutation(appId: string) {
       console.error("Tried to subscribe without an appId.");
       throw new Error();
     }
-    const res = await fetchJSON(url, {
+    await doFetch(url, {
       method: "POST",
       headers: getLatestAuthHeaders(latestAccessToken),
       body: JSON.stringify(arg),
     });
     mutate(SUBSCRIPTIONS_SWR_KEY);
-    return res as Team;
+    mutate(SUBSCRIPTIONS_FILTERED_SWR_KEY);
   };
-  return useSWRMutation(`/apps/${appId}/subscription`, createApp);
+  return useSWRMutation(`/apps/${appId}/subscriptions`, createApp);
 }

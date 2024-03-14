@@ -35,28 +35,6 @@ export namespace SubscriptionInfoCardStyles {
       border-bottom-left-radius: inherit;
       font-size: 0.95rem;
       gap: 10px;
-      a {
-        position: relative;
-        font-weight: 500;
-        padding-right: 5px;
-        :hover {
-          color: ${theme.seaBlue};
-          text-decoration: underline;
-        }
-        :active {
-          color: ${theme.oceanBlue};
-        }
-        :after {
-          content: "";
-          border-top: 2px solid;
-          border-right: 2px solid;
-          border-color: currentColor;
-          width: 10px;
-          height: 10px;
-          display: inline-block;
-          transform: translateX(2px) rotate(45deg);
-        }
-      }
     `
   );
 

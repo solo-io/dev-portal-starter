@@ -116,6 +116,7 @@ export type Member = {
   email: string;
   name: string;
   username: string;
+  // synced = has user logged in.
   synced: boolean;
 };
 

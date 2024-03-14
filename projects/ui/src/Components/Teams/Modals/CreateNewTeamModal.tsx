@@ -7,30 +7,39 @@ import { FormModalStyles } from "../../../Styles/shared/FormModalStyles";
 import { Button } from "../../Common/Button";
 
 const CreateNewTeamModal = ({
-  opened,
+  open,
   onClose,
 }: {
-  opened: boolean;
+  open: boolean;
   onClose: () => void;
 }) => {
   di(useCreateTeamMutation);
+
+  //
+  // Form Fields
+  //
   const [teamName, setTeamName] = useState("");
   const [teamDescription, setTeamDescription] = useState("");
 
+  //
+  // Form
+  //
   const formRef = useRef<HTMLFormElement>(null);
-  const isFormDisabled = !formRef.current?.checkValidity();
-  const resetForm = () => {
+  const isFormDisabled = !open || !teamName || !teamDescription;
+  useEffect(() => {
+    // The form resets here when `open` changes.
     setTeamName("");
     setTeamDescription("");
-  };
+  }, [open]);
 
+  //
+  // Form Submit
+  //
   const { trigger: createTeam } = useCreateTeamMutation();
-
   const onSubmit = async (e?: FormEvent) => {
     e?.preventDefault();
-    // Do HTML form validation.
-    formRef.current?.reportValidity();
-    if (isFormDisabled) {
+    const isValid = formRef.current?.reportValidity();
+    if (!isValid || isFormDisabled) {
       return;
     }
     await toast.promise(
@@ -44,17 +53,11 @@ const CreateNewTeamModal = ({
     onClose();
   };
 
-  // Reset the form on close.
-  useEffect(() => {
-    if (!opened) resetForm();
-  }, [opened]);
-
+  //
+  // Render
+  //
   return (
-    <FormModalStyles.CustomModal
-      onClose={onClose}
-      opened={opened}
-      size={"800px"}
-    >
+    <FormModalStyles.CustomModal onClose={onClose} opened={open} size={"800px"}>
       <FormModalStyles.HeaderContainer>
         <div>
           <FormModalStyles.Title>Create a New Team</FormModalStyles.Title>

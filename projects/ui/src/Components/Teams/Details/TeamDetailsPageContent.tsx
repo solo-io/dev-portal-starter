@@ -1,3 +1,4 @@
+import { Box, Flex } from "@mantine/core";
 import { Team } from "../../../Apis/api-types";
 import { BannerHeading } from "../../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../../Common/Banner/BannerHeadingTitle";
@@ -25,8 +26,12 @@ const TeamDetailsPageContent = ({ team }: { team: Team }) => {
           { label: team.name },
         ]}
       />
-      <TeamAppsSection />
-      <TeamUsersSection />
+      <Box px={"30px"} pb={"30px"}>
+        <Flex gap={"30px"} direction={"column"}>
+          <TeamUsersSection team={team} />
+          <TeamAppsSection team={team} />
+        </Flex>
+      </Box>
     </PageContainer>
   );
 };

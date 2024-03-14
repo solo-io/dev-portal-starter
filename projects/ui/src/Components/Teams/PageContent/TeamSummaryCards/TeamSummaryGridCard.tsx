@@ -2,10 +2,14 @@ import { Box, Flex } from "@mantine/core";
 import { di } from "react-magnetic-di";
 import { NavLink } from "react-router-dom";
 import { Team } from "../../../../Apis/api-types";
-import { useListAppsForTeam, useListMembers } from "../../../../Apis/hooks";
+import {
+  useListAppsForTeam,
+  useListMembersForTeam,
+} from "../../../../Apis/hooks";
 import { Icon } from "../../../../Assets/Icons";
 import { CardStyles } from "../../../../Styles/shared/Card.style";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
+import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
 import { getTeamDetailsLink } from "../../../../Utility/link-builders";
 import { SubscriptionInfoCardStyles } from "../../../Apis/PendingSubscriptionsTab/SubscriptionInfoCard.style";
 import { Loading } from "../../../Common/Loading";
@@ -14,12 +18,11 @@ import { Loading } from "../../../Common/Loading";
  * MAIN COMPONENT
  **/
 export function TeamSummaryGridCard({ team }: { team: Team }) {
-  di(useListAppsForTeam, useListMembers);
+  di(useListAppsForTeam, useListMembersForTeam);
 
   const { isLoading: isLoadingApps, data: teamApps } = useListAppsForTeam(team);
-  const { isLoading: isLoadingMembers, data: teamMembers } = useListMembers(
-    team.id
-  );
+  const { isLoading: isLoadingMembers, data: teamMembers } =
+    useListMembersForTeam(team.id);
 
   return (
     <GridCardStyles.GridCard whiteBg>
@@ -56,7 +59,9 @@ export function TeamSummaryGridCard({ team }: { team: Team }) {
         </Box>
       </div>
       <SubscriptionInfoCardStyles.Footer>
-        <NavLink to={getTeamDetailsLink(team)}>MANAGE</NavLink>
+        <UtilityStyles.NavLinkContainer>
+          <NavLink to={getTeamDetailsLink(team)}>MANAGE</NavLink>
+        </UtilityStyles.NavLinkContainer>
       </SubscriptionInfoCardStyles.Footer>
     </GridCardStyles.GridCard>
   );

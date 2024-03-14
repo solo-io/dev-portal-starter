@@ -1,12 +1,8 @@
 import { useContext, useMemo } from "react";
 import { di } from "react-magnetic-di";
-import { useListApis } from "../../../Apis/hooks";
+import { useListApiProducts, useListApis } from "../../../Apis/hooks";
 import { AppContext } from "../../../Context/AppContext";
-import {
-  FilterPair,
-  FilterType,
-  parsePairString,
-} from "../../../Utility/filter-utility";
+import { FilterPair, FilterType } from "../../../Utility/filter-utility";
 import { EmptyData } from "../../Common/EmptyData";
 import { Loading } from "../../Common/Loading";
 import { ApisPageStyles } from "../ApisPage.style";
@@ -22,46 +18,50 @@ export function ApisList({
 }) {
   di(useListApis);
   const { preferGridView } = useContext(AppContext);
-  const { isLoading, data: apisList } = useListApis();
+  const { isLoading, data: apiProductsList } = useListApiProducts();
 
   //
   // Filter the list of api products.
   //
-  const filteredApisList = useMemo(() => {
-    if (!apisList?.length) {
+  const filteredApiProductsList = useMemo(() => {
+    if (!apiProductsList?.length) {
       return [];
     }
-    return apisList
+    return apiProductsList
       .filter((api) => {
         let passesNameFilter =
           !nameFilter ||
-          api.apiProductDisplayName
-            .toLocaleLowerCase()
-            .includes(nameFilter.toLocaleLowerCase());
+          api.name.toLocaleLowerCase().includes(nameFilter.toLocaleLowerCase());
         const passesFilterList =
           !allFilters.length ||
-          api.apiVersions.some((apiVersion) => {
-            return allFilters.every((filter) => {
-              return (
-                (filter.type === FilterType.name &&
-                  api.apiProductDisplayName
-                    .toLocaleLowerCase()
-                    .includes(filter.displayName.toLocaleLowerCase())) ||
-                (filter.type === FilterType.keyValuePair &&
-                  apiVersion.customMetadata &&
-                  apiVersion.customMetadata[
-                    parsePairString(filter.displayName).pairKey
-                  ] === parsePairString(filter.displayName).value) ||
-                (filter.type === FilterType.apiType && true) // This is the only type available for now
-              );
-            });
-          });
+          allFilters.every(
+            (filter) =>
+              (filter.type === FilterType.name &&
+                api.name
+                  .toLocaleLowerCase()
+                  .includes(filter.displayName.toLocaleLowerCase())) ||
+              filter.type !== FilterType.name
+          );
+        // api.apiVersions.some((apiVersion) => {
+        //   return allFilters.every((filter) => {
+        //     return (
+        //       (filter.type === FilterType.name &&
+        //         api.apiProductDisplayName
+        //           .toLocaleLowerCase()
+        //           .includes(filter.displayName.toLocaleLowerCase())) ||
+        //       (filter.type === FilterType.keyValuePair &&
+        //         apiVersion.customMetadata &&
+        //         apiVersion.customMetadata[
+        //           parsePairString(filter.displayName).pairKey
+        //         ] === parsePairString(filter.displayName).value) ||
+        //       (filter.type === FilterType.apiType && true) // This is the only type available for now
+        //     );
+        //   });
+        // });
         return passesNameFilter && passesFilterList;
       })
-      .sort((a, b) =>
-        a.apiProductDisplayName.localeCompare(b.apiProductDisplayName)
-      );
-  }, [apisList, allFilters, nameFilter]);
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [apiProductsList, allFilters, nameFilter]);
 
   //
   // Render
@@ -69,22 +69,22 @@ export function ApisList({
   if (isLoading) {
     return <Loading message="Getting list of apis..." />;
   }
-  if (!filteredApisList.length) {
+  if (!filteredApiProductsList.length) {
     return <EmptyData topic="API" />;
   }
   if (preferGridView) {
     return (
       <ApisPageStyles.ApiGridList>
-        {filteredApisList.map((api) => (
-          <ApiSummaryGridCard api={api} key={api.apiProductId} />
+        {filteredApiProductsList.map((apiProduct) => (
+          <ApiSummaryGridCard apiProduct={apiProduct} key={apiProduct.id} />
         ))}
       </ApisPageStyles.ApiGridList>
     );
   }
   return (
     <div>
-      {filteredApisList.map((api) => (
-        <ApiSummaryListCard api={api} key={api.apiProductId} />
+      {filteredApiProductsList.map((apiProduct) => (
+        <ApiSummaryListCard apiProduct={apiProduct} key={apiProduct.id} />
       ))}
     </div>
   );
