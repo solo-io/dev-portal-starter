@@ -16,31 +16,35 @@ const CreateNewAppModal = ({
   onClose: () => void;
 }) => {
   di(useListTeams, useCreateAppMutation);
+  const { isLoading: isLoadingTeams, data: teams } = useListTeams();
+
+  //
+  // Form Fields
+  //
   const [appName, setAppName] = useState("");
   const [appDescription, setAppDescription] = useState("");
   const [appTeamId, setTeamId] = useState("");
 
+  //
+  // Form
+  //
   const formRef = useRef<HTMLFormElement>(null);
-  const isFormDisabled =
-    !formRef.current?.checkValidity() ||
-    !open ||
-    !appName ||
-    !appDescription ||
-    !appTeamId;
+  const isFormDisabled = !open || !appName || !appDescription || !appTeamId;
   const resetForm = () => {
     setTeamId("");
     setAppName("");
     setAppDescription("");
   };
+  useEffect(resetForm, [open]);
 
-  const { isLoading: isLoadingTeams, data: teams } = useListTeams();
+  //
+  // Form Submit
+  //
   const { trigger: createApp } = useCreateAppMutation(appTeamId);
-
   const onSubmit = async (e?: FormEvent) => {
     e?.preventDefault();
-    // Do HTML form validation.
-    formRef.current?.reportValidity();
-    if (isFormDisabled) {
+    const isValid = formRef.current?.reportValidity();
+    if (!isValid || isFormDisabled) {
       return;
     }
     await toast.promise(
@@ -54,11 +58,9 @@ const CreateNewAppModal = ({
     onClose();
   };
 
-  // Reset the form on close.
-  useEffect(() => {
-    if (!open) resetForm();
-  }, [open]);
-
+  //
+  // Render
+  //
   return (
     <FormModalStyles.CustomModal onClose={onClose} opened={open} size={"800px"}>
       <FormModalStyles.HeaderContainer>

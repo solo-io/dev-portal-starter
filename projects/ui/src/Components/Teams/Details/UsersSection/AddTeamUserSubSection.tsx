@@ -1,6 +1,7 @@
 import { Box, Input } from "@mantine/core";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { di } from "react-magnetic-di";
 import { Team } from "../../../../Apis/api-types";
 import { useAddTeamMemberMutation } from "../../../../Apis/hooks";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
@@ -16,27 +17,31 @@ const AddTeamUserSubSection = ({
   onClose: () => void;
   team: Team;
 }) => {
+  di(useAddTeamMemberMutation);
+
+  //
+  // Form Fields
+  //
   const [formEmail, setFormEmail] = useState("");
 
+  //
+  // Form
+  //
   const formRef = useRef<HTMLFormElement>(null);
-  const isFormDisabled =
-    !formRef.current?.checkValidity() || !open || !formEmail;
-
+  const isFormDisabled = !open || !formEmail;
   const resetForm = () => {
     setFormEmail("");
   };
+  useEffect(resetForm, [open]);
 
-  useEffect(() => {
-    resetForm();
-  }, [open]);
-
+  //
+  // Form Submit
+  //
   const { trigger: addUserToTeam } = useAddTeamMemberMutation(team.id);
-
   const onSubmit = async (e?: FormEvent) => {
     e?.preventDefault();
-    // Do HTML form validation.
-    formRef.current?.reportValidity();
-    if (isFormDisabled) {
+    const isValid = formRef.current?.reportValidity();
+    if (!isValid || isFormDisabled) {
       return;
     }
     await toast.promise(addUserToTeam({ email: formEmail }), {
@@ -47,6 +52,9 @@ const AddTeamUserSubSection = ({
     onClose();
   };
 
+  //
+  // Render
+  //
   return (
     <Accordion open={open}>
       <Box pb={"10px"}>

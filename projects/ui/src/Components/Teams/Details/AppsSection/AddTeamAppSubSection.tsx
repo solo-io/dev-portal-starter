@@ -1,6 +1,7 @@
 import { Box, Input } from "@mantine/core";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { di } from "react-magnetic-di";
 import { Team } from "../../../../Apis/api-types";
 import { useCreateAppMutation } from "../../../../Apis/hooks";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
@@ -16,32 +17,33 @@ const AddTeamAppSubSection = ({
   onClose: () => void;
   team: Team;
 }) => {
+  di(useCreateAppMutation);
+
+  //
+  // Form Fields
+  //
   const [formAppName, setFormAppName] = useState("");
   const [formAppDescription, setFormAppDescription] = useState("");
 
+  //
+  // Form
+  //
   const formRef = useRef<HTMLFormElement>(null);
-  const isFormDisabled =
-    !formRef.current?.checkValidity() ||
-    !open ||
-    !formAppName ||
-    !formAppDescription;
-
+  const isFormDisabled = !open || !formAppName || !formAppDescription;
   const resetForm = () => {
     setFormAppName("");
     setFormAppDescription("");
   };
+  useEffect(resetForm, [open]);
 
-  useEffect(() => {
-    resetForm();
-  }, [open]);
-
+  //
+  // Form Submit
+  //
   const { trigger: createApp } = useCreateAppMutation(team.id);
-
   const onSubmit = async (e?: FormEvent) => {
     e?.preventDefault();
-    // Do HTML form validation.
-    formRef.current?.reportValidity();
-    if (isFormDisabled) {
+    const isValid = formRef.current?.reportValidity();
+    if (!isValid || isFormDisabled) {
       return;
     }
     await toast.promise(
@@ -55,6 +57,9 @@ const AddTeamAppSubSection = ({
     onClose();
   };
 
+  //
+  // Render
+  //
   return (
     <Accordion open={open}>
       <Box pb={"10px"}>

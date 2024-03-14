@@ -14,24 +14,32 @@ const CreateNewTeamModal = ({
   onClose: () => void;
 }) => {
   di(useCreateTeamMutation);
+
+  //
+  // Form Fields
+  //
   const [teamName, setTeamName] = useState("");
   const [teamDescription, setTeamDescription] = useState("");
 
+  //
+  // Form
+  //
   const formRef = useRef<HTMLFormElement>(null);
-  const isFormDisabled =
-    !formRef.current?.checkValidity() || !open || !teamName || !teamDescription;
+  const isFormDisabled = !open || !teamName || !teamDescription;
   const resetForm = () => {
     setTeamName("");
     setTeamDescription("");
   };
+  useEffect(resetForm, [open]);
 
+  //
+  // Form Submit
+  //
   const { trigger: createTeam } = useCreateTeamMutation();
-
   const onSubmit = async (e?: FormEvent) => {
     e?.preventDefault();
-    // Do HTML form validation.
-    formRef.current?.reportValidity();
-    if (isFormDisabled) {
+    const isValid = formRef.current?.reportValidity();
+    if (!isValid || isFormDisabled) {
       return;
     }
     await toast.promise(
@@ -45,11 +53,9 @@ const CreateNewTeamModal = ({
     onClose();
   };
 
-  // Reset the form on close.
-  useEffect(() => {
-    if (!open) resetForm();
-  }, [open]);
-
+  //
+  // Render
+  //
   return (
     <FormModalStyles.CustomModal onClose={onClose} opened={open} size={"800px"}>
       <FormModalStyles.HeaderContainer>
