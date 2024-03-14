@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { ApiProductSummary } from "../../../../Apis/api-types";
 import { Icon } from "../../../../Assets/Icons";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
-import { getApiDetailsLinkWithId } from "../../../../Utility/link-builders";
+import { getApiProductDetailsLink } from "../../../../Utility/link-builders";
 
 /**
  * MAIN COMPONENT
@@ -28,7 +28,7 @@ export function ApiSummaryGridCard({
 
   return (
     <GridCardStyles.GridCardWithLink
-      to={getApiDetailsLinkWithId(apiProduct.id)}
+      to={getApiProductDetailsLink(apiProduct.id)}
     >
       <div className="content">
         <div className="apiImageHolder">

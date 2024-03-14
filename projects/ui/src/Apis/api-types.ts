@@ -60,7 +60,7 @@ export type ApiProductDetails = Omit<ApiProductSummary, "versionsCount"> & {
   contactEmail: string;
   metadata: Record<string, string>;
   public: boolean;
-  versions: ApiVersion[];
+  versions?: ApiVersion[];
   subscriptions: Subscription[];
 };
 
@@ -159,7 +159,7 @@ export type APISchema = {
       };
     };
   };
-  info: {
+  info?: {
     title: string;
     version: string;
   };

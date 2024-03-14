@@ -3,7 +3,7 @@ import { DeepPartialObject, DiProvider, injectable } from "react-magnetic-di";
 import { MemoryRouter, useParams } from "react-router-dom";
 import { APIProduct } from "../../Apis/api-types";
 import { useGetApiDetails, useListApis } from "../../Apis/hooks";
-import { ApiDetailsPage } from "../../Components/ApiDetails/ApiDetailsPage";
+import { ApiProductDetailsPage } from "../../Components/ApiDetails/ApiProductDetailsPage";
 import { appContentDecorator } from "../decorators/decorators";
 import exampleOpenApiSchema from "./exampleOpenApiSchema";
 
@@ -11,9 +11,9 @@ import exampleOpenApiSchema from "./exampleOpenApiSchema";
 // More on writing stories with args: https://storybook.js.org/docs/7.0/react/writing-stories/args
 const meta = {
   title: "API Details / API Details Page",
-  component: ApiDetailsPage,
+  component: ApiProductDetailsPage,
   parameters: { layout: "fullscreen" },
-} satisfies Meta<typeof ApiDetailsPage>;
+} satisfies Meta<typeof ApiProductDetailsPage>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

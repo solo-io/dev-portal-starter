@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
-export namespace ApiDetailsPageStyles {
+export namespace ApiProductDetailsPageStyles {
   export const ApiDetailsHeaderAddition = styled.div(
     ({ theme }) => css`
       display: flex;

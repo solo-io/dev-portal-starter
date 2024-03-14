@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { APISchema } from "../../../Apis/api-types";
 import { AppContext } from "../../../Context/AppContext";
 import { PageContainerWrapper } from "../../Common/PageContainer";
-import { ApiDetailsPageStyles as Styles } from "../ApiDetailsPage.style";
+import { ApiProductDetailsPageStyles as Styles } from "../ApiProductDetailsPage.style";
 import { RedocDisplay } from "./redoc/RedocDisplay";
 import { SwaggerDisplay } from "./swagger/SwaggerDisplay";
 

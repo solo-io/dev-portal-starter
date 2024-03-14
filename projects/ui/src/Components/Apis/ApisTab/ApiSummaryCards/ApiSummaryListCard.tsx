@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { ApiProductSummary } from "../../../../Apis/api-types";
 import { Icon } from "../../../../Assets/Icons";
 import { ListCardStyles } from "../../../../Styles/shared/ListCard.style";
-import { getApiDetailsLinkWithId } from "../../../../Utility/link-builders";
+import { getApiProductDetailsLink } from "../../../../Utility/link-builders";
 
 /**
  * MAIN COMPONENT
@@ -13,7 +13,7 @@ export function ApiSummaryListCard({
   apiProduct: ApiProductSummary;
 }) {
   return (
-    <NavLink to={getApiDetailsLinkWithId(apiProduct.id)}>
+    <NavLink to={getApiProductDetailsLink(apiProduct.id)}>
       <ListCardStyles.ListCardWithLink>
         <div className="content">
           <div className="majorIconHolder">

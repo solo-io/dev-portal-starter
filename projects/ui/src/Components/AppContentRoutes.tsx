@@ -4,7 +4,7 @@ import {
   oidcAuthCodeConfigCallbackPath,
   oidcAuthCodeConfigLogoutPath,
 } from "../user_variables.tmplr";
-import { ApiDetailsPage } from "./ApiDetails/ApiDetailsPage";
+import { ApiProductDetailsPage } from "./ApiProductDetails/ApiProductDetailsPage";
 import { ApisPage } from "./Apis/ApisPage";
 import { AppsPage } from "./Apps/AppsPage";
 import AppDetailsPage from "./Apps/Details/AppDetailsPage";
@@ -73,6 +73,14 @@ function AppContentRoutes() {
           }
         />
         <Route
+          path="/apis/:apiProductId"
+          element={
+            <ErrorBoundary fallback="There was an issue displaying the API Product details">
+              <ApiProductDetailsPage />
+            </ErrorBoundary>
+          }
+        />
+        <Route
           path="/apps"
           element={
             <ErrorBoundary fallback="There was an issue displaying the list of Apps">
@@ -101,14 +109,6 @@ function AppContentRoutes() {
           element={
             <ErrorBoundary fallback="There was an issue displaying the Team details">
               <TeamDetailsPage />
-            </ErrorBoundary>
-          }
-        />
-        <Route
-          path="/api-details/:apiProductId/:apiVersion"
-          element={
-            <ErrorBoundary fallback="There was an issue displaying details about that API">
-              <ApiDetailsPage />
             </ErrorBoundary>
           }
         />
