@@ -7,6 +7,7 @@ import {
   APISchema,
   ApiProductDetails,
   ApiProductSummary,
+  ApiVersion,
   App,
   ErrorMessageResponse,
   Member,
@@ -170,6 +171,9 @@ export function useListApiProducts() {
 }
 export function useGetApiProductDetails(id?: string) {
   return useSwrWithAuth<ApiProductDetails>(`/api-products/${id}`);
+}
+export function useGetApiProductVersions(id?: string) {
+  return useSwrWithAuth<ApiVersion[]>(`/api-products/${id}/versions`);
 }
 
 // Subscriptions

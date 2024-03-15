@@ -2,79 +2,86 @@ import { Loader } from "@mantine/core";
 import { useEffect, useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
 import { useLocation, useParams } from "react-router-dom";
-import { useGetApiProductDetails, useListApiProducts } from "../../Apis/hooks";
+import {
+  useGetApiProductDetails,
+  useGetApiProductVersions,
+  useListApiProducts,
+} from "../../Apis/hooks";
 import { ApiProductDetailsPageContent } from "./ApiProductDetailsPageContent";
 
 const URL_SEARCH_PARAMS_API_VERSION_ID = "v";
 
 export function ApiProductDetailsPage() {
-  di(useParams, useListApiProducts);
+  di(useParams, useListApiProducts, useGetApiProductVersions);
   const location = useLocation();
   const { apiProductId } = useParams();
   const { isLoading: isLoadingApiProduct, data: apiProduct } =
     useGetApiProductDetails(apiProductId);
+  const { isLoading: isLoadingApiProductVersions, data: apiProductVersions } =
+    useGetApiProductVersions(apiProductId);
 
   //
   // API Version Selection
   //
-  const [selectedApiVersion, setSelectedApiVersion] = useState(
+  const [selectedApiVersionId, setSelectedApiVersionId] = useState(
     new URLSearchParams(location.search).get(URL_SEARCH_PARAMS_API_VERSION_ID)
   );
   // Update the URL when the selected API Version changes.
   useEffect(() => {
     const newSearchParams = new URLSearchParams(location.search);
-    if (!!selectedApiVersion) {
-      newSearchParams.set(URL_SEARCH_PARAMS_API_VERSION_ID, selectedApiVersion);
+    if (!!selectedApiVersionId) {
+      newSearchParams.set(
+        URL_SEARCH_PARAMS_API_VERSION_ID,
+        selectedApiVersionId
+      );
     } else {
       newSearchParams.delete(URL_SEARCH_PARAMS_API_VERSION_ID);
     }
     // window.location.search = `?${newSearchParams.toString()}`;
-  }, [selectedApiVersion]);
+  }, [selectedApiVersionId]);
 
   //
   // API Version Object
   //
   const apiVersion = useMemo(() => {
-    if (isLoadingApiProduct || !apiProduct) {
+    if (isLoadingApiProductVersions || apiProductVersions === undefined) {
       return null;
     }
-    // eslint-disable-next-line no-console
-    console.log(apiProduct);
     // Try to get the API Version object with the selected API Version ID
-    // from the `apiProduct.apiVersion` list.
-    let newApiVersion = apiProduct.versions?.find(
-      (v) => v.id === selectedApiVersion
+    // from the `apiProductVersions` list.
+    let newApiVersion = apiProductVersions.find(
+      (v) => v.id === selectedApiVersionId
     );
-    if (!newApiVersion) {
-      // If we couldn't find it, try to select the first api Product version and stop here.
-      // setSelectedApiVersion(apiProduct.versions.at(0)?.id ?? null);
+    if (newApiVersion === undefined) {
+      // If we couldn't find it, try to select the first API Product version and stop here.
+      if (apiProductVersions.length !== 0) {
+        setSelectedApiVersionId(apiProductVersions.at(0)!.id);
+      }
       return null;
     }
     // Otherwise we found it.
     return newApiVersion;
-  }, [isLoadingApiProduct, apiProduct, selectedApiVersion]);
+  }, [isLoadingApiProductVersions, apiProductVersions, selectedApiVersionId]);
 
   //
   // Render
   //
-  if (!apiProduct || isLoadingApiProduct) {
+  if (
+    apiProduct === undefined ||
+    isLoadingApiProduct ||
+    apiProductVersions === undefined ||
+    isLoadingApiProductVersions
+  ) {
     return <Loader />;
-  }
-  // if (!apiProduct.versions?.length) {
-  //   return (
-  //     <Box m="60px">
-  //       <EmptyData topicMessageOverride="This API Product has no API Version data." />
-  //     </Box>
-  //   );
-  // }
-  if (!apiVersion && !!apiProduct.versions?.length) {
-    // This is only returned when the apiVersion is being assigned to.
-    return null;
   }
   return (
     <ApiProductDetailsPageContent
       apiProduct={apiProduct}
-      apiVersion={apiVersion}
+      selectedApiVersion={apiVersion}
+      onSelectedApiVersionChange={(newApiVersionId) =>
+        setSelectedApiVersionId(newApiVersionId)
+      }
+      apiProductVersions={apiProductVersions}
     />
   );
 }

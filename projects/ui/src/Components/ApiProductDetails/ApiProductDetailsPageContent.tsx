@@ -1,25 +1,27 @@
 import { Box } from "@mantine/core";
 import { di } from "react-magnetic-di";
 import { ApiProductDetails, ApiVersion } from "../../Apis/api-types";
-import { useGetApiDetails } from "../../Apis/hooks";
+import { useGetApiDetails, useGetApiProductVersions } from "../../Apis/hooks";
 import { Icon } from "../../Assets/Icons";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 import { EmptyData } from "../Common/EmptyData";
 import { ErrorBoundary } from "../Common/ErrorBoundary";
-import { Loading } from "../Common/Loading";
 import { ApiProductDetailsPageStyles as Styles } from "./ApiProductDetailsPage.style";
-import { ApiSchemaDisplay } from "./SchemaTab/ApiSchemaDisplay";
 
 export function ApiProductDetailsPageContent({
   apiProduct,
-  apiVersion,
+  apiProductVersions,
+  selectedApiVersion,
+  onSelectedApiVersionChange,
 }: {
   apiProduct: ApiProductDetails;
-  apiVersion: ApiVersion | null;
+  apiProductVersions: ApiVersion[];
+  selectedApiVersion: ApiVersion | null;
+  onSelectedApiVersionChange: (newVersionId: string | null) => void;
 }) {
-  di(useGetApiDetails);
-  const { data: apiSchema, isLoading } = useGetApiDetails(apiVersion?.id);
+  di(useGetApiDetails, useGetApiProductVersions);
+  // const { data: apiSchema, isLoading } = useGetApiDetails(apiVersion?.id);
 
   return (
     <div>
@@ -38,17 +40,18 @@ export function ApiProductDetailsPageContent({
           "Browse the list of APIs and documentation in this portal. From here you can get the information you need to make API calls."
         }
         additionalContent={
-          !!apiSchema && apiVersion ? (
+          // !!apiSchema && selectedApiVersion ? (
+          selectedApiVersion ? (
             <Styles.ApiDetailsHeaderAddition>
               <Styles.ApiDetailsExtraInfo>
-                <Icon.HtmlTag /> {Object.keys(apiSchema.paths).length}{" "}
+                {/* <Icon.HtmlTag /> {Object.keys(apiSchema.paths).length}{" "} */}
                 Operations
               </Styles.ApiDetailsExtraInfo>
               <Styles.ApiDetailsExtraInfo>
                 <Icon.OpenApiIcon /> OpenAPI
               </Styles.ApiDetailsExtraInfo>
               <Styles.ApiDetailsExtraInfo>
-                Version: {apiVersion.name}
+                Version: {selectedApiVersion.name}
               </Styles.ApiDetailsExtraInfo>
             </Styles.ApiDetailsHeaderAddition>
           ) : undefined
@@ -56,21 +59,20 @@ export function ApiProductDetailsPageContent({
         breadcrumbItems={[
           { label: "Home", link: "/" },
           { label: "APIs", link: "/apis" },
-          { label: apiSchema?.info?.title ?? "" },
+          { label: apiProduct.name },
         ]}
       />
-      {}
 
-      {!!apiVersion ? (
+      {!!selectedApiVersion ? (
         <ErrorBoundary fallback="There was an issue displaying the schema details">
-          {isLoading || !apiSchema ? (
+          {/* {isLoading || !apiSchema ? (
             <Loading message={`Retrieving schema for ${apiVersion.id}...`} />
           ) : (
             <ApiSchemaDisplay apiSchema={apiSchema} apiId={apiVersion.id} />
-          )}
+          )} */}
         </ErrorBoundary>
       ) : (
-        !apiProduct.versions?.length && (
+        !apiProductVersions?.length && (
           <Box m="60px">
             <EmptyData
               topicMessageOverride={`The API Product, "${apiProduct.name}", has no API Version data.`}
