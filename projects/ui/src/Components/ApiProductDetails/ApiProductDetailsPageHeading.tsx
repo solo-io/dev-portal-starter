@@ -1,0 +1,99 @@
+import { Select } from "@mantine/core";
+import { useState } from "react";
+import {
+  ApiProductDetails,
+  ApiVersion,
+  ApiVersionSchema,
+} from "../../Apis/api-types";
+import { Icon } from "../../Assets/Icons";
+import { FormModalStyles } from "../../Styles/shared/FormModalStyles";
+import NewSubscriptionModal from "../Apps/Details/Modals/NewSubscriptionModal";
+import { BannerHeading } from "../Common/Banner/BannerHeading";
+import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
+import { Button } from "../Common/Button";
+import { ApiProductDetailsPageStyles as Styles } from "./ApiProductDetailsPage.style";
+
+const ApiProductDetailsPageHeading = ({
+  apiProduct,
+  apiProductVersions,
+  selectedApiVersion,
+  onSelectedApiVersionChange,
+  apiVersionSchema,
+}: {
+  apiProduct: ApiProductDetails;
+  apiProductVersions: ApiVersion[];
+  selectedApiVersion: ApiVersion | null;
+  onSelectedApiVersionChange: (newVersionId: string | null) => void;
+  apiVersionSchema: ApiVersionSchema | undefined;
+}) => {
+  const [showSubscribeModal, setShowSubscribeModal] = useState(false);
+
+  return (
+    <BannerHeading
+      title={
+        <BannerHeadingTitle
+          text={apiProduct.name}
+          stylingTweaks={{
+            fontSize: "32px",
+            lineHeight: "36px",
+          }}
+        />
+      }
+      description={
+        !!apiProduct.description
+          ? apiProduct.description
+          : "Browse the list of APIs and documentation in this portal. From here you can get the information you need to make API calls."
+      }
+      additionalContent={
+        selectedApiVersion ? (
+          <Styles.ApiDetailsHeaderAddition>
+            <Styles.ApiDetailsExtraInfoLeftSection>
+              {!!apiVersionSchema && (
+                <Styles.ApiDetailsExtraInfo>
+                  <Icon.HtmlTag /> {Object.keys(apiVersionSchema.paths).length}{" "}
+                  Operations
+                </Styles.ApiDetailsExtraInfo>
+              )}
+              <Styles.ApiDetailsExtraInfo>
+                <Icon.OpenApiIcon /> OpenAPI
+              </Styles.ApiDetailsExtraInfo>
+            </Styles.ApiDetailsExtraInfoLeftSection>
+            {apiProductVersions.length > 0 && (
+              <FormModalStyles.InputContainer>
+                <Select
+                  id="api-version-select"
+                  aria-label="API version selection"
+                  // This className="" is intentional and removes the antd select dropdown classname.
+                  className=""
+                  value={selectedApiVersion.id}
+                  onChange={(value) => {
+                    onSelectedApiVersionChange(value ?? "");
+                  }}
+                  data={apiProductVersions.map((v) => ({
+                    value: v.id,
+                    label: v.name,
+                  }))}
+                />
+              </FormModalStyles.InputContainer>
+            )}
+            <Button onClick={() => setShowSubscribeModal(true)}>
+              SUBSCRIBE
+            </Button>
+            <NewSubscriptionModal
+              opened={showSubscribeModal}
+              onClose={() => setShowSubscribeModal(false)}
+              apiProduct={apiProduct}
+            />
+          </Styles.ApiDetailsHeaderAddition>
+        ) : undefined
+      }
+      breadcrumbItems={[
+        { label: "Home", link: "/" },
+        { label: "APIs", link: "/apis" },
+        { label: apiProduct.name },
+      ]}
+    />
+  );
+};
+
+export default ApiProductDetailsPageHeading;

@@ -1,13 +1,14 @@
 import { Box } from "@mantine/core";
-import { di } from "react-magnetic-di";
-import { ApiProductDetails, ApiVersion } from "../../Apis/api-types";
-import { useGetApiDetails, useGetApiProductVersions } from "../../Apis/hooks";
-import { Icon } from "../../Assets/Icons";
-import { BannerHeading } from "../Common/Banner/BannerHeading";
-import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
+import { useMemo } from "react";
+import {
+  ApiProductDetails,
+  ApiVersion,
+  ApiVersionSchema,
+} from "../../Apis/api-types";
 import { EmptyData } from "../Common/EmptyData";
 import { ErrorBoundary } from "../Common/ErrorBoundary";
-import { ApiProductDetailsPageStyles as Styles } from "./ApiProductDetailsPage.style";
+import ApiProductDetailsPageHeading from "./ApiProductDetailsPageHeading";
+import { ApiSchemaDisplay } from "./SchemaTab/ApiSchemaDisplay";
 
 export function ApiProductDetailsPageContent({
   apiProduct,
@@ -20,59 +21,44 @@ export function ApiProductDetailsPageContent({
   selectedApiVersion: ApiVersion | null;
   onSelectedApiVersionChange: (newVersionId: string | null) => void;
 }) {
-  di(useGetApiDetails, useGetApiProductVersions);
-  // const { data: apiSchema, isLoading } = useGetApiDetails(apiVersion?.id);
+  const apiVersionSchema = useMemo<ApiVersionSchema | undefined>(() => {
+    const apiSpec = selectedApiVersion?.apiSpec;
+    if (typeof apiSpec === "string") {
+      return JSON.parse(apiSpec);
+    }
+    return apiSpec;
+  }, [selectedApiVersion]);
 
+  //
+  // Render
+  //
   return (
     <div>
-      <BannerHeading
-        title={
-          <BannerHeadingTitle
-            text={apiProduct.name}
-            stylingTweaks={{
-              fontSize: "32px",
-              lineHeight: "36px",
-            }}
-          />
-        }
-        fullIcon={<Icon.Bug />}
-        description={
-          "Browse the list of APIs and documentation in this portal. From here you can get the information you need to make API calls."
-        }
-        additionalContent={
-          // !!apiSchema && selectedApiVersion ? (
-          selectedApiVersion ? (
-            <Styles.ApiDetailsHeaderAddition>
-              <Styles.ApiDetailsExtraInfo>
-                {/* <Icon.HtmlTag /> {Object.keys(apiSchema.paths).length}{" "} */}
-                Operations
-              </Styles.ApiDetailsExtraInfo>
-              <Styles.ApiDetailsExtraInfo>
-                <Icon.OpenApiIcon /> OpenAPI
-              </Styles.ApiDetailsExtraInfo>
-              <Styles.ApiDetailsExtraInfo>
-                Version: {selectedApiVersion.name}
-              </Styles.ApiDetailsExtraInfo>
-            </Styles.ApiDetailsHeaderAddition>
-          ) : undefined
-        }
-        breadcrumbItems={[
-          { label: "Home", link: "/" },
-          { label: "APIs", link: "/apis" },
-          { label: apiProduct.name },
-        ]}
+      <ApiProductDetailsPageHeading
+        apiProduct={apiProduct}
+        apiProductVersions={apiProductVersions}
+        selectedApiVersion={selectedApiVersion}
+        onSelectedApiVersionChange={onSelectedApiVersionChange}
+        apiVersionSchema={apiVersionSchema}
       />
 
       {!!selectedApiVersion ? (
         <ErrorBoundary fallback="There was an issue displaying the schema details">
-          {/* {isLoading || !apiSchema ? (
-            <Loading message={`Retrieving schema for ${apiVersion.id}...`} />
+          {!apiVersionSchema ? (
+            <Box m="60px">
+              <EmptyData
+                topicMessageOverride={`No schema was returned for the API Version: "${selectedApiVersion.name}".`}
+              />
+            </Box>
           ) : (
-            <ApiSchemaDisplay apiSchema={apiSchema} apiId={apiVersion.id} />
-          )} */}
+            <ApiSchemaDisplay
+              apiVersionSchema={apiVersionSchema}
+              apiVersionId={selectedApiVersion.id}
+            />
+          )}
         </ErrorBoundary>
       ) : (
-        !apiProductVersions?.length && (
+        !apiProductVersions.length && (
           <Box m="60px">
             <EmptyData
               topicMessageOverride={`The API Product, "${apiProduct.name}", has no API Version data.`}

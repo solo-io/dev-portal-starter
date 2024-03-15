@@ -1,6 +1,6 @@
 import { Button } from "@mantine/core";
 import { useContext, useState } from "react";
-import { APISchema } from "../../../Apis/api-types";
+import { ApiVersionSchema } from "../../../Apis/api-types";
 import { AppContext } from "../../../Context/AppContext";
 import { PageContainerWrapper } from "../../Common/PageContainer";
 import { ApiProductDetailsPageStyles as Styles } from "../ApiProductDetailsPage.style";
@@ -11,11 +11,11 @@ import { SwaggerDisplay } from "./swagger/SwaggerDisplay";
  * MAIN COMPONENT
  **/
 export function ApiSchemaDisplay({
-  apiSchema,
-  apiId,
+  apiVersionSchema,
+  apiVersionId,
 }: {
-  apiSchema: APISchema;
-  apiId: string;
+  apiVersionSchema: ApiVersionSchema;
+  apiVersionId: string;
 }) {
   const { pageContentIsWide } = useContext(AppContext);
   const [isSwagger, setIsSwagger] = useState(false);
@@ -36,14 +36,14 @@ export function ApiSchemaDisplay({
           //
           // Redoc - Default
           //
-          <RedocDisplay spec={apiSchema} />
+          <RedocDisplay apiVersionSchema={apiVersionSchema} />
         ) : (
           //
           // Swagger - Alternative
           //
           <SwaggerDisplay
-            spec={apiSchema}
-            apiId={apiId ?? "Unsupported schema display"}
+            apiVersionSchema={apiVersionSchema}
+            apiVersionId={apiVersionId ?? "Unsupported schema display"}
           />
         )}
       </PageContainerWrapper>

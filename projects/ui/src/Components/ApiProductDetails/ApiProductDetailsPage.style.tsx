@@ -1,15 +1,19 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import { svgColorReplace } from "../../Styles/utils";
 
 export namespace ApiProductDetailsPageStyles {
-  export const ApiDetailsHeaderAddition = styled.div(
+  export const ApiDetailsHeaderAddition = styled.div`
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  `;
+
+  export const ApiDetailsExtraInfoLeftSection = styled.div(
     ({ theme }) => css`
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      font-size: 18px;
-      font-weight: 500;
-      color: ${theme.defaultColoredText};
+      border-right: 1px solid ${theme.augustGrey};
+      padding-right: 15px;
     `
   );
 
@@ -17,17 +21,15 @@ export namespace ApiProductDetailsPageStyles {
     ({ theme }) => css`
       display: flex;
       align-items: center;
-      margin-right: 25px;
+      font-size: 0.95rem;
+      font-weight: 500;
 
       svg {
         width: 23px;
         height: 23px;
         margin-right: 8px;
-
-        * {
-          fill: ${theme.primary};
-        }
       }
+      ${svgColorReplace(theme.primary)}
     `
   );
 

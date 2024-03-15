@@ -33,7 +33,7 @@ export type ApiProductDetails = {
 };
 
 export type ApiVersion = {
-  apiSpec?: string;
+  apiSpec?: string | ApiVersionSchema;
   createdAt: string;
   documentation: string;
   id: string;
@@ -99,7 +99,7 @@ export type ErrorMessageResponse = {
 };
 
 type SchemaPropertyType = "string" | "integer" | "array" | "object";
-export type APISchema = {
+export type ApiVersionSchema = {
   components?: {
     schemas: {
       Author?: {
