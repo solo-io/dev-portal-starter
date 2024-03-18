@@ -3,7 +3,12 @@ import { useMemo } from "react";
 import { di } from "react-magnetic-di";
 import { NavLink } from "react-router-dom";
 import { Subscription } from "../../../Apis/api-types";
-import { useListApiProducts, useListApis } from "../../../Apis/hooks";
+import {
+  useListApiProducts,
+  useListApis,
+  useListAppsForTeams,
+  useListTeams,
+} from "../../../Apis/hooks";
 import { AppIcon } from "../../../Assets/Icons/Icons";
 import { CardStyles } from "../../../Styles/shared/Card.style";
 import { UtilityStyles } from "../../../Styles/shared/Utility.style";
@@ -19,14 +24,21 @@ const SubscriptionInfoCard = ({
 }: {
   subscription: Subscription;
 }) => {
-  di(useListApis);
+  di(useListApis, useListTeams, useListAppsForTeams);
   const { data: apiProductsList } = useListApiProducts();
+  const { data: teams } = useListTeams();
+  const { data: appsForTeams } = useListAppsForTeams(teams ?? []);
+  const apps = useMemo(() => appsForTeams?.flat(), [appsForTeams]);
 
   const subscribedApiProduct = useMemo(() => {
     return apiProductsList?.find(
       (apiProduct) => apiProduct.id === subscription.apiProductId
     );
   }, [apiProductsList, subscription]);
+
+  const appThatSubscribed = useMemo(() => {
+    return apps?.find((app) => app.id === subscription.applicationId);
+  }, [apps, subscription]);
 
   return (
     // <Styles.Card subscriptionState={subscription.state}>
@@ -45,7 +57,8 @@ const SubscriptionInfoCard = ({
           <AppIcon width={20} />
           <CardStyles.SmallerText>
             {/* {subscription.appName} */}
-            {subscription.id}
+            {appThatSubscribed?.name ?? "APP?"} -{" "}
+            {subscribedApiProduct?.name ?? "API PRODUCT?"}
           </CardStyles.SmallerText>
         </Flex>
         <CardStyles.SmallerText>
