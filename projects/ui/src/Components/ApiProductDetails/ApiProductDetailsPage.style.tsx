@@ -7,13 +7,13 @@ export namespace ApiProductDetailsPageStyles {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 10px;
   `;
 
   export const ApiDetailsExtraInfoLeftSection = styled.div(
     ({ theme }) => css`
       border-right: 1px solid ${theme.augustGrey};
-      padding-right: 15px;
+      padding-right: 10px;
     `
   );
 

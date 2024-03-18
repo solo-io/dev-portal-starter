@@ -1,5 +1,6 @@
 import { Select } from "@mantine/core";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import {
   ApiProductDetails,
   ApiVersion,
@@ -7,6 +8,7 @@ import {
 } from "../../Apis/api-types";
 import { Icon } from "../../Assets/Icons";
 import { FormModalStyles } from "../../Styles/shared/FormModalStyles";
+import { downloadFile } from "../../Utility/utility";
 import NewSubscriptionModal from "../Apps/Details/Modals/NewSubscriptionModal";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
@@ -27,6 +29,15 @@ const ApiProductDetailsPageHeading = ({
   apiVersionSchema: ApiVersionSchema | undefined;
 }) => {
   const [showSubscribeModal, setShowSubscribeModal] = useState(false);
+
+  const downloadApiSpec = () => {
+    if (!selectedApiVersion?.apiSpec) {
+      return;
+    }
+    const fileName = selectedApiVersion.name + "_api-spec.json";
+    downloadFile(fileName, JSON.stringify(selectedApiVersion.apiSpec));
+    toast.success("Downloaded " + fileName);
+  };
 
   return (
     <BannerHeading
@@ -78,6 +89,12 @@ const ApiProductDetailsPageHeading = ({
             )}
             <Button onClick={() => setShowSubscribeModal(true)}>
               SUBSCRIBE
+            </Button>
+            <Button
+              disabled={!selectedApiVersion.apiSpec}
+              onClick={downloadApiSpec}
+            >
+              DOWNLOAD SPEC
             </Button>
             <NewSubscriptionModal
               opened={showSubscribeModal}
