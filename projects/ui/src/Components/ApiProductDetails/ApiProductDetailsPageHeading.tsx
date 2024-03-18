@@ -74,7 +74,7 @@ const ApiProductDetailsPageHeading = ({
               </Styles.ApiDetailsExtraInfo>
             </Styles.ApiDetailsExtraInfoLeftSection>
             {apiProductVersions.length > 0 && (
-              <FormModalStyles.InputContainer>
+              <FormModalStyles.InputContainer grow>
                 <Select
                   id="api-version-select"
                   aria-label="API version selection"
