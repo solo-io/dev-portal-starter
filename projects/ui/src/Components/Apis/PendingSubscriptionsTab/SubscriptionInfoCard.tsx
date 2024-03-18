@@ -42,12 +42,12 @@ const SubscriptionInfoCard = ({
 
   return (
     // <Styles.Card subscriptionState={subscription.state}>
-    <Styles.Card subscriptionState={SubscriptionState.REJECTED}>
+    // <Styles.Card subscriptionState={SubscriptionState.REJECTED}>
+    <Styles.Card subscriptionState={SubscriptionState.PENDING}>
       <Styles.Content>
         <Flex justify="space-between">
-          {/* <Styles.CardTitle>{subscription.subscriptionName}</Styles.CardTitle> */}
           <CardStyles.TitleMedium bold>
-            {subscription.id}
+            {subscribedApiProduct?.name ?? "API Product Not Found"}
           </CardStyles.TitleMedium>
           {/* <Styles.SubscriptionCardBadge subscriptionState={subscription.state}>
             {subscriptionStateMap[subscription.state].label}
@@ -56,15 +56,9 @@ const SubscriptionInfoCard = ({
         <Flex align={"center"} justify={"flex-start"} gap={"8px"}>
           <AppIcon width={20} />
           <CardStyles.SmallerText>
-            {/* {subscription.appName} */}
-            {appThatSubscribed?.name ?? "APP?"} -{" "}
-            {subscribedApiProduct?.name ?? "API PRODUCT?"}
+            {appThatSubscribed?.name ?? "App Not Found"}
           </CardStyles.SmallerText>
         </Flex>
-        <CardStyles.SmallerText>
-          {/* {subscription.usagePlanName} */}
-          {subscription.id}
-        </CardStyles.SmallerText>
       </Styles.Content>
       {subscribedApiProduct && (
         <Styles.Footer>
