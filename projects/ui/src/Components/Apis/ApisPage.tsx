@@ -1,5 +1,7 @@
 import { Box, Flex, Loader, Tabs } from "@mantine/core";
+import { useEffect, useState } from "react";
 import { di } from "react-magnetic-di";
+import { useLocation, useNavigate } from "react-router-dom";
 import { SubscriptionStatus } from "../../Apis/api-types";
 import {
   useListApiProducts,
@@ -14,6 +16,13 @@ import { PageContainer } from "../Common/PageContainer";
 import { ApisPageStyles } from "./ApisPage.style";
 import { ApisTabContent } from "./ApisTab/ApisTabContent";
 import PendingSubscriptionTabContent from "./PendingSubscriptionsTab/PendingSubscriptionTabContent";
+
+const URL_SEARCH_PARAM_TAB_KEY = "tab";
+const tabValues = {
+  APIS: "apis",
+  SUBS: "subs",
+};
+const defaultTabValue = tabValues.APIS;
 
 export enum SubscriptionState {
   PENDING,
@@ -46,6 +55,29 @@ export function ApisPage() {
   const subscriptionsError = subscriptions && "message" in subscriptions;
   const isLoading = isLoadingApiProducts || isLoadingSubscriptions;
 
+  //
+  // Tab navigation
+  //
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [tab, setTab] = useState(
+    new URLSearchParams(location.search).get(URL_SEARCH_PARAM_TAB_KEY) ??
+      defaultTabValue
+  );
+  // Update the URL when the selected tab changes.
+  useEffect(() => {
+    const newSearchParams = new URLSearchParams(location.search);
+    if (!!tab) {
+      newSearchParams.set(URL_SEARCH_PARAM_TAB_KEY, tab);
+    }
+    navigate(location.pathname + `?${newSearchParams.toString()}`, {
+      replace: true,
+    });
+  }, [tab, location.search]);
+
+  //
+  // Render
+  //
   return (
     <PageContainer>
       <BannerHeading
@@ -64,14 +96,14 @@ export function ApisPage() {
           // If there was a subscriptions error message (aka if we aren't an admin), don't show the subscriptions.
           <ApisTabContent />
         ) : (
-          <Tabs defaultValue="apis">
+          <Tabs value={tab} onTabChange={(t) => setTab(t ?? defaultTabValue)}>
             {/*
           
             Tab Titles
             */}
             <Tabs.List>
-              <Tabs.Tab value="apis">APIs</Tabs.Tab>
-              <Tabs.Tab value="subs">
+              <Tabs.Tab value={tabValues.APIS}>APIs</Tabs.Tab>
+              <Tabs.Tab value={tabValues.SUBS}>
                 <Flex align="center" justify="center" gap={10}>
                   <span>Pending API Subscriptions</span>
                   {isLoadingSubscriptions || !subscriptions ? (
@@ -92,10 +124,10 @@ export function ApisPage() {
           
             Tab Content
             */}
-            <Tabs.Panel value="apis" pt={"xl"}>
+            <Tabs.Panel value={tabValues.APIS} pt={"xl"}>
               <ApisTabContent />
             </Tabs.Panel>
-            <Tabs.Panel value="subs" pt={"xl"}>
+            <Tabs.Panel value={tabValues.SUBS} pt={"xl"}>
               {isLoadingSubscriptions || !subscriptions ? (
                 <Box pl={5} mb={-10}>
                   <Loader size={"20px"} color={colors.seaBlue} />

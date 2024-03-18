@@ -1,14 +1,11 @@
-import { Box } from "@mantine/core";
 import { useMemo } from "react";
 import {
   ApiProductDetails,
   ApiVersion,
   ApiVersionSchema,
 } from "../../Apis/api-types";
-import { EmptyData } from "../Common/EmptyData";
-import { ErrorBoundary } from "../Common/ErrorBoundary";
+import { ApiProductDetailsPageBody } from "./ApiProductDetailsPageBody";
 import ApiProductDetailsPageHeading from "./ApiProductDetailsPageHeading";
-import { ApiSchemaDisplay } from "./SchemaTab/ApiSchemaDisplay";
 
 export function ApiProductDetailsPageContent({
   apiProduct,
@@ -42,30 +39,12 @@ export function ApiProductDetailsPageContent({
         apiVersionSchema={apiVersionSchema}
       />
 
-      {!!selectedApiVersion ? (
-        <ErrorBoundary fallback="There was an issue displaying the schema details">
-          {!apiVersionSchema ? (
-            <Box m="60px">
-              <EmptyData
-                topicMessageOverride={`No schema was returned for the API Version: "${selectedApiVersion.name}".`}
-              />
-            </Box>
-          ) : (
-            <ApiSchemaDisplay
-              apiVersionSchema={apiVersionSchema}
-              apiVersionId={selectedApiVersion.id}
-            />
-          )}
-        </ErrorBoundary>
-      ) : (
-        !apiProductVersions.length && (
-          <Box m="60px">
-            <EmptyData
-              topicMessageOverride={`The API Product, "${apiProduct.name}", has no API Version data.`}
-            />
-          </Box>
-        )
-      )}
+      <ApiProductDetailsPageBody
+        apiProduct={apiProduct}
+        apiProductVersions={apiProductVersions}
+        selectedApiVersion={selectedApiVersion}
+        apiVersionSchema={apiVersionSchema}
+      />
     </div>
   );
 }

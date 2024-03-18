@@ -1,4 +1,4 @@
-import { Select } from "@mantine/core";
+import { Flex, Select } from "@mantine/core";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import {
@@ -35,7 +35,11 @@ const ApiProductDetailsPageHeading = ({
       return;
     }
     const fileName = selectedApiVersion.name + "_api-spec.json";
-    downloadFile(fileName, JSON.stringify(selectedApiVersion.apiSpec));
+    if (typeof selectedApiVersion.apiSpec === "string") {
+      downloadFile(fileName, selectedApiVersion.apiSpec);
+    } else {
+      downloadFile(fileName, JSON.stringify(selectedApiVersion.apiSpec));
+    }
     toast.success("Downloaded " + fileName);
   };
 
@@ -87,15 +91,17 @@ const ApiProductDetailsPageHeading = ({
                 />
               </FormModalStyles.InputContainer>
             )}
-            <Button onClick={() => setShowSubscribeModal(true)}>
-              SUBSCRIBE
-            </Button>
-            <Button
-              disabled={!selectedApiVersion.apiSpec}
-              onClick={downloadApiSpec}
-            >
-              DOWNLOAD SPEC
-            </Button>
+            <Flex gap="10px" sx={{ flexWrap: "wrap" }}>
+              <Button onClick={() => setShowSubscribeModal(true)}>
+                SUBSCRIBE
+              </Button>
+              <Button
+                disabled={!selectedApiVersion.apiSpec}
+                onClick={downloadApiSpec}
+              >
+                DOWNLOAD SPEC
+              </Button>
+            </Flex>
             <NewSubscriptionModal
               opened={showSubscribeModal}
               onClose={() => setShowSubscribeModal(false)}

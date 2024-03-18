@@ -1,7 +1,6 @@
-import { Loader } from "@mantine/core";
 import { useEffect, useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   useGetApiProductDetails,
   useGetApiProductVersions,
@@ -9,11 +8,12 @@ import {
 } from "../../Apis/hooks";
 import { ApiProductDetailsPageContent } from "./ApiProductDetailsPageContent";
 
-const URL_SEARCH_PARAMS_API_VERSION_ID = "v";
+const URL_SEARCH_PARAMS_API_VERSION_ID_KEY = "v";
 
 export function ApiProductDetailsPage() {
   di(useParams, useListApiProducts, useGetApiProductVersions);
   const location = useLocation();
+  const navigate = useNavigate();
   const { apiProductId } = useParams();
   const { isLoading: isLoadingApiProduct, data: apiProduct } =
     useGetApiProductDetails(apiProductId);
@@ -24,21 +24,23 @@ export function ApiProductDetailsPage() {
   // API Version Selection
   //
   const [selectedApiVersionId, setSelectedApiVersionId] = useState(
-    new URLSearchParams(location.search).get(URL_SEARCH_PARAMS_API_VERSION_ID)
+    new URLSearchParams(location.search).get(
+      URL_SEARCH_PARAMS_API_VERSION_ID_KEY
+    )
   );
   // Update the URL when the selected API Version changes.
   useEffect(() => {
     const newSearchParams = new URLSearchParams(location.search);
     if (!!selectedApiVersionId) {
       newSearchParams.set(
-        URL_SEARCH_PARAMS_API_VERSION_ID,
+        URL_SEARCH_PARAMS_API_VERSION_ID_KEY,
         selectedApiVersionId
       );
-    } else {
-      newSearchParams.delete(URL_SEARCH_PARAMS_API_VERSION_ID);
     }
-    // window.location.search = `?${newSearchParams.toString()}`;
-  }, [selectedApiVersionId]);
+    navigate(location.pathname + `?${newSearchParams.toString()}`, {
+      replace: true,
+    });
+  }, [selectedApiVersionId, location.search]);
 
   //
   // API Version Object
@@ -72,7 +74,7 @@ export function ApiProductDetailsPage() {
     apiProductVersions === undefined ||
     isLoadingApiProductVersions
   ) {
-    return <Loader />;
+    return null;
   }
   return (
     <ApiProductDetailsPageContent

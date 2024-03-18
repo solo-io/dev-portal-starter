@@ -61,7 +61,7 @@ export const AppContextProvider = (props: AppProviderProps) => {
         setIsDarkMode,
         preferGridView,
         setPreferGridView,
-        pageContentIsWide: routeLocation.pathname.includes("/api-details/"),
+        pageContentIsWide: routeLocation.pathname.includes("/apis/"),
       }}
     >
       {props.children}
