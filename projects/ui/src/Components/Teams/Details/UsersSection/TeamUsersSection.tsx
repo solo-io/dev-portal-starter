@@ -37,10 +37,6 @@ const TeamUsersSection = ({ team }: { team: Team }) => {
             <td>{member.name}</td>
             <td>{formatDateToMMDDYYYY(new Date(member.createdAt))}</td>
             <td>{formatDateToMMDDYYYY(new Date(member.updatedAt))}</td>
-            <td>
-              {member.deletedAt &&
-                formatDateToMMDDYYYY(new Date(member.deletedAt))}
-            </td>
             <UtilityStyles.CenteredTD>
               {member.synced ? <Icon.SmallGreenCheck /> : <Icon.SmallRedX />}
             </UtilityStyles.CenteredTD>
@@ -84,7 +80,6 @@ const TeamUsersSection = ({ team }: { team: Team }) => {
                   <th>Name</th>
                   <th>Created</th>
                   <th>Updated</th>
-                  <th>Deleted</th>
                   <UtilityStyles.CenteredTH>
                     Confirmed Login
                   </UtilityStyles.CenteredTH>

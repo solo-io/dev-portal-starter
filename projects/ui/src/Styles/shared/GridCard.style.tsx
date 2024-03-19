@@ -54,9 +54,7 @@ export namespace GridCardStyles {
           font-size: 16px;
           font-weight: 400;
           padding: 0 40px 5px;
-          &:last-child {
-            padding-bottom: 40px;
-          }
+          word-break: break-all;
         }
         .metadataList {
           margin: 10px;

@@ -1,3 +1,4 @@
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Flex, Modal } from "@mantine/core";
 import { colors } from "../colors";
@@ -62,11 +63,21 @@ export namespace FormModalStyles {
     margin: 20px 0px;
   `;
 
-  export const InputContainer = styled.div`
-    label {
-      font-size: 1.25rem;
-      padding-bottom: 8px;
-      display: block;
-    }
-  `;
+  export const InputContainer = styled.div<{ grow?: boolean }>(
+    ({ grow }) => css`
+      label {
+        font-size: 1.25rem;
+        padding-bottom: 8px;
+        display: block;
+      }
+      ${!!grow
+        ? css`
+            flex-grow: 1;
+            select {
+              flex-grow: 1;
+            }
+          `
+        : ""}
+    `
+  );
 }

@@ -12,112 +12,68 @@ export type User = {
   // admin: string;
 };
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// TODO: Remove these old types and update API pages.
-export type APIVersion = {
-  apiId: string;
-  apiVersion: string;
-  contact: string;
-  customMetadata?: Record<string, string>;
-  description: string;
-  license: string;
-  termsOfService: string;
-  title: string;
-  usagePlans: string[];
-};
-export type APIProduct = {
-  apiProductId: string;
-  apiProductDisplayName: string;
-  apiVersions: APIVersion[];
-};
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-
 export type ApiProductSummary = {
-  id: string;
   createdAt: string;
-  updatedAt: string;
-  deletedAt: string;
-  name: string;
   description: string;
+  id: string;
+  name: string;
+  updatedAt: string;
   versionsCount: number;
 };
 
-export type ApiProductDetails = Omit<ApiProductSummary, "versionsCount"> & {
-  // Inherited fields, same as ApiProductSummary
-  // id: string;
-  // createdAt: string;
-  // updatedAt: string;
-  // deletedAt: string;
-  // name: string;
-  // description: string;
+export type ApiProductDetails = {
   autoApproval: boolean;
   contactEmail: string;
-  metadata: Record<string, string>;
-  public: boolean;
-  versions: ApiVersion[];
-  subscriptions: Subscription[];
+  createdAt: string;
+  description: string;
+  id: string;
+  metadata: Record<string, string> | null;
+  name: string;
+  updatedAt: string;
 };
 
 export type ApiVersion = {
-  id: string;
+  apiSpec?: string | ApiVersionSchema;
   createdAt: string;
-  updatedAt: string;
-  deletedAt: string;
-  name: string;
-  title: string;
   documentation: string;
-  termsOfService: string;
-  license: string;
-  lifecycle: string;
+  id: string;
+  name: string;
+  publicVisible?: boolean;
   status: string; // 'published',
-  backingService: string;
-  apiSpec: string;
-  visible: boolean;
-  oauthEnabled: boolean;
-  apiKeyEnabled: boolean;
-  public: boolean;
-  metadata: Record<string, string>;
-  apiProductId: string;
+  title: string;
+  updatedAt: string;
 };
 
 export type App = {
-  id: string;
   createdAt: string;
-  updatedAt: string;
   deletedAt: string;
+  updatedAt: string;
+  id: string;
+  idpClientId: string;
+  idpClientName: string;
+  idpClientSecret: string;
   name: string;
   description: string;
-  idpClientName: string;
-  idpClientId: string;
-  idpClientSecret: string;
   teamId: string;
 };
 
 export type Team = {
-  id: string;
   createdAt: string;
-  updatedAt: string;
-  deletedAt: string;
-  name: string;
   description: string;
+  id: string;
+  name: string;
+  updatedAt: string;
 };
 
 export type Member = {
-  id: string;
   createdAt: string;
-  updatedAt: string;
-  deletedAt: string;
   email: string;
+  id: string;
   name: string;
   username: string;
   // synced = has user logged in.
   synced: boolean;
+  updatedAt: string;
 };
 
 export enum SubscriptionStatus {
@@ -125,16 +81,17 @@ export enum SubscriptionStatus {
   PENDING = "pending",
 }
 export type Subscription = {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string;
-  requestedAt: string;
-  approved: boolean;
-  approvedAt: string;
-  applicationId: string;
   apiProductId: string;
-  usagePlanId: string;
+  applicationId: string;
+  approved?: boolean;
+  approvedAt?: string;
+  rejected?: boolean;
+  rejectedAt?: string;
+  createdAt?: string;
+  deletedAt?: string;
+  id: string;
+  requestedAt: string;
+  updatedAt: string;
 };
 
 export type ErrorMessageResponse = {
@@ -142,7 +99,7 @@ export type ErrorMessageResponse = {
 };
 
 type SchemaPropertyType = "string" | "integer" | "array" | "object";
-export type APISchema = {
+export type ApiVersionSchema = {
   components?: {
     schemas: {
       Author?: {
@@ -159,7 +116,7 @@ export type APISchema = {
       };
     };
   };
-  info: {
+  info?: {
     title: string;
     version: string;
   };

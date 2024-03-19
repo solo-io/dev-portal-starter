@@ -3,11 +3,18 @@ import { useMemo } from "react";
 import { di } from "react-magnetic-di";
 import { NavLink } from "react-router-dom";
 import { Subscription } from "../../../Apis/api-types";
-import { useListApiProducts, useListApis } from "../../../Apis/hooks";
+import {
+  useListApiProducts,
+  useListAppsForTeams,
+  useListTeams,
+} from "../../../Apis/hooks";
 import { AppIcon } from "../../../Assets/Icons/Icons";
 import { CardStyles } from "../../../Styles/shared/Card.style";
 import { UtilityStyles } from "../../../Styles/shared/Utility.style";
-import { getApiDetailsLinkWithId } from "../../../Utility/link-builders";
+import {
+  getApiProductDetailsDocsTabLink,
+  getApiProductDetailsSpecTabLink,
+} from "../../../Utility/link-builders";
 import { SubscriptionState } from "../ApisPage";
 import { SubscriptionInfoCardStyles as Styles } from "./SubscriptionInfoCard.style";
 
@@ -16,8 +23,11 @@ const SubscriptionInfoCard = ({
 }: {
   subscription: Subscription;
 }) => {
-  di(useListApis);
+  di(useListTeams, useListAppsForTeams);
   const { data: apiProductsList } = useListApiProducts();
+  const { data: teams } = useListTeams();
+  const { data: appsForTeams } = useListAppsForTeams(teams ?? []);
+  const apps = useMemo(() => appsForTeams?.flat(), [appsForTeams]);
 
   const subscribedApiProduct = useMemo(() => {
     return apiProductsList?.find(
@@ -25,14 +35,18 @@ const SubscriptionInfoCard = ({
     );
   }, [apiProductsList, subscription]);
 
+  const appThatSubscribed = useMemo(() => {
+    return apps?.find((app) => app.id === subscription.applicationId);
+  }, [apps, subscription]);
+
   return (
     // <Styles.Card subscriptionState={subscription.state}>
-    <Styles.Card subscriptionState={SubscriptionState.REJECTED}>
+    // <Styles.Card subscriptionState={SubscriptionState.REJECTED}>
+    <Styles.Card subscriptionState={SubscriptionState.PENDING}>
       <Styles.Content>
         <Flex justify="space-between">
-          {/* <Styles.CardTitle>{subscription.subscriptionName}</Styles.CardTitle> */}
           <CardStyles.TitleMedium bold>
-            {subscription.id}
+            {subscribedApiProduct?.name ?? "API Product Not Found"}
           </CardStyles.TitleMedium>
           {/* <Styles.SubscriptionCardBadge subscriptionState={subscription.state}>
             {subscriptionStateMap[subscription.state].label}
@@ -41,26 +55,24 @@ const SubscriptionInfoCard = ({
         <Flex align={"center"} justify={"flex-start"} gap={"8px"}>
           <AppIcon width={20} />
           <CardStyles.SmallerText>
-            {/* {subscription.appName} */}
-            {subscription.id}
+            {appThatSubscribed?.name ?? "App Not Found"}
           </CardStyles.SmallerText>
         </Flex>
-        <CardStyles.SmallerText>
-          {/* {subscription.usagePlanName} */}
-          {subscription.id}
-        </CardStyles.SmallerText>
       </Styles.Content>
       {subscribedApiProduct && (
         <Styles.Footer>
           <UtilityStyles.NavLinkContainer>
-            <NavLink to={getApiDetailsLinkWithId(subscribedApiProduct.id)}>
+            <NavLink
+              to={getApiProductDetailsSpecTabLink(subscribedApiProduct.id)}
+            >
               SPEC
             </NavLink>
           </UtilityStyles.NavLinkContainer>
           <Box>|</Box>
-          {/* // TODO: Update links to go to docs tab on api details page when we can specify that. */}
           <UtilityStyles.NavLinkContainer>
-            <NavLink to={getApiDetailsLinkWithId(subscribedApiProduct.id)}>
+            <NavLink
+              to={getApiProductDetailsDocsTabLink(subscribedApiProduct.id)}
+            >
               DOCS
             </NavLink>
           </UtilityStyles.NavLinkContainer>

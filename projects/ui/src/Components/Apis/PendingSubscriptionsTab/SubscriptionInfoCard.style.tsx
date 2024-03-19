@@ -19,8 +19,8 @@ export namespace SubscriptionInfoCardStyles {
 
   export const Content = styled(Flex)`
     flex-direction: column;
-    gap: 3px;
-    padding: 20px 20px 10px 20px;
+    gap: 10px;
+    padding: 20px 20px 15px 20px;
     background-color: white;
     border-top-right-radius: inherit;
     border-top-left-radius: inherit;

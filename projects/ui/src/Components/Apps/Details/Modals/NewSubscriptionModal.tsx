@@ -2,7 +2,11 @@ import { CloseButton, Flex, Loader, Select } from "@mantine/core";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
-import { ApiProductSummary, App } from "../../../../Apis/api-types";
+import {
+  ApiProductDetails,
+  ApiProductSummary,
+  App,
+} from "../../../../Apis/api-types";
 import {
   useCreateAppMutation,
   useCreateSubscriptionMutation,
@@ -30,7 +34,7 @@ const NewSubscriptionModal = ({
   opened: boolean;
   onClose: () => void;
   app?: App;
-  apiProduct?: ApiProductSummary;
+  apiProduct?: ApiProductSummary | ApiProductDetails;
 }) => {
   di(
     useListTeams,

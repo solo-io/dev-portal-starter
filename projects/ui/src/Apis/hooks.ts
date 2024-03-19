@@ -3,10 +3,9 @@ import useSWR, { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
 import { PortalAuthContext } from "../Context/PortalAuthContext";
 import {
-  APIProduct,
-  APISchema,
   ApiProductDetails,
   ApiProductSummary,
+  ApiVersion,
   App,
   ErrorMessageResponse,
   Member,
@@ -149,27 +148,15 @@ export function useGetTeamDetails(id?: string) {
   return useSwrWithAuth<Team>(`/teams/${id}`);
 }
 
-// APIs
-///////////////////////////////////////////////////
-///////////////////////////////////////////////////
-///////////////////////////////////////////////////
-// TODO: Remove these old funtions and update API pages.
-export function useListApis() {
-  return useSwrWithAuth<APIProduct[]>("/apis");
-}
-export function useGetApiDetails(id?: string) {
-  return useSwrWithAuth<APISchema>(`/apis/${id}/schema`);
-}
-///////////////////////////////////////////////////
-///////////////////////////////////////////////////
-///////////////////////////////////////////////////
-
 // Api Products
 export function useListApiProducts() {
   return useSwrWithAuth<ApiProductSummary[]>("/api-products");
 }
 export function useGetApiProductDetails(id?: string) {
   return useSwrWithAuth<ApiProductDetails>(`/api-products/${id}`);
+}
+export function useGetApiProductVersions(id?: string) {
+  return useSwrWithAuth<ApiVersion[]>(`/api-products/${id}/versions`);
 }
 
 // Subscriptions

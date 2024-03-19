@@ -1,15 +1,15 @@
-import { APIVersion, App, Team } from "../Apis/api-types";
+import { App, Team } from "../Apis/api-types";
+import {
+  API_DETAILS_URL_SEARCH_PARAM_TAB_KEY,
+  apiProductDetailsTabValues,
+} from "../Components/ApiProductDetails/ApiProductDetailsPageBody";
 
-export function getApiDetailsLinkWithId(id: string) {
-  return `/api-details/${id}`;
+export function getApiProductDetailsDocsTabLink(apiProductId: string) {
+  return `/apis/${apiProductId}?${API_DETAILS_URL_SEARCH_PARAM_TAB_KEY}=${apiProductDetailsTabValues.DOCS}`;
 }
 
-export function getApiDetailsLink<
-  T extends { apiProductId: string; apiVersions: APIVersion[] }
->(api: T) {
-  return `/api-details/${api.apiProductId}/${
-    api.apiVersions.length > 0 ? api.apiVersions.at(0)?.apiVersion : ""
-  }`;
+export function getApiProductDetailsSpecTabLink(apiProductId: string) {
+  return `/apis/${apiProductId}?${API_DETAILS_URL_SEARCH_PARAM_TAB_KEY}=${apiProductDetailsTabValues.SPEC}`;
 }
 
 export function getAppDetailsLink(app: App) {

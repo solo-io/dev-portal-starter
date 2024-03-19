@@ -1,37 +1,39 @@
 import { useEffect, useState } from "react";
 import SwaggerUIConstructor from "swagger-ui";
 import "swagger-ui/dist/swagger-ui.css";
-import { APISchema } from "../../../../Apis/api-types";
+import { ApiVersionSchema } from "../../../../Apis/api-types";
 import { SwaggerDisplayContainer } from "./SwaggerDisplay.style";
 
 const sanitize = (id: string) => id.replaceAll(".", "-");
 
 export function SwaggerDisplay({
-  spec,
-  apiId,
+  apiVersionSpec,
+  apiVersionId,
 }: {
-  spec: APISchema | undefined;
-  apiId: string;
+  apiVersionSpec: ApiVersionSchema | undefined;
+  apiVersionId: string;
 }) {
   // The sanitized dom_id, where all periods are replaced with dashes. This fixes issues where Swagger tries
   // doing a `querySelector` which fails, due to it treating the period as a class selector, and not part of the ID itself.
-  const [sanitizedDomId, setSanitizedDomId] = useState<string>(sanitize(apiId));
+  const [sanitizedDomId, setSanitizedDomId] = useState<string>(
+    sanitize(apiVersionId)
+  );
   useEffect(() => {
-    const newSanitizedId = sanitize(apiId);
+    const newSanitizedId = sanitize(apiVersionId);
     if (sanitizedDomId !== newSanitizedId) {
       setSanitizedDomId(newSanitizedId);
     }
-  }, [apiId, sanitizedDomId]);
+  }, [apiVersionId, sanitizedDomId]);
 
   useEffect(() => {
     SwaggerUIConstructor({
-      spec: spec,
+      spec: apiVersionSpec,
       dom_id: `#display-swagger-${sanitizedDomId}`,
       withCredentials: true,
       deepLinking: true,
       syntaxHighlight: { activate: false },
     });
-  }, [sanitizedDomId, spec]);
+  }, [sanitizedDomId, apiVersionSpec]);
 
   return (
     <SwaggerDisplayContainer>

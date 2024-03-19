@@ -1,8 +1,18 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import { borderRadiusConstants } from "../constants";
 
 // TODO: Consolidate styles from ./GridCard.style.tsx and ListCard.style.tsx here, refactor, and reduce the amount of styles.
 export namespace CardStyles {
+  export const Card = styled.div(
+    ({ theme }) => css`
+      border: 1px solid ${theme.splashBlue};
+      border-radius: ${borderRadiusConstants.small};
+      background-color: white;
+      box-shadow: 1px 1px 5px ${theme.splashBlue};
+    `
+  );
+
   export const TitleLarge = styled.div`
     line-height: 30px;
     font-size: 28px;
