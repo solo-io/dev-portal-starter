@@ -8,6 +8,7 @@ import { CardStyles } from "../../../Styles/shared/Card.style";
 
 const MarkdownOuterContainer = styled.div(
   ({ theme }) => css`
+    padding: 30px;
     * {
       margin: revert;
       padding: revert;
@@ -28,13 +29,11 @@ const DocsTabContent = ({
   return (
     <Box pb={"60px"}>
       <CardStyles.Card>
-        <Box p={"30px"}>
-          <MarkdownOuterContainer>
-            <Markdown remarkPlugins={[remarkGfm]}>
-              {selectedApiVersion.documentation}
-            </Markdown>
-          </MarkdownOuterContainer>
-        </Box>
+        <MarkdownOuterContainer>
+          <Markdown remarkPlugins={[remarkGfm]}>
+            {selectedApiVersion.documentation}
+          </Markdown>
+        </MarkdownOuterContainer>
       </CardStyles.Card>
     </Box>
   );
