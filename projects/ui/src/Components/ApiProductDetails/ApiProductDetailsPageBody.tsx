@@ -21,12 +21,12 @@ export function ApiProductDetailsPageBody({
   apiProduct,
   selectedApiVersion,
   apiProductVersions,
-  apiVersionSchema,
+  apiVersionSpec,
 }: {
   apiProduct: ApiProductDetails;
   selectedApiVersion: ApiVersion | null;
   apiProductVersions: ApiVersion[];
-  apiVersionSchema: ApiVersionSchema | undefined;
+  apiVersionSpec: ApiVersionSchema | undefined;
 }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -71,7 +71,7 @@ export function ApiProductDetailsPageBody({
           <SchemaTabContent
             apiProduct={apiProduct}
             apiProductVersions={apiProductVersions}
-            apiVersionSchema={apiVersionSchema}
+            apiVersionSpec={apiVersionSpec}
             selectedApiVersion={selectedApiVersion}
           />
         </Tabs.Panel>

@@ -5,7 +5,6 @@ import { NavLink } from "react-router-dom";
 import { Subscription } from "../../../Apis/api-types";
 import {
   useListApiProducts,
-  useListApis,
   useListAppsForTeams,
   useListTeams,
 } from "../../../Apis/hooks";
@@ -24,7 +23,7 @@ const SubscriptionInfoCard = ({
 }: {
   subscription: Subscription;
 }) => {
-  di(useListApis, useListTeams, useListAppsForTeams);
+  di(useListTeams, useListAppsForTeams);
   const { data: apiProductsList } = useListApiProducts();
   const { data: teams } = useListTeams();
   const { data: appsForTeams } = useListAppsForTeams(teams ?? []);

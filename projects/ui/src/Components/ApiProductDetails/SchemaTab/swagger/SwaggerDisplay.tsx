@@ -7,10 +7,10 @@ import { SwaggerDisplayContainer } from "./SwaggerDisplay.style";
 const sanitize = (id: string) => id.replaceAll(".", "-");
 
 export function SwaggerDisplay({
-  apiVersionSchema,
+  apiVersionSpec,
   apiVersionId,
 }: {
-  apiVersionSchema: ApiVersionSchema | undefined;
+  apiVersionSpec: ApiVersionSchema | undefined;
   apiVersionId: string;
 }) {
   // The sanitized dom_id, where all periods are replaced with dashes. This fixes issues where Swagger tries
@@ -27,13 +27,13 @@ export function SwaggerDisplay({
 
   useEffect(() => {
     SwaggerUIConstructor({
-      spec: apiVersionSchema,
+      spec: apiVersionSpec,
       dom_id: `#display-swagger-${sanitizedDomId}`,
       withCredentials: true,
       deepLinking: true,
       syntaxHighlight: { activate: false },
     });
-  }, [sanitizedDomId, apiVersionSchema]);
+  }, [sanitizedDomId, apiVersionSpec]);
 
   return (
     <SwaggerDisplayContainer>

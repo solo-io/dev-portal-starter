@@ -12,12 +12,12 @@ const SchemaTabContent = ({
   apiProduct,
   selectedApiVersion,
   apiProductVersions,
-  apiVersionSchema,
+  apiVersionSpec,
 }: {
   apiProduct: ApiProductDetails;
   selectedApiVersion: ApiVersion;
   apiProductVersions: ApiVersion[];
-  apiVersionSchema: ApiVersionSchema | undefined;
+  apiVersionSpec: ApiVersionSchema | undefined;
 }) => {
   if (!apiProductVersions.length) {
     return (
@@ -32,7 +32,7 @@ const SchemaTabContent = ({
     // The selected API Version may be loading.
     return null;
   }
-  if (!apiVersionSchema) {
+  if (!apiVersionSpec) {
     // There is a selected API version, but no schema.
     return (
       <Box m="60px">
@@ -46,7 +46,7 @@ const SchemaTabContent = ({
     <div>
       <ErrorBoundary fallback="There was an issue displaying the schema details">
         <ApiSchemaDisplay
-          apiVersionSchema={apiVersionSchema}
+          apiVersionSpec={apiVersionSpec}
           apiVersionId={selectedApiVersion.id}
         />
       </ErrorBoundary>

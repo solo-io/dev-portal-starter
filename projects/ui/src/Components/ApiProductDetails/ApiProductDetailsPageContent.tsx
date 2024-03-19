@@ -18,7 +18,7 @@ export function ApiProductDetailsPageContent({
   selectedApiVersion: ApiVersion | null;
   onSelectedApiVersionChange: (newVersionId: string | null) => void;
 }) {
-  const apiVersionSchema = useMemo<ApiVersionSchema | undefined>(() => {
+  const apiVersionSpec = useMemo<ApiVersionSchema | undefined>(() => {
     const apiSpec = selectedApiVersion?.apiSpec;
     if (typeof apiSpec === "string") {
       return JSON.parse(apiSpec);
@@ -36,14 +36,14 @@ export function ApiProductDetailsPageContent({
         apiProductVersions={apiProductVersions}
         selectedApiVersion={selectedApiVersion}
         onSelectedApiVersionChange={onSelectedApiVersionChange}
-        apiVersionSchema={apiVersionSchema}
+        apiVersionSpec={apiVersionSpec}
       />
 
       <ApiProductDetailsPageBody
         apiProduct={apiProduct}
         apiProductVersions={apiProductVersions}
         selectedApiVersion={selectedApiVersion}
-        apiVersionSchema={apiVersionSchema}
+        apiVersionSpec={apiVersionSpec}
       />
     </div>
   );

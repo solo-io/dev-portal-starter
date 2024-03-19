@@ -1,6 +1,5 @@
 import { useContext, useMemo } from "react";
-import { di } from "react-magnetic-di";
-import { useListApiProducts, useListApis } from "../../../Apis/hooks";
+import { useListApiProducts } from "../../../Apis/hooks";
 import { AppContext } from "../../../Context/AppContext";
 import { FilterPair, FilterType } from "../../../Utility/filter-utility";
 import { EmptyData } from "../../Common/EmptyData";
@@ -16,7 +15,6 @@ export function ApisList({
   allFilters: FilterPair[];
   nameFilter: string;
 }) {
-  di(useListApis);
   const { preferGridView } = useContext(AppContext);
   const { isLoading, data: apiProductsList } = useListApiProducts();
 

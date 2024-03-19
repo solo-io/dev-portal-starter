@@ -11,10 +11,10 @@ import { SwaggerDisplay } from "./swagger/SwaggerDisplay";
  * MAIN COMPONENT
  **/
 export function ApiSchemaDisplay({
-  apiVersionSchema,
+  apiVersionSpec,
   apiVersionId,
 }: {
-  apiVersionSchema: ApiVersionSchema;
+  apiVersionSpec: ApiVersionSchema;
   apiVersionId: string;
 }) {
   const { pageContentIsWide } = useContext(AppContext);
@@ -36,13 +36,13 @@ export function ApiSchemaDisplay({
           //
           // Redoc - Default
           //
-          <RedocDisplay apiVersionSchema={apiVersionSchema} />
+          <RedocDisplay apiVersionSpec={apiVersionSpec} />
         ) : (
           //
           // Swagger - Alternative
           //
           <SwaggerDisplay
-            apiVersionSchema={apiVersionSchema}
+            apiVersionSpec={apiVersionSpec}
             apiVersionId={apiVersionId ?? "Unsupported schema display"}
           />
         )}

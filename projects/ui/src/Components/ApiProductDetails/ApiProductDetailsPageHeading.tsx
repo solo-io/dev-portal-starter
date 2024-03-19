@@ -20,13 +20,13 @@ const ApiProductDetailsPageHeading = ({
   apiProductVersions,
   selectedApiVersion,
   onSelectedApiVersionChange,
-  apiVersionSchema,
+  apiVersionSpec,
 }: {
   apiProduct: ApiProductDetails;
   apiProductVersions: ApiVersion[];
   selectedApiVersion: ApiVersion | null;
   onSelectedApiVersionChange: (newVersionId: string | null) => void;
-  apiVersionSchema: ApiVersionSchema | undefined;
+  apiVersionSpec: ApiVersionSchema | undefined;
 }) => {
   const [showSubscribeModal, setShowSubscribeModal] = useState(false);
 
@@ -63,9 +63,9 @@ const ApiProductDetailsPageHeading = ({
         selectedApiVersion ? (
           <Styles.ApiDetailsHeaderAddition>
             <Styles.ApiDetailsExtraInfoLeftSection>
-              {!!apiVersionSchema && (
+              {!!apiVersionSpec && (
                 <Styles.ApiDetailsExtraInfo>
-                  <Icon.HtmlTag /> {Object.keys(apiVersionSchema.paths).length}{" "}
+                  <Icon.HtmlTag /> {Object.keys(apiVersionSpec.paths).length}{" "}
                   Operations
                 </Styles.ApiDetailsExtraInfo>
               )}
