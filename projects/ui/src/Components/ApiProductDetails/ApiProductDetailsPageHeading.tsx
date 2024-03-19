@@ -62,8 +62,8 @@ const ApiProductDetailsPageHeading = ({
       additionalContent={
         selectedApiVersion ? (
           <Styles.ApiDetailsHeaderAddition>
-            <Styles.ApiDetailsExtraInfoLeftSection>
-              {!!apiVersionSpec && (
+            <Flex gap={"10px"}>
+              {!!apiVersionSpec?.paths && (
                 <Styles.ApiDetailsExtraInfo>
                   <Icon.HtmlTag /> {Object.keys(apiVersionSpec.paths).length}{" "}
                   Operations
@@ -72,26 +72,26 @@ const ApiProductDetailsPageHeading = ({
               <Styles.ApiDetailsExtraInfo>
                 <Icon.OpenApiIcon /> OpenAPI
               </Styles.ApiDetailsExtraInfo>
-            </Styles.ApiDetailsExtraInfoLeftSection>
-            {apiProductVersions.length > 0 && (
-              <FormModalStyles.InputContainer grow>
-                <Select
-                  id="api-version-select"
-                  aria-label="API version selection"
-                  // This className="" is intentional and removes the antd select dropdown classname.
-                  className=""
-                  value={selectedApiVersion.id}
-                  onChange={(value) => {
-                    onSelectedApiVersionChange(value ?? "");
-                  }}
-                  data={apiProductVersions.map((v) => ({
-                    value: v.id,
-                    label: v.name,
-                  }))}
-                />
-              </FormModalStyles.InputContainer>
-            )}
-            <Flex gap="10px" sx={{ flexWrap: "wrap" }}>
+            </Flex>
+            <Flex gap="10px" align={"center"} sx={{ flexWrap: "wrap" }}>
+              {apiProductVersions.length > 0 && (
+                <FormModalStyles.InputContainer grow>
+                  <Select
+                    id="api-version-select"
+                    aria-label="API version selection"
+                    // This className="" is intentional and removes the antd select dropdown classname.
+                    className=""
+                    value={selectedApiVersion.id}
+                    onChange={(value) => {
+                      onSelectedApiVersionChange(value ?? "");
+                    }}
+                    data={apiProductVersions.map((v) => ({
+                      value: v.id,
+                      label: v.name,
+                    }))}
+                  />
+                </FormModalStyles.InputContainer>
+              )}
               <Button onClick={() => setShowSubscribeModal(true)}>
                 SUBSCRIBE
               </Button>

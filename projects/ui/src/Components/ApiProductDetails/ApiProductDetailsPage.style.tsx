@@ -35,14 +35,13 @@ export namespace ApiProductDetailsPageStyles {
 
   export const SwaggerViewToggleHolder = styled.div(
     ({ theme }) => css`
-      width: calc(100vw - 16px);
-      max-width: 1920px;
-      padding: 0px 30px 5px 0px;
-      margin: 0 auto;
       display: block;
+      margin-top: -15px;
+      margin-bottom: 8px;
       text-align: right;
-      button {
-        color: ${theme.primary};
+      span {
+        color: ${theme.lakeBlue};
+        font-size: 1rem;
       }
     `
   );
