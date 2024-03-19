@@ -1,3 +1,4 @@
+import { Box } from "@mantine/core";
 import { useMemo } from "react";
 import { ApiProductSummary } from "../../../../Apis/api-types";
 import { Icon } from "../../../../Assets/Icons";
@@ -36,39 +37,15 @@ export function ApiSummaryGridCard({
         </div>
         <div className="details">
           <div>
-            <h4 className="title">{apiProduct.name}</h4>
-
-            {/* <div className="subtitle-list">
-              {!!api.apiVersion && (
-                <div className="subtitle-item">
-                  API Version: {api.apiVersion}{" "}
-                </div>
+            <Box pb={"25px"}>
+              <h4 className="title">{apiProduct.name}</h4>
+              API Versions: {apiProduct.versionsCount}
+              {apiProduct.description && (
+                <Box pt={"15px"}>
+                  <div className="description">{apiProduct.description}</div>
+                </Box>
               )}
-            </div> */}
-            {/* 
-            // TODO: There may be a description in the new API.
-            <div className="description">{api.description}</div> */}
-            {/* {api.apiVersions.map((apiVersion) => {
-              if (!apiVersion.customMetadata) {
-                return null;
-              }
-              return (
-                <DataPairPillList
-                  key={apiVersion.apiVersion}
-                  className="metadataList"
-                >
-                  {Object.entries(apiVersion.customMetadata).map(
-                    ([pairKey, pairValue], idx) => (
-                      <DataPairPill
-                        key={idx}
-                        pairKey={pairKey}
-                        value={pairValue}
-                      />
-                    )
-                  )}
-                </DataPairPillList>
-              );
-            })} */}
+            </Box>
           </div>
         </div>
       </div>

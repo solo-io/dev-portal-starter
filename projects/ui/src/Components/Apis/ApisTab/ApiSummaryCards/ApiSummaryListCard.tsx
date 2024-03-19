@@ -1,3 +1,4 @@
+import { Box } from "@mantine/core";
 import { NavLink } from "react-router-dom";
 import { ApiProductSummary } from "../../../../Apis/api-types";
 import { Icon } from "../../../../Assets/Icons";
@@ -22,40 +23,10 @@ export function ApiSummaryListCard({
           <div className="details">
             <div>
               <h4 className="title">{apiProduct.name}</h4>
-              {/* <div className="subtitle-list">
-                {!!api.apiProductDisplayName && (
-                  <div className="subtitle-item">
-                    API Product: {api.apiProductDisplayName}{" "}
-                  </div>
-                )}
-                {!!api.apiVersion && (
-                  <div className="subtitle-item">
-                    API Version: {api.apiVersion}{" "}
-                  </div>
-                )}
-              </div> */}
-              {/* <div className="description">{api.description}</div> */}
-              {/* {api.apiVersions.map((apiVersion) => {
-                if (!apiVersion.customMetadata) {
-                  return null;
-                }
-                return (
-                  <DataPairPillList
-                    key={apiVersion.apiVersion}
-                    className="metadataList"
-                  >
-                    {Object.entries(apiVersion.customMetadata).map(
-                      ([pairKey, pairValue], idx) => (
-                        <DataPairPill
-                          key={idx}
-                          pairKey={pairKey}
-                          value={pairValue}
-                        />
-                      )
-                    )}
-                  </DataPairPillList>
-                );
-              })} */}
+              <Box pl={"10px"}>API Versions: {apiProduct.versionsCount}</Box>
+              {apiProduct.description && (
+                <div className="description">{apiProduct.description}</div>
+              )}
             </div>
           </div>
         </div>
