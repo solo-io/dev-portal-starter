@@ -1,9 +1,66 @@
-import { Box } from "@mantine/core";
-import { useMemo } from "react";
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
+import { Badge, Box, Flex } from "@mantine/core";
+import Avatar from "boring-avatars";
 import { ApiProductSummary } from "../../../../Apis/api-types";
 import { Icon } from "../../../../Assets/Icons";
+import { colors } from "../../../../Styles";
+import { borderRadiusConstants } from "../../../../Styles/constants";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { getApiProductDetailsSpecTabLink } from "../../../../Utility/link-builders";
+
+const StyledAvatarContainer = styled.div(
+  ({ theme }) => css`
+    height: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    svg {
+      flex-grow: 1;
+      height: fit-content;
+    }
+    position: relative;
+    .details {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      background-color: #f8fafbb8;
+      transition: 0.2s background-color;
+      &:hover {
+        background-color: #f8fafbd8;
+      }
+      &:active {
+        background-color: #f8fafbe8;
+      }
+      *,
+      .title {
+        font-size: 1.5rem;
+      }
+      .description {
+        color: ${theme.neptuneBlue} !important;
+        font-size: 1rem;
+      }
+      .mantine-Badge-root {
+        height: 28px;
+        border: 1px solid ${theme.pondBlue};
+        span {
+          padding: 0px 5px;
+          font-weight: 400;
+          font-size: 0.9rem;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          svg {
+            width: 18px;
+          }
+        }
+      }
+    }
+  `
+);
 
 /**
  * MAIN COMPONENT
@@ -13,26 +70,19 @@ export function ApiSummaryGridCard({
 }: {
   apiProduct: ApiProductSummary;
 }) {
-  // In the future banner images may come through API data.
-  //   Even when that is the case, a default image may be desired
-  //   for when no image is available.
-  // Further, you may have some clever trick for setting one of
-  //   many default images.
-  const defaultCardImage = useMemo(
-    () => {
-      return "https://img.huffingtonpost.com/asset/57f2730f170000f70aac9059.jpeg?ops=scalefit_960_noupscale";
-    },
-    // Currently we don't need to change images unless the api itself has changed.
-    //   Depending on the function within the memo, this may not always be the case.
-    [apiProduct.id]
-  );
-
   return (
     <GridCardStyles.GridCardWithLink
       to={getApiProductDetailsSpecTabLink(apiProduct.id)}
+      tabIndex={0}
+      style={{
+        overflow: "hidden",
+        border: `1px solid ${colors.pondBlue}`,
+        borderRadius: borderRadiusConstants.standard,
+        padding: "0px",
+      }}
     >
       <div className="content">
-        <div className="apiImageHolder">
+        {/* <div className="apiImageHolder">
           <img src={defaultCardImage} alt="" role="banner" />
         </div>
         <div className="details">
@@ -47,9 +97,40 @@ export function ApiSummaryGridCard({
               )}
             </Box>
           </div>
-        </div>
+        </div> */}
+
+        <StyledAvatarContainer>
+          <Avatar
+            size={"50px"}
+            // size={"225px"}
+            square
+            name={apiProduct.id}
+            variant="marble"
+            colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
+          />
+          <div className="details">
+            <div>
+              <Box pb={"5px"}>
+                <h4 className="title">{apiProduct.name}</h4>
+                <Flex gap={"10px"}>
+                  <Badge variant="light">
+                    Versions: {apiProduct.versionsCount}
+                  </Badge>
+                  <Badge variant="light">
+                    <Icon.SmallCodeGear /> OpenAPI
+                  </Badge>
+                </Flex>
+                {apiProduct.description && (
+                  <Box pt={"12px"}>
+                    <div className="description">{apiProduct.description}</div>
+                  </Box>
+                )}
+              </Box>
+            </div>
+          </div>
+        </StyledAvatarContainer>
       </div>
-      <div className="footer">
+      {/* <div className="footer">
         <div className="metaInfo">
           <Icon.SmallCodeGear />
           <div className="typeTitle" aria-label="API Type">
@@ -59,7 +140,7 @@ export function ApiSummaryGridCard({
         <div className="typeIcon">
           <Icon.OpenApiIcon />
         </div>
-      </div>
+      </div> */}
     </GridCardStyles.GridCardWithLink>
   );
 }

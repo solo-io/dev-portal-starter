@@ -109,7 +109,8 @@ export namespace GridCardStyles {
       transition: 0.1s box-shadow, 0.1s outline-color;
       outline-offset: 2px;
       outline: 2px solid transparent;
-      &:hover {
+      &:hover,
+      &:focus-visible {
         outline-color: ${theme.lakeBlue};
         outline-width: 2px;
       }
