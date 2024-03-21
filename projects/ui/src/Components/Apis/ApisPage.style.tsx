@@ -3,9 +3,9 @@ import styled from "@emotion/styled";
 
 export namespace ApisPageStyles {
   export const ApiGridList = styled.div`
-    display: grid;
-    grid-gap: 30px;
-    grid-template-columns: 1fr 1fr 1fr;
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
   `;
 
   export const NumberInCircle = styled.div(

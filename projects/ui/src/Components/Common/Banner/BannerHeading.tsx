@@ -4,6 +4,7 @@ import { useContext } from "react";
 import Banner from "../../../Assets/banner.png";
 import { AppContext } from "../../../Context/AppContext";
 import { ContentWidthDiv } from "../../../Styles/ContentWidthHelpers";
+import { mediaQueryWithScreenSize } from "../../../Styles/breakpoints";
 import { borderRadiusConstants } from "../../../Styles/constants";
 import Breadcrumbs from "../Breadcrumbs";
 
@@ -18,6 +19,15 @@ const BannerContent = styled.div(
     max-width: 52%;
     min-height: 187px;
     padding: 35px 40px;
+
+    ${mediaQueryWithScreenSize.largeAndSmaller} {
+      width: 60%;
+      max-width: 60%;
+    }
+    ${mediaQueryWithScreenSize.mediumAndSmaller} {
+      width: 100%;
+      max-width: 100%;
+    }
 
     background: white;
 
@@ -73,6 +83,16 @@ const BannerHeadingContentContainer = styled(ContentWidthDiv)<{
       right: 30px;
       width: 66%;
       max-width: 66%;
+      ${mediaQueryWithScreenSize.largeAndSmaller} {
+        width: 70%;
+        max-width: 70%;
+      }
+      ${mediaQueryWithScreenSize.mediumAndSmaller} {
+        width: unset;
+        max-width: 100%;
+        right: 10px;
+        left: 10px;
+      }
 
       display: flex;
       align-items: center;
@@ -84,8 +104,10 @@ const BannerHeadingContentContainer = styled(ContentWidthDiv)<{
       z-index: 0;
 
       img {
-        width: 100%;
+        /* width: 100%; */
         min-height: 100%;
+        /* size: cover; */
+        background-size: contain;
       }
     }
 
