@@ -11,7 +11,7 @@ import { getApiProductDetailsSpecTabLink } from "../../../../Utility/link-builde
 
 const StyledAvatarContainer = styled.div(
   ({ theme }) => css`
-    height: 200px;
+    height: 180px;
     overflow: hidden;
     text-overflow: ellipsis;
     display: flex;
@@ -27,7 +27,7 @@ const StyledAvatarContainer = styled.div(
       position: absolute;
       height: 100%;
       width: 100%;
-      background-color: #f8fafbb8;
+      background-color: #f8fafbd8;
       transition: 0.2s background-color;
       &:hover {
         background-color: #f8fafbd8;
@@ -37,19 +37,19 @@ const StyledAvatarContainer = styled.div(
       }
       *,
       .title {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
       }
       .description {
         color: ${theme.neptuneBlue} !important;
         font-size: 1rem;
       }
       .mantine-Badge-root {
-        height: 28px;
+        height: 25px;
         border: 1px solid ${theme.pondBlue};
         span {
           padding: 0px 5px;
           font-weight: 400;
-          font-size: 0.9rem;
+          font-size: 0.8rem;
           display: flex;
           align-items: center;
           gap: 5px;
