@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { NavLink } from "react-router-dom";
 import { makePrimaryTrimmedSmallWhiteContainerCSS } from "../PrimaryTrimmedSmallWhiteContainer";
+import { mediaQueryWithScreenSize } from "../breakpoints";
 import { borderRadiusConstants } from "../constants";
 
 export namespace GridCardStyles {
@@ -9,6 +10,11 @@ export namespace GridCardStyles {
     ({ theme, whiteBg }) => css`
       display: flex;
       flex-direction: column;
+      /* flex-basis: 300px; */
+      width: 350px;
+      ${mediaQueryWithScreenSize.mediumAndSmaller} {
+        flex-grow: 1;
+      }
 
       height: 100%;
       min-height: 100px;

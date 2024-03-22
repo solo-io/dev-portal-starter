@@ -54,6 +54,7 @@ export const StyledTopNavHeader = styled.header(
 export const StyledTopNavContent = styled(ContentWidthNav)(
   ({ theme }) => css`
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -74,6 +75,7 @@ export const StyledTopNavContent = styled(ContentWidthNav)(
 
     .siteNavigating {
       display: flex;
+      flex-wrap: wrap;
       flex-direction: row;
       align-items: center;
       height: 100%;
