@@ -61,6 +61,7 @@ const AddTeamUserSubSection = ({
         <DetailsPageStyles.AddItemForm ref={formRef} onSubmit={onSubmit}>
           <Input
             id="member-email-input"
+            type="email"
             aria-label="new team member email"
             required
             disabled={!open}
