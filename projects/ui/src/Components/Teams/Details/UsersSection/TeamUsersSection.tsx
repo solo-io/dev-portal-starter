@@ -70,36 +70,38 @@ const TeamUsersSection = ({ team }: { team: Team }) => {
           <EmptyData topic="Members" />
         </Box>
       ) : (
-        <GridCardStyles.GridCard whiteBg>
-          <Box p={"20px"}>
-            <Table>
-              <thead>
-                <tr>
-                  <th>Email</th>
-                  <th>Username</th>
-                  <th>Name</th>
-                  <th>Created</th>
-                  <th>Updated</th>
-                  <UtilityStyles.CenteredTH>
-                    Confirmed Login
-                  </UtilityStyles.CenteredTH>
-                </tr>
-              </thead>
-              <tbody>{rows}</tbody>
-              <tfoot>
-                <tr>
-                  <td colSpan={6}>
-                    <Pagination
-                      dataCount={members.length}
-                      totalPages={totalPages}
-                      onChange={onPageChange}
-                    />
-                  </td>
-                </tr>
-              </tfoot>
-            </Table>
-          </Box>
-        </GridCardStyles.GridCard>
+        <Box pt={"5px"}>
+          <GridCardStyles.GridCard whiteBg wide>
+            <Box p={"20px"}>
+              <Table>
+                <thead>
+                  <tr>
+                    <th>Email</th>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th>Created</th>
+                    <th>Updated</th>
+                    <UtilityStyles.CenteredTH>
+                      Confirmed Login
+                    </UtilityStyles.CenteredTH>
+                  </tr>
+                </thead>
+                <tbody>{rows}</tbody>
+                <tfoot>
+                  <tr>
+                    <td colSpan={6}>
+                      <Pagination
+                        dataCount={members.length}
+                        totalPages={totalPages}
+                        onChange={onPageChange}
+                      />
+                    </td>
+                  </tr>
+                </tfoot>
+              </Table>
+            </Box>
+          </GridCardStyles.GridCard>
+        </Box>
       )}
     </DetailsPageStyles.Section>
   );

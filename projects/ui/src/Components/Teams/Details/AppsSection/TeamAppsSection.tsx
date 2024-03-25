@@ -76,33 +76,35 @@ const TeamAppsSection = ({ team }: { team: Team }) => {
           <EmptyData topic="App" />
         </Box>
       ) : (
-        <GridCardStyles.GridCard whiteBg>
-          <Box p={"20px"}>
-            <Table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Created</th>
-                  <th>Updated</th>
-                  <th>Deleted</th>
-                  <UtilityStyles.CenteredTH>Details</UtilityStyles.CenteredTH>
-                </tr>
-              </thead>
-              <tbody>{rows}</tbody>
-              <tfoot>
-                <tr>
-                  <td colSpan={2}>
-                    <Pagination
-                      dataCount={apps.length}
-                      totalPages={totalPages}
-                      onChange={onPageChange}
-                    />
-                  </td>
-                </tr>
-              </tfoot>
-            </Table>
-          </Box>
-        </GridCardStyles.GridCard>
+        <Box pt={"5px"}>
+          <GridCardStyles.GridCard whiteBg wide>
+            <Box p={"20px"}>
+              <Table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Created</th>
+                    <th>Updated</th>
+                    <th>Deleted</th>
+                    <UtilityStyles.CenteredTH>Details</UtilityStyles.CenteredTH>
+                  </tr>
+                </thead>
+                <tbody>{rows}</tbody>
+                <tfoot>
+                  <tr>
+                    <td colSpan={2}>
+                      <Pagination
+                        dataCount={apps.length}
+                        totalPages={totalPages}
+                        onChange={onPageChange}
+                      />
+                    </td>
+                  </tr>
+                </tfoot>
+              </Table>
+            </Box>
+          </GridCardStyles.GridCard>
+        </Box>
       )}
     </DetailsPageStyles.Section>
   );

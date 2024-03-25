@@ -6,12 +6,12 @@ import { mediaQueryWithScreenSize } from "../breakpoints";
 import { borderRadiusConstants } from "../constants";
 
 export namespace GridCardStyles {
-  export const GridCard = styled.div<{ whiteBg?: boolean }>(
-    ({ theme, whiteBg }) => css`
+  export const GridCard = styled.div<{ whiteBg?: boolean; wide?: boolean }>(
+    ({ theme, whiteBg, wide }) => css`
       display: flex;
       flex-direction: column;
       /* flex-basis: 300px; */
-      width: 350px;
+      width: ${wide ? "unset" : "350px"};
       ${mediaQueryWithScreenSize.mediumAndSmaller} {
         flex-grow: 1;
       }

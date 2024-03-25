@@ -103,10 +103,23 @@ const useMultiSwrWithAuth = <T>(
   swrKey: string | null,
   config?: Parameters<typeof useSWR<T[]>>[2]
 ) => {
+  const { latestAccessToken } = useContext(PortalAuthContext);
+
+  const authHeaders = {} as any;
+  if (!!latestAccessToken) {
+    authHeaders.Authorization = `Bearer ${latestAccessToken}`;
+  }
   return useSWR<T[]>(
     swrKey,
-    () => Promise.all(paths.map((path) => fetchJSON(path))),
-    { ...(config ?? {}) }
+    () =>
+      Promise.all(
+        paths.map((path) =>
+          fetchJSON(path, {
+            headers: authHeaders,
+          })
+        )
+      ),
+    config ?? {}
   );
 };
 
