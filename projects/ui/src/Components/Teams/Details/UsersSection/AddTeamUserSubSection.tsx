@@ -57,7 +57,7 @@ const AddTeamUserSubSection = ({
   //
   return (
     <Accordion open={open}>
-      <Box pb={"10px"}>
+      <Box pb={"5px"}>
         <DetailsPageStyles.AddItemForm ref={formRef} onSubmit={onSubmit}>
           <Input
             id="member-email-input"

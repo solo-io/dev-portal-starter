@@ -46,11 +46,13 @@ const AppApiSubscriptionsSection = ({
           <EmptyData topic={"API Subscription"} />
         </Box>
       )}
-      <Flex wrap="wrap" gap={"20px"}>
-        {appSubscriptions.map((s) => (
-          <SubscriptionInfoCard key={s.id} subscription={s} />
-        ))}
-      </Flex>
+      <Box pt={"5px"}>
+        <Flex wrap="wrap" gap={"20px"}>
+          {appSubscriptions.map((s) => (
+            <SubscriptionInfoCard key={s.id} subscription={s} />
+          ))}
+        </Flex>
+      </Box>
       <NewSubscriptionModal
         app={app}
         opened={showAddSubscriptionModal}
