@@ -120,6 +120,7 @@ const NewSubscriptionModal = ({
             (isLoadingApps || !apps ? (
               <Loader />
             ) : (
+              // TODO: Add option to create new app here instead of choosing one.
               <FormModalStyles.InputContainer>
                 <label htmlFor="app-select">App</label>
                 <Select
