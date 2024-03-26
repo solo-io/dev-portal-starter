@@ -148,7 +148,7 @@ const NewSubscriptionModal = ({
             Create a New Subscription
           </FormModalStyles.Title>
           <FormModalStyles.Subtitle>
-            Create a new subscribtion.
+            Create a new subscription.
           </FormModalStyles.Subtitle>
         </div>
         <CloseButton title="Close modal" size={"30px"} onClick={onClose} />

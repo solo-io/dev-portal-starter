@@ -10,14 +10,12 @@ export namespace GridCardStyles {
     ({ theme, whiteBg, wide }) => css`
       display: flex;
       flex-direction: column;
-      /* flex-basis: 300px; */
       width: ${wide ? "unset" : "350px"};
       ${mediaQueryWithScreenSize.mediumAndSmaller} {
         flex-grow: 1;
       }
 
       height: 100%;
-      /* min-height: 100px; */
       border-radius: ${borderRadiusConstants.small};
       box-shadow: 1px 1px 5px ${theme.splashBlue};
       border: 1px solid ${theme.splashBlue};
