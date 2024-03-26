@@ -1,4 +1,5 @@
-import { CloseButton, Flex, Loader, Select } from "@mantine/core";
+import styled from "@emotion/styled";
+import { Box, CloseButton, Flex, Loader, Select } from "@mantine/core";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
@@ -8,6 +9,7 @@ import {
   App,
 } from "../../../../Apis/api-types";
 import {
+  useCreateAppAndSubscriptionMutation,
   useCreateAppMutation,
   useCreateSubscriptionMutation,
   useListApiProducts,
@@ -15,8 +17,16 @@ import {
   useListTeams,
 } from "../../../../Apis/hooks";
 import { FormModalStyles } from "../../../../Styles/shared/FormModalStyles";
+import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
+import { Accordion } from "../../../Common/Accordion";
 import { Button } from "../../../Common/Button";
 import { Loading } from "../../../Common/Loading";
+import ToggleAddButton from "../../../Common/ToggleAddButton";
+import CreateNewAppFormContents from "../../Modals/CreateNewAppFormContents";
+
+const StyledSectionTitle = styled.div`
+  font-size: 1.5rem;
+`;
 
 /**
  * This modal is used to add `App -> API Product` subscriptions and is reusable in different contexts.
@@ -56,13 +66,25 @@ const NewSubscriptionModal = ({
   const [formApiProductId, setFormApiProductId] = useState(
     apiProduct?.id ?? ""
   );
+  const [isShowingAddAppSubSection, setIsShowingAddAppSubSection] =
+    useState(false);
+  // For choosing an existing app:
   const [formAppId, setFormAppId] = useState(app?.id ?? "");
+  // For new apps:
+  const [appName, setAppName] = useState("");
+  const [appDescription, setAppDescription] = useState("");
+  const [appTeamId, setAppTeamId] = useState("");
 
   //
   // Form
   //
   const formRef = useRef<HTMLFormElement>(null);
-  const isFormDisabled = !formRef.current?.checkValidity();
+  const isFormDisabled =
+    (!apiProduct && !app) ||
+    (!!apiProduct &&
+      (isShowingAddAppSubSection
+        ? !appName || !appDescription || !appTeamId
+        : !formAppId));
   useEffect(() => {
     // The form resets here when `open` or the default fields change.
     setFormApiProductId(apiProduct?.id ?? "");
@@ -74,20 +96,40 @@ const NewSubscriptionModal = ({
   //
   const { trigger: createSubscription } =
     useCreateSubscriptionMutation(formAppId);
+  const { trigger: createAppAndSubscription } =
+    useCreateAppAndSubscriptionMutation();
   const onSubmit = async (e?: FormEvent) => {
     e?.preventDefault();
     const isValid = formRef.current?.reportValidity();
     if (!isValid || isFormDisabled) {
       return;
     }
-    await toast.promise(
-      createSubscription({ apiProductId: formApiProductId }),
-      {
-        error: "There was an error creating the subscription.",
-        loading: "Creating the subscription...",
-        success: "Created the subscription!",
-      }
-    );
+    if (!!isShowingAddAppSubSection) {
+      // If we are adding a new app, create app and subscription.
+      await toast.promise(
+        createAppAndSubscription({
+          appName,
+          appDescription,
+          appTeamId,
+          apiProductId: formApiProductId,
+        }),
+        {
+          error: "There was an error creating the app and subscription.",
+          loading: "Creating the app and subscription...",
+          success: "Created the app and subscription!",
+        }
+      );
+    } else {
+      // Otherwise just create the subscription.
+      await toast.promise(
+        createSubscription({ apiProductId: formApiProductId }),
+        {
+          error: "There was an error creating the subscription.",
+          loading: "Creating the subscription...",
+          success: "Created the subscription!",
+        }
+      );
+    }
     onClose();
   };
 
@@ -106,10 +148,10 @@ const NewSubscriptionModal = ({
             Create a New Subscription
           </FormModalStyles.Title>
           <FormModalStyles.Subtitle>
-            Create a new Subscription.
+            Create a new subscription.
           </FormModalStyles.Subtitle>
         </div>
-        <CloseButton onClick={onClose} title="Close modal" size={"30px"} />
+        <CloseButton title="Close modal" size={"30px"} onClick={onClose} />
       </FormModalStyles.HeaderContainer>
       <FormModalStyles.HorizLine />
       {isLoadingTeams || teams === undefined ? (
@@ -121,27 +163,64 @@ const NewSubscriptionModal = ({
               <Loader />
             ) : (
               <FormModalStyles.InputContainer>
-                <label htmlFor="app-select">App</label>
-                <Select
-                  id="app-select"
-                  // This className="" is intentional and removes the antd select dropdown classname.
-                  className=""
-                  value={formAppId}
-                  onChange={(value) => {
-                    setFormAppId(value ?? "");
-                  }}
-                  data={[
-                    {
-                      value: "",
-                      label: "Select an App",
-                      disabled: true,
-                    },
-                    ...apps.map((app) => ({
-                      value: app.id,
-                      label: app.name,
-                    })),
-                  ]}
-                />
+                <Box mb="10px">
+                  <Flex justify={"space-between"} align={"center"}>
+                    <StyledSectionTitle>
+                      {isShowingAddAppSubSection ? "Create a New" : "Choose"}{" "}
+                      App
+                    </StyledSectionTitle>
+                    <ToggleAddButton
+                      topicUpperCase="APP"
+                      isAdding={isShowingAddAppSubSection}
+                      toggleAdding={() =>
+                        setIsShowingAddAppSubSection(!isShowingAddAppSubSection)
+                      }
+                    />
+                  </Flex>
+                </Box>
+                <Accordion open={!!isShowingAddAppSubSection}>
+                  <GridCardStyles.GridCard wide>
+                    <Box py={"15px"} px={"30px"}>
+                      <CreateNewAppFormContents
+                        formEnabled={isShowingAddAppSubSection}
+                        teams={teams}
+                        formFields={{
+                          appName,
+                          appDescription,
+                          appTeamId,
+                        }}
+                        formFieldSetters={{
+                          setAppName,
+                          setAppDescription,
+                          setAppTeamId,
+                        }}
+                      />
+                    </Box>
+                  </GridCardStyles.GridCard>
+                </Accordion>
+                <Accordion open={!isShowingAddAppSubSection}>
+                  <Select
+                    id="app-select"
+                    aria-label="Choose app"
+                    // This className="" is intentional and removes the antd select dropdown classname.
+                    className=""
+                    value={formAppId}
+                    onChange={(value) => {
+                      setFormAppId(value ?? "");
+                    }}
+                    data={[
+                      {
+                        value: "",
+                        label: "Select an App",
+                        disabled: true,
+                      },
+                      ...apps.map((app) => ({
+                        value: app.id,
+                        label: app.name,
+                      })),
+                    ]}
+                  />
+                </Accordion>
               </FormModalStyles.InputContainer>
             ))}
           {!apiProduct &&
@@ -177,7 +256,7 @@ const NewSubscriptionModal = ({
               Cancel
             </Button>
             <Button disabled={isFormDisabled} onClick={onSubmit} type="submit">
-              Create Subscription
+              Create{isShowingAddAppSubSection ? " App and" : ""} Subscription
             </Button>
           </Flex>
         </FormModalStyles.BodyContainerForm>

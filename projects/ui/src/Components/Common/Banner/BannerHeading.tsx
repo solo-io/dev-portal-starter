@@ -120,7 +120,6 @@ const BannerHeadingContentContainer = styled(ContentWidthDiv)<{
       .bannerContent {
         min-height: 258px;
         width: 51%;
-        max-width: 51%;
       }
     `}
     ${pageContentIsWide &&

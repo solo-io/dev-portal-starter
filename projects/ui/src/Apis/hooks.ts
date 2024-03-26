@@ -277,9 +277,50 @@ export function useCreateAppMutation(teamId: string | undefined) {
     });
     mutate(TEAM_APPS_SWR_KEY);
     mutate(`/teams/${teamId}/apps`);
-    return res as Team;
+    return res as App;
   };
   return useSWRMutation(`/teams/${teamId}/apps`, createApp);
+}
+
+// ------------------------ //
+// Create App and Subscription
+
+type CreateAppAndSubscriptionParams = MutationWithArgs<{
+  appName: string;
+  appDescription: string;
+  appTeamId: string;
+  apiProductId: string;
+}>;
+
+export function useCreateAppAndSubscriptionMutation() {
+  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { mutate } = useSWRConfig();
+  const createAppAndSubscription = async (
+    _url: string,
+    { arg }: CreateAppAndSubscriptionParams
+  ) => {
+    const { appName, appDescription, appTeamId, apiProductId } = arg;
+    // Create the app
+    const appRes: App = await fetchJSON(`/teams/${appTeamId}/apps`, {
+      method: "POST",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify({ name: appName, description: appDescription }),
+    });
+    // Create the subscription
+    await doFetch(`/apps/${appRes.id}/subscriptions`, {
+      method: "POST",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify({ apiProductId }),
+    });
+    mutate(TEAM_APPS_SWR_KEY);
+    mutate(`/teams/${appTeamId}/apps`);
+    mutate(SUBSCRIPTIONS_SWR_KEY);
+    mutate(SUBSCRIPTIONS_FILTERED_SWR_KEY);
+  };
+  return useSWRMutation(
+    "create-app-and-subscription",
+    createAppAndSubscription
+  );
 }
 
 // ------------------------ //

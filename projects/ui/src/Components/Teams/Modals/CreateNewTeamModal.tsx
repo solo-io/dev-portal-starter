@@ -65,7 +65,7 @@ const CreateNewTeamModal = ({
             Create a new team.
           </FormModalStyles.Subtitle>
         </div>
-        <CloseButton title="Close modal" size={"30px"} />
+        <CloseButton title="Close modal" size={"30px"} onClick={onClose} />
       </FormModalStyles.HeaderContainer>
       <FormModalStyles.HorizLine />
       <FormModalStyles.BodyContainerForm ref={formRef} onSubmit={onSubmit}>
