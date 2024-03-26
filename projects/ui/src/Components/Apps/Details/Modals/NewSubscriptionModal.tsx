@@ -104,14 +104,14 @@ const NewSubscriptionModal = ({
     if (!isValid || isFormDisabled) {
       return;
     }
-    if (!!isShowingAddAppSubSection && !!apiProduct) {
+    if (!!isShowingAddAppSubSection) {
       // If we are adding a new app, create app and subscription.
       await toast.promise(
         createAppAndSubscription({
           appName,
           appDescription,
           appTeamId,
-          apiProductId: apiProduct.id,
+          apiProductId: formApiProductId,
         }),
         {
           error: "There was an error creating the app and subscription.",
