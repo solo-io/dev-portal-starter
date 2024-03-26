@@ -24,6 +24,7 @@ export const AppDetailsPageContent = ({ app }: { app: App }) => {
     <PageContainer>
       <BannerHeading
         title={
+          // TODO: Add edit button here
           <BannerHeadingTitle
             text={app.name}
             stylingTweaks={{
