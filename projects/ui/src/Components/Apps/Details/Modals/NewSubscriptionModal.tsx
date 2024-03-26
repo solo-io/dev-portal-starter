@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import { Box, CloseButton, Flex, Loader, Select } from "@mantine/core";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
@@ -22,6 +23,10 @@ import { Button } from "../../../Common/Button";
 import { Loading } from "../../../Common/Loading";
 import ToggleAddButton from "../../../Common/ToggleAddButton";
 import CreateNewAppFormContents from "../../Modals/CreateNewAppFormContents";
+
+const StyledSectionTitle = styled.div`
+  font-size: 1.5rem;
+`;
 
 /**
  * This modal is used to add `App -> API Product` subscriptions and is reusable in different contexts.
@@ -143,7 +148,7 @@ const NewSubscriptionModal = ({
             Create a New Subscription
           </FormModalStyles.Title>
           <FormModalStyles.Subtitle>
-            Create a new subscribtion for an App to use this API Product.
+            Create a new subscribtion.
           </FormModalStyles.Subtitle>
         </div>
         <CloseButton title="Close modal" size={"30px"} onClick={onClose} />
@@ -160,12 +165,10 @@ const NewSubscriptionModal = ({
               <FormModalStyles.InputContainer>
                 <Box mb="10px">
                   <Flex justify={"space-between"} align={"center"}>
-                    <div>
-                      {isShowingAddAppSubSection
-                        ? "Add New"
-                        : "Choose Existing"}{" "}
+                    <StyledSectionTitle>
+                      {isShowingAddAppSubSection ? "Create a New" : "Choose"}{" "}
                       App
-                    </div>
+                    </StyledSectionTitle>
                     <ToggleAddButton
                       topicUpperCase="APP"
                       isAdding={isShowingAddAppSubSection}

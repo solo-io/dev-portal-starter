@@ -13,8 +13,8 @@ const StyledFormRow = styled.div`
   label {
     width: 100%;
     padding: 0px;
-    font-size: 1rem;
-    margin-bottom: 5px;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
     text-align: left;
   }
   .mantine-Input-wrapper,
