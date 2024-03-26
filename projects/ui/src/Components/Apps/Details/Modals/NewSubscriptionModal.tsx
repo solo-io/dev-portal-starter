@@ -1,4 +1,4 @@
-import { CloseButton, Flex, Loader, Select } from "@mantine/core";
+import { Box, CloseButton, Flex, Loader, Select } from "@mantine/core";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
@@ -8,6 +8,7 @@ import {
   App,
 } from "../../../../Apis/api-types";
 import {
+  useCreateAppAndSubscriptionMutation,
   useCreateAppMutation,
   useCreateSubscriptionMutation,
   useListApiProducts,
@@ -15,8 +16,11 @@ import {
   useListTeams,
 } from "../../../../Apis/hooks";
 import { FormModalStyles } from "../../../../Styles/shared/FormModalStyles";
+import { Accordion } from "../../../Common/Accordion";
 import { Button } from "../../../Common/Button";
 import { Loading } from "../../../Common/Loading";
+import ToggleAddButton from "../../../Common/ToggleAddButton";
+import CreateNewAppForSubscriptionFormContents from "./CreateNewAppForSubscriptionFormContents";
 
 /**
  * This modal is used to add `App -> API Product` subscriptions and is reusable in different contexts.
@@ -56,13 +60,23 @@ const NewSubscriptionModal = ({
   const [formApiProductId, setFormApiProductId] = useState(
     apiProduct?.id ?? ""
   );
+  // TODO: Default to false.
+  const [isShowingAddAppSubSection, setIsShowingAddAppSubSection] =
+    useState(true);
+  // For choosing an existing app:
   const [formAppId, setFormAppId] = useState(app?.id ?? "");
+  // For new apps:
+  const [appName, setAppName] = useState("");
+  const [appDescription, setAppDescription] = useState("");
+  const [appTeamId, setAppTeamId] = useState("");
 
   //
   // Form
   //
   const formRef = useRef<HTMLFormElement>(null);
-  const isFormDisabled = !formRef.current?.checkValidity();
+  const isFormDisabled = isShowingAddAppSubSection
+    ? !appName || !appDescription || !appTeamId
+    : !formAppId;
   useEffect(() => {
     // The form resets here when `open` or the default fields change.
     setFormApiProductId(apiProduct?.id ?? "");
@@ -74,20 +88,40 @@ const NewSubscriptionModal = ({
   //
   const { trigger: createSubscription } =
     useCreateSubscriptionMutation(formAppId);
+  const { trigger: createAppAndSubscription } =
+    useCreateAppAndSubscriptionMutation();
   const onSubmit = async (e?: FormEvent) => {
     e?.preventDefault();
     const isValid = formRef.current?.reportValidity();
-    if (!isValid || isFormDisabled) {
+    if (!isValid || isFormDisabled || !apiProduct) {
       return;
     }
-    await toast.promise(
-      createSubscription({ apiProductId: formApiProductId }),
-      {
-        error: "There was an error creating the subscription.",
-        loading: "Creating the subscription...",
-        success: "Created the subscription!",
-      }
-    );
+    if (!!isShowingAddAppSubSection) {
+      // If we are adding a new app, create app and subscription.
+      await toast.promise(
+        createAppAndSubscription({
+          appName,
+          appDescription,
+          appTeamId,
+          apiProductId: apiProduct.id,
+        }),
+        {
+          error: "There was an error creating the app and subscription.",
+          loading: "Creating the app and subscription...",
+          success: "Created the app and subscription!",
+        }
+      );
+    } else {
+      // Otherwise just create the subscription.
+      await toast.promise(
+        createSubscription({ apiProductId: formApiProductId }),
+        {
+          error: "There was an error creating the subscription.",
+          loading: "Creating the subscription...",
+          success: "Created the subscription!",
+        }
+      );
+    }
     onClose();
   };
 
@@ -106,10 +140,10 @@ const NewSubscriptionModal = ({
             Create a New Subscription
           </FormModalStyles.Title>
           <FormModalStyles.Subtitle>
-            Create a new Subscription.
+            Create a new subscribtion for an App to use this API Product.
           </FormModalStyles.Subtitle>
         </div>
-        <CloseButton onClick={onClose} title="Close modal" size={"30px"} />
+        <CloseButton title="Close modal" size={"30px"} onClick={onClose} />
       </FormModalStyles.HeaderContainer>
       <FormModalStyles.HorizLine />
       {isLoadingTeams || teams === undefined ? (
@@ -120,29 +154,61 @@ const NewSubscriptionModal = ({
             (isLoadingApps || !apps ? (
               <Loader />
             ) : (
-              // TODO: Add option to create new app here instead of choosing one.
               <FormModalStyles.InputContainer>
-                <label htmlFor="app-select">App</label>
-                <Select
-                  id="app-select"
-                  // This className="" is intentional and removes the antd select dropdown classname.
-                  className=""
-                  value={formAppId}
-                  onChange={(value) => {
-                    setFormAppId(value ?? "");
+                <Box mb="10px">
+                  <Flex justify={"space-between"} align={"center"}>
+                    <div>
+                      {isShowingAddAppSubSection
+                        ? "Add New"
+                        : "Choose Existing"}{" "}
+                      App
+                    </div>
+                    <ToggleAddButton
+                      topicUpperCase="APP"
+                      isAdding={isShowingAddAppSubSection}
+                      toggleAdding={() =>
+                        setIsShowingAddAppSubSection(!isShowingAddAppSubSection)
+                      }
+                    />
+                  </Flex>
+                </Box>
+                <CreateNewAppForSubscriptionFormContents
+                  formEnabled={isShowingAddAppSubSection}
+                  teams={teams}
+                  formFields={{
+                    appName,
+                    appDescription,
+                    appTeamId,
                   }}
-                  data={[
-                    {
-                      value: "",
-                      label: "Select an App",
-                      disabled: true,
-                    },
-                    ...apps.map((app) => ({
-                      value: app.id,
-                      label: app.name,
-                    })),
-                  ]}
+                  formFieldSetters={{
+                    setAppName,
+                    setAppDescription,
+                    setAppTeamId,
+                  }}
                 />
+                <Accordion open={!isShowingAddAppSubSection}>
+                  <Select
+                    id="app-select"
+                    aria-label="Choose app"
+                    // This className="" is intentional and removes the antd select dropdown classname.
+                    className=""
+                    value={formAppId}
+                    onChange={(value) => {
+                      setFormAppId(value ?? "");
+                    }}
+                    data={[
+                      {
+                        value: "",
+                        label: "Select an App",
+                        disabled: true,
+                      },
+                      ...apps.map((app) => ({
+                        value: app.id,
+                        label: app.name,
+                      })),
+                    ]}
+                  />
+                </Accordion>
               </FormModalStyles.InputContainer>
             ))}
           {!apiProduct &&
@@ -178,7 +244,7 @@ const NewSubscriptionModal = ({
               Cancel
             </Button>
             <Button disabled={isFormDisabled} onClick={onSubmit} type="submit">
-              Create Subscription
+              Create{isShowingAddAppSubSection ? " App and" : ""} Subscription
             </Button>
           </Flex>
         </FormModalStyles.BodyContainerForm>

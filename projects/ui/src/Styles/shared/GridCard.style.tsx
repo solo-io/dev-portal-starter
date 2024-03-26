@@ -17,7 +17,7 @@ export namespace GridCardStyles {
       }
 
       height: 100%;
-      min-height: 100px;
+      /* min-height: 100px; */
       border-radius: ${borderRadiusConstants.small};
       box-shadow: 1px 1px 5px ${theme.splashBlue};
       border: 1px solid ${theme.splashBlue};
