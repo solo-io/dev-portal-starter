@@ -1,8 +1,27 @@
+import styled from "@emotion/styled";
 import { Input, Select } from "@mantine/core";
 import { useEffect } from "react";
 import { Team } from "../../../Apis/api-types";
-import { FormModalStyles } from "../../../Styles/shared/FormModalStyles";
 import { Accordion } from "../../Common/Accordion";
+
+const StyledFormRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  padding-bottom: 15px;
+  label {
+    width: 100%;
+    padding: 0px;
+    font-size: 1rem;
+    margin-bottom: 5px;
+    text-align: left;
+  }
+  .mantine-Input-wrapper,
+  .mantine-InputWrapper-root {
+    flex-grow: 1;
+  }
+`;
 
 export interface CreateNewAppFormFields {
   appName: string;
@@ -47,9 +66,9 @@ const CreateNewAppFormContents = ({
   // Render
   //
   return (
-    <>
-      <FormModalStyles.InputContainer>
-        <label htmlFor="app-team-select">Team</label>
+    <div>
+      <StyledFormRow>
+        <label htmlFor="app-team-select">App Team</label>
         <Select
           id="app-team-select"
           // This className="" is intentional and removes the antd select dropdown classname.
@@ -71,9 +90,9 @@ const CreateNewAppFormContents = ({
             })),
           ]}
         />
-      </FormModalStyles.InputContainer>
+      </StyledFormRow>
       <Accordion open={!!appTeamId}>
-        <FormModalStyles.InputContainer>
+        <StyledFormRow>
           <label htmlFor="app-name-input">App Name</label>
           <Input
             id="app-name-input"
@@ -84,8 +103,8 @@ const CreateNewAppFormContents = ({
             value={appName}
             onChange={(e) => setAppName(e.target.value)}
           />
-        </FormModalStyles.InputContainer>
-        <FormModalStyles.InputContainer>
+        </StyledFormRow>
+        <StyledFormRow>
           <label htmlFor="app-description-input">App Description</label>
           <Input
             // This could be a Textarea if newlines exist in the description.
@@ -100,9 +119,9 @@ const CreateNewAppFormContents = ({
             value={appDescription}
             onChange={(e) => setAppDescription(e.target.value)}
           />
-        </FormModalStyles.InputContainer>
+        </StyledFormRow>
       </Accordion>
-    </>
+    </div>
   );
 };
 

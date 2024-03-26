@@ -16,11 +16,12 @@ import {
   useListTeams,
 } from "../../../../Apis/hooks";
 import { FormModalStyles } from "../../../../Styles/shared/FormModalStyles";
+import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { Accordion } from "../../../Common/Accordion";
 import { Button } from "../../../Common/Button";
 import { Loading } from "../../../Common/Loading";
 import ToggleAddButton from "../../../Common/ToggleAddButton";
-import CreateNewAppForSubscriptionFormContents from "./CreateNewAppForSubscriptionFormContents";
+import CreateNewAppFormContents from "../../Modals/CreateNewAppFormContents";
 
 /**
  * This modal is used to add `App -> API Product` subscriptions and is reusable in different contexts.
@@ -60,9 +61,8 @@ const NewSubscriptionModal = ({
   const [formApiProductId, setFormApiProductId] = useState(
     apiProduct?.id ?? ""
   );
-  // TODO: Default to false.
   const [isShowingAddAppSubSection, setIsShowingAddAppSubSection] =
-    useState(true);
+    useState(false);
   // For choosing an existing app:
   const [formAppId, setFormAppId] = useState(app?.id ?? "");
   // For new apps:
@@ -74,9 +74,12 @@ const NewSubscriptionModal = ({
   // Form
   //
   const formRef = useRef<HTMLFormElement>(null);
-  const isFormDisabled = isShowingAddAppSubSection
-    ? !appName || !appDescription || !appTeamId
-    : !formAppId;
+  const isFormDisabled =
+    (!apiProduct && !app) ||
+    (!!apiProduct &&
+      (isShowingAddAppSubSection
+        ? !appName || !appDescription || !appTeamId
+        : !formAppId));
   useEffect(() => {
     // The form resets here when `open` or the default fields change.
     setFormApiProductId(apiProduct?.id ?? "");
@@ -93,10 +96,10 @@ const NewSubscriptionModal = ({
   const onSubmit = async (e?: FormEvent) => {
     e?.preventDefault();
     const isValid = formRef.current?.reportValidity();
-    if (!isValid || isFormDisabled || !apiProduct) {
+    if (!isValid || isFormDisabled) {
       return;
     }
-    if (!!isShowingAddAppSubSection) {
+    if (!!isShowingAddAppSubSection && !!apiProduct) {
       // If we are adding a new app, create app and subscription.
       await toast.promise(
         createAppAndSubscription({
@@ -172,20 +175,26 @@ const NewSubscriptionModal = ({
                     />
                   </Flex>
                 </Box>
-                <CreateNewAppForSubscriptionFormContents
-                  formEnabled={isShowingAddAppSubSection}
-                  teams={teams}
-                  formFields={{
-                    appName,
-                    appDescription,
-                    appTeamId,
-                  }}
-                  formFieldSetters={{
-                    setAppName,
-                    setAppDescription,
-                    setAppTeamId,
-                  }}
-                />
+                <Accordion open={!!isShowingAddAppSubSection}>
+                  <GridCardStyles.GridCard wide>
+                    <Box py={"15px"} px={"30px"}>
+                      <CreateNewAppFormContents
+                        formEnabled={isShowingAddAppSubSection}
+                        teams={teams}
+                        formFields={{
+                          appName,
+                          appDescription,
+                          appTeamId,
+                        }}
+                        formFieldSetters={{
+                          setAppName,
+                          setAppDescription,
+                          setAppTeamId,
+                        }}
+                      />
+                    </Box>
+                  </GridCardStyles.GridCard>
+                </Accordion>
                 <Accordion open={!isShowingAddAppSubSection}>
                   <Select
                     id="app-select"
