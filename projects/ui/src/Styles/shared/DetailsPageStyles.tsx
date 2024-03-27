@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Flex } from "@mantine/core";
+import { svgColorReplace } from "../utils";
 
 export namespace DetailsPageStyles {
   export const Section = styled(Flex)`
@@ -45,6 +46,26 @@ export namespace DetailsPageStyles {
         }
         flex-grow: 1;
       }
+    `
+  );
+
+  export const EditButtonAndTooltipContainer = styled.div(
+    ({ theme }) => css`
+      display: flex;
+      flex-grow: 1;
+      justify-content: flex-end;
+      align-items: center;
+      height: 100%;
+      button {
+        padding: 10px 0px;
+        width: unset;
+        min-width: unset;
+      }
+      svg {
+        /* width: 20px; */
+        height: 100%;
+      }
+      ${svgColorReplace(theme.augustGrey)}
     `
   );
 }

@@ -283,6 +283,58 @@ export function useCreateAppMutation(teamId: string | undefined) {
 }
 
 // ------------------------ //
+// Update App
+
+type UpdateAppParams = MutationWithArgs<{
+  appId: string;
+  appTeamId: string;
+  appName: string;
+  appDescription: string;
+}>;
+
+export function useUpdateAppMutation() {
+  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { mutate } = useSWRConfig();
+  const updateApp = async (_url: string, { arg }: UpdateAppParams) => {
+    const { appId, appTeamId, appName, appDescription } = arg;
+    await fetchJSON(`/apps/${appId}`, {
+      method: "PUT",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify({ name: appName, description: appDescription }),
+    });
+    mutate(TEAM_APPS_SWR_KEY);
+    mutate(`/teams/${appTeamId}/apps`);
+    mutate(`/apps/${appId}`);
+  };
+  return useSWRMutation("update-app", updateApp);
+}
+
+// ------------------------ //
+// Update Team
+
+type UpdateTeamParams = MutationWithArgs<{
+  teamId: string;
+  teamName: string;
+  teamDescription: string;
+}>;
+
+export function useUpdateTeamMutation() {
+  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { mutate } = useSWRConfig();
+  const updateTeam = async (_url: string, { arg }: UpdateTeamParams) => {
+    const { teamId, teamName, teamDescription } = arg;
+    await fetchJSON(`/teams/${teamId}`, {
+      method: "PUT",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify({ name: teamName, description: teamDescription }),
+    });
+    mutate(TEAMS_SWR_KEY);
+    mutate(`/teams/${teamId}`);
+  };
+  return useSWRMutation("update-team", updateTeam);
+}
+
+// ------------------------ //
 // Create App and Subscription
 
 type CreateAppAndSubscriptionParams = MutationWithArgs<{

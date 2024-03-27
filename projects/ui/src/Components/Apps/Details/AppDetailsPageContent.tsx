@@ -7,6 +7,7 @@ import { BannerHeadingTitle } from "../../Common/Banner/BannerHeadingTitle";
 import { PageContainer } from "../../Common/PageContainer";
 import AppApiSubscriptionsSection from "./ApiSubscriptionsSection/AppApiSubscriptionsSection";
 import AppAuthenticationSection from "./AuthenticationSection/AppAuthenticationSection";
+import EditAppButtonWithModal from "./EditAppButtonWithModal";
 
 export const AppDetailsPageContent = ({ app }: { app: App }) => {
   di(useListSubscriptionsForApp);
@@ -30,6 +31,7 @@ export const AppDetailsPageContent = ({ app }: { app: App }) => {
               fontSize: "32px",
               lineHeight: "36px",
             }}
+            additionalInfo={<EditAppButtonWithModal app={app} />}
           />
         }
         description={app.description}

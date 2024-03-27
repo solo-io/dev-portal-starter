@@ -48,7 +48,7 @@ export namespace FormModalStyles {
 
   export const Title = styled.div`
     font-size: 1.7rem;
-    padding-bottom: 3px;
+    padding-bottom: 10px;
   `;
 
   export const Subtitle = styled.div`
@@ -80,4 +80,27 @@ export namespace FormModalStyles {
         : ""}
     `
   );
+
+  export const SectionTitle = styled.div`
+    font-size: 1.5rem;
+  `;
+
+  export const FormRow = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    padding-bottom: 15px;
+    label {
+      width: 100%;
+      padding: 0px;
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      text-align: left;
+    }
+    .mantine-Input-wrapper,
+    .mantine-InputWrapper-root {
+      flex-grow: 1;
+    }
+  `;
 }

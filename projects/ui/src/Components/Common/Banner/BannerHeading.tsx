@@ -40,6 +40,7 @@ const BannerContent = styled.div(
 
 const BannerCardRightContent = styled.div(
   ({ theme }) => css`
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
