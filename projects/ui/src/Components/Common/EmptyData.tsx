@@ -7,6 +7,7 @@ const LoadingContainer = styled.div(
     flex-direction: column;
     align-items: center;
     width: 100%;
+    padding-bottom: 30px;
 
     // A pretty spinner while they wait...
     // .inner and .outer define the two circling balls, and
@@ -18,8 +19,10 @@ const LoadingContainer = styled.div(
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 180px;
-      height: 180px;
+      /* width: 180px;
+      height: 180px; */
+      width: 100px;
+      height: 100px;
 
       .chasePlate {
         position: absolute;
@@ -60,15 +63,17 @@ const LoadingContainer = styled.div(
 
         .circle::before {
           position: absolute;
-          top: -0.5em;
-          right: -0.5em;
           content: "";
-          width: 1em;
+          /* width: 1em;
           height: 1em;
+          top: -0.5em;
+          right: -0.5em; */
+          width: 12px;
+          height: 12px;
+          top: -6px;
+          right: -8px;
           background-color: currentColor;
           border-radius: 50%;
-          box-shadow: 0 0 2em, 0 0 4em, 0 0 6em, 0 0 8em, 0 0 10em,
-            0 0 0 0.5em rgba(255, 255, 0, 0.1);
         }
       }
     }
@@ -86,11 +91,6 @@ const LoadingContainer = styled.div(
         }
         &.outer {
           --deg: -90deg;
-        }
-
-        .circle::before {
-          animation: shadowFade 1.5s ease-in;
-          animation-fill-mode: forwards;
         }
       }
     }
@@ -111,16 +111,31 @@ const LoadingContainer = styled.div(
       line-height: 20px;
       font-weight: 400;
     }
+
+    //
+    // Animations
+    //
+    @keyframes animateCircles {
+      to {
+        transform: rotate(1turn);
+      }
+    }
   `
 );
 
-export function EmptyData({
-  topic,
-  message,
-}: {
-  topic: string;
-  message?: string;
-}) {
+export function EmptyData(
+  props:
+    | (
+        | {
+            topic: string;
+          }
+        | {
+            topicMessageOverride: string;
+          }
+      ) & {
+        message?: string;
+      }
+) {
   return (
     <LoadingContainer aria-hidden="true">
       <div className="emptyCircle">
@@ -131,8 +146,16 @@ export function EmptyData({
           <div className="circle"></div>
         </div>
       </div>
-      <div className="emptyMainMessage">No {topic} results were found</div>
-      {!!message && <div className="emptyDetailsMessage">{message}</div>}
+      {"topicMessageOverride" in props ? (
+        <div className="emptyMainMessage">{props.topicMessageOverride}</div>
+      ) : (
+        <div className="emptyMainMessage">
+          No {props.topic} results were found
+        </div>
+      )}
+      {!!props.message && (
+        <div className="emptyDetailsMessage">{props.message}</div>
+      )}
     </LoadingContainer>
   );
 }

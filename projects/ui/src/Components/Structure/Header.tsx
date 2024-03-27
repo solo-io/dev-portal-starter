@@ -54,6 +54,7 @@ export const StyledTopNavHeader = styled.header(
 export const StyledTopNavContent = styled(ContentWidthNav)(
   ({ theme }) => css`
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -74,6 +75,7 @@ export const StyledTopNavContent = styled(ContentWidthNav)(
 
     .siteNavigating {
       display: flex;
+      flex-wrap: wrap;
       flex-direction: row;
       align-items: center;
       height: 100%;
@@ -155,11 +157,24 @@ export function Header() {
   const routerLocation = useLocation();
   const { isLoggedIn } = useContext(PortalAuthContext);
 
-  const inAPIsArea = useMemo(() => {
-    return ["/apis", "/api-details/"].some((s) =>
-      routerLocation.pathname.includes(s)
-    );
-  }, [routerLocation.pathname]);
+  const inArea = (paths: string[]) => {
+    return paths.some((s) => routerLocation.pathname.includes(s));
+  };
+
+  const inAPIsArea = useMemo(
+    () => inArea(["/apis", "/api-details/"]),
+    [routerLocation.pathname]
+  );
+
+  const inAppsArea = useMemo(
+    () => inArea(["/apps", "/app-details/"]),
+    [routerLocation.pathname]
+  );
+
+  const inTeamsArea = useMemo(
+    () => inArea(["/teams", "/team-details/"]),
+    [routerLocation.pathname]
+  );
 
   const { pageContentIsWide } = useContext(AppContext);
 
@@ -182,6 +197,22 @@ export function Header() {
             >
               APIs
             </NavLink>
+            {isLoggedIn && (
+              <>
+                <NavLink
+                  to={"/teams"}
+                  className={`navLink ${inTeamsArea ? "active" : ""}`}
+                >
+                  Teams
+                </NavLink>
+                <NavLink
+                  to={"/apps"}
+                  className={`navLink ${inAppsArea ? "active" : ""}`}
+                >
+                  Apps
+                </NavLink>
+              </>
+            )}
             <div className="divider" />
             <ErrorBoundary fallback="Access issues" class="horizontalError">
               {isLoggedIn ? (

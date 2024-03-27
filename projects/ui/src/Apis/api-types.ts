@@ -8,65 +8,98 @@ export type User = {
   name: string;
   email: string;
   username: string;
+  // TODO: Once auth is working, check if we can get admin info here and update the areas that use admin endpoints (e.g. subscriptions areas).
+  // admin: string;
 };
 
-type RateLimitPolicy = {
-  unit: "UNKNOWN" | "SECOND" | "MINUTE" | "HOUR" | "DAY";
-  requestsPerUnit: number;
-};
-
-type AuthPolicy = {
-  authType: string;
-};
-
-export type UsagePlan = {
-  name: string;
-  authPolicies: AuthPolicy[];
-  rateLimitPolicy: RateLimitPolicy;
-  apiIds: string[];
-};
-
-export type APIKey = {
-  name: string;
-  id: string;
-  // APIKey is returned only once when the API key is created.
-  apiKey: string | undefined;
-  metadata?: Record<string, string> | undefined;
-};
-
-export type API = {
-  apiProductId?: string;
-  apiProductDisplayName?: string;
-  apiVersion?: string;
-  apiId: string;
-  contact: string;
-  customMetadata: Record<string, string> | undefined;
+export type ApiProductSummary = {
+  createdAt: string;
   description: string;
-  license: string;
-  termsOfService: string;
-  title: string;
-  usagePlans: string[];
+  id: string;
+  name: string;
+  updatedAt: string;
+  versionsCount: number;
 };
 
-// This api type may be returned in the next portal rest server version.
-export type APIProduct = {
+export type ApiProductDetails = {
+  autoApproval: boolean;
+  contactEmail: string;
+  createdAt: string;
+  description: string;
+  id: string;
+  metadata: Record<string, string> | null;
+  name: string;
+  updatedAt: string;
+};
+
+export type ApiVersion = {
+  apiSpec?: string | ApiVersionSchema;
+  createdAt: string;
+  documentation: string;
+  id: string;
+  name: string;
+  publicVisible?: boolean;
+  status: string; // 'published',
+  title: string;
+  updatedAt: string;
+};
+
+export type App = {
+  createdAt: string;
+  deletedAt: string;
+  updatedAt: string;
+  id: string;
+  idpClientId: string;
+  idpClientName: string;
+  idpClientSecret: string;
+  name: string;
+  description: string;
+  teamId: string;
+};
+
+export type Team = {
+  createdAt: string;
+  description: string;
+  id: string;
+  name: string;
+  updatedAt: string;
+};
+
+export type Member = {
+  createdAt: string;
+  email: string;
+  id: string;
+  name: string;
+  username: string;
+  // synced = has user logged in.
+  synced: boolean;
+  updatedAt: string;
+};
+
+export enum SubscriptionStatus {
+  APPROVED = "approved",
+  PENDING = "pending",
+}
+export type Subscription = {
   apiProductId: string;
-  apiProductDisplayName: string;
-  apiVersions: {
-    apiId: string;
-    apiVersion: string;
-    contact: string;
-    customMetadata?: Record<string, string>;
-    description: string;
-    license: string;
-    termsOfService: string;
-    title: string;
-    usagePlans: string[];
-  }[];
+  applicationId: string;
+  approved?: boolean;
+  approvedAt?: string;
+  rejected?: boolean;
+  rejectedAt?: string;
+  createdAt?: string;
+  deletedAt?: string;
+  id: string;
+  requestedAt: string;
+  updatedAt: string;
+};
+
+export type ErrorMessageResponse = {
+  message: string;
 };
 
 type SchemaPropertyType = "string" | "integer" | "array" | "object";
-export type APISchema = {
+export type ApiVersionSchema = {
   components?: {
     schemas: {
       Author?: {
@@ -83,7 +116,7 @@ export type APISchema = {
       };
     };
   };
-  info: {
+  info?: {
     title: string;
     version: string;
   };

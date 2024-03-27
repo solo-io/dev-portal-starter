@@ -14,8 +14,7 @@ export const makeStyledButtonCSS = (theme: Theme) => css`
   border-radius: 2px;
   height: 40px;
   min-width: 90px;
-  line-height: 40px;
-  padding: 0 10px;
+  padding: 0 22px;
   color: white;
   font-size: 14px;
   font-weight: 600;
@@ -25,7 +24,7 @@ export const makeStyledButtonCSS = (theme: Theme) => css`
   // Primary states
   //
   border: 1px solid ${theme.januaryGrey};
-  background-color: ${theme.primary};
+  background-color: ${theme.lakeBlue};
   &:hover {
     background-color: ${theme.primaryLight10};
   }
@@ -93,6 +92,25 @@ export const makeStyledButtonCSS = (theme: Theme) => css`
   }
 
   //
+  // Outline states
+  //
+  &.outline {
+    color: ${theme.lakeBlue};
+    border: 1px solid ${theme.lakeBlue};
+    background-color: white;
+    &:hover {
+      color: white;
+      background-color: ${theme.primaryLight10};
+      border: none;
+    }
+    &:active {
+      color: white;
+      background-color: ${theme.primaryLight20};
+      border: none;
+    }
+  }
+
+  //
   // Error states
   //
   &.error {
@@ -132,6 +150,7 @@ export function Button(
     <StyledButton
       {...rest}
       aria-disabled={disabled}
+      tabIndex={disabled ? -1 : 0}
       className={`styledButton ${rest.className ?? ""} ${
         disabled ? "disabled" : ""
       }`}

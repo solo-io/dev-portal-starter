@@ -1,0 +1,11 @@
+<svg id="error_x_small" data-name="error x small" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <g id="Group_24117" data-name="Group 24117" transform="translate(0 0)">
+    <g id="Group_4032" data-name="Group 4032">
+      <g id="Ellipse_11" data-name="Ellipse 11">
+        <circle id="Ellipse_204" data-name="Ellipse 204" cx="10" cy="10" r="10" transform="translate(0 0)" fill="#fcccb3"/>
+        <path id="Path_38539" data-name="Path 38539" d="M552.473,422.6a10,10,0,1,1,10-10A10.011,10.011,0,0,1,552.473,422.6Zm0-18.75a8.75,8.75,0,1,0,8.75,8.75A8.76,8.76,0,0,0,552.473,403.853Z" transform="translate(-542.473 -402.603)" fill="#d75b1d"/>
+      </g>
+    </g>
+    <path id="Path_38540" data-name="Path 38540" d="M559.6,410.091l-1.01-1.01-4.328,4.329-4.328-4.329-1.01,1.01,4.329,4.329-4.329,4.329,1.01,1.01,4.328-4.329,4.328,4.329,1.01-1.01-4.329-4.329Z" transform="translate(-544.222 -404.359)" fill="#d75b1d"/>
+  </g>
+</svg>

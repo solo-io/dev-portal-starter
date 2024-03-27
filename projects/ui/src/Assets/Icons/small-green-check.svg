@@ -1,0 +1,7 @@
+<svg id="small-green-check" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <g id="Group_24984" data-name="Group 24984">
+    <path id="Path_38821" data-name="Path 38821" d="M959.55,549.244a9.286,9.286,0,1,1,9.286-9.286A9.3,9.3,0,0,1,959.55,549.244Z" transform="translate(-949.55 -529.959)" fill="#ebfff9"/>
+    <path id="Path_38822" data-name="Path 38822" d="M959.514,531.352a8.571,8.571,0,1,0,8.571,8.571,8.581,8.581,0,0,0-8.571-8.571m0-1.429a10,10,0,1,1-10,10A10,10,0,0,1,959.514,529.923Z" transform="translate(-949.514 -529.923)" fill="#0fac7c"/>
+    <path id="Path_38823" data-name="Path 38823" d="M958.217,544.493l-4.376-4.376,1.01-1.01,3.366,3.366,5.659-5.658,1.01,1.01Z" transform="translate(-949.72 -530.251)" fill="#0fac7c"/>
+  </g>
+</svg>

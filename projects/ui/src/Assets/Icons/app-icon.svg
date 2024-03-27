@@ -1,0 +1,11 @@
+<svg id="app-icon" xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 23 23">
+  <g id="Rectangle_8417" data-name="Rectangle 8417" fill="#158bc2" stroke="#158bc2" stroke-width="0.5" opacity="0">
+    <rect width="23" height="23" stroke="none"/>
+    <rect x="0.25" y="0.25" width="22.5" height="22.5" fill="none"/>
+  </g>
+  <g id="Group_24415" data-name="Group 24415" transform="translate(0.657 1.314)">
+    <path id="Path_38643" data-name="Path 38643" d="M275,371.5l10.342,5.7a.347.347,0,0,0,.341,0l10.346-5.706a.5.5,0,0,0,0-.835l-10.342-5.7a.347.347,0,0,0-.225-.042.367.367,0,0,0-.116.041L275,370.663a.5.5,0,0,0-.152.68A.5.5,0,0,0,275,371.5Zm1.225-.486,9.288-5.125,9.418,5.2-9.418,5.186-.039-.022-9.379-5.165Z" transform="translate(-274.751 -364.911)" fill="#158bc2" stroke="#158bc2" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.5"/>
+    <path id="Path_38644" data-name="Path 38644" d="M274.965,395.558l10.345,5.434a.348.348,0,0,0,.329,0l10.347-5.434a.463.463,0,0,0,.245-.378.49.49,0,0,0-.177-.432.351.351,0,0,0-.4-.03l-10.184,5.344-.038-.02-10.143-5.323a.349.349,0,0,0-.193-.05h0a.423.423,0,0,0-.378.37A.478.478,0,0,0,274.965,395.558Z" transform="translate(-274.712 -384.892)" fill="#158bc2" stroke="#158bc2" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.5"/>
+    <path id="Path_38645" data-name="Path 38645" d="M296.055,406.319a.351.351,0,0,0-.4-.03l-10.184,5.344-.038-.02-10.143-5.323a.359.359,0,0,0-.176-.051h-.012a.422.422,0,0,0-.385.371.478.478,0,0,0,.244.519l10.346,5.432a.345.345,0,0,0,.329,0l10.347-5.434a.462.462,0,0,0,.245-.378A.49.49,0,0,0,296.055,406.319Z" transform="translate(-274.712 -392.661)" fill="#158bc2" stroke="#158bc2" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.5"/>
+  </g>
+</svg>

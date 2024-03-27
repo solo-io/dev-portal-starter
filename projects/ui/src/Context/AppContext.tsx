@@ -11,6 +11,8 @@ interface IAppContext extends AppProviderProps {
   isMobileView: boolean;
   isDarkMode: boolean;
   setIsDarkMode: (isDarkMode: boolean) => void;
+  preferGridView: boolean;
+  setPreferGridView: (newValue: boolean) => void;
   pageContentIsWide: boolean;
 }
 
@@ -44,13 +46,22 @@ export const AppContextProvider = (props: AppProviderProps) => {
     localStorage.setItem("dark-mode", isDarkMode ? "true" : "false");
   }, [isDarkMode]);
 
+  const [preferGridView, setPreferGridView] = useState(
+    localStorage.getItem("prefer-grid-view") === "true"
+  );
+  useEffect(() => {
+    localStorage.setItem("prefer-grid-view", preferGridView ? "true" : "false");
+  }, [preferGridView]);
+
   return (
     <AppContext.Provider
       value={{
         isMobileView,
         isDarkMode,
         setIsDarkMode,
-        pageContentIsWide: routeLocation.pathname.includes("/api-details/"),
+        preferGridView,
+        setPreferGridView,
+        pageContentIsWide: routeLocation.pathname.includes("/apis/"),
       }}
     >
       {props.children}

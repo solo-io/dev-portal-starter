@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import { svgColorReplace } from "../../../Styles/utils";
 
 const BannerHeadingTitleContainer = styled.div(
   ({ theme }) => css`
@@ -24,6 +25,7 @@ const BannerHeadingTitleContainer = styled.div(
       width: 46px;
       height: 46px;
     }
+    ${svgColorReplace(theme.defaultColoredText)}
   `
 );
 

@@ -9,9 +9,11 @@ import { PageContainer } from "../Common/PageContainer";
 
 /* TODO: Clean this up. Is there a better way to display this? Should 
     these images be coming from the backend */
+import { Box } from "@mantine/core";
 import CardImage1 from "../../Assets/card-option-1.png";
 import CardImage2 from "../../Assets/card-option-2.png";
 import CardImage3 from "../../Assets/card-option-3.png";
+import { mediaQueryWithScreenSize } from "../../Styles/breakpoints";
 import { companyName } from "../../user_variables.tmplr";
 
 const HomePageCategories = styled.div(
@@ -35,14 +37,24 @@ const HomePageCategories = styled.div(
   *  CATEGORIES GRID AND CARDS
   */
     .categoriesList {
-      display: grid;
-      grid-gap: 30px;
-      grid-template-columns: 1fr 1fr 1fr;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
 
       .categoryCard {
         display: flex;
         flex-direction: column;
         min-height: 260px;
+        width: min-content;
+        max-width: 420px;
+
+        ${mediaQueryWithScreenSize.mediumAndSmaller} {
+          width: 100%;
+          max-width: 100%;
+          flex-grow: 1;
+        }
+
         border-radius: ${borderRadiusConstants.small};
 
         border: 1px solid ${theme.splashBlue};
@@ -66,9 +78,13 @@ const HomePageCategories = styled.div(
           display: flex;
           align-items: center;
           justify-content: center;
-
           height: 225px;
-          width: calc(100% + 2px);
+          width: fit-content;
+          max-width: 100%;
+          ${mediaQueryWithScreenSize.mediumAndSmaller} {
+            width: 100%;
+          }
+
           overflow: hidden;
           margin: -1px -1px 0;
           border-radius: ${borderRadiusConstants.small}
@@ -76,21 +92,25 @@ const HomePageCategories = styled.div(
           margin-bottom: 20px;
 
           img {
-            width: 100%;
-            min-height: 100%;
+            // This is a best-guess background fit attempt for user-supplied images.
+            height: 100%;
+            ${mediaQueryWithScreenSize.mediumAndSmaller} {
+              height: unset;
+              width: 100%;
+            }
+            background-size: cover;
           }
         }
 
         .categoryName {
           font-size: 28px;
           font-weight: 600;
-          margin-bottom: 5px;
           padding: 0 40px;
         }
         .categoryDescription {
           font-size: 16px;
           font-weight: 400;
-          padding: 0 40px 40px;
+          padding: 10px 40px 30px;
         }
       }
     }
@@ -119,7 +139,9 @@ export function HomePage() {
       </div>
 
       <HomePageCategories role="region" aria-labelledby="">
-        <h3>API Categories</h3>
+        <Box p={"10px"}>
+          <h3>API Categories</h3>
+        </Box>
         <div className="categoriesList">
           <div className="categoryCard">
             <div className="categoryImageHolder">

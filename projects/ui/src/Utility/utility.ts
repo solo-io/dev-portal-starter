@@ -55,3 +55,15 @@ export function parseJwt(token: string) {
   );
   return JSON.parse(jsonPayload);
 }
+
+/**
+ * Returns the date formatted like MM/DD/YYYY (or local equivalent)
+ */
+export const formatDateToMMDDYYYY = (d: Date) => {
+  // Locale left out so it defaults to local equivalent
+  return d.toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+};
