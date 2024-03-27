@@ -4,6 +4,7 @@ import { BannerHeading } from "../../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../../Common/Banner/BannerHeadingTitle";
 import { PageContainer } from "../../Common/PageContainer";
 import TeamAppsSection from "./AppsSection/TeamAppsSection";
+import EditTeamButtonWithModal from "./EditTeamButtonWithModal";
 import TeamUsersSection from "./UsersSection/TeamUsersSection";
 
 const TeamDetailsPageContent = ({ team }: { team: Team }) => {
@@ -17,6 +18,7 @@ const TeamDetailsPageContent = ({ team }: { team: Team }) => {
               fontSize: "32px",
               lineHeight: "36px",
             }}
+            additionalInfo={<EditTeamButtonWithModal team={team} />}
           />
         }
         description={team.description}

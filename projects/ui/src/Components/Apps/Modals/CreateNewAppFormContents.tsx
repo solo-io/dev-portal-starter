@@ -1,27 +1,8 @@
-import styled from "@emotion/styled";
 import { Input, Select } from "@mantine/core";
 import { useEffect } from "react";
 import { Team } from "../../../Apis/api-types";
+import { FormModalStyles } from "../../../Styles/shared/FormModalStyles";
 import { Accordion } from "../../Common/Accordion";
-
-const StyledFormRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-start;
-  padding-bottom: 15px;
-  label {
-    width: 100%;
-    padding: 0px;
-    font-size: 1.3rem;
-    margin-bottom: 10px;
-    text-align: left;
-  }
-  .mantine-Input-wrapper,
-  .mantine-InputWrapper-root {
-    flex-grow: 1;
-  }
-`;
 
 export interface CreateNewAppFormFields {
   appName: string;
@@ -67,7 +48,7 @@ const CreateNewAppFormContents = ({
   //
   return (
     <div>
-      <StyledFormRow>
+      <FormModalStyles.FormRow>
         <label htmlFor="app-team-select">App Team</label>
         <Select
           id="app-team-select"
@@ -90,9 +71,9 @@ const CreateNewAppFormContents = ({
             })),
           ]}
         />
-      </StyledFormRow>
+      </FormModalStyles.FormRow>
       <Accordion open={!!appTeamId}>
-        <StyledFormRow>
+        <FormModalStyles.FormRow>
           <label htmlFor="app-name-input">App Name</label>
           <Input
             id="app-name-input"
@@ -103,8 +84,8 @@ const CreateNewAppFormContents = ({
             value={appName}
             onChange={(e) => setAppName(e.target.value)}
           />
-        </StyledFormRow>
-        <StyledFormRow>
+        </FormModalStyles.FormRow>
+        <FormModalStyles.FormRow>
           <label htmlFor="app-description-input">App Description</label>
           <Input
             // This could be a Textarea if newlines exist in the description.
@@ -119,7 +100,7 @@ const CreateNewAppFormContents = ({
             value={appDescription}
             onChange={(e) => setAppDescription(e.target.value)}
           />
-        </StyledFormRow>
+        </FormModalStyles.FormRow>
       </Accordion>
     </div>
   );
