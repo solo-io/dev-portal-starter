@@ -297,7 +297,6 @@ export function useUpdateAppMutation() {
   const { mutate } = useSWRConfig();
   const updateApp = async (_url: string, { arg }: UpdateAppParams) => {
     const { appId, appTeamId, appName, appDescription } = arg;
-    // Update the app
     await fetchJSON(`/apps/${appId}`, {
       method: "PUT",
       headers: getLatestAuthHeaders(latestAccessToken),
@@ -324,7 +323,6 @@ export function useUpdateTeamMutation() {
   const { mutate } = useSWRConfig();
   const updateTeam = async (_url: string, { arg }: UpdateTeamParams) => {
     const { teamId, teamName, teamDescription } = arg;
-    // Update the app
     await fetchJSON(`/teams/${teamId}`, {
       method: "PUT",
       headers: getLatestAuthHeaders(latestAccessToken),
