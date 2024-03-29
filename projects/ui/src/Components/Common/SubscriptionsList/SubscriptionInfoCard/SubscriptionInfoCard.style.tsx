@@ -13,7 +13,7 @@ export namespace SubscriptionInfoCardStyles {
     subscriptionState: SubscriptionState;
   }>(
     ({ theme, subscriptionState }) => css`
-      width: 422px;
+      width: 428px;
       ${mediaQueryWithScreenSize.mediumAndSmaller} {
         width: 100%;
       }
