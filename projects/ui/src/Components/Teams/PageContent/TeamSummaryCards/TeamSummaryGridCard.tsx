@@ -12,7 +12,7 @@ import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
 import { getTeamDetailsLink } from "../../../../Utility/link-builders";
 import { Loading } from "../../../Common/Loading";
-import { SubscriptionInfoCardStyles } from "../../../Common/SubscriptionsList/SubscriptionInfoCard.style";
+import { SubscriptionInfoCardStyles } from "../../../Common/SubscriptionsList/SubscriptionInfoCard/SubscriptionInfoCard.style";
 
 /**
  * MAIN COMPONENT

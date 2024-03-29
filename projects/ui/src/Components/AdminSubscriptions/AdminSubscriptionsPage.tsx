@@ -1,6 +1,11 @@
 import { Box } from "@mantine/core";
-import { SubscriptionStatus } from "../../Apis/api-types";
-import { useListSubscriptionsForStatus } from "../../Apis/hooks";
+import { useMemo } from "react";
+import { Subscription } from "../../Apis/api-types";
+import {
+  useListAppsForTeams,
+  useListSubscriptionsForApps,
+  useListTeams,
+} from "../../Apis/hooks";
 import { Icon } from "../../Assets/Icons";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
@@ -8,8 +13,36 @@ import { PageContainer } from "../Common/PageContainer";
 import SubscriptionsList from "../Common/SubscriptionsList/SubscriptionsList";
 
 const AdminSubscriptionsPage = () => {
-  const { isLoading: isLoadingSubscriptions, data: subscriptions } =
-    useListSubscriptionsForStatus(SubscriptionStatus.PENDING);
+  // We can only administrate the subscriptions list for the apps
+  // that this admin is a team of.
+
+  // So we get the teams first...
+  const { isLoading: isLoadingTeams, data: teams } = useListTeams();
+
+  // Then the apps for those teams (these are the apps we can access)...
+  const { isLoading: isLoadingApps, data: appsForTeams } = useListAppsForTeams(
+    teams ?? []
+  );
+
+  // Then the subscriptions for those apps...
+  const { isLoading: isLoadingSubscriptions, data: subscriptionsForApps } =
+    useListSubscriptionsForApps(appsForTeams?.flat() ?? []);
+
+  const isLoading = isLoadingTeams || isLoadingApps || isLoadingSubscriptions;
+
+  // Then we can combine the subscriptions.
+  const subscriptions = useMemo<Subscription[]>(() => {
+    if (!subscriptionsForApps?.length) {
+      return [];
+    }
+    const newSubscriptions =
+      (
+        subscriptionsForApps?.filter((s) =>
+          Array.isArray(s)
+        ) as Subscription[][]
+      ).flat() ?? [];
+    return newSubscriptions;
+  }, [subscriptionsForApps]);
 
   //
   // Render
@@ -34,7 +67,7 @@ const AdminSubscriptionsPage = () => {
       <Box px={"30px"}>
         <SubscriptionsList
           subscriptions={subscriptions}
-          isLoadingSubscriptions={isLoadingSubscriptions}
+          isLoadingSubscriptions={isLoading}
         />
       </Box>
     </PageContainer>

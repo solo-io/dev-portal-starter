@@ -2,7 +2,7 @@ import { Box, Flex, Loader } from "@mantine/core";
 import { ErrorMessageResponse, Subscription } from "../../../Apis/api-types";
 import { colors } from "../../../Styles";
 import { EmptyData } from "../../Common/EmptyData";
-import SubscriptionInfoCard from "./SubscriptionInfoCard";
+import SubscriptionInfoCard from "./SubscriptionInfoCard/SubscriptionInfoCard";
 
 const SubscriptionsList = ({
   isLoadingSubscriptions,
@@ -30,11 +30,13 @@ const SubscriptionsList = ({
     return <EmptyData topic="API subscriptions" />;
   }
   return (
-    <Flex gap={30} wrap={"wrap"}>
-      {subscriptions.map((s) => (
-        <SubscriptionInfoCard key={s.id} subscription={s} />
-      ))}
-    </Flex>
+    <Box pb={"60px"}>
+      <Flex gap={"20px"} wrap={"wrap"}>
+        {subscriptions.map((s) => (
+          <SubscriptionInfoCard key={s.id} subscription={s} />
+        ))}
+      </Flex>
+    </Box>
   );
 };
 

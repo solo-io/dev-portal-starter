@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import useSWR, { useSWRConfig } from "swr";
+import { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
 import { PortalAuthContext } from "../Context/PortalAuthContext";
 import {
@@ -14,114 +14,12 @@ import {
   Team,
   User,
 } from "./api-types";
-
-let _portalServerUrl = import.meta.env.VITE_PORTAL_SERVER_URL;
-if (
-  _portalServerUrl &&
-  typeof _portalServerUrl === "string" &&
-  _portalServerUrl.at(-1) === "/"
-) {
-  // This allows the VITE_PORTAL_SERVER_URL env variable to work with or without a trailing "/"
-  _portalServerUrl = _portalServerUrl.substring(0, _portalServerUrl.length - 1);
-}
-export const portalServerUrl: string = _portalServerUrl ?? "/v1";
-
-async function doFetch(...args: Parameters<typeof fetch>) {
-  if (typeof args[0] !== "string") return;
-  let url = portalServerUrl + args[0];
-  const newArgs: typeof args = [
-    url,
-    {
-      ...args[1],
-      headers: {
-        ...args[1]?.headers,
-        // TODO: Could remove this once auth is working.
-        ...(import.meta.env.VITE_AUTH_HEADER
-          ? {
-              Authorization: import.meta.env.VITE_AUTH_HEADER,
-            }
-          : {}),
-        "Content-Type": "application/json",
-      },
-    },
-  ];
-  return fetch(...newArgs);
-}
-
-async function fetchJSON(...args: Parameters<typeof fetch>) {
-  return doFetch(...args).then((res) => res?.json());
-}
-
-/**
- * Returns `useSwr` with `fetchJson`, but adds the auth tokens
- * from the `PortalAuthContext` in the headers.
- *
- * To skip the request, set `swrKey` to `null`.
- */
-const useSwrWithAuth = <T>(
-  path: string,
-  swrKey?: string,
-  config?: Parameters<typeof useSWR<T>>[2]
-) => {
-  const { latestAccessToken } = useContext(PortalAuthContext);
-
-  const authHeaders = {} as any;
-  if (!!latestAccessToken) {
-    authHeaders.Authorization = `Bearer ${latestAccessToken}`;
-  }
-  return useSWR<T>(
-    swrKey === undefined ? path : swrKey,
-    (...args) => {
-      return fetchJSON(path, {
-        ...(args.length > 1 && !!args[1] ? args[1] : {}),
-        // credentials: "include",
-        // Removing "credentials: include", since the server's 'Access-Control-Allow-Origin' header is "*".
-        // If this is kept in, there is a browser error:
-        //   The value of the 'Access-Control-Allow-Origin' header in the response must not be
-        //   the wildcard '*' when the request's credentials mode is 'include'
-        headers: {
-          ...(args.length > 1 && args[1].headers ? args[1].headers : {}),
-          ...authHeaders,
-        },
-      });
-    },
-    { ...(config ?? {}) }
-  );
-};
-
-/**
- *  This is the same as useSwrWithAuth, but works for an array of paths.
- * e.g.`["/teams/team-id-1/apps", "/teams/team-id-2/apps", ...]` will return:
- * `[getAppsReponseForTeam1, getAppsResponseForTeam2, ...]`
- *
- * The entire array of requests can be invalidated by mutating the `swrKey`.
- *
- * The return values must be of the same type.
- */
-const useMultiSwrWithAuth = <T>(
-  paths: string[],
-  swrKey: string | null,
-  config?: Parameters<typeof useSWR<T[]>>[2]
-) => {
-  const { latestAccessToken } = useContext(PortalAuthContext);
-
-  const authHeaders = {} as any;
-  if (!!latestAccessToken) {
-    authHeaders.Authorization = `Bearer ${latestAccessToken}`;
-  }
-  return useSWR<T[]>(
-    swrKey,
-    () =>
-      Promise.all(
-        paths.map((path) =>
-          fetchJSON(path, {
-            headers: authHeaders,
-          })
-        )
-      ),
-    config ?? {}
-  );
-};
+import {
+  doFetch,
+  fetchJSON,
+  useMultiSwrWithAuth,
+  useSwrWithAuth,
+} from "./utility";
 
 //
 // Queries
@@ -173,13 +71,11 @@ export function useGetApiProductVersions(id?: string) {
 }
 
 // Subscriptions
-const SUBSCRIPTIONS_FILTERED_SWR_KEY = "subscriptions_filtered";
 const SUBSCRIPTIONS_SWR_KEY = "subscriptions";
 // this is an admin endpoint
 export function useListSubscriptionsForStatus(status: SubscriptionStatus) {
   const swrResponse = useSwrWithAuth<Subscription[] | ErrorMessageResponse>(
-    `/subscriptions?status=${status}`,
-    SUBSCRIPTIONS_FILTERED_SWR_KEY
+    `/subscriptions?status=${status}`
   );
   useEffect(() => {
     if (!!swrResponse.data && "message" in swrResponse.data) {
@@ -189,11 +85,18 @@ export function useListSubscriptionsForStatus(status: SubscriptionStatus) {
   }, [swrResponse]);
   return swrResponse;
 }
-// this is NOT an admin endpoint
 export function useListSubscriptionsForApp(appId: string) {
   return useSwrWithAuth<Subscription[] | { message: string }>(
     `/apps/${appId}/subscriptions`,
     SUBSCRIPTIONS_SWR_KEY
+  );
+}
+const APP_SUBS_SWR_KEY = "app-subscriptions";
+export function useListSubscriptionsForApps(apps: App[]) {
+  const skipFetching = apps.length === 0;
+  return useMultiSwrWithAuth<Subscription[] | { message: string }>(
+    apps.map((app) => `/apps/${app.id}/subscriptions`),
+    skipFetching ? null : APP_SUBS_SWR_KEY
   );
 }
 
@@ -367,7 +270,9 @@ export function useCreateAppAndSubscriptionMutation() {
     mutate(TEAM_APPS_SWR_KEY);
     mutate(`/teams/${appTeamId}/apps`);
     mutate(SUBSCRIPTIONS_SWR_KEY);
-    mutate(SUBSCRIPTIONS_FILTERED_SWR_KEY);
+    mutate(`/subscriptions?status=${SubscriptionStatus.APPROVED}`);
+    mutate(`/subscriptions?status=${SubscriptionStatus.PENDING}`);
+    mutate(APP_SUBS_SWR_KEY);
   };
   return useSWRMutation(
     "create-app-and-subscription",
@@ -397,7 +302,76 @@ export function useCreateSubscriptionMutation(appId: string) {
       body: JSON.stringify(arg),
     });
     mutate(SUBSCRIPTIONS_SWR_KEY);
-    mutate(SUBSCRIPTIONS_FILTERED_SWR_KEY);
+    mutate(`/subscriptions?status=${SubscriptionStatus.APPROVED}`);
+    mutate(`/subscriptions?status=${SubscriptionStatus.PENDING}`);
+    mutate(APP_SUBS_SWR_KEY);
   };
   return useSWRMutation(`/apps/${appId}/subscriptions`, createApp);
+}
+
+// -------------------------------- //
+// Approve/Reject/Delete Subscription
+
+type AdminUpdateSubscriptionParams = MutationWithArgs<{
+  subscriptionId: string;
+}>;
+
+export function useAdminApproveSubscriptionMutation() {
+  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { mutate } = useSWRConfig();
+  const approveSub = async (
+    _: string,
+    { arg }: AdminUpdateSubscriptionParams
+  ) => {
+    await doFetch(`/subscriptions/${arg.subscriptionId}/approve`, {
+      method: "POST",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify(arg),
+    });
+    mutate(SUBSCRIPTIONS_SWR_KEY);
+    mutate(`/subscriptions?status=${SubscriptionStatus.APPROVED}`);
+    mutate(`/subscriptions?status=${SubscriptionStatus.PENDING}`);
+    mutate(APP_SUBS_SWR_KEY);
+  };
+  return useSWRMutation(`approve-subscription`, approveSub);
+}
+
+export function useAdminRejectSubscriptionMutation() {
+  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { mutate } = useSWRConfig();
+  const rejectSub = async (
+    _: string,
+    { arg }: AdminUpdateSubscriptionParams
+  ) => {
+    await doFetch(`/subscriptions/${arg.subscriptionId}/reject`, {
+      method: "POST",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify(arg),
+    });
+    mutate(SUBSCRIPTIONS_SWR_KEY);
+    mutate(`/subscriptions?status=${SubscriptionStatus.APPROVED}`);
+    mutate(`/subscriptions?status=${SubscriptionStatus.PENDING}`);
+    mutate(APP_SUBS_SWR_KEY);
+  };
+  return useSWRMutation(`reject-subscription`, rejectSub);
+}
+
+export function useAdminDeleteSubscriptionMutation() {
+  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { mutate } = useSWRConfig();
+  const deleteSub = async (
+    _: string,
+    { arg }: AdminUpdateSubscriptionParams
+  ) => {
+    await doFetch(`/subscriptions/${arg.subscriptionId}`, {
+      method: "DELETE",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify(arg),
+    });
+    mutate(SUBSCRIPTIONS_SWR_KEY);
+    mutate(`/subscriptions?status=${SubscriptionStatus.APPROVED}`);
+    mutate(`/subscriptions?status=${SubscriptionStatus.PENDING}`);
+    mutate(APP_SUBS_SWR_KEY);
+  };
+  return useSWRMutation(`delete-subscription`, deleteSub);
 }
