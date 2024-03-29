@@ -36,7 +36,6 @@ const AdminSubscriptionsPage = () => {
           subscriptions={subscriptions}
           isLoadingSubscriptions={isLoadingSubscriptions}
         />
-        ;
       </Box>
     </PageContainer>
   );
