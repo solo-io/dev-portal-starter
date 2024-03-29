@@ -24,7 +24,7 @@ export const subscriptionStateMap = {
     subscriptionState: SubscriptionState.REJECTED,
     label: "REJECTED",
     accentColor: colors.darkRed,
-    borderColor: colors.pumpkinOrange,
+    borderColor: colors.lightMidRed,
   },
   [SubscriptionState.DELETED]: {
     subscriptionState: SubscriptionState.DELETED,
