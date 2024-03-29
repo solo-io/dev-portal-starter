@@ -71,7 +71,6 @@ export function useGetApiProductVersions(id?: string) {
 }
 
 // Subscriptions
-const SUBSCRIPTIONS_SWR_KEY = "subscriptions";
 // this is an admin endpoint
 export function useListSubscriptionsForStatus(status: SubscriptionStatus) {
   const swrResponse = useSwrWithAuth<Subscription[] | ErrorMessageResponse>(
@@ -87,8 +86,7 @@ export function useListSubscriptionsForStatus(status: SubscriptionStatus) {
 }
 export function useListSubscriptionsForApp(appId: string) {
   return useSwrWithAuth<Subscription[] | { message: string }>(
-    `/apps/${appId}/subscriptions`,
-    SUBSCRIPTIONS_SWR_KEY
+    `/apps/${appId}/subscriptions`
   );
 }
 const APP_SUBS_SWR_KEY = "app-subscriptions";
@@ -269,7 +267,7 @@ export function useCreateAppAndSubscriptionMutation() {
     });
     mutate(TEAM_APPS_SWR_KEY);
     mutate(`/teams/${appTeamId}/apps`);
-    mutate(SUBSCRIPTIONS_SWR_KEY);
+    mutate(`/apps/${appRes.id}/subscriptions`);
     mutate(`/subscriptions?status=${SubscriptionStatus.APPROVED}`);
     mutate(`/subscriptions?status=${SubscriptionStatus.PENDING}`);
     mutate(APP_SUBS_SWR_KEY);
@@ -301,7 +299,7 @@ export function useCreateSubscriptionMutation(appId: string) {
       headers: getLatestAuthHeaders(latestAccessToken),
       body: JSON.stringify(arg),
     });
-    mutate(SUBSCRIPTIONS_SWR_KEY);
+    mutate(`/apps/${appId}/subscriptions`);
     mutate(`/subscriptions?status=${SubscriptionStatus.APPROVED}`);
     mutate(`/subscriptions?status=${SubscriptionStatus.PENDING}`);
     mutate(APP_SUBS_SWR_KEY);
@@ -313,7 +311,7 @@ export function useCreateSubscriptionMutation(appId: string) {
 // Approve/Reject/Delete Subscription
 
 type AdminUpdateSubscriptionParams = MutationWithArgs<{
-  subscriptionId: string;
+  subscription: Subscription;
 }>;
 
 export function useAdminApproveSubscriptionMutation() {
@@ -323,12 +321,12 @@ export function useAdminApproveSubscriptionMutation() {
     _: string,
     { arg }: AdminUpdateSubscriptionParams
   ) => {
-    await doFetch(`/subscriptions/${arg.subscriptionId}/approve`, {
+    await doFetch(`/subscriptions/${arg.subscription.id}/approve`, {
       method: "POST",
       headers: getLatestAuthHeaders(latestAccessToken),
       body: JSON.stringify(arg),
     });
-    mutate(SUBSCRIPTIONS_SWR_KEY);
+    mutate(`/apps/${arg.subscription.applicationId}/subscriptions`);
     mutate(`/subscriptions?status=${SubscriptionStatus.APPROVED}`);
     mutate(`/subscriptions?status=${SubscriptionStatus.PENDING}`);
     mutate(APP_SUBS_SWR_KEY);
@@ -343,12 +341,12 @@ export function useAdminRejectSubscriptionMutation() {
     _: string,
     { arg }: AdminUpdateSubscriptionParams
   ) => {
-    await doFetch(`/subscriptions/${arg.subscriptionId}/reject`, {
+    await doFetch(`/subscriptions/${arg.subscription.id}/reject`, {
       method: "POST",
       headers: getLatestAuthHeaders(latestAccessToken),
       body: JSON.stringify(arg),
     });
-    mutate(SUBSCRIPTIONS_SWR_KEY);
+    mutate(`/apps/${arg.subscription.applicationId}/subscriptions`);
     mutate(`/subscriptions?status=${SubscriptionStatus.APPROVED}`);
     mutate(`/subscriptions?status=${SubscriptionStatus.PENDING}`);
     mutate(APP_SUBS_SWR_KEY);
@@ -363,12 +361,12 @@ export function useAdminDeleteSubscriptionMutation() {
     _: string,
     { arg }: AdminUpdateSubscriptionParams
   ) => {
-    await doFetch(`/subscriptions/${arg.subscriptionId}`, {
+    await doFetch(`/subscriptions/${arg.subscription.id}`, {
       method: "DELETE",
       headers: getLatestAuthHeaders(latestAccessToken),
       body: JSON.stringify(arg),
     });
-    mutate(SUBSCRIPTIONS_SWR_KEY);
+    mutate(`/apps/${arg.subscription.applicationId}/subscriptions`);
     mutate(`/subscriptions?status=${SubscriptionStatus.APPROVED}`);
     mutate(`/subscriptions?status=${SubscriptionStatus.PENDING}`);
     mutate(APP_SUBS_SWR_KEY);

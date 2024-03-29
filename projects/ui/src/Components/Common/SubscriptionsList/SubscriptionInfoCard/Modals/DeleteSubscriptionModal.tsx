@@ -19,7 +19,7 @@ const DeleteSubscriptionModal = ({
   const { trigger: deleteSub } = useAdminDeleteSubscriptionMutation();
   const onConfirm = async (e?: FormEvent) => {
     e?.preventDefault();
-    await toast.promise(deleteSub({ subscriptionId: subscription.id }), {
+    await toast.promise(deleteSub({ subscription }), {
       error: "There was an error deleting the subscription.",
       loading: "Deleting the subscription...",
       success: "Deleted the subscription!",
@@ -44,7 +44,7 @@ const DeleteSubscriptionModal = ({
       <FormModalStyles.HorizLine />
       <Box p="20px 30px 40px 30px">
         <Flex justify={"flex-end"} gap="20px">
-          <Button color="gray.4" onClick={onClose} type="button">
+          <Button color="gray.5" onClick={onClose} type="button">
             <Text color="gray.9">Cancel</Text>
           </Button>
           <Button color="red" onClick={onConfirm} type="submit">

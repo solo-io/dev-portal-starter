@@ -19,7 +19,7 @@ const ApproveSubscriptionModal = ({
   const { trigger: approveSub } = useAdminApproveSubscriptionMutation();
   const onConfirm = async (e?: FormEvent) => {
     e?.preventDefault();
-    await toast.promise(approveSub({ subscriptionId: subscription.id }), {
+    await toast.promise(approveSub({ subscription }), {
       error: "There was an error approving the subscription.",
       loading: "Approving the subscription...",
       success: "Approved the subscription!",
@@ -44,7 +44,7 @@ const ApproveSubscriptionModal = ({
       <FormModalStyles.HorizLine />
       <Box p="20px 30px 40px 30px">
         <Flex justify={"flex-end"} gap="20px">
-          <Button color="gray" onClick={onClose} type="button">
+          <Button color="gray.5" onClick={onClose} type="button">
             <Text color="gray.9">Cancel</Text>
           </Button>
           <Button color="green" onClick={onConfirm} type="submit">

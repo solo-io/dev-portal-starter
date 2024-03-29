@@ -5,15 +5,17 @@ import { ToasterWithOptions } from "./Components/Common/ToasterWithOptions";
 import { PortalAuthContextProvider } from "./Context/PortalAuthContext";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <PortalAuthContextProvider>
-    <ToasterWithOptions />
-    <RouterProvider
-      router={createBrowserRouter([
-        {
-          path: "*",
-          element: <App />,
-        },
-      ])}
-    />
-  </PortalAuthContextProvider>
+  <RouterProvider
+    router={createBrowserRouter([
+      {
+        path: "*",
+        element: (
+          <PortalAuthContextProvider>
+            <ToasterWithOptions />
+            <App />
+          </PortalAuthContextProvider>
+        ),
+      },
+    ])}
+  />
 );

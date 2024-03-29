@@ -1,5 +1,6 @@
 import { createContext, useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { mutate } from "swr";
 import { AccessTokensResponse } from "../Apis/api-types";
 import { doAccessTokenRequest } from "../Utility/accessTokenRequest";
@@ -31,6 +32,7 @@ export const LOCAL_STORAGE_AUTH_STATE = "gloo-platform-portal-auth-state";
 export const PortalAuthContext = createContext({} as IPortalAuthContext);
 
 export const PortalAuthContextProvider = (props: PortalAuthProviderProps) => {
+  const navigate = useNavigate();
   const [refreshTokenTimeout, setRefreshTokenTimeout] =
     useState<NodeJS.Timeout>();
 
@@ -177,6 +179,7 @@ export const PortalAuthContextProvider = (props: PortalAuthProviderProps) => {
   /**  Saves access tokens on login. */
   const onLogin = (newTokensResponse: AccessTokensResponse) => {
     setTokensResponse(newTokensResponse);
+    navigate("/");
   };
 
   /**  Removes access tokens on logout and clears swr cache. */
