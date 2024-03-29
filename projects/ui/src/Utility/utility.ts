@@ -67,3 +67,10 @@ export const formatDateToMMDDYYYY = (d: Date) => {
     day: "2-digit",
   });
 };
+
+export const jwtDecode = (t: string) => {
+  return {
+    header: JSON.parse(window.atob(t.split(".")[0])),
+    payload: JSON.parse(window.atob(t.split(".")[1])),
+  };
+};

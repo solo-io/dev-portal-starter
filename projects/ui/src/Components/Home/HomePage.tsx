@@ -10,9 +10,11 @@ import { PageContainer } from "../Common/PageContainer";
 /* TODO: Clean this up. Is there a better way to display this? Should 
     these images be coming from the backend */
 import { Box } from "@mantine/core";
+import { useContext } from "react";
 import CardImage1 from "../../Assets/card-option-1.png";
 import CardImage2 from "../../Assets/card-option-2.png";
 import CardImage3 from "../../Assets/card-option-3.png";
+import { PortalAuthContext } from "../../Context/PortalAuthContext";
 import { mediaQueryWithScreenSize } from "../../Styles/breakpoints";
 import { companyName } from "../../user_variables.tmplr";
 
@@ -121,6 +123,7 @@ const HomePageCategories = styled.div(
  * MAIN COMPONENT
  **/
 export function HomePage() {
+  const { isAdmin } = useContext(PortalAuthContext);
   return (
     <PageContainer>
       <div>
@@ -128,11 +131,13 @@ export function HomePage() {
           title={<BannerHeadingTitle text={"Developers Welcome!"} />}
           description={`Welcome to the ${companyName} Developer Portal. Connect, partner, and build with us to create the next generation of digital experiences.`}
           additionalContent={
-            <NavLink to="/apis">
-              <Button style={{ width: "150px", marginTop: "10px" }}>
-                VIEW APIS
-              </Button>
-            </NavLink>
+            !isAdmin && (
+              <NavLink to="/apis">
+                <Button style={{ width: "150px", marginTop: "10px" }}>
+                  VIEW APIS
+                </Button>
+              </NavLink>
+            )
           }
           tall={true}
         />

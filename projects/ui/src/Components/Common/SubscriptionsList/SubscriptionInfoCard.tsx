@@ -1,5 +1,5 @@
 import { Box, Flex } from "@mantine/core";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { di } from "react-magnetic-di";
 import { NavLink } from "react-router-dom";
 import { Subscription } from "../../../Apis/api-types";
@@ -9,14 +9,15 @@ import {
   useListTeams,
 } from "../../../Apis/hooks";
 import { AppIcon } from "../../../Assets/Icons/Icons";
+import { PortalAuthContext } from "../../../Context/PortalAuthContext";
 import { CardStyles } from "../../../Styles/shared/Card.style";
 import { UtilityStyles } from "../../../Styles/shared/Utility.style";
 import {
   getApiProductDetailsDocsTabLink,
   getApiProductDetailsSpecTabLink,
 } from "../../../Utility/link-builders";
-import { SubscriptionState } from "../ApisPage";
 import { SubscriptionInfoCardStyles as Styles } from "./SubscriptionInfoCard.style";
+import { SubscriptionState } from "./SubscriptionsUtility";
 
 const SubscriptionInfoCard = ({
   subscription,
@@ -28,6 +29,8 @@ const SubscriptionInfoCard = ({
   const { data: teams } = useListTeams();
   const { data: appsForTeams } = useListAppsForTeams(teams ?? []);
   const apps = useMemo(() => appsForTeams?.flat(), [appsForTeams]);
+
+  const { isAdmin } = useContext(PortalAuthContext);
 
   const subscribedApiProduct = useMemo(() => {
     return apiProductsList?.find(
@@ -59,26 +62,33 @@ const SubscriptionInfoCard = ({
           </CardStyles.SmallerText>
         </Flex>
       </Styles.Content>
-      {subscribedApiProduct && (
+      {isAdmin ? (
+        // TODO: Add cancel button (with cancel subscription modal) here.
         <Styles.Footer>
-          <UtilityStyles.NavLinkContainer>
-            <NavLink
-              to={getApiProductDetailsSpecTabLink(subscribedApiProduct.id)}
-            >
-              SPEC
-            </NavLink>
-          </UtilityStyles.NavLinkContainer>
-          <Box>|</Box>
-          <UtilityStyles.NavLinkContainer>
-            <NavLink
-              to={getApiProductDetailsDocsTabLink(subscribedApiProduct.id)}
-            >
-              DOCS
-            </NavLink>
-          </UtilityStyles.NavLinkContainer>
+          <button>Approve</button>
+          <button>Reject</button>
         </Styles.Footer>
+      ) : (
+        subscribedApiProduct && (
+          <Styles.Footer>
+            <UtilityStyles.NavLinkContainer>
+              <NavLink
+                to={getApiProductDetailsSpecTabLink(subscribedApiProduct.id)}
+              >
+                SPEC
+              </NavLink>
+            </UtilityStyles.NavLinkContainer>
+            <Box>|</Box>
+            <UtilityStyles.NavLinkContainer>
+              <NavLink
+                to={getApiProductDetailsDocsTabLink(subscribedApiProduct.id)}
+              >
+                DOCS
+              </NavLink>
+            </UtilityStyles.NavLinkContainer>
+          </Styles.Footer>
+        )
       )}
-      {/* // TODO: Add cancel button (with cancel subscription modal) here. */}
     </Styles.Card>
   );
 };

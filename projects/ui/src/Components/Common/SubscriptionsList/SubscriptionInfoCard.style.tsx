@@ -2,7 +2,10 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Flex } from "@mantine/core";
 import { borderRadiusConstants } from "../../../Styles/constants";
-import { SubscriptionState, subscriptionStateMap } from "../ApisPage";
+import {
+  SubscriptionState,
+  subscriptionStateMap,
+} from "./SubscriptionsUtility";
 
 export namespace SubscriptionInfoCardStyles {
   export const Card = styled.div<{

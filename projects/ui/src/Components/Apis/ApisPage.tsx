@@ -15,7 +15,7 @@ import { Loading } from "../Common/Loading";
 import { PageContainer } from "../Common/PageContainer";
 import { ApisPageStyles } from "./ApisPage.style";
 import { ApisTabContent } from "./ApisTab/ApisTabContent";
-import PendingSubscriptionTabContent from "./PendingSubscriptionsTab/PendingSubscriptionTabContent";
+import PendingSubscriptionsTabContent from "./PendingSubscriptionsTab/PendingSubscriptionsTabContent";
 
 const URL_SEARCH_PARAM_TAB_KEY = "tab";
 const tabValues = {
@@ -24,31 +24,8 @@ const tabValues = {
 };
 const defaultTabValue = tabValues.APIS;
 
-export enum SubscriptionState {
-  PENDING,
-  ACCEPTED,
-  REJECTED,
-}
-export const subscriptionStateMap = {
-  [SubscriptionState.PENDING]: {
-    label: "PENDING",
-    accentColor: colors.seaBlue,
-    borderColor: colors.splashBlue,
-  },
-  [SubscriptionState.ACCEPTED]: {
-    label: "ACCEPTED",
-    accentColor: colors.midGreen,
-    borderColor: colors.splashBlue,
-  },
-  [SubscriptionState.REJECTED]: {
-    label: "REJECTED",
-    accentColor: colors.darkRed,
-    borderColor: colors.pumpkinOrange,
-  },
-};
-
 export function ApisPage() {
-  di(useListApiProducts);
+  di(useListApiProducts, useListSubscriptionsForStatus);
   const { isLoading: isLoadingApiProducts } = useListApiProducts();
   const { isLoading: isLoadingSubscriptions, data: subscriptions } =
     useListSubscriptionsForStatus(SubscriptionStatus.PENDING);
@@ -93,7 +70,7 @@ export function ApisPage() {
           // Make sure the APIs are finished loading since they are a dependency of both tabs.
           <Loading message="Getting list of apis..." />
         ) : subscriptionsError ? (
-          // If there was a subscriptions error message (aka if we aren't an admin), don't show the subscriptions.
+          // If there was a subscriptions error message, don't show the subscriptions.
           <ApisTabContent />
         ) : (
           <Tabs value={tab} onTabChange={(t) => setTab(t ?? defaultTabValue)}>
@@ -128,13 +105,10 @@ export function ApisPage() {
               <ApisTabContent />
             </Tabs.Panel>
             <Tabs.Panel value={tabValues.SUBS} pt={"xl"}>
-              {isLoadingSubscriptions || !subscriptions ? (
-                <Box pl={5} mb={-10}>
-                  <Loader size={"20px"} color={colors.seaBlue} />
-                </Box>
-              ) : (
-                <PendingSubscriptionTabContent subscriptions={subscriptions} />
-              )}
+              <PendingSubscriptionsTabContent
+                subscriptions={subscriptions}
+                isLoadingSubscriptions={isLoadingSubscriptions}
+              />
             </Tabs.Panel>
           </Tabs>
         )}
