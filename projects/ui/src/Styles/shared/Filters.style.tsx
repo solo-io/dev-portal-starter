@@ -160,7 +160,7 @@ export namespace FilterStyles {
         }
         .dropdownFilter {
           ${makeFilterBoxCSS(theme)}
-          .addTypeFilterSelect {
+          .mantine-InputWrapper-root.mantine-Select-root {
             flex-grow: 1;
           }
           input {

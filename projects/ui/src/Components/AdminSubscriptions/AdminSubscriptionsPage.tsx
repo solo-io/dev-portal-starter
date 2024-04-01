@@ -1,5 +1,5 @@
 import { Box } from "@mantine/core";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Subscription } from "../../Apis/api-types";
 import {
   useListAppsForTeams,
@@ -7,14 +7,19 @@ import {
   useListTeams,
 } from "../../Apis/hooks";
 import { Icon } from "../../Assets/Icons";
+import { FilterPair } from "../../Utility/filter-utility";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 import { PageContainer } from "../Common/PageContainer";
 import SubscriptionsList from "../Common/SubscriptionsList/SubscriptionsList";
+import { AdminSubscriptionsFilter } from "./AdminSubscriptionsFilter";
 
 const AdminSubscriptionsPage = () => {
-  // We can only administrate the subscriptions list for the apps
-  // that this admin is a team of.
+  //
+  // Get Subscriptions
+  //
+
+  // We can only administrate the subscriptions list for the apps that this admin is a team of.
 
   // So we get the teams first...
   const { isLoading: isLoadingTeams, data: teams } = useListTeams();
@@ -24,9 +29,15 @@ const AdminSubscriptionsPage = () => {
     teams ?? []
   );
 
-  // Then the subscriptions for those apps...
+  // Flatten the returned apps for teams array...
+  const flatAppsForTeams = useMemo(
+    () => appsForTeams?.flat() ?? [],
+    [appsForTeams]
+  );
+
+  // Then the subscriptions for the apps...
   const { isLoading: isLoadingSubscriptions, data: subscriptionsForApps } =
-    useListSubscriptionsForApps(appsForTeams?.flat() ?? []);
+    useListSubscriptionsForApps(flatAppsForTeams);
 
   const isLoading = isLoadingTeams || isLoadingApps || isLoadingSubscriptions;
 
@@ -43,6 +54,20 @@ const AdminSubscriptionsPage = () => {
       ).flat() ?? [];
     return newSubscriptions;
   }, [subscriptionsForApps]);
+
+  //
+  // Filters
+  //
+
+  const [allFilters, setAllFilters] = useState<FilterPair[]>([]);
+  const [nameFilter, setNameFilter] = useState<string>("");
+
+  const filters = {
+    allFilters,
+    setAllFilters,
+    nameFilter,
+    setNameFilter,
+  };
 
   //
   // Render
@@ -64,10 +89,12 @@ const AdminSubscriptionsPage = () => {
           { label: "Subscriptions" },
         ]}
       />
+      <AdminSubscriptionsFilter filters={filters} teams={teams ?? []} />
       <Box px={"30px"}>
         <SubscriptionsList
           subscriptions={subscriptions}
           isLoadingSubscriptions={isLoading}
+          filters={filters}
         />
       </Box>
     </PageContainer>

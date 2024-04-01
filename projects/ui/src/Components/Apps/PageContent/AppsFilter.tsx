@@ -1,5 +1,5 @@
 import { Select, TextInput } from "@mantine/core";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { Team } from "../../../Apis/api-types";
 import { Icon } from "../../../Assets/Icons";
 import { AppContext } from "../../../Context/AppContext";
@@ -35,16 +35,25 @@ export function AppsFilter({
     if (evt.target.value !== "") {
       filters.setAllFilters([
         ...filters.allFilters,
-        { displayName, type: FilterType.name },
+        { displayName, type: FilterType.name, value: displayName },
       ]);
     }
     filters.setNameFilter("");
   };
 
-  const addTeamFilter = (addedTeam: string) => {
+  const addTeamFilter = (teamId: string) => {
+    const team = teams.find((t) => t.id === teamId);
+    if (!team) {
+      return;
+    }
+    // Remove the other team filters, since there can only be one team filter.
+    const newFilters = filters.allFilters.filter(
+      (f) => f.type !== FilterType.team
+    );
+    // Add this team filter.
     filters.setAllFilters([
-      ...filters.allFilters,
-      { displayName: addedTeam, type: FilterType.team },
+      ...newFilters,
+      { displayName: team.name, type: FilterType.team, value: team.id },
     ]);
   };
 
@@ -52,8 +61,7 @@ export function AppsFilter({
     filters.setAllFilters(
       filters.allFilters.filter(
         (filter) =>
-          filter.type !== filterPair.type ||
-          filter.displayName !== filterPair.displayName
+          filter.type !== filterPair.type || filter.value !== filterPair.value
       )
     );
   };
@@ -62,19 +70,17 @@ export function AppsFilter({
     filters.setAllFilters([]);
   };
 
-  const selectableTypes = teams
-    .map((t) => ({
-      label: t.name,
-      value: t.name,
-    }))
-    .filter(
-      (selectableType) =>
-        !filters.allFilters.some(
-          (filter) =>
-            filter.type === FilterType.team &&
-            filter.displayName === selectableType.value
-        )
-    );
+  const selectableTeams = useMemo(
+    () =>
+      teams.map((t) => ({
+        label: t.name,
+        value: t.id,
+        disabled: filters.allFilters.some(
+          (filter) => filter.type === FilterType.team && filter.value === t.id
+        ),
+      })),
+    [teams, filters]
+  );
 
   return (
     <Styles.FilterArea>
@@ -100,10 +106,9 @@ export function AppsFilter({
             <Icon.TeamsIcon />
           </div>
           <Select
-            className="addTypeFilterSelect"
             size="xs"
-            disabled={(selectableTypes ?? []).length === 0}
-            data={selectableTypes}
+            disabled={selectableTeams.length === 0}
+            data={selectableTeams}
             onChange={addTeamFilter}
             value=""
             placeholder="Team"

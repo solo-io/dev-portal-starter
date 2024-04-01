@@ -81,8 +81,6 @@ const ApiProductDetailsPageHeading = ({
                   <Select
                     id="api-version-select"
                     aria-label="API version selection"
-                    // This className="" is intentional and removes the antd select dropdown classname.
-                    className=""
                     value={selectedApiVersion.id}
                     onChange={(value) => {
                       onSelectedApiVersionChange(value ?? "");
