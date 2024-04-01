@@ -13,7 +13,7 @@ if (
 }
 export const portalServerUrl: string = _portalServerUrl ?? "/v1";
 
-export async function doFetch(...args: Parameters<typeof fetch>) {
+async function doFetch(...args: Parameters<typeof fetch>) {
   if (typeof args[0] !== "string") return;
   let url = portalServerUrl + args[0];
   const newArgs: typeof args = [
@@ -35,8 +35,32 @@ export async function doFetch(...args: Parameters<typeof fetch>) {
   return fetch(...newArgs);
 }
 
+/**
+ * This fetches and tries to parse the response into JSON.
+ * It returns successfully if the response is in the 200-299 status code range
+ * (even if there is no JSON in the response body).
+ */
 export async function fetchJSON(...args: Parameters<typeof fetch>) {
-  return doFetch(...args).then((res) => res?.json());
+  const res = await doFetch(...args);
+  let errMessage = "";
+  let resJSON: any;
+  try {
+    // We try to get the JSON but if if this fails, that's okay, because
+    // some of the responses don't return JSON.
+    resJSON = await res?.json();
+    if (!res?.ok && "message" in resJSON) {
+      errMessage = resJSON.message;
+    }
+  } catch {}
+  // If there was an error but no 'message', make sure we still capture that.
+  if (!res?.ok && !errMessage) {
+    errMessage =
+      "There was an error making the request. See the 'Requests' tab for more information.";
+  }
+  if (!!errMessage) {
+    throw new Error(errMessage);
+  }
+  return resJSON ?? res;
 }
 
 /**

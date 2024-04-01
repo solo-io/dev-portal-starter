@@ -14,12 +14,7 @@ import {
   Team,
   User,
 } from "./api-types";
-import {
-  doFetch,
-  fetchJSON,
-  useMultiSwrWithAuth,
-  useSwrWithAuth,
-} from "./utility";
+import { fetchJSON, useMultiSwrWithAuth, useSwrWithAuth } from "./utility";
 
 //
 // Queries
@@ -260,7 +255,7 @@ export function useCreateAppAndSubscriptionMutation() {
       body: JSON.stringify({ name: appName, description: appDescription }),
     });
     // Create the subscription
-    await doFetch(`/apps/${appRes.id}/subscriptions`, {
+    await fetchJSON(`/apps/${appRes.id}/subscriptions`, {
       method: "POST",
       headers: getLatestAuthHeaders(latestAccessToken),
       body: JSON.stringify({ apiProductId }),
@@ -294,7 +289,7 @@ export function useCreateSubscriptionMutation(appId: string) {
       console.error("Tried to subscribe without an appId.");
       throw new Error();
     }
-    await doFetch(url, {
+    await fetchJSON(url, {
       method: "POST",
       headers: getLatestAuthHeaders(latestAccessToken),
       body: JSON.stringify(arg),
@@ -321,15 +316,18 @@ export function useAdminApproveSubscriptionMutation() {
     _: string,
     { arg }: AdminUpdateSubscriptionParams
   ) => {
-    await doFetch(`/subscriptions/${arg.subscription.id}/approve`, {
-      method: "POST",
-      headers: getLatestAuthHeaders(latestAccessToken),
-      body: JSON.stringify(arg),
-    });
+    const res = await fetchJSON(
+      `/subscriptions/${arg.subscription.id}/approve`,
+      {
+        method: "POST",
+        headers: getLatestAuthHeaders(latestAccessToken),
+      }
+    );
     mutate(`/apps/${arg.subscription.applicationId}/subscriptions`);
     mutate(`/subscriptions?status=${SubscriptionStatus.APPROVED}`);
     mutate(`/subscriptions?status=${SubscriptionStatus.PENDING}`);
     mutate(APP_SUBS_SWR_KEY);
+    return res;
   };
   return useSWRMutation(`approve-subscription`, approveSub);
 }
@@ -341,10 +339,9 @@ export function useAdminRejectSubscriptionMutation() {
     _: string,
     { arg }: AdminUpdateSubscriptionParams
   ) => {
-    await doFetch(`/subscriptions/${arg.subscription.id}/reject`, {
+    await fetchJSON(`/subscriptions/${arg.subscription.id}/reject`, {
       method: "POST",
       headers: getLatestAuthHeaders(latestAccessToken),
-      body: JSON.stringify(arg),
     });
     mutate(`/apps/${arg.subscription.applicationId}/subscriptions`);
     mutate(`/subscriptions?status=${SubscriptionStatus.APPROVED}`);
@@ -361,10 +358,9 @@ export function useAdminDeleteSubscriptionMutation() {
     _: string,
     { arg }: AdminUpdateSubscriptionParams
   ) => {
-    await doFetch(`/subscriptions/${arg.subscription.id}`, {
+    await fetchJSON(`/subscriptions/${arg.subscription.id}`, {
       method: "DELETE",
       headers: getLatestAuthHeaders(latestAccessToken),
-      body: JSON.stringify(arg),
     });
     mutate(`/apps/${arg.subscription.applicationId}/subscriptions`);
     mutate(`/subscriptions?status=${SubscriptionStatus.APPROVED}`);

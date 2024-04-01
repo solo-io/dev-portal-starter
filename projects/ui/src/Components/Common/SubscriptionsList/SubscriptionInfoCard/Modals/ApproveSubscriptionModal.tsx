@@ -20,7 +20,7 @@ const ApproveSubscriptionModal = ({
   const onConfirm = async (e?: FormEvent) => {
     e?.preventDefault();
     await toast.promise(approveSub({ subscription }), {
-      error: "There was an error approving the subscription.",
+      error: (e) => "There was an error approving the subscription. " + e,
       loading: "Approving the subscription...",
       success: "Approved the subscription!",
     });

@@ -20,7 +20,7 @@ const DeleteSubscriptionModal = ({
   const onConfirm = async (e?: FormEvent) => {
     e?.preventDefault();
     await toast.promise(deleteSub({ subscription }), {
-      error: "There was an error deleting the subscription.",
+      error: (e) => "There was an error deleting the subscription. " + e,
       loading: "Deleting the subscription...",
       success: "Deleted the subscription!",
     });
