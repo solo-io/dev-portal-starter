@@ -72,7 +72,7 @@ const TeamAppsSection = ({ team }: { team: Team }) => {
         onClose={() => setShowAddTeamAppSubSection(false)}
       />
       {!apps?.length ? (
-        <Box mb={"-30px"}>
+        <Box mb={"-30px"} mt={"30px"}>
           <EmptyData topic="App" />
         </Box>
       ) : (
