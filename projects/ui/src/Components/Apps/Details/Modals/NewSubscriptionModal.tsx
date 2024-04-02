@@ -197,8 +197,6 @@ const NewSubscriptionModal = ({
                   <Select
                     id="app-select"
                     aria-label="Choose app"
-                    // This className="" is intentional and removes the antd select dropdown classname.
-                    className=""
                     value={formAppId}
                     onChange={(value) => {
                       setFormAppId(value ?? "");
@@ -226,8 +224,6 @@ const NewSubscriptionModal = ({
                 <label htmlFor="api-product-select">API Product</label>
                 <Select
                   id="api-product-select"
-                  // This className="" is intentional and removes the antd select dropdown classname.
-                  className=""
                   value={formApiProductId}
                   onChange={(value) => {
                     setFormApiProductId(value ?? "");

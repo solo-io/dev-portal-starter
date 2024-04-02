@@ -11,8 +11,8 @@ import { CardStyles } from "../../../../Styles/shared/Card.style";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
 import { getTeamDetailsLink } from "../../../../Utility/link-builders";
-import { SubscriptionInfoCardStyles } from "../../../Apis/PendingSubscriptionsTab/SubscriptionInfoCard.style";
 import { Loading } from "../../../Common/Loading";
+import { SubscriptionInfoCardStyles } from "../../../Common/SubscriptionsList/SubscriptionInfoCard/SubscriptionInfoCard.style";
 
 /**
  * MAIN COMPONENT

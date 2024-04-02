@@ -4,8 +4,8 @@ import { App, Subscription } from "../../../../Apis/api-types";
 import { Icon } from "../../../../Assets/Icons";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
 import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
-import SubscriptionInfoCard from "../../../Apis/PendingSubscriptionsTab/SubscriptionInfoCard";
 import { EmptyData } from "../../../Common/EmptyData";
+import SubscriptionInfoCard from "../../../Common/SubscriptionsList/SubscriptionInfoCard/SubscriptionInfoCard";
 import NewSubscriptionModal from "../Modals/NewSubscriptionModal";
 
 const AddSubscriptionButton = (props: typeof Button.defaultProps) => {

@@ -1,15 +1,22 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Flex } from "@mantine/core";
-import { borderRadiusConstants } from "../../../Styles/constants";
-import { SubscriptionState, subscriptionStateMap } from "../ApisPage";
+import { mediaQueryWithScreenSize } from "../../../../Styles/breakpoints";
+import { borderRadiusConstants } from "../../../../Styles/constants";
+import {
+  SubscriptionState,
+  subscriptionStateMap,
+} from "../SubscriptionsUtility";
 
 export namespace SubscriptionInfoCardStyles {
   export const Card = styled.div<{
     subscriptionState: SubscriptionState;
   }>(
     ({ theme, subscriptionState }) => css`
-      width: 422px;
+      width: 428px;
+      ${mediaQueryWithScreenSize.mediumAndSmaller} {
+        width: 100%;
+      }
       border: 1px solid ${subscriptionStateMap[subscriptionState].borderColor};
       border-radius: ${borderRadiusConstants.small};
       background-color: white;

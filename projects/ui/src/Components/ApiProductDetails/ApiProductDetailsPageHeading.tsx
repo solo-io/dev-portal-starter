@@ -1,5 +1,5 @@
 import { Flex, Select } from "@mantine/core";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import {
   ApiProductDetails,
@@ -7,6 +7,7 @@ import {
   ApiVersionSchema,
 } from "../../Apis/api-types";
 import { Icon } from "../../Assets/Icons";
+import { PortalAuthContext } from "../../Context/PortalAuthContext";
 import { FormModalStyles } from "../../Styles/shared/FormModalStyles";
 import { downloadFile } from "../../Utility/utility";
 import NewSubscriptionModal from "../Apps/Details/Modals/NewSubscriptionModal";
@@ -28,6 +29,7 @@ const ApiProductDetailsPageHeading = ({
   onSelectedApiVersionChange: (newVersionId: string | null) => void;
   apiVersionSpec: ApiVersionSchema | undefined;
 }) => {
+  const { isLoggedIn } = useContext(PortalAuthContext);
   const [showSubscribeModal, setShowSubscribeModal] = useState(false);
 
   const downloadApiSpec = () => {
@@ -79,8 +81,6 @@ const ApiProductDetailsPageHeading = ({
                   <Select
                     id="api-version-select"
                     aria-label="API version selection"
-                    // This className="" is intentional and removes the antd select dropdown classname.
-                    className=""
                     value={selectedApiVersion.id}
                     onChange={(value) => {
                       onSelectedApiVersionChange(value ?? "");
@@ -92,9 +92,11 @@ const ApiProductDetailsPageHeading = ({
                   />
                 </FormModalStyles.InputContainer>
               )}
-              <Button onClick={() => setShowSubscribeModal(true)}>
-                SUBSCRIBE
-              </Button>
+              {isLoggedIn && (
+                <Button onClick={() => setShowSubscribeModal(true)}>
+                  SUBSCRIBE
+                </Button>
+              )}
               <Button
                 disabled={!selectedApiVersion.apiSpec}
                 onClick={downloadApiSpec}

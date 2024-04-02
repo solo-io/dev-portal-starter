@@ -4,6 +4,8 @@ import {
   oidcAuthCodeConfigCallbackPath,
   oidcAuthCodeConfigLogoutPath,
 } from "../user_variables.tmplr";
+import AdminSubscriptionsPage from "./AdminSubscriptions/AdminSubscriptionsPage";
+import AdminTeamsPage from "./AdminTeams/AdminTeamsPage";
 import { ApiProductDetailsPage } from "./ApiProductDetails/ApiProductDetailsPage";
 import { ApisPage } from "./Apis/ApisPage";
 import { AppsPage } from "./Apps/AppsPage";
@@ -109,6 +111,26 @@ function AppContentRoutes() {
           element={
             <ErrorBoundary fallback="There was an issue displaying the Team details">
               <TeamDetailsPage />
+            </ErrorBoundary>
+          }
+        />
+        {/*
+        
+        // Admin Routes
+        */}
+        <Route
+          path="/admin/subscriptions"
+          element={
+            <ErrorBoundary fallback="There was an issue displaying the Admin Teams page">
+              <AdminSubscriptionsPage />
+            </ErrorBoundary>
+          }
+        />
+        <Route
+          path="/admin/teams"
+          element={
+            <ErrorBoundary fallback="There was an issue displaying the Admin Subscriptions page">
+              <AdminTeamsPage />
             </ErrorBoundary>
           }
         />

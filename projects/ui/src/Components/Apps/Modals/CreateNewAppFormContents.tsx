@@ -52,8 +52,6 @@ const CreateNewAppFormContents = ({
         <label htmlFor="app-team-select">App Team</label>
         <Select
           id="app-team-select"
-          // This className="" is intentional and removes the antd select dropdown classname.
-          className=""
           value={appTeamId}
           disabled={!formEnabled}
           onChange={(value) => {

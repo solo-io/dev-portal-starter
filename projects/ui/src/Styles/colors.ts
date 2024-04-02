@@ -1,5 +1,7 @@
-// For checking the output of a SASS color lighten/darken function,
-// The SASS playground can be used: https://sass-lang.com/playground
+import Color from "color";
+
+// We can lighten and darken colors using the color package.
+// https://www.npmjs.com/package/color
 
 const colorMap = {
   /**
@@ -21,6 +23,7 @@ const colorMap = {
   marchGreyDark10: "#c8d5e1",
   marchGreyLight5: "#fafbfc",
   aprilGrey: "#d4d8de",
+  aprilGreyDark10: Color("#d4d8de").darken(0.1).hex(),
   augustGrey: "#8693a5",
   septemberGrey: "#6e7477",
   novemberGrey: "#35393b",
@@ -55,12 +58,15 @@ const colorMap = {
   midGreenLight10: "#1df1b0",
   midGreenLight20: "#4df4c1",
   darkGreen: "#0fac7c",
+  darkGreenDark20: Color("#0fac7c").darken(0.2).hex(),
 
   royalPurple: "#7e4bc6",
 
   lightRed: "#fff7f7",
+  lightMidRed: Color("#bf0a17").lighten(1.2).desaturate(0.2).hex(),
   midRed: "#bf0a17",
   darkRed: "#a23f3a",
+  darkRedDark20: Color("#a23f3a").darken(0.2).hex(),
 
   pumpkinOrange: "#d75b1d",
   pumpkinOrangeLight10: "#e57842",
@@ -68,7 +74,9 @@ const colorMap = {
 
   lightYellow: "#fff6e5",
   midYellow: "#ffb831",
+  midYellowDark20: Color("#ffb831").darken(0.2).hex(),
   darkYellow: "#c98709",
+  darkYellowDark20: Color("#c98709").darken(0.2).hex(),
 
   // SEMANTIC COLORS
 } as const; // "as const" forces all the color values to be an `as const` value instead of `string`

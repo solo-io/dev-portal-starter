@@ -1,9 +1,10 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { mutate } from "swr";
 import { AccessTokensResponse } from "../Apis/api-types";
 import { doAccessTokenRequest } from "../Utility/accessTokenRequest";
-import { parseJwt } from "../Utility/utility";
+import { jwtDecode, parseJwt } from "../Utility/utility";
 import { clientId, tokenEndpoint } from "../user_variables.tmplr";
 
 //
@@ -13,6 +14,7 @@ interface PortalAuthProviderProps {
   children?: any;
 }
 interface IPortalAuthContext extends PortalAuthProviderProps {
+  isAdmin: boolean;
   // The id_token is used for identifying the user in the logout request.
   idToken: string | undefined;
   // The access_token is used for user claims (like "email").
@@ -30,6 +32,7 @@ export const LOCAL_STORAGE_AUTH_STATE = "gloo-platform-portal-auth-state";
 export const PortalAuthContext = createContext({} as IPortalAuthContext);
 
 export const PortalAuthContextProvider = (props: PortalAuthProviderProps) => {
+  const navigate = useNavigate();
   const [refreshTokenTimeout, setRefreshTokenTimeout] =
     useState<NodeJS.Timeout>();
 
@@ -176,6 +179,7 @@ export const PortalAuthContextProvider = (props: PortalAuthProviderProps) => {
   /**  Saves access tokens on login. */
   const onLogin = (newTokensResponse: AccessTokensResponse) => {
     setTokensResponse(newTokensResponse);
+    navigate("/");
   };
 
   /**  Removes access tokens on logout and clears swr cache. */
@@ -184,9 +188,18 @@ export const PortalAuthContextProvider = (props: PortalAuthProviderProps) => {
     toast.success("Logged out!");
   };
 
+  const isAdmin = useMemo(() => {
+    if (!tokensResponse?.access_token) {
+      return false;
+    }
+    const accessTokenDecoded = jwtDecode(tokensResponse.access_token);
+    return accessTokenDecoded.payload?.group === "admin";
+  }, [tokensResponse]);
+
   return (
     <PortalAuthContext.Provider
       value={{
+        isAdmin,
         isLoggedIn: !!tokensResponse?.access_token,
         latestAccessToken: tokensResponse?.access_token,
         idToken: tokensResponse?.id_token,

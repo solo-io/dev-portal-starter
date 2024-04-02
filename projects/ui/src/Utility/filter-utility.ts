@@ -9,7 +9,11 @@ export enum FilterType {
   apiType,
   team,
 }
-export type FilterPair = { displayName: string; type: FilterType };
+export type FilterPair = {
+  displayName: string;
+  type: FilterType;
+  value?: string;
+};
 
 /**
  * HELPER FUNCTION

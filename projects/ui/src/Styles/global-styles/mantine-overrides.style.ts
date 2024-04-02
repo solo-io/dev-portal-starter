@@ -44,4 +44,23 @@ export const mantineGlobalStyles = css`
       }
     }
   }
+
+  .mantine-UnstyledButton-root.mantine-Button-root {
+    /* 
+    // This would look good if we know it's not a subtle button.
+    border: 1px solid ${colors.aprilGrey};
+    */
+    transition: 0.15s background-color;
+    span {
+      font-size: 1rem;
+    }
+    &:disabled {
+      pointer-events: all;
+      cursor: not-allowed;
+      background-color: ${colors.marchGreyDark10};
+      div.mantine-Text-root {
+        color: ${colors.augustGrey};
+      }
+    }
+  }
 `;

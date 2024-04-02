@@ -162,7 +162,6 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
             <Icon.CodeGear />
           </div>
           <Select
-            className="addTypeFilterSelect"
             size="xs"
             disabled={(selectableTypes ?? []).length === 0}
             data={selectableTypes}
