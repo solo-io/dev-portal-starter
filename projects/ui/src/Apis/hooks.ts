@@ -44,11 +44,10 @@ export function useGetAppDetails(id?: string) {
 // Teams
 const TEAMS_SWR_KEY = "teams";
 export function useListTeams() {
-  return useSwrWithAuth<Team[]>(`/teams`, TEAMS_SWR_KEY);
+  return useSwrWithAuth<Team[]>(`/teams`);
 }
-const MEMBERS_SWR_KEY = "members";
 export function useListMembersForTeam(teamId: string) {
-  return useSwrWithAuth<Member[]>(`/teams/${teamId}/members`, MEMBERS_SWR_KEY);
+  return useSwrWithAuth<Member[]>(`/teams/${teamId}/members`);
 }
 export function useGetTeamDetails(id?: string) {
   return useSwrWithAuth<Team>(`/teams/${id}`);
@@ -130,26 +129,46 @@ export function useCreateTeamMutation() {
 // ------------------------ //
 // Create Team Member
 
-type AddTeamMemberParams = MutationWithArgs<{ email: string }>;
+type AddTeamMemberParams = MutationWithArgs<{ email: string; teamId: string }>;
 
-export function useAddTeamMemberMutation(teamId: string | undefined) {
+export function useAddTeamMemberMutation() {
   const { latestAccessToken } = useContext(PortalAuthContext);
   const { mutate } = useSWRConfig();
-  const addTeamMember = async (url: string, { arg }: AddTeamMemberParams) => {
-    if (!teamId) {
-      // eslint-disable-next-line no-console
-      console.error("Tried to add a team member without a teamId.");
-      throw new Error();
-    }
-    const res = await fetchJSON(url, {
+  const addTeamMember = async (_url: string, { arg }: AddTeamMemberParams) => {
+    const res = await fetchJSON(`/teams/${arg.teamId}/members`, {
       method: "POST",
       headers: getLatestAuthHeaders(latestAccessToken),
       body: JSON.stringify(arg),
     });
-    mutate(MEMBERS_SWR_KEY);
+    mutate(`/teams/${arg.teamId}/members`);
     return res as Member;
   };
-  return useSWRMutation(`/teams/${teamId}/members`, addTeamMember);
+  return useSWRMutation(`add-team-member`, addTeamMember);
+}
+
+// ------------------------ //
+// (Admin) Remove Team Member
+
+type AdminRemoveTeamMemberParams = MutationWithArgs<{
+  teamId: string;
+  userId: string;
+}>;
+
+export function useRemoveTeamMemberMutation() {
+  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { mutate } = useSWRConfig();
+  const removeTeamMember = async (
+    _url: string,
+    { arg }: AdminRemoveTeamMemberParams
+  ) => {
+    const res = await fetchJSON(`/teams/${arg.teamId}/members/${arg.userId}`, {
+      method: "DELETE",
+      headers: getLatestAuthHeaders(latestAccessToken),
+    });
+    mutate(`/teams/${arg.teamId}/members`);
+    return res as Member;
+  };
+  return useSWRMutation(`remove-team-member`, removeTeamMember);
 }
 
 // ------------------------ //
@@ -303,7 +322,7 @@ export function useCreateSubscriptionMutation(appId: string) {
 }
 
 // -------------------------------- //
-// Approve/Reject/Delete Subscription
+// (Admin) Approve/Reject/Delete Subscription
 
 type AdminUpdateSubscriptionParams = MutationWithArgs<{
   subscription: Subscription;

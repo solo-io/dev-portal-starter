@@ -22,7 +22,7 @@ export const mantineThemeOverride: MantineThemeOverride = {
       colors.novemberGrey,
     ],
     yellow: [
-      colors.midYellow,
+      colors.lightYellow,
       colors.midYellow,
       colors.midYellow,
       colors.midYellow,
@@ -35,7 +35,7 @@ export const mantineThemeOverride: MantineThemeOverride = {
     ],
     red: [
       colors.lightRed, // button text
-      colors.midRed,
+      colors.lightRedDark10,
       colors.midRed,
       colors.midRed,
       colors.midRed,

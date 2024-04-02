@@ -74,6 +74,7 @@ export type Member = {
   // synced = has user logged in.
   synced: boolean;
   updatedAt: string;
+  deletedAt?: string;
 };
 
 export enum SubscriptionStatus {

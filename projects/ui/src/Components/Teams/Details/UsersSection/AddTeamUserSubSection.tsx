@@ -37,14 +37,14 @@ const AddTeamUserSubSection = ({
   //
   // Form Submit
   //
-  const { trigger: addUserToTeam } = useAddTeamMemberMutation(team.id);
+  const { trigger: addUserToTeam } = useAddTeamMemberMutation();
   const onSubmit = async (e?: FormEvent) => {
     e?.preventDefault();
     const isValid = formRef.current?.reportValidity();
     if (!isValid || isFormDisabled) {
       return;
     }
-    await toast.promise(addUserToTeam({ email: formEmail }), {
+    await toast.promise(addUserToTeam({ email: formEmail, teamId: team.id }), {
       error: "There was an error adding the user.",
       loading: "Adding the user...",
       success: "Added the user!",
