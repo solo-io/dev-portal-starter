@@ -1,14 +1,16 @@
 import { Box } from "@mantine/core";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Icon } from "../../Assets/Icons";
+import { PortalAuthContext } from "../../Context/PortalAuthContext";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 import { Button } from "../Common/Button";
 import { PageContainer } from "../Common/PageContainer";
-import { TeamsList } from "../Common/TeamsList/TeamsList";
 import CreateNewTeamModal from "./Modals/CreateNewTeamModal";
+import { TeamsList } from "./TeamsList/TeamsList";
 
 export function TeamsPage() {
+  const { isAdmin } = useContext(PortalAuthContext);
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
@@ -18,11 +20,13 @@ export function TeamsPage() {
         description={
           <>
             Browse the list of teams.
-            <Box pt={"20px"}>
-              <Button onClick={() => setModalOpen(true)}>
-                CREATE NEW TEAM
-              </Button>
-            </Box>
+            {!isAdmin && (
+              <Box pt={"20px"}>
+                <Button onClick={() => setModalOpen(true)}>
+                  CREATE NEW TEAM
+                </Button>
+              </Box>
+            )}
           </>
         }
         breadcrumbItems={[{ label: "Home", link: "/" }, { label: "Teams" }]}
@@ -30,10 +34,12 @@ export function TeamsPage() {
       <Box px={"30px"} pb={"10px"}>
         <TeamsList />
       </Box>
-      <CreateNewTeamModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-      />
+      {!isAdmin && (
+        <CreateNewTeamModal
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+        />
+      )}
     </PageContainer>
   );
 }

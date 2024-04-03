@@ -13,8 +13,8 @@ const makeFilterTypeIconHolderCSS = (theme: Theme) => css`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
   margin-right: 6px;
   border-right: 1px solid ${theme.aprilGrey};
 
@@ -160,11 +160,15 @@ export namespace FilterStyles {
         }
         .dropdownFilter {
           ${makeFilterBoxCSS(theme)}
+          height: fit-content;
           .mantine-InputWrapper-root.mantine-Select-root {
             flex-grow: 1;
           }
           input {
             border: none;
+            &:disabled {
+              border-radius: 0px;
+            }
             &::placeholder {
               ${makeFilterPlaceholderTextsCSS(theme)}
             }
