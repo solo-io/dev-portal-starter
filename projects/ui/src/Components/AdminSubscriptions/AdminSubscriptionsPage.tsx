@@ -1,14 +1,13 @@
 import { Box } from "@mantine/core";
 import { useMemo, useState } from "react";
-import { App, Subscription } from "../../Apis/api-types";
+import { Subscription } from "../../Apis/api-types";
 import {
-  useListAppsForTeams,
+  useListFlatAppsForTeams,
   useListSubscriptionsForApps,
   useListTeams,
 } from "../../Apis/hooks";
 import { Icon } from "../../Assets/Icons";
 import { FilterPair } from "../../Utility/filter-utility";
-import { omitErrorMessageResponse } from "../../Utility/utility";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 import { PageContainer } from "../Common/PageContainer";
@@ -26,18 +25,8 @@ const AdminSubscriptionsPage = () => {
   const { isLoading: isLoadingTeams, data: teams } = useListTeams();
 
   // Then the apps for those teams (these are the apps we can access)...
-  const { isLoading: isLoadingApps, data: appsForTeams } = useListAppsForTeams(
-    teams ?? []
-  );
-
-  // Flatten the returned apps for teams array...
-  const flatAppsForTeams = useMemo(
-    () =>
-      (appsForTeams
-        ?.flat()
-        .filter((app) => omitErrorMessageResponse(app)) as App[]) ?? [],
-    [appsForTeams]
-  );
+  const { isLoading: isLoadingApps, data: flatAppsForTeams } =
+    useListFlatAppsForTeams(teams ?? []);
 
   // Then the subscriptions for the apps...
   const { isLoading: isLoadingSubscriptions, data: subscriptionsForApps } =

@@ -9,7 +9,7 @@ import {
   useListTeams,
 } from "../../../../Apis/hooks";
 import { Icon } from "../../../../Assets/Icons";
-import { PortalAuthContext } from "../../../../Context/PortalAuthContext";
+import { AuthContext } from "../../../../Context/AuthContext";
 import { CardStyles } from "../../../../Styles/shared/Card.style";
 import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
 import { FilterType } from "../../../../Utility/filter-utility";
@@ -43,7 +43,7 @@ const SubscriptionInfoCard = ({
   const { data: appsForTeams } = useListAppsForTeams(teams ?? []);
   const apps = useMemo(() => appsForTeams?.flat(), [appsForTeams]);
 
-  const { isAdmin } = useContext(PortalAuthContext);
+  const { isAdmin } = useContext(AuthContext);
 
   const subscribedApiProduct = useMemo(() => {
     return apiProductsList?.find(

@@ -1,5 +1,5 @@
 import { Box, CloseButton, Flex, Loader, Select } from "@mantine/core";
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
 import {
@@ -13,11 +13,11 @@ import {
   useCreateSubscriptionMutation,
   useListApiProducts,
   useListAppsForTeams,
+  useListFlatAppsForTeams,
   useListTeams,
 } from "../../../../Apis/hooks";
 import { FormModalStyles } from "../../../../Styles/shared/FormModalStyles";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
-import { omitErrorMessageResponse } from "../../../../Utility/utility";
 import { Accordion } from "../../../Common/Accordion";
 import { Button } from "../../../Common/Button";
 import { Loading } from "../../../Common/Loading";
@@ -51,15 +51,8 @@ const NewSubscriptionModal = ({
   const { isLoading: isLoadingApiProducts, data: apiProducts } =
     useListApiProducts();
   const { isLoading: isLoadingTeams, data: teams } = useListTeams();
-  const { isLoading: isLoadingApps, data: appsForTeams } = useListAppsForTeams(
+  const { isLoading: isLoadingApps, data: apps } = useListFlatAppsForTeams(
     teams ?? []
-  );
-  const apps = useMemo(
-    () =>
-      (appsForTeams
-        ?.flat()
-        .filter((app) => !!omitErrorMessageResponse(app)) as App[]) ?? [],
-    [appsForTeams]
   );
 
   //

@@ -1,7 +1,8 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
-import { PortalAuthContext } from "../Context/PortalAuthContext";
+import { AuthContext } from "../Context/AuthContext";
+import { omitErrorMessageResponse } from "../Utility/utility";
 import {
   ApiProductDetails,
   ApiProductSummary,
@@ -36,6 +37,19 @@ export function useListAppsForTeams(teams: Team[]) {
     teams.map((t) => `/teams/${t.id}/apps`),
     skipFetching ? null : TEAM_APPS_SWR_KEY
   );
+}
+export function useListFlatAppsForTeams(teams: Team[]) {
+  // This flattens the apps for teams result, in cases where we don't
+  // need the mapped team data.
+  const swrRes = useListAppsForTeams(teams);
+  const data = useMemo(
+    () =>
+      (swrRes.data
+        ?.flat()
+        .filter((app) => !!omitErrorMessageResponse(app)) as App[]) ?? [],
+    [swrRes.data]
+  );
+  return { ...swrRes, data };
 }
 export function useGetAppDetails(id?: string) {
   return useSwrWithAuth<App>(`/apps/${id}`);
@@ -112,7 +126,7 @@ type MutationWithArgs<T> = { arg: T };
 type CreateTeamParams = MutationWithArgs<{ name: string; description: string }>;
 
 export function useCreateTeamMutation() {
-  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { latestAccessToken } = useContext(AuthContext);
   const { mutate } = useSWRConfig();
   const createTeam = async (url: string, { arg }: CreateTeamParams) => {
     const res = await fetchJSON(url, {
@@ -132,7 +146,7 @@ export function useCreateTeamMutation() {
 type AddTeamMemberParams = MutationWithArgs<{ email: string; teamId: string }>;
 
 export function useAddTeamMemberMutation() {
-  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { latestAccessToken } = useContext(AuthContext);
   const { mutate } = useSWRConfig();
   const addTeamMember = async (_url: string, { arg }: AddTeamMemberParams) => {
     const res = await fetchJSON(`/teams/${arg.teamId}/members`, {
@@ -155,7 +169,7 @@ type AdminRemoveTeamMemberParams = MutationWithArgs<{
 }>;
 
 export function useRemoveTeamMemberMutation() {
-  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { latestAccessToken } = useContext(AuthContext);
   const { mutate } = useSWRConfig();
   const removeTeamMember = async (
     _url: string,
@@ -177,7 +191,7 @@ export function useRemoveTeamMemberMutation() {
 type CreateAppParams = MutationWithArgs<{ name: string; description: string }>;
 
 export function useCreateAppMutation(teamId: string | undefined) {
-  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { latestAccessToken } = useContext(AuthContext);
   const { mutate } = useSWRConfig();
   const createApp = async (url: string, { arg }: CreateAppParams) => {
     if (!teamId) {
@@ -208,7 +222,7 @@ type UpdateAppParams = MutationWithArgs<{
 }>;
 
 export function useUpdateAppMutation() {
-  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { latestAccessToken } = useContext(AuthContext);
   const { mutate } = useSWRConfig();
   const updateApp = async (_url: string, { arg }: UpdateAppParams) => {
     const { appId, appTeamId, appName, appDescription } = arg;
@@ -234,7 +248,7 @@ type UpdateTeamParams = MutationWithArgs<{
 }>;
 
 export function useUpdateTeamMutation() {
-  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { latestAccessToken } = useContext(AuthContext);
   const { mutate } = useSWRConfig();
   const updateTeam = async (_url: string, { arg }: UpdateTeamParams) => {
     const { teamId, teamName, teamDescription } = arg;
@@ -260,7 +274,7 @@ type CreateAppAndSubscriptionParams = MutationWithArgs<{
 }>;
 
 export function useCreateAppAndSubscriptionMutation() {
-  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { latestAccessToken } = useContext(AuthContext);
   const { mutate } = useSWRConfig();
   const createAppAndSubscription = async (
     _url: string,
@@ -300,7 +314,7 @@ type CreateSubscriptionParams = MutationWithArgs<{
 }>;
 
 export function useCreateSubscriptionMutation(appId: string) {
-  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { latestAccessToken } = useContext(AuthContext);
   const { mutate } = useSWRConfig();
   const createApp = async (url: string, { arg }: CreateSubscriptionParams) => {
     if (!appId) {
@@ -329,7 +343,7 @@ type AdminUpdateSubscriptionParams = MutationWithArgs<{
 }>;
 
 export function useAdminApproveSubscriptionMutation() {
-  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { latestAccessToken } = useContext(AuthContext);
   const { mutate } = useSWRConfig();
   const approveSub = async (
     _: string,
@@ -352,7 +366,7 @@ export function useAdminApproveSubscriptionMutation() {
 }
 
 export function useAdminRejectSubscriptionMutation() {
-  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { latestAccessToken } = useContext(AuthContext);
   const { mutate } = useSWRConfig();
   const rejectSub = async (
     _: string,
@@ -371,7 +385,7 @@ export function useAdminRejectSubscriptionMutation() {
 }
 
 export function useAdminDeleteSubscriptionMutation() {
-  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { latestAccessToken } = useContext(AuthContext);
   const { mutate } = useSWRConfig();
   const deleteSub = async (
     _: string,

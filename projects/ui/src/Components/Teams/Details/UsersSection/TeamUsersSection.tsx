@@ -4,7 +4,7 @@ import { di } from "react-magnetic-di";
 import { Member, Team } from "../../../../Apis/api-types";
 import { useListMembersForTeam } from "../../../../Apis/hooks";
 import { Icon } from "../../../../Assets/Icons";
-import { PortalAuthContext } from "../../../../Context/PortalAuthContext";
+import { AuthContext } from "../../../../Context/AuthContext";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
@@ -19,7 +19,7 @@ import AddTeamUserSubSection from "./AddTeamUserSubSection";
 
 const TeamUsersSection = ({ team }: { team: Team }) => {
   di(useListMembersForTeam);
-  const { isAdmin } = useContext(PortalAuthContext);
+  const { isAdmin } = useContext(AuthContext);
   const { isLoading, data: members } = useListMembersForTeam(team.id);
   const [showAddTeamUserSubSection, setShowAddTeamUserSubSection] =
     useState(false);

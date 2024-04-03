@@ -6,7 +6,7 @@ import { di } from "react-magnetic-di";
 import { useSearchParams } from "react-router-dom";
 import { useGetCurrentUser } from "../../Apis/hooks";
 import { Icon } from "../../Assets/Icons";
-import { PortalAuthContext } from "../../Context/PortalAuthContext";
+import { AuthContext } from "../../Context/AuthContext";
 import { logoutEndpoint } from "../../user_variables.tmplr";
 
 export const StyledUserDropdown = styled(Popover.Dropdown)(
@@ -50,7 +50,7 @@ export const StyledUserDropdown = styled(Popover.Dropdown)(
 
 const HeaderSectionLoggedIn = () => {
   di(useGetCurrentUser);
-  const { idToken } = useContext(PortalAuthContext);
+  const { idToken } = useContext(AuthContext);
   const { data: user } = useGetCurrentUser();
   const [opened, setOpened] = useState(false);
 

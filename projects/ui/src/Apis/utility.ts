@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import useSWR from "swr";
-import { PortalAuthContext } from "../Context/PortalAuthContext";
+import { AuthContext } from "../Context/AuthContext";
 import { ErrorMessageResponse } from "./api-types";
 
 let _portalServerUrl = import.meta.env.VITE_PORTAL_SERVER_URL;
@@ -74,7 +74,7 @@ export const useSwrWithAuth = <T>(
   swrKey?: string,
   config?: Parameters<typeof useSWR<T>>[2]
 ) => {
-  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { latestAccessToken } = useContext(AuthContext);
 
   const authHeaders = {} as any;
   if (!!latestAccessToken) {
@@ -114,7 +114,7 @@ export const useMultiSwrWithAuth = <T>(
   swrKey: string | null,
   config?: Parameters<typeof useSWR<[]>>[2]
 ) => {
-  const { latestAccessToken } = useContext(PortalAuthContext);
+  const { latestAccessToken } = useContext(AuthContext);
 
   const authHeaders = {} as any;
   if (!!latestAccessToken) {

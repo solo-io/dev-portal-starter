@@ -2,7 +2,7 @@ import { useContext, useMemo } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { ReactComponent as Logo } from "../../Assets/logo.svg";
 import { AppContext } from "../../Context/AppContext";
-import { PortalAuthContext } from "../../Context/PortalAuthContext";
+import { AuthContext } from "../../Context/AuthContext";
 import { ErrorBoundary } from "../Common/ErrorBoundary";
 import { HeaderStyles } from "./Header.style";
 import HeaderSectionLoggedIn from "./HeaderSectionLoggedIn";
@@ -21,7 +21,7 @@ if (!window.isSecureContext) {
  **/
 export function Header() {
   const routerLocation = useLocation();
-  const { isLoggedIn, isAdmin } = useContext(PortalAuthContext);
+  const { isLoggedIn, isAdmin } = useContext(AuthContext);
 
   const inArea = (paths: string[]) => {
     return paths.some((s) => routerLocation.pathname.includes(s));
