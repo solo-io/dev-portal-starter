@@ -55,9 +55,7 @@ export async function fetchJSON(...args: Parameters<typeof fetch>) {
   } catch {}
   // If there was an error but no 'message', make sure we still capture that.
   if (!res?.ok && !errMessage) {
-    errMessage =
-      // "There was an error making the request. See the 'Requests' tab for more information.";
-      "There was an error making the request to " + args[0] + ".";
+    errMessage = `There was an error making the request to ${args[0]}`;
   }
   if (!!errMessage) {
     throw new Error(errMessage);

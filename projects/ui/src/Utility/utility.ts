@@ -111,12 +111,3 @@ export function omitErrorMessageResponse<T>(value: T | ErrorMessageResponse) {
   }
   return value as T;
 }
-
-// export function filterErrorMessageResponses<T>(
-//   values: (T | ErrorMessageResponse)[] | undefined | ErrorMessageResponse
-// ) {
-//   if (values === undefined || omitErrorMessageResponse(values) === null) {
-//     return [];
-//   }
-//   return (values as T[]).filter((v) => !!omitErrorMessageResponse(v));
-// }
