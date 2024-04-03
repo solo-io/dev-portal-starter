@@ -2,6 +2,7 @@ import { Theme, css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { PrimaryTrimmedSmallWhiteContainer } from "../PrimaryTrimmedSmallWhiteContainer";
 import { borderRadiusConstants } from "../constants";
+import { svgColorReplace } from "../utils";
 
 const makeFilterPlaceholderTextsCSS = (theme: Theme) => css`
   color: ${theme.augustGrey};
@@ -21,10 +22,8 @@ const makeFilterTypeIconHolderCSS = (theme: Theme) => css`
   svg {
     width: 18px;
     height: 18px;
-    * {
-      fill: ${theme.augustGrey};
-    }
   }
+  ${svgColorReplace(theme.augustGrey)}
 `;
 
 const makeFilterBoxCSS = (theme: Theme) => css`

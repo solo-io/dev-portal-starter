@@ -21,7 +21,7 @@ const TeamDetailsPageContent = ({ team }: { team: Team }) => {
               fontSize: "32px",
               lineHeight: "36px",
             }}
-            additionalInfo={<EditTeamButtonWithModal team={team} />}
+            additionalInfo={!isAdmin && <EditTeamButtonWithModal team={team} />}
           />
         }
         description={team.description}

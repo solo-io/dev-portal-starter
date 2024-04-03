@@ -1,9 +1,10 @@
 import { Box, Select, TextInput } from "@mantine/core";
 import { useMemo } from "react";
-import { Team } from "../../Apis/api-types";
+import { SubscriptionStatus, Team } from "../../Apis/api-types";
 import { Icon } from "../../Assets/Icons";
 import { FilterStyles as Styles } from "../../Styles/shared/Filters.style";
 import { FilterPair, FilterType } from "../../Utility/filter-utility";
+import { capitalize, getEnumValues } from "../../Utility/utility";
 
 export type AdminSubscriptionsFiltrationProp = {
   allFilters: FilterPair[];
@@ -53,6 +54,17 @@ export function AdminSubscriptionsFilter({
     ]);
   };
 
+  const addStatusFilter = (value: string) => {
+    // Only one subscriptionStatus filter should be set at a time.
+    const newFilters = filters.allFilters.filter(
+      (f) => f.type !== FilterType.subscriptionStatus
+    );
+    filters.setAllFilters([
+      ...newFilters,
+      { displayName: value, type: FilterType.subscriptionStatus, value: value },
+    ]);
+  };
+
   const removeFilter = (filterPair: FilterPair) => {
     filters.setAllFilters(
       filters.allFilters.filter(
@@ -76,6 +88,23 @@ export function AdminSubscriptionsFilter({
         ),
       })),
     [teams, filters]
+  );
+
+  const selectableStatuses = useMemo(
+    () =>
+      getEnumValues(SubscriptionStatus).map((v) => {
+        const capitalValue = capitalize(v);
+        return {
+          label: capitalValue,
+          value: capitalValue,
+          disabled: filters.allFilters.some(
+            (filter) =>
+              filter.type === FilterType.subscriptionStatus &&
+              filter.value === capitalValue
+          ),
+        };
+      }),
+    [filters]
   );
 
   return (
@@ -111,9 +140,22 @@ export function AdminSubscriptionsFilter({
               placeholder="Team"
             />
           </div>
+          <div className="dropdownFilter">
+            <div className="gearHolder">
+              <Icon.SuccessCheckmark />
+            </div>
+            <Select
+              size="xs"
+              data={selectableStatuses}
+              onChange={addStatusFilter}
+              value=""
+              placeholder="Status"
+            />
+          </div>
         </div>
 
         {filters.allFilters.length > 0 && (
+          // TODO: This bottom section that displays the applied filters could probably be extracted to it's own component.
           <div className="currentFiltersArea">
             <Styles.ActiveFiltersGrid>
               {filters.allFilters.map((activeFilter, idx) => (
