@@ -17,7 +17,10 @@ import {
   getApiProductDetailsDocsTabLink,
   getApiProductDetailsSpecTabLink,
 } from "../../../../Utility/link-builders";
-import { capitalize } from "../../../../Utility/utility";
+import {
+  capitalize,
+  omitErrorMessageResponse,
+} from "../../../../Utility/utility";
 import { AdminSubscriptionsFiltrationProp } from "../../../AdminSubscriptions/AdminSubscriptionsFilter";
 import {
   GetSubscriptionState,
@@ -49,7 +52,12 @@ const SubscriptionInfoCard = ({
   }, [apiProductsList, subscription]);
 
   const appThatSubscribed = useMemo(() => {
-    return apps?.find((app) => app.id === subscription.applicationId);
+    return omitErrorMessageResponse(
+      apps?.find(
+        (app) =>
+          omitErrorMessageResponse(app)?.id === subscription.applicationId
+      )
+    );
   }, [apps, subscription]);
 
   const teamOfAppThatSubscribed = useMemo(() => {

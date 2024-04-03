@@ -17,6 +17,7 @@ import {
 } from "../../../../Apis/hooks";
 import { FormModalStyles } from "../../../../Styles/shared/FormModalStyles";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
+import { omitErrorMessageResponse } from "../../../../Utility/utility";
 import { Accordion } from "../../../Common/Accordion";
 import { Button } from "../../../Common/Button";
 import { Loading } from "../../../Common/Loading";
@@ -53,7 +54,13 @@ const NewSubscriptionModal = ({
   const { isLoading: isLoadingApps, data: appsForTeams } = useListAppsForTeams(
     teams ?? []
   );
-  const apps = useMemo(() => appsForTeams?.flat() ?? [], [appsForTeams]);
+  const apps = useMemo(
+    () =>
+      (appsForTeams
+        ?.flat()
+        .filter((app) => !!omitErrorMessageResponse(app)) as App[]) ?? [],
+    [appsForTeams]
+  );
 
   //
   // Form Fields

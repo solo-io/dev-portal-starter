@@ -1,6 +1,6 @@
 import { Box } from "@mantine/core";
 import { useMemo, useState } from "react";
-import { Subscription } from "../../Apis/api-types";
+import { App, Subscription } from "../../Apis/api-types";
 import {
   useListAppsForTeams,
   useListSubscriptionsForApps,
@@ -8,6 +8,7 @@ import {
 } from "../../Apis/hooks";
 import { Icon } from "../../Assets/Icons";
 import { FilterPair } from "../../Utility/filter-utility";
+import { omitErrorMessageResponse } from "../../Utility/utility";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 import { PageContainer } from "../Common/PageContainer";
@@ -31,7 +32,10 @@ const AdminSubscriptionsPage = () => {
 
   // Flatten the returned apps for teams array...
   const flatAppsForTeams = useMemo(
-    () => appsForTeams?.flat() ?? [],
+    () =>
+      (appsForTeams
+        ?.flat()
+        .filter((app) => omitErrorMessageResponse(app)) as App[]) ?? [],
     [appsForTeams]
   );
 

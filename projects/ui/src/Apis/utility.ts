@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import useSWR from "swr";
 import { PortalAuthContext } from "../Context/PortalAuthContext";
+import { ErrorMessageResponse } from "./api-types";
 
 let _portalServerUrl = import.meta.env.VITE_PORTAL_SERVER_URL;
 if (
@@ -55,7 +56,8 @@ export async function fetchJSON(...args: Parameters<typeof fetch>) {
   // If there was an error but no 'message', make sure we still capture that.
   if (!res?.ok && !errMessage) {
     errMessage =
-      "There was an error making the request. See the 'Requests' tab for more information.";
+      // "There was an error making the request. See the 'Requests' tab for more information.";
+      "There was an error making the request to " + args[0] + ".";
   }
   if (!!errMessage) {
     throw new Error(errMessage);
@@ -112,7 +114,7 @@ export const useSwrWithAuth = <T>(
 export const useMultiSwrWithAuth = <T>(
   paths: string[],
   swrKey: string | null,
-  config?: Parameters<typeof useSWR<T[]>>[2]
+  config?: Parameters<typeof useSWR<[]>>[2]
 ) => {
   const { latestAccessToken } = useContext(PortalAuthContext);
 
@@ -120,16 +122,20 @@ export const useMultiSwrWithAuth = <T>(
   if (!!latestAccessToken) {
     authHeaders.Authorization = `Bearer ${latestAccessToken}`;
   }
-  return useSWR<T[]>(
+  return useSWR<(T | ErrorMessageResponse)[]>(
     swrKey,
     () =>
       Promise.all(
-        paths.map((path) =>
-          fetchJSON(path, {
-            headers: authHeaders,
-          })
-        )
+        paths.map(async (path) => {
+          try {
+            return await fetchJSON(path, {
+              headers: authHeaders,
+            });
+          } catch (message) {
+            return { message: JSON.stringify(message) };
+          }
+        })
       ),
-    config ?? {}
+    (config ?? {}) as any
   );
 };

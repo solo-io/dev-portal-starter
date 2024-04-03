@@ -1,6 +1,9 @@
 //
 // From https://stackoverflow.com/a/65996386
 // navigator.clipboard.writeText doesn't always work.
+
+import { ErrorMessageResponse } from "../Apis/api-types";
+
 //
 export async function copyToClipboard(textToCopy: string) {
   // Navigator clipboard api needs a secure context (https)
@@ -98,3 +101,22 @@ export function getEnumValues<Enum>(pEnum: StandardEnum<Enum>): Enum[] {
 export function capitalize(input: string) {
   return input[0].toUpperCase() + input.substring(1);
 }
+
+export function omitErrorMessageResponse<T>(value: T | ErrorMessageResponse) {
+  if (value === null) {
+    return null;
+  }
+  if (typeof value === "object" && "message" in value) {
+    return null;
+  }
+  return value as T;
+}
+
+// export function filterErrorMessageResponses<T>(
+//   values: (T | ErrorMessageResponse)[] | undefined | ErrorMessageResponse
+// ) {
+//   if (values === undefined || omitErrorMessageResponse(values) === null) {
+//     return [];
+//   }
+//   return (values as T[]).filter((v) => !!omitErrorMessageResponse(v));
+// }
