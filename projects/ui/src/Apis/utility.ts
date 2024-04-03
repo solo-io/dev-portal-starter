@@ -125,6 +125,8 @@ export const useMultiSwrWithAuth = <T>(
     () =>
       Promise.all(
         paths.map(async (path) => {
+          // This uses a try catch, because if an error is thrown here,
+          // all the message responses get thrown out.
           try {
             return await fetchJSON(path, {
               headers: authHeaders,
