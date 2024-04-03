@@ -2,6 +2,7 @@ import { Theme, css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { PrimaryTrimmedSmallWhiteContainer } from "../PrimaryTrimmedSmallWhiteContainer";
 import { borderRadiusConstants } from "../constants";
+import { svgColorReplace } from "../utils";
 
 const makeFilterPlaceholderTextsCSS = (theme: Theme) => css`
   color: ${theme.augustGrey};
@@ -13,18 +14,16 @@ const makeFilterTypeIconHolderCSS = (theme: Theme) => css`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
   margin-right: 6px;
   border-right: 1px solid ${theme.aprilGrey};
 
   svg {
     width: 18px;
     height: 18px;
-    * {
-      fill: ${theme.augustGrey};
-    }
   }
+  ${svgColorReplace(theme.augustGrey)}
 `;
 
 const makeFilterBoxCSS = (theme: Theme) => css`
@@ -160,11 +159,15 @@ export namespace FilterStyles {
         }
         .dropdownFilter {
           ${makeFilterBoxCSS(theme)}
+          height: fit-content;
           .mantine-InputWrapper-root.mantine-Select-root {
             flex-grow: 1;
           }
           input {
             border: none;
+            &:disabled {
+              border-radius: 0px;
+            }
             &::placeholder {
               ${makeFilterPlaceholderTextsCSS(theme)}
             }

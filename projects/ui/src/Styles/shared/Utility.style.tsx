@@ -13,13 +13,8 @@ export namespace UtilityStyles {
     `
   );
 
-  export const CenteredTH = styled.th`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  `;
-
-  export const CenteredTD = styled.td`
+  export const CenteredCellContent = styled.span`
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;

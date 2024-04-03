@@ -1,5 +1,5 @@
-const AdminTeamsPage = () => {
-  return <div>AdminTeamsPage</div>;
-};
+import { TeamsPage } from "../Teams/TeamsPage";
 
-export default AdminTeamsPage;
+// The admin teams page reuses the standard teams page components,
+// which have modifications to support admin functions.
+export default TeamsPage;

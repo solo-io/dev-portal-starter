@@ -14,9 +14,6 @@ import { getTeamDetailsLink } from "../../../../Utility/link-builders";
 import { Loading } from "../../../Common/Loading";
 import { SubscriptionInfoCardStyles } from "../../../Common/SubscriptionsList/SubscriptionInfoCard/SubscriptionInfoCard.style";
 
-/**
- * MAIN COMPONENT
- **/
 export function TeamSummaryGridCard({ team }: { team: Team }) {
   di(useListAppsForTeam, useListMembersForTeam);
 

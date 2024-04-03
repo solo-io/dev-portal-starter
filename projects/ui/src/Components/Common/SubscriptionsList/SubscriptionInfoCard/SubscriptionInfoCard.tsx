@@ -17,9 +17,11 @@ import {
   getApiProductDetailsDocsTabLink,
   getApiProductDetailsSpecTabLink,
 } from "../../../../Utility/link-builders";
+import { capitalize } from "../../../../Utility/utility";
 import { AdminSubscriptionsFiltrationProp } from "../../../AdminSubscriptions/AdminSubscriptionsFilter";
 import {
   GetSubscriptionState,
+  SubscriptionState,
   subscriptionStateMap,
 } from "../SubscriptionsUtility";
 import { SubscriptionInfoCardStyles as Styles } from "./SubscriptionInfoCard.style";
@@ -88,6 +90,9 @@ const SubscriptionInfoCard = ({
       teamOfAppThatSubscribed.name
         .toLocaleLowerCase()
         .includes(nameFilter.toLocaleLowerCase());
+    const subscriptionStateValue = capitalize(
+      SubscriptionState[subscriptionState].toLowerCase()
+    );
     const passesFilterList =
       !allFilters.length ||
       allFilters.every(
@@ -103,13 +108,16 @@ const SubscriptionInfoCard = ({
                 .toLocaleLowerCase()
                 .includes(filter.displayName.toLocaleLowerCase()))) ||
           (filter.type === FilterType.team &&
-            filter.value === teamOfAppThatSubscribed.id)
+            filter.value === teamOfAppThatSubscribed.id) ||
+          (filter.type === FilterType.subscriptionStatus &&
+            filter.value === subscriptionStateValue)
       );
     // Filter this card out if it doesn't pass the name filter
     // or if it doesn't pass the filter list.
     return !passesNameFilter || !passesFilterList;
   }, [
     filters,
+    subscriptionState,
     subscribedApiProduct,
     appThatSubscribed,
     teamOfAppThatSubscribed,

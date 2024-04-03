@@ -8,6 +8,7 @@ export enum FilterType {
   keyValuePair,
   apiType,
   team,
+  subscriptionStatus,
 }
 export type FilterPair = {
   displayName: string;

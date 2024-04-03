@@ -63,6 +63,7 @@ const colorMap = {
   royalPurple: "#7e4bc6",
 
   lightRed: "#fff7f7",
+  lightRedDark10: Color("#fff7f7").darken(0.1).desaturate(0.25).hex(),
   lightMidRed: Color("#bf0a17").lighten(1.2).desaturate(0.2).hex(),
   midRed: "#bf0a17",
   darkRed: "#a23f3a",

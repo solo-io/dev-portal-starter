@@ -1,5 +1,7 @@
 import { Box, Flex } from "@mantine/core";
+import { useContext } from "react";
 import { Team } from "../../../Apis/api-types";
+import { PortalAuthContext } from "../../../Context/PortalAuthContext";
 import { BannerHeading } from "../../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../../Common/Banner/BannerHeadingTitle";
 import { PageContainer } from "../../Common/PageContainer";
@@ -8,6 +10,7 @@ import EditTeamButtonWithModal from "./EditTeamButtonWithModal";
 import TeamUsersSection from "./UsersSection/TeamUsersSection";
 
 const TeamDetailsPageContent = ({ team }: { team: Team }) => {
+  const { isAdmin } = useContext(PortalAuthContext);
   return (
     <PageContainer>
       <BannerHeading
@@ -18,7 +21,7 @@ const TeamDetailsPageContent = ({ team }: { team: Team }) => {
               fontSize: "32px",
               lineHeight: "36px",
             }}
-            additionalInfo={<EditTeamButtonWithModal team={team} />}
+            additionalInfo={!isAdmin && <EditTeamButtonWithModal team={team} />}
           />
         }
         description={team.description}
@@ -31,7 +34,7 @@ const TeamDetailsPageContent = ({ team }: { team: Team }) => {
       <Box px={"30px"} pb={"30px"}>
         <Flex gap={"30px"} direction={"column"}>
           <TeamUsersSection team={team} />
-          <TeamAppsSection team={team} />
+          {!isAdmin && <TeamAppsSection team={team} />}
         </Flex>
       </Box>
     </PageContainer>

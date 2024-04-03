@@ -74,3 +74,27 @@ export const jwtDecode = (t: string) => {
     payload: JSON.parse(window.atob(t.split(".")[1])),
   };
 };
+
+// Since enum can't be passed as a generic with type constraints, this is used to
+// limit what can be passed into the function
+export type StandardEnum<T> = {
+  [id: string]: T | string;
+  [nu: number]: string;
+};
+
+// Pass back all enum values as an array
+export function getEnumValues<Enum>(pEnum: StandardEnum<Enum>): Enum[] {
+  return (
+    Object.entries(pEnum)
+      // filter out any number keys - these only represent values (which are used in enums to easily find key name)
+      .filter(([key]) => isNaN(key as any))
+      .map(([, val]) => val as Enum)
+  );
+}
+
+/**
+ * @param {string} input - String to capitalize first letter
+ */
+export function capitalize(input: string) {
+  return input[0].toUpperCase() + input.substring(1);
+}
