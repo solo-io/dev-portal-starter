@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import useSWR from "swr";
 import { AuthContext } from "../Context/AuthContext";
-import { omitErrorMessageResponse } from "../Utility/utility";
 import { ErrorMessageResponse } from "./api-types";
 
 let _portalServerUrl = import.meta.env.VITE_PORTAL_SERVER_URL;
@@ -101,15 +100,15 @@ export const useSwrWithAuth = <T>(
   );
 };
 
-/**
- * TODO: This isn't used but could be useful in a refactor
- */
-export const useSwrWithAuthOmitError = <T>(
-  ...args: Parameters<typeof useSwrWithAuth<T>>
-) => {
-  const swrRes = useSwrWithAuth<T>(...args);
-  return { ...swrRes, data: omitErrorMessageResponse(swrRes.data) };
-};
+// /**
+//  * TODO: This isn't used but could be useful in a refactor
+//  */
+// export const useSwrWithAuthOmitError = <T>(
+//   ...args: Parameters<typeof useSwrWithAuth<T>>
+// ) => {
+//   const swrRes = useSwrWithAuth<T>(...args);
+//   return { ...swrRes, data: omitErrorMessageResponse(swrRes.data) };
+// };
 
 /**
  *  This is the same as useSwrWithAuth, but works for an array of paths.
