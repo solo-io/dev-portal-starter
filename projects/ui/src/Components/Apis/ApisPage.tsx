@@ -32,7 +32,8 @@ export function ApisPage() {
     data: subscriptions,
     error: subscriptionsErr,
   } = useListSubscriptionsForStatus(SubscriptionStatus.PENDING);
-  const subscriptionsError = !!subscriptionsErr;
+  const subscriptionsError =
+    !!subscriptionsErr || (subscriptions && "message" in subscriptions);
   const isLoading = isLoadingApiProducts || isLoadingSubscriptions;
 
   //
