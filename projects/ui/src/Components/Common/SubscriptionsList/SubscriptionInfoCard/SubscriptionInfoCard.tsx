@@ -1,7 +1,6 @@
-import { Box, Flex } from "@mantine/core";
+import { Flex } from "@mantine/core";
 import { useContext, useMemo } from "react";
 import { di } from "react-magnetic-di";
-import { NavLink } from "react-router-dom";
 import { Subscription } from "../../../../Apis/api-types";
 import {
   useListApiProducts,
@@ -11,11 +10,10 @@ import {
 import { Icon } from "../../../../Assets/Icons";
 import { AuthContext } from "../../../../Context/AuthContext";
 import { CardStyles } from "../../../../Styles/shared/Card.style";
-import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
 import { FilterType } from "../../../../Utility/filter-utility";
 import {
-  getApiProductDetailsDocsTabLink,
-  getApiProductDetailsSpecTabLink,
+  getAppDetailsLink,
+  getTeamDetailsLink,
 } from "../../../../Utility/link-builders";
 import {
   capitalize,
@@ -29,6 +27,8 @@ import {
 } from "../SubscriptionsUtility";
 import { SubscriptionInfoCardStyles as Styles } from "./SubscriptionInfoCard.style";
 import SubscriptionInfoCardAdminFooter from "./SubscriptionInfoCardAdminFooter";
+import SubscriptionInfoCardFooter from "./SubscriptionInfoCardFooter";
+import { SubscriptionInfoCardLink } from "./SubscriptionInfoCardLink";
 
 const SubscriptionInfoCard = ({
   subscription,
@@ -38,12 +38,16 @@ const SubscriptionInfoCard = ({
   filters?: AdminSubscriptionsFiltrationProp;
 }) => {
   di(useListTeams, useListAppsForTeams);
+  const { isAdmin } = useContext(AuthContext);
+
+  //
+  // Get Team and App for Subscription
+  //
+
   const { data: apiProductsList } = useListApiProducts();
   const { data: teams } = useListTeams();
   const { data: appsForTeams } = useListAppsForTeams(teams ?? []);
   const apps = useMemo(() => appsForTeams?.flat(), [appsForTeams]);
-
-  const { isAdmin } = useContext(AuthContext);
 
   const subscribedApiProduct = useMemo(() => {
     return apiProductsList?.find(
@@ -64,11 +68,19 @@ const SubscriptionInfoCard = ({
     return teams?.find((team) => team.id === appThatSubscribed?.teamId);
   }, [teams, appThatSubscribed]);
 
+  //
+  // Get Subscription State
+  //
+
   const subscriptionState = useMemo(
     () => GetSubscriptionState(subscription),
     [subscription]
   );
   const subscriptionStateInfo = subscriptionStateMap[subscriptionState];
+
+  //
+  // Filter
+  //
 
   // Doing filtering here makes it possible to filter by all fields,
   // since we have all the information.
@@ -148,19 +160,25 @@ const SubscriptionInfoCard = ({
             {subscriptionStateInfo.label}
           </Styles.SubscriptionCardBadge>
         </Flex>
-        <Flex align={"center"} justify={"flex-start"} gap={"8px"}>
-          <Icon.AppIcon width={20} />
-          <CardStyles.SmallerText>
-            {appThatSubscribed?.name ?? "App Not Found"}
-          </CardStyles.SmallerText>
-        </Flex>
-        <Flex align={"center"} justify={"flex-start"} gap={"8px"}>
-          <Icon.TeamsIcon width={20} />
-          <CardStyles.SmallerText>
-            {teamOfAppThatSubscribed?.name ?? "Team Not Found"}
-          </CardStyles.SmallerText>
-        </Flex>
+
+        <SubscriptionInfoCardLink
+          itemTypeCapitalized={"App"}
+          link={appThatSubscribed ? getAppDetailsLink(appThatSubscribed) : ""}
+          ItemIcon={Icon.AppIcon}
+          item={appThatSubscribed}
+        />
+        <SubscriptionInfoCardLink
+          itemTypeCapitalized={"Team"}
+          link={
+            teamOfAppThatSubscribed
+              ? getTeamDetailsLink(teamOfAppThatSubscribed)
+              : ""
+          }
+          ItemIcon={Icon.TeamsIcon}
+          item={teamOfAppThatSubscribed}
+        />
       </Styles.Content>
+
       {isAdmin ? (
         <SubscriptionInfoCardAdminFooter
           subscription={subscription}
@@ -168,23 +186,9 @@ const SubscriptionInfoCard = ({
         />
       ) : (
         subscribedApiProduct && (
-          <Styles.Footer>
-            <UtilityStyles.NavLinkContainer>
-              <NavLink
-                to={getApiProductDetailsSpecTabLink(subscribedApiProduct.id)}
-              >
-                SPEC
-              </NavLink>
-            </UtilityStyles.NavLinkContainer>
-            <Box>|</Box>
-            <UtilityStyles.NavLinkContainer>
-              <NavLink
-                to={getApiProductDetailsDocsTabLink(subscribedApiProduct.id)}
-              >
-                DOCS
-              </NavLink>
-            </UtilityStyles.NavLinkContainer>
-          </Styles.Footer>
+          <SubscriptionInfoCardFooter
+            subscribedApiProductId={subscribedApiProduct.id}
+          />
         )
       )}
     </Styles.Card>

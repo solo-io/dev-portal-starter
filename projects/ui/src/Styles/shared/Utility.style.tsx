@@ -47,4 +47,18 @@ export namespace UtilityStyles {
       }
     `
   );
+
+  export const LinkContainer = styled.span(
+    ({ theme }) => css`
+      a {
+        color: ${theme.defaultText};
+        &:hover,
+        &:active {
+          span {
+            text-decoration: underline;
+          }
+        }
+      }
+    `
+  );
 }
