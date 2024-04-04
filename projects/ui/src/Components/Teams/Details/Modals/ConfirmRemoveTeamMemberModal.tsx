@@ -5,7 +5,7 @@ import { di } from "react-magnetic-di";
 import { useRemoveTeamMemberMutation } from "../../../../Apis/hooks";
 import { FormModalStyles } from "../../../../Styles/shared/FormModalStyles";
 
-const AdminConfirmRemoveTeamMemberModal = ({
+const ConfirmRemoveTeamMemberModal = ({
   userId,
   teamId,
   open,
@@ -57,4 +57,4 @@ const AdminConfirmRemoveTeamMemberModal = ({
   );
 };
 
-export default AdminConfirmRemoveTeamMemberModal;
+export default ConfirmRemoveTeamMemberModal;

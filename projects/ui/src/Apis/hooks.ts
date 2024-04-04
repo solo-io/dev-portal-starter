@@ -161,7 +161,7 @@ export function useAddTeamMemberMutation() {
 }
 
 // ------------------------ //
-// (Admin) Remove Team Member
+// Remove Team Member
 
 type AdminRemoveTeamMemberParams = MutationWithArgs<{
   teamId: string;
