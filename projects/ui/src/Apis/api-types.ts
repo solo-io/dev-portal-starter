@@ -96,6 +96,7 @@ export type Subscription = {
 };
 
 export type ErrorMessageResponse = {
+  isError: true;
   message: string;
 };
 

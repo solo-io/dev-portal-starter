@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import useSWR from "swr";
 import { AuthContext } from "../Context/AuthContext";
+import { omitErrorMessageResponse } from "../Utility/utility";
 import { ErrorMessageResponse } from "./api-types";
 
 let _portalServerUrl = import.meta.env.VITE_PORTAL_SERVER_URL;
@@ -101,6 +102,16 @@ export const useSwrWithAuth = <T>(
 };
 
 /**
+ * TODO: This isn't used but could be useful in a refactor
+ */
+export const useSwrWithAuthOmitError = <T>(
+  ...args: Parameters<typeof useSwrWithAuth<T>>
+) => {
+  const swrRes = useSwrWithAuth<T>(...args);
+  return { ...swrRes, data: omitErrorMessageResponse(swrRes.data) };
+};
+
+/**
  *  This is the same as useSwrWithAuth, but works for an array of paths.
  * e.g.`["/teams/team-id-1/apps", "/teams/team-id-2/apps", ...]` will return:
  * `[getAppsReponseForTeam1, getAppsResponseForTeam2, ...]`
@@ -132,7 +143,11 @@ export const useMultiSwrWithAuth = <T>(
               headers: authHeaders,
             });
           } catch (message) {
-            return { message: JSON.stringify(message) };
+            const errMsgRes: ErrorMessageResponse = {
+              isError: true,
+              message: JSON.stringify(message),
+            };
+            return errMsgRes;
           }
         })
       ),
