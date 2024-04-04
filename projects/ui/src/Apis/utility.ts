@@ -143,7 +143,8 @@ export const useMultiSwrWithAuth = <T>(
             });
           } catch (message) {
             const errMsgRes: ErrorMessageResponse = {
-              isError: true,
+              // TODO: This isn't used but could be useful in a refactor.
+              // isError: true,
               message: JSON.stringify(message),
             };
             return errMsgRes;
