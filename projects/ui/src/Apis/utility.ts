@@ -101,7 +101,7 @@ export const useSwrWithAuth = <T>(
 };
 
 // /**
-//  * TODO: This isn't used but could be useful in a refactor
+//  * TODO: This isn't used but could be useful in a refactor.
 //  */
 // export const useSwrWithAuthOmitError = <T>(
 //   ...args: Parameters<typeof useSwrWithAuth<T>>
