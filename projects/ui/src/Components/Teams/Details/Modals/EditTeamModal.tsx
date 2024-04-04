@@ -1,10 +1,17 @@
-import { CloseButton, Flex, Input } from "@mantine/core";
+import {
+  CloseButton,
+  Flex,
+  Input,
+  Button as MantineButton,
+  Text,
+} from "@mantine/core";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { Team } from "../../../../Apis/api-types";
 import { useUpdateTeamMutation } from "../../../../Apis/hooks";
 import { FormModalStyles } from "../../../../Styles/shared/FormModalStyles";
 import { Button } from "../../../Common/Button";
+import DeleteTeamModal from "./DeleteTeamModal";
 
 export const EditTeamModal = ({
   opened,
@@ -57,64 +64,89 @@ export const EditTeamModal = ({
     onClose();
   };
 
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   //
   // Render
   //
   return (
-    <FormModalStyles.CustomModal
-      onClose={onClose}
-      opened={opened}
-      size={"800px"}
-    >
-      <FormModalStyles.HeaderContainer>
-        <div>
-          <FormModalStyles.Title>Edit Team</FormModalStyles.Title>
-          <FormModalStyles.Subtitle>
-            Edit the title and description for this Team.
-          </FormModalStyles.Subtitle>
-        </div>
-        <CloseButton title="Close modal" size={"30px"} onClick={onClose} />
-      </FormModalStyles.HeaderContainer>
-      <FormModalStyles.HorizLine />
-      <FormModalStyles.BodyContainerForm ref={formRef} onSubmit={onSubmit}>
-        <div>
-          <FormModalStyles.FormRow>
-            <label htmlFor="team-name-input">Team Name</label>
-            <Input
-              id="team-name-input"
-              required
-              placeholder="Team Name"
-              autoComplete="off"
-              value={teamName}
-              onChange={(e) => setTeamName(e.target.value)}
-            />
-          </FormModalStyles.FormRow>
-          <FormModalStyles.FormRow>
-            <label htmlFor="team-description-input">Team Description</label>
-            <Input
-              // This could be a Textarea if newlines exist in the description.
-              // Then we would need to get the text content using a ref
-              // so that newlines are preserved when saved.
-              // <Textarea
-              id="team-description-input"
-              required
-              placeholder="Team Description"
-              autoComplete="off"
-              value={teamDescription}
-              onChange={(e) => setTeamDescription(e.target.value)}
-            />
-          </FormModalStyles.FormRow>
-        </div>
+    <>
+      <FormModalStyles.CustomModal
+        onClose={onClose}
+        opened={opened}
+        size={"800px"}
+      >
+        <FormModalStyles.HeaderContainer>
+          <div>
+            <FormModalStyles.Title>Edit Team</FormModalStyles.Title>
+            <FormModalStyles.Subtitle>
+              Edit the title and description for this Team.
+            </FormModalStyles.Subtitle>
+          </div>
+          <CloseButton title="Close modal" size={"30px"} onClick={onClose} />
+        </FormModalStyles.HeaderContainer>
+        <FormModalStyles.HorizLine />
+        <FormModalStyles.BodyContainerForm ref={formRef} onSubmit={onSubmit}>
+          <div>
+            <FormModalStyles.FormRow>
+              <label htmlFor="team-name-input">Team Name</label>
+              <Input
+                id="team-name-input"
+                required
+                placeholder="Team Name"
+                autoComplete="off"
+                value={teamName}
+                onChange={(e) => setTeamName(e.target.value)}
+              />
+            </FormModalStyles.FormRow>
+            <FormModalStyles.FormRow>
+              <label htmlFor="team-description-input">Team Description</label>
+              <Input
+                // This could be a Textarea if newlines exist in the description.
+                // Then we would need to get the text content using a ref
+                // so that newlines are preserved when saved.
+                // <Textarea
+                id="team-description-input"
+                required
+                placeholder="Team Description"
+                autoComplete="off"
+                value={teamDescription}
+                onChange={(e) => setTeamDescription(e.target.value)}
+              />
+            </FormModalStyles.FormRow>
+          </div>
 
-        <Flex justify={"flex-end"} gap="20px">
-          <Button className="outline" onClick={onClose} type="button">
-            Cancel
-          </Button>
-          <Button disabled={isFormDisabled} onClick={onSubmit} type="submit">
-            Update Team
-          </Button>
-        </Flex>
-      </FormModalStyles.BodyContainerForm>
-    </FormModalStyles.CustomModal>
+          <Flex justify={"space-between"}>
+            <MantineButton
+              color="red"
+              size="xs"
+              sx={{ height: "38px", borderRadius: "2px" }}
+              onClick={() => setShowDeleteModal(true)}
+            >
+              <Text color="red.0" weight={500} size="14px">
+                Delete Team
+              </Text>
+            </MantineButton>
+            <Flex justify={"flex-end"} gap="20px">
+              <Button className="outline" onClick={onClose} type="button">
+                Cancel
+              </Button>
+              <Button
+                disabled={isFormDisabled}
+                onClick={onSubmit}
+                type="submit"
+              >
+                Update Team
+              </Button>
+            </Flex>
+          </Flex>
+        </FormModalStyles.BodyContainerForm>
+      </FormModalStyles.CustomModal>
+      <DeleteTeamModal
+        team={team}
+        open={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+      />
+    </>
   );
 };

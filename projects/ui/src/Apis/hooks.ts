@@ -336,19 +336,16 @@ export function useCreateSubscriptionMutation(appId: string) {
 }
 
 // -------------------------------- //
-// (Admin) Approve/Reject/Delete Subscription
+// (Admin) Approve/Reject Subscription
 
-type AdminUpdateSubscriptionParams = MutationWithArgs<{
+type UpdateSubscriptionParams = MutationWithArgs<{
   subscription: Subscription;
 }>;
 
 export function useAdminApproveSubscriptionMutation() {
   const { latestAccessToken } = useContext(AuthContext);
   const { mutate } = useSWRConfig();
-  const approveSub = async (
-    _: string,
-    { arg }: AdminUpdateSubscriptionParams
-  ) => {
+  const approveSub = async (_: string, { arg }: UpdateSubscriptionParams) => {
     const res = await fetchJSON(
       `/subscriptions/${arg.subscription.id}/approve`,
       {
@@ -368,10 +365,7 @@ export function useAdminApproveSubscriptionMutation() {
 export function useAdminRejectSubscriptionMutation() {
   const { latestAccessToken } = useContext(AuthContext);
   const { mutate } = useSWRConfig();
-  const rejectSub = async (
-    _: string,
-    { arg }: AdminUpdateSubscriptionParams
-  ) => {
+  const rejectSub = async (_: string, { arg }: UpdateSubscriptionParams) => {
     await fetchJSON(`/subscriptions/${arg.subscription.id}/reject`, {
       method: "POST",
       headers: getLatestAuthHeaders(latestAccessToken),
@@ -384,13 +378,13 @@ export function useAdminRejectSubscriptionMutation() {
   return useSWRMutation(`reject-subscription`, rejectSub);
 }
 
-export function useAdminDeleteSubscriptionMutation() {
+// -------------------------------- //
+// Delete Subscription
+
+export function useDeleteSubscriptionMutation() {
   const { latestAccessToken } = useContext(AuthContext);
   const { mutate } = useSWRConfig();
-  const deleteSub = async (
-    _: string,
-    { arg }: AdminUpdateSubscriptionParams
-  ) => {
+  const deleteSub = async (_: string, { arg }: UpdateSubscriptionParams) => {
     await fetchJSON(`/subscriptions/${arg.subscription.id}`, {
       method: "DELETE",
       headers: getLatestAuthHeaders(latestAccessToken),
@@ -401,4 +395,40 @@ export function useAdminDeleteSubscriptionMutation() {
     mutate(APP_SUBS_SWR_KEY);
   };
   return useSWRMutation(`delete-subscription`, deleteSub);
+}
+
+// -------------------------------- //
+// Delete Team
+
+type DeleteTeamParams = MutationWithArgs<{ teamId: string }>;
+
+export function useDeleteTeamMutation() {
+  const { latestAccessToken } = useContext(AuthContext);
+  const { mutate } = useSWRConfig();
+  const deleteTeam = async (_: string, { arg }: DeleteTeamParams) => {
+    await fetchJSON(`/teams/${arg.teamId}`, {
+      method: "DELETE",
+      headers: getLatestAuthHeaders(latestAccessToken),
+    });
+    mutate(TEAMS_SWR_KEY);
+  };
+  return useSWRMutation(`delete-team`, deleteTeam);
+}
+
+// -------------------------------- //
+// Delete App
+
+type DeleteAppParams = MutationWithArgs<{ appId: string }>;
+
+export function useDeleteAppMutation() {
+  const { latestAccessToken } = useContext(AuthContext);
+  const { mutate } = useSWRConfig();
+  const deleteApp = async (_: string, { arg }: DeleteAppParams) => {
+    await fetchJSON(`/apps/${arg.appId}`, {
+      method: "DELETE",
+      headers: getLatestAuthHeaders(latestAccessToken),
+    });
+    mutate(TEAMS_SWR_KEY);
+  };
+  return useSWRMutation(`delete-team`, deleteApp);
 }

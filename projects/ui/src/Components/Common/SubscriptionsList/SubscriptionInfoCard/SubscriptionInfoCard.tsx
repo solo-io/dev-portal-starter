@@ -188,6 +188,8 @@ const SubscriptionInfoCard = ({
         subscribedApiProduct && (
           <SubscriptionInfoCardFooter
             subscribedApiProductId={subscribedApiProduct.id}
+            subscription={subscription}
+            subscriptionState={subscriptionState}
           />
         )
       )}

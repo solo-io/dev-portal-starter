@@ -2,29 +2,32 @@ import { Box, Button, CloseButton, Flex, Text } from "@mantine/core";
 import { FormEvent } from "react";
 import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
-import { Subscription } from "../../../../../Apis/api-types";
-import { useDeleteSubscriptionMutation } from "../../../../../Apis/hooks";
-import { FormModalStyles } from "../../../../../Styles/shared/FormModalStyles";
+import { useNavigate } from "react-router-dom";
+import { App } from "../../../../Apis/api-types";
+import { useDeleteAppMutation } from "../../../../Apis/hooks";
+import { FormModalStyles } from "../../../../Styles/shared/FormModalStyles";
 
-const DeleteSubscriptionModal = ({
-  subscription,
+const DeleteAppModal = ({
+  app,
   open,
   onClose,
 }: {
-  subscription: Subscription;
+  app: App;
   open: boolean;
   onClose: () => void;
 }) => {
-  di(useDeleteSubscriptionMutation);
-  const { trigger: deleteSub } = useDeleteSubscriptionMutation();
+  di(useDeleteAppMutation);
+  const navigate = useNavigate();
+  const { trigger: deleteApp } = useDeleteAppMutation();
   const onConfirm = async (e?: FormEvent) => {
     e?.preventDefault();
-    await toast.promise(deleteSub({ subscription }), {
-      error: (e) => "There was an error deleting the subscription. " + e,
-      loading: "Deleting the subscription...",
-      success: "Deleted the subscription!",
+    await toast.promise(deleteApp({ appId: app.id }), {
+      error: (e) => "There was an error deleting the app. " + e,
+      loading: "Deleting the app...",
+      success: "Deleted the app!",
     });
     onClose();
+    navigate("/");
   };
 
   //
@@ -34,9 +37,9 @@ const DeleteSubscriptionModal = ({
     <FormModalStyles.CustomModal onClose={onClose} opened={open} size={"600px"}>
       <FormModalStyles.HeaderContainer>
         <div>
-          <FormModalStyles.Title>Delete Subscription</FormModalStyles.Title>
+          <FormModalStyles.Title>Delete App</FormModalStyles.Title>
           <FormModalStyles.Subtitle>
-            Are you sure that you want to delete this subscription?
+            Are you sure that you want to delete this app?
           </FormModalStyles.Subtitle>
         </div>
         <CloseButton title="Close modal" size={"30px"} onClick={onClose} />
@@ -48,7 +51,7 @@ const DeleteSubscriptionModal = ({
             <Text color="gray.9">Cancel</Text>
           </Button>
           <Button color="red" onClick={onConfirm} type="submit">
-            <Text color="red.0">Delete Subscription</Text>
+            <Text color="red.0">Delete App</Text>
           </Button>
         </Flex>
       </Box>
@@ -56,4 +59,4 @@ const DeleteSubscriptionModal = ({
   );
 };
 
-export default DeleteSubscriptionModal;
+export default DeleteAppModal;
