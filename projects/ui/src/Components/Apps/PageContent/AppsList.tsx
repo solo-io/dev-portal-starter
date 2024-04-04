@@ -4,6 +4,7 @@ import { App, Team } from "../../../Apis/api-types";
 import { useListAppsForTeams } from "../../../Apis/hooks";
 import { AppContext } from "../../../Context/AppContext";
 import { FilterPair, FilterType } from "../../../Utility/filter-utility";
+import { omitErrorMessageResponse } from "../../../Utility/utility";
 import { EmptyData } from "../../Common/EmptyData";
 import { Loading } from "../../Common/Loading";
 import { AppsPageStyles } from "../AppsPage.style";
@@ -23,7 +24,6 @@ export function AppsList({
 }) {
   di(useListAppsForTeams);
   const { preferGridView } = useContext(AppContext);
-
   // This is the App[][] of apps per team.
   const { isLoading, data: appsListPerTeam } = useListAppsForTeams(teams);
   // This is the flattened AppWithTeam[] that includes team information.
@@ -33,9 +33,13 @@ export function AppsList({
     }
     const newAppsWithTeamsList: AppWithTeam[] = [];
     for (let i = 0; i < appsListPerTeam.length; i++) {
-      for (let j = 0; j < appsListPerTeam[i].length; j++) {
+      const appsListForCurTeam = omitErrorMessageResponse(appsListPerTeam[i]);
+      if (!appsListForCurTeam) {
+        continue;
+      }
+      for (let j = 0; j < appsListForCurTeam.length; j++) {
         newAppsWithTeamsList.push({
-          ...appsListPerTeam[i][j],
+          ...appsListForCurTeam[j],
           team: teams[i],
         });
       }

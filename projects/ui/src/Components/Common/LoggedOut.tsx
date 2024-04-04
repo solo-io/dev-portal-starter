@@ -1,9 +1,9 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { PortalAuthContext } from "../../Context/PortalAuthContext";
+import { AuthContext } from "../../Context/AuthContext";
 
 const LoggedOut = () => {
-  const { onLogout } = useContext(PortalAuthContext);
+  const { onLogout } = useContext(AuthContext);
   const navigate = useNavigate();
   useEffect(() => {
     onLogout();

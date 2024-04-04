@@ -7,7 +7,7 @@ import {
   ApiVersionSchema,
 } from "../../Apis/api-types";
 import { Icon } from "../../Assets/Icons";
-import { PortalAuthContext } from "../../Context/PortalAuthContext";
+import { AuthContext } from "../../Context/AuthContext";
 import { FormModalStyles } from "../../Styles/shared/FormModalStyles";
 import { downloadFile } from "../../Utility/utility";
 import NewSubscriptionModal from "../Apps/Details/Modals/NewSubscriptionModal";
@@ -29,7 +29,7 @@ const ApiProductDetailsPageHeading = ({
   onSelectedApiVersionChange: (newVersionId: string | null) => void;
   apiVersionSpec: ApiVersionSchema | undefined;
 }) => {
-  const { isLoggedIn } = useContext(PortalAuthContext);
+  const { isLoggedIn } = useContext(AuthContext);
   const [showSubscribeModal, setShowSubscribeModal] = useState(false);
 
   const downloadApiSpec = () => {

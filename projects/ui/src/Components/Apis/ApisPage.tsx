@@ -27,9 +27,13 @@ const defaultTabValue = tabValues.APIS;
 export function ApisPage() {
   di(useListApiProducts, useListSubscriptionsForStatus);
   const { isLoading: isLoadingApiProducts } = useListApiProducts();
-  const { isLoading: isLoadingSubscriptions, data: subscriptions } =
-    useListSubscriptionsForStatus(SubscriptionStatus.PENDING);
-  const subscriptionsError = subscriptions && "message" in subscriptions;
+  const {
+    isLoading: isLoadingSubscriptions,
+    data: subscriptions,
+    error: subscriptionsErr,
+  } = useListSubscriptionsForStatus(SubscriptionStatus.PENDING);
+  const subscriptionsError =
+    !!subscriptionsErr || (subscriptions && "message" in subscriptions);
   const isLoading = isLoadingApiProducts || isLoadingSubscriptions;
 
   //

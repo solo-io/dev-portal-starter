@@ -10,10 +10,10 @@ import { clientId, tokenEndpoint } from "../user_variables.tmplr";
 //
 // Types
 //
-interface PortalAuthProviderProps {
+interface AuthProviderProps {
   children?: any;
 }
-interface IPortalAuthContext extends PortalAuthProviderProps {
+interface IAuthContext extends AuthProviderProps {
   isAdmin: boolean;
   // The id_token is used for identifying the user in the logout request.
   idToken: string | undefined;
@@ -29,9 +29,9 @@ const LOCAL_STORAGE_TOKENS_KEY = "gloo-platform-portal-tokens";
 export const LOCAL_STORAGE_AUTH_VERIFIER = "gloo-platform-portal-auth-verifier";
 export const LOCAL_STORAGE_AUTH_STATE = "gloo-platform-portal-auth-state";
 
-export const PortalAuthContext = createContext({} as IPortalAuthContext);
+export const AuthContext = createContext({} as IAuthContext);
 
-export const PortalAuthContextProvider = (props: PortalAuthProviderProps) => {
+export const AuthContextProvider = (props: AuthProviderProps) => {
   const navigate = useNavigate();
   const [refreshTokenTimeout, setRefreshTokenTimeout] =
     useState<NodeJS.Timeout>();
@@ -197,7 +197,7 @@ export const PortalAuthContextProvider = (props: PortalAuthProviderProps) => {
   }, [tokensResponse]);
 
   return (
-    <PortalAuthContext.Provider
+    <AuthContext.Provider
       value={{
         isAdmin,
         isLoggedIn: !!tokensResponse?.access_token,
@@ -209,6 +209,6 @@ export const PortalAuthContextProvider = (props: PortalAuthProviderProps) => {
       }}
     >
       {props.children}
-    </PortalAuthContext.Provider>
+    </AuthContext.Provider>
   );
 };

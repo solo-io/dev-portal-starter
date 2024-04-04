@@ -56,6 +56,6 @@ export namespace CardStyles {
   );
 
   export const SmallerText = styled.span`
-    font-size: 0.95rem;
+    font-size: 1rem;
   `;
 }

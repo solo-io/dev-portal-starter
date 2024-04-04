@@ -14,7 +14,7 @@ import { useContext } from "react";
 import CardImage1 from "../../Assets/card-option-1.png";
 import CardImage2 from "../../Assets/card-option-2.png";
 import CardImage3 from "../../Assets/card-option-3.png";
-import { PortalAuthContext } from "../../Context/PortalAuthContext";
+import { AuthContext } from "../../Context/AuthContext";
 import { mediaQueryWithScreenSize } from "../../Styles/breakpoints";
 import { companyName } from "../../user_variables.tmplr";
 
@@ -123,7 +123,7 @@ const HomePageCategories = styled.div(
  * MAIN COMPONENT
  **/
 export function HomePage() {
-  const { isAdmin } = useContext(PortalAuthContext);
+  const { isAdmin } = useContext(AuthContext);
   return (
     <PageContainer>
       <div>

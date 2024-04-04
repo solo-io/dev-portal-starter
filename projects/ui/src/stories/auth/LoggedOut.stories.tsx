@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { MemoryRouter } from "react-router-dom";
 import LoggedOut from "../../Components/Common/LoggedOut";
-import { PortalAuthContextProvider } from "../../Context/PortalAuthContext";
+import { AuthContextProvider } from "../../Context/AuthContext";
 import { appContentDecorator } from "../decorators/decorators";
 
 // More on how to set up stories at: https://storybook.js.org/docs/7.0/react/writing-stories/introduction
@@ -20,9 +20,9 @@ export const Default: Story = {
     appContentDecorator,
     (Story) => (
       <MemoryRouter>
-        <PortalAuthContextProvider>
+        <AuthContextProvider>
           <Story />
-        </PortalAuthContextProvider>
+        </AuthContextProvider>
       </MemoryRouter>
     ),
   ],

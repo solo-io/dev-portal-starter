@@ -4,7 +4,7 @@ import { di } from "react-magnetic-di";
 import { NavLink } from "react-router-dom";
 import { Team } from "../../../../Apis/api-types";
 import { useListAppsForTeam } from "../../../../Apis/hooks";
-import { PortalAuthContext } from "../../../../Context/PortalAuthContext";
+import { AuthContext } from "../../../../Context/AuthContext";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
@@ -19,7 +19,7 @@ import AddTeamAppSubSection from "./AddTeamAppSubSection";
 
 const TeamAppsSection = ({ team }: { team: Team }) => {
   di(useListAppsForTeam);
-  const { isAdmin } = useContext(PortalAuthContext);
+  const { isAdmin } = useContext(AuthContext);
   const { isLoading, data: apps } = useListAppsForTeam(team);
   const [showAddTeamAppSubSection, setShowAddTeamAppSubSection] =
     useState(false);

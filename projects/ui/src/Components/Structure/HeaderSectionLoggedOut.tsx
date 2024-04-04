@@ -1,10 +1,10 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
+  AuthContext,
   LOCAL_STORAGE_AUTH_STATE,
   LOCAL_STORAGE_AUTH_VERIFIER,
-  PortalAuthContext,
-} from "../../Context/PortalAuthContext";
+} from "../../Context/AuthContext";
 import { doAccessTokenRequest } from "../../Utility/accessTokenRequest";
 import {
   authEndpoint,
@@ -101,7 +101,7 @@ const AuthFlowStarter = () => {
 };
 
 const HeaderSectionLoggedOut = () => {
-  const { onLogin, isLoggedIn } = useContext(PortalAuthContext);
+  const { onLogin, isLoggedIn } = useContext(AuthContext);
   const [searchParams] = useSearchParams();
 
   //
