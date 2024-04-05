@@ -100,6 +100,16 @@ export const useSwrWithAuth = <T>(
   );
 };
 
+// /**
+//  * TODO: This isn't used but could be useful in a refactor.
+//  */
+// export const useSwrWithAuthOmitError = <T>(
+//   ...args: Parameters<typeof useSwrWithAuth<T>>
+// ) => {
+//   const swrRes = useSwrWithAuth<T>(...args);
+//   return { ...swrRes, data: omitErrorMessageResponse(swrRes.data) };
+// };
+
 /**
  *  This is the same as useSwrWithAuth, but works for an array of paths.
  * e.g.`["/teams/team-id-1/apps", "/teams/team-id-2/apps", ...]` will return:
@@ -132,7 +142,12 @@ export const useMultiSwrWithAuth = <T>(
               headers: authHeaders,
             });
           } catch (message) {
-            return { message: JSON.stringify(message) };
+            const errMsgRes: ErrorMessageResponse = {
+              // TODO: This isn't used but could be useful in a refactor.
+              // isError: true,
+              message: JSON.stringify(message),
+            };
+            return errMsgRes;
           }
         })
       ),

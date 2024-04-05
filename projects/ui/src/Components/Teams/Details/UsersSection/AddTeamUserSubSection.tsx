@@ -45,7 +45,7 @@ const AddTeamUserSubSection = ({
       return;
     }
     await toast.promise(addUserToTeam({ email: formEmail, teamId: team.id }), {
-      error: "There was an error adding the user.",
+      error: (e) => "There was an error adding the user. " + (e ?? ""),
       loading: "Adding the user...",
       success: "Added the user!",
     });

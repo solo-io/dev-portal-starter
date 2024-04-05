@@ -2,27 +2,28 @@ import { Box, Button, CloseButton, Flex, Text } from "@mantine/core";
 import { FormEvent } from "react";
 import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
-import { Subscription } from "../../../../../Apis/api-types";
-import { useDeleteSubscriptionMutation } from "../../../../../Apis/hooks";
-import { FormModalStyles } from "../../../../../Styles/shared/FormModalStyles";
+import { useRemoveTeamMemberMutation } from "../../../../Apis/hooks";
+import { FormModalStyles } from "../../../../Styles/shared/FormModalStyles";
 
-const DeleteSubscriptionModal = ({
-  subscription,
+const ConfirmRemoveTeamMemberModal = ({
+  userId,
+  teamId,
   open,
   onClose,
 }: {
-  subscription: Subscription;
+  userId: string;
+  teamId: string;
   open: boolean;
   onClose: () => void;
 }) => {
-  di(useDeleteSubscriptionMutation);
-  const { trigger: deleteSub } = useDeleteSubscriptionMutation();
+  di(useRemoveTeamMemberMutation);
+  const { trigger: removeTeamMember } = useRemoveTeamMemberMutation();
   const onConfirm = async (e?: FormEvent) => {
     e?.preventDefault();
-    await toast.promise(deleteSub({ subscription }), {
-      error: (e) => "There was an error deleting the subscription. " + e,
-      loading: "Deleting the subscription...",
-      success: "Deleted the subscription!",
+    await toast.promise(removeTeamMember({ userId, teamId }), {
+      error: (e) => "There was an error removing the user. " + e,
+      loading: "Removing the user...",
+      success: "Removed the user!",
     });
     onClose();
   };
@@ -34,9 +35,9 @@ const DeleteSubscriptionModal = ({
     <FormModalStyles.CustomModal onClose={onClose} opened={open} size={"600px"}>
       <FormModalStyles.HeaderContainer>
         <div>
-          <FormModalStyles.Title>Delete Subscription</FormModalStyles.Title>
+          <FormModalStyles.Title>Remove User</FormModalStyles.Title>
           <FormModalStyles.Subtitle>
-            Are you sure that you want to delete this subscription?
+            Are you sure that you want to remove this user from the team?
           </FormModalStyles.Subtitle>
         </div>
         <CloseButton title="Close modal" size={"30px"} onClick={onClose} />
@@ -48,7 +49,7 @@ const DeleteSubscriptionModal = ({
             <Text color="gray.9">Cancel</Text>
           </Button>
           <Button color="red" onClick={onConfirm} type="submit">
-            <Text color="red.0">Delete Subscription</Text>
+            <Text color="red.0">Remove User</Text>
           </Button>
         </Flex>
       </Box>
@@ -56,4 +57,4 @@ const DeleteSubscriptionModal = ({
   );
 };
 
-export default DeleteSubscriptionModal;
+export default ConfirmRemoveTeamMemberModal;

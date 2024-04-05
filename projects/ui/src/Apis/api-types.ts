@@ -96,6 +96,8 @@ export type Subscription = {
 };
 
 export type ErrorMessageResponse = {
+  // TODO: This isn't used but could be useful in a refactor.
+  // isError: true;
   message: string;
 };
 

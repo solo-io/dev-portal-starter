@@ -2,30 +2,32 @@ import { Box, Button, CloseButton, Flex, Text } from "@mantine/core";
 import { FormEvent } from "react";
 import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
-import { useRemoveTeamMemberMutation } from "../../../../Apis/hooks";
+import { useNavigate } from "react-router-dom";
+import { Team } from "../../../../Apis/api-types";
+import { useDeleteTeamMutation } from "../../../../Apis/hooks";
 import { FormModalStyles } from "../../../../Styles/shared/FormModalStyles";
 
-const AdminConfirmRemoveTeamMemberModal = ({
-  userId,
-  teamId,
+const DeleteTeamModal = ({
+  team,
   open,
   onClose,
 }: {
-  userId: string;
-  teamId: string;
+  team: Team;
   open: boolean;
   onClose: () => void;
 }) => {
-  di(useRemoveTeamMemberMutation);
-  const { trigger: removeTeamMember } = useRemoveTeamMemberMutation();
+  di(useDeleteTeamMutation);
+  const navigate = useNavigate();
+  const { trigger: deleteTeam } = useDeleteTeamMutation();
   const onConfirm = async (e?: FormEvent) => {
     e?.preventDefault();
-    await toast.promise(removeTeamMember({ userId, teamId }), {
-      error: (e) => "There was an error removing the user. " + e,
-      loading: "Removing the user...",
-      success: "Removed the user!",
+    await toast.promise(deleteTeam({ teamId: team.id }), {
+      error: (e) => "There was an error deleting the team. " + e,
+      loading: "Deleting the team...",
+      success: "Deleted the team!",
     });
     onClose();
+    navigate("/");
   };
 
   //
@@ -35,9 +37,9 @@ const AdminConfirmRemoveTeamMemberModal = ({
     <FormModalStyles.CustomModal onClose={onClose} opened={open} size={"600px"}>
       <FormModalStyles.HeaderContainer>
         <div>
-          <FormModalStyles.Title>Remove User</FormModalStyles.Title>
+          <FormModalStyles.Title>Delete Team</FormModalStyles.Title>
           <FormModalStyles.Subtitle>
-            Are you sure that you want to remove this user from the team?
+            Are you sure that you want to delete this team?
           </FormModalStyles.Subtitle>
         </div>
         <CloseButton title="Close modal" size={"30px"} onClick={onClose} />
@@ -49,7 +51,7 @@ const AdminConfirmRemoveTeamMemberModal = ({
             <Text color="gray.9">Cancel</Text>
           </Button>
           <Button color="red" onClick={onConfirm} type="submit">
-            <Text color="red.0">Remove User</Text>
+            <Text color="red.0">Delete Team</Text>
           </Button>
         </Flex>
       </Box>
@@ -57,4 +59,4 @@ const AdminConfirmRemoveTeamMemberModal = ({
   );
 };
 
-export default AdminConfirmRemoveTeamMemberModal;
+export default DeleteTeamModal;
