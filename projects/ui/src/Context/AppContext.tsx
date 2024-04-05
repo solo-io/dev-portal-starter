@@ -47,7 +47,7 @@ export const AppContextProvider = (props: AppProviderProps) => {
   }, [isDarkMode]);
 
   const [preferGridView, setPreferGridView] = useState(
-    localStorage.getItem("prefer-grid-view") === "true"
+    localStorage.getItem("prefer-grid-view") !== "false"
   );
   useEffect(() => {
     localStorage.setItem("prefer-grid-view", preferGridView ? "true" : "false");

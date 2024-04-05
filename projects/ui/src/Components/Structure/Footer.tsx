@@ -13,13 +13,6 @@ const FooterContainer = styled.footer(
     background: ${theme.marchGrey};
     color: ${theme.augustGrey};
     display: block;
-
-    .banner {
-      max-width: 51%;
-    }
-    .bannerHeading {
-      max-width: 48%;
-    }
   `
 );
 
@@ -28,13 +21,9 @@ const FooterContent = styled(ContentWidthDiv)`
   flex-direction: row;
   align-items: center;
   font-size: 16px;
-
   height: 100%;
 `;
 
-/**
- * MAIN COMPONENT
- **/
 export function Footer() {
   const { pageContentIsWide } = useContext(AppContext);
 

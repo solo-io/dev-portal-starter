@@ -19,8 +19,6 @@ const LoadingContainer = styled.div(
       display: flex;
       align-items: center;
       justify-content: center;
-      /* width: 180px;
-      height: 180px; */
       width: 100px;
       height: 100px;
 
@@ -123,19 +121,15 @@ const LoadingContainer = styled.div(
   `
 );
 
-export function EmptyData(
-  props:
-    | (
-        | {
-            topic: string;
-          }
-        | {
-            topicMessageOverride: string;
-          }
-      ) & {
-        message?: string;
-      }
-) {
+type EmptyDataProps =
+  | {
+      topic: string;
+      message?: string;
+    }
+  | {
+      topicMessageOverride: string;
+    };
+export function EmptyData(props: EmptyDataProps) {
   return (
     <LoadingContainer aria-hidden="true">
       <div className="emptyCircle">
@@ -153,7 +147,7 @@ export function EmptyData(
           No {props.topic} results were found
         </div>
       )}
-      {!!props.message && (
+      {"message" in props && !!props.message && (
         <div className="emptyDetailsMessage">{props.message}</div>
       )}
     </LoadingContainer>
