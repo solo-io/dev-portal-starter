@@ -14,9 +14,9 @@ export const mantineThemeOverride: MantineThemeOverride = {
       colors.aprilGrey,
       colors.aprilGrey,
       colors.aprilGrey,
-      colors.aprilGrey,
       colors.aprilGrey, // button color
       colors.aprilGreyDark10, // button hover color
+      colors.septemberGrey, // some text colors
       colors.novemberGrey, // table header text color
       colors.novemberGrey,
       colors.novemberGrey,
