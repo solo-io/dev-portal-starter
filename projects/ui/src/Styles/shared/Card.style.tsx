@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import { makePrimaryTrimmedSmallWhiteContainerCSS } from "../PrimaryTrimmedSmallWhiteContainer";
 import { borderRadiusConstants } from "../constants";
 
 // TODO: Consolidate styles from ./GridCard.style.tsx and ListCard.style.tsx here, refactor, and reduce the amount of styles.
@@ -58,4 +59,29 @@ export namespace CardStyles {
   export const SmallerText = styled.span`
     font-size: 1rem;
   `;
+
+  export const SecondaryInfo = styled.div(
+    ({ theme }) => css`
+      ${makePrimaryTrimmedSmallWhiteContainerCSS(theme)}
+      font-size: 16px;
+      line-height: 22px;
+    `
+  );
+
+  export const MetaInfo = styled.div(
+    ({ theme }) => css`
+      display: flex;
+      align-items: center;
+
+      svg {
+        margin-right: 10px;
+        width: 20px;
+        height: 20px;
+
+        * {
+          fill: ${theme.primary};
+        }
+      }
+    `
+  );
 }

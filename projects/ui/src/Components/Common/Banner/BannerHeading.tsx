@@ -43,7 +43,7 @@ export function BannerHeading({
         </Styles.BannerContent>
 
         <Styles.BannerImageContainer pageContentIsWide={pageContentIsWide}>
-          <img src={Banner} alt="background image" role="banner" />
+          <img src={Banner} alt="background" role="banner" />
         </Styles.BannerImageContainer>
       </Styles.BannerHeadingContentContainer>
     </>

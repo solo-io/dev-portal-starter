@@ -26,21 +26,19 @@ export function AppSummaryGridCard({ app }: { app: AppWithTeam }) {
 
   return (
     <GridCardStyles.GridCardWithLink to={getAppDetailsLink(app)}>
-      <div className="content">
-        <div className="apiImageHolder">
-          <img src={defaultCardImage} alt="" role="banner" />
-        </div>
-        <Box px={"20px"}>
-          <CardStyles.TitleLarge>{app.name}</CardStyles.TitleLarge>
-          <CardStyles.Description>{app.description}</CardStyles.Description>
-        </Box>
-      </div>
-      <div className="footer">
-        <div className="metaInfo">
+      <GridCardStyles.ApiImageHolder>
+        <img src={defaultCardImage} alt="placeholder" role="banner" />
+      </GridCardStyles.ApiImageHolder>
+      <Box px={"20px"}>
+        <CardStyles.TitleLarge>{app.name}</CardStyles.TitleLarge>
+        <CardStyles.Description>{app.description}</CardStyles.Description>
+      </Box>
+      <GridCardStyles.Footer>
+        <CardStyles.MetaInfo>
           <Icon.TeamsIcon />
-          <div className="typeTitle">{app.team.name}</div>
-        </div>
-      </div>
+          <CardStyles.SecondaryInfo>{app.team.name}</CardStyles.SecondaryInfo>
+        </CardStyles.MetaInfo>
+      </GridCardStyles.Footer>
     </GridCardStyles.GridCardWithLink>
   );
 }

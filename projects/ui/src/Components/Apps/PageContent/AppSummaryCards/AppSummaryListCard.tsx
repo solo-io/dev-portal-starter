@@ -1,4 +1,4 @@
-import { Box } from "@mantine/core";
+import { Box, Flex } from "@mantine/core";
 import { NavLink } from "react-router-dom";
 import { Icon } from "../../../../Assets/Icons";
 import { CardStyles } from "../../../../Styles/shared/Card.style";
@@ -13,21 +13,21 @@ export function AppSummaryListCard({ app }: { app: AppWithTeam }) {
   return (
     <NavLink to={getAppDetailsLink(app)}>
       <ListCardStyles.ListCardWithLink>
-        <div className="content">
-          <div className="majorIconHolder">
-            <Icon.WrenchGear className="colorIt" />
-          </div>
+        <Flex>
+          <ListCardStyles.MajorIconHolder>
+            <Icon.WrenchGear />
+          </ListCardStyles.MajorIconHolder>
           <Box p={"30px"}>
             <CardStyles.TitleLarge>{app.name}</CardStyles.TitleLarge>
             <CardStyles.Description>{app.description}</CardStyles.Description>
           </Box>
-        </div>
-        <div className="footer">
-          <div className="metaInfo">
+        </Flex>
+        <ListCardStyles.Footer>
+          <CardStyles.MetaInfo>
             <Icon.TeamsIcon />
-            <div className="typeTitle">{app.team.name}</div>
-          </div>
-        </div>
+            <CardStyles.SecondaryInfo>{app.team.name}</CardStyles.SecondaryInfo>
+          </CardStyles.MetaInfo>
+        </ListCardStyles.Footer>
       </ListCardStyles.ListCardWithLink>
     </NavLink>
   );

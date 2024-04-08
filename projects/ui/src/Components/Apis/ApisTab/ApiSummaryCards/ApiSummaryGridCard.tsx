@@ -2,6 +2,7 @@ import { Box } from "@mantine/core";
 import { useMemo } from "react";
 import { ApiProductSummary } from "../../../../Apis/api-types";
 import { Icon } from "../../../../Assets/Icons";
+import { CardStyles } from "../../../../Styles/shared/Card.style";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { getApiProductDetailsSpecTabLink } from "../../../../Utility/link-builders";
 
@@ -31,35 +32,26 @@ export function ApiSummaryGridCard({
     <GridCardStyles.GridCardWithLink
       to={getApiProductDetailsSpecTabLink(apiProduct.id)}
     >
-      <div className="content">
-        <div className="apiImageHolder">
-          <img src={defaultCardImage} alt="" role="banner" />
-        </div>
-        <div className="details">
-          <div>
-            <Box pb={"25px"}>
-              <h4 className="title">{apiProduct.name}</h4>
-              API Versions: {apiProduct.versionsCount}
-              {apiProduct.description && (
-                <Box pt={"15px"}>
-                  <div className="description">{apiProduct.description}</div>
-                </Box>
-              )}
-            </Box>
-          </div>
-        </div>
-      </div>
-      <div className="footer">
-        <div className="metaInfo">
+      <GridCardStyles.ApiImageHolder>
+        <img src={defaultCardImage} alt="placeholder" role="banner" />
+      </GridCardStyles.ApiImageHolder>
+      <Box pb={"25px"}>
+        <GridCardStyles.Title>{apiProduct.name}</GridCardStyles.Title>
+        API Versions: {apiProduct.versionsCount}
+        {apiProduct.description && (
+          <Box pt={"15px"}>
+            <GridCardStyles.Description>
+              {apiProduct.description}
+            </GridCardStyles.Description>
+          </Box>
+        )}
+      </Box>
+      <GridCardStyles.Footer>
+        <CardStyles.MetaInfo>
           <Icon.SmallCodeGear />
-          <div className="typeTitle" aria-label="API Type">
-            OpenAPI
-          </div>
-        </div>
-        <div className="typeIcon">
-          <Icon.OpenApiIcon />
-        </div>
-      </div>
+          <CardStyles.SecondaryInfo>OpenAPI</CardStyles.SecondaryInfo>
+        </CardStyles.MetaInfo>
+      </GridCardStyles.Footer>
     </GridCardStyles.GridCardWithLink>
   );
 }
