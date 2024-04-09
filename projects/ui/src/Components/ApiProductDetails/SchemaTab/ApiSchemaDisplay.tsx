@@ -1,6 +1,6 @@
-import { Button } from "@mantine/core";
 import { useState } from "react";
 import { ApiVersionSchema } from "../../../Apis/api-types";
+import { Button } from "../../Common/Button";
 import { ApiProductDetailsPageStyles as Styles } from "../ApiProductDetailsPage.style";
 import { RedocDisplay } from "./redoc/RedocDisplay";
 import { SwaggerDisplay } from "./swagger/SwaggerDisplay";
@@ -23,7 +23,7 @@ export function ApiSchemaDisplay({
         <Button
           variant="subtle"
           onClick={() => setIsSwagger(!isSwagger)}
-          size="xs"
+          size="sm"
         >
           {isSwagger ? "Redoc" : "Swagger"} View
         </Button>

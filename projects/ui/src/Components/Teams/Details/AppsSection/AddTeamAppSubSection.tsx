@@ -84,11 +84,7 @@ const AddTeamAppSubSection = ({
             value={formAppDescription}
             onChange={(e) => setFormAppDescription(e.target.value)}
           />
-          <Button
-            className={`small ${isFormDisabled ? "disabled" : ""}`}
-            disabled={isFormDisabled}
-            type={"submit"}
-          >
+          <Button disabled={isFormDisabled} type={"submit"}>
             ADD APP
           </Button>
         </DetailsPageStyles.AddItemForm>

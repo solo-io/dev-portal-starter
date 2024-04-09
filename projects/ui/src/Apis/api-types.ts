@@ -80,6 +80,7 @@ export type Member = {
 export enum SubscriptionStatus {
   APPROVED = "approved",
   PENDING = "pending",
+  REJECTED = "rejected",
 }
 export type Subscription = {
   apiProductId: string;

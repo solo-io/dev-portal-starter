@@ -1,4 +1,4 @@
-import { Box, Flex, Button as MantineButton, Text } from "@mantine/core";
+import { Box, Flex } from "@mantine/core";
 import { useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
 import { Member, Team } from "../../../../Apis/api-types";
@@ -11,6 +11,7 @@ import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
 import { formatDateToMMDDYYYY } from "../../../../Utility/utility";
+import { Button } from "../../../Common/Button";
 import { EmptyData } from "../../../Common/EmptyData";
 import { Loading } from "../../../Common/Loading";
 import Pagination, { usePagination } from "../../../Common/Pagination";
@@ -58,16 +59,15 @@ const TeamUsersSection = ({ team }: { team: Team }) => {
             </td>
             <td>
               <UtilityStyles.CenteredCellContent>
-                <MantineButton
+                <Button
                   size="xs"
-                  color="red.0"
+                  variant="light"
+                  color="danger"
                   disabled={!!member.deletedAt || user?.email === member.email}
                   onClick={() => setConfirmRemoveTeamMember(member)}
                 >
-                  <Text color="red.6" size="xs">
-                    REMOVE
-                  </Text>
-                </MantineButton>
+                  REMOVE
+                </Button>
               </UtilityStyles.CenteredCellContent>
             </td>
           </tr>

@@ -1,10 +1,11 @@
-import { Box, Button, CloseButton, Flex, Text } from "@mantine/core";
+import { Box, CloseButton, Flex } from "@mantine/core";
 import { FormEvent } from "react";
 import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
 import { Subscription } from "../../../../../Apis/api-types";
 import { useAdminRejectSubscriptionMutation } from "../../../../../Apis/hooks";
 import { FormModalStyles } from "../../../../../Styles/shared/FormModalStyles";
+import { Button } from "../../../Button";
 
 const RejectSubscriptionModal = ({
   subscription,
@@ -44,11 +45,11 @@ const RejectSubscriptionModal = ({
       <FormModalStyles.HorizLine />
       <Box p="20px 30px 40px 30px">
         <Flex justify={"flex-end"} gap="20px">
-          <Button color="gray.4" onClick={onClose} type="button">
-            <Text color="gray.9">Cancel</Text>
+          <Button variant="outline" onClick={onClose} type="button">
+            Cancel
           </Button>
-          <Button color="yellow" onClick={onConfirm} type="submit">
-            <Text color="red.9">Reject Subscription</Text>
+          <Button color="warning" onClick={onConfirm} type="submit">
+            Reject Subscription
           </Button>
         </Flex>
       </Box>

@@ -1,10 +1,4 @@
-import {
-  CloseButton,
-  Flex,
-  Input,
-  Button as MantineButton,
-  Text,
-} from "@mantine/core";
+import { CloseButton, Flex, Input } from "@mantine/core";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { App } from "../../../../Apis/api-types";
@@ -118,18 +112,11 @@ export const EditAppModal = ({
           </div>
 
           <Flex justify={"space-between"}>
-            <MantineButton
-              color="red"
-              size="xs"
-              sx={{ height: "38px", borderRadius: "2px" }}
-              onClick={() => setShowDeleteModal(true)}
-            >
-              <Text color="red.0" weight={500} size="14px">
-                Delete App
-              </Text>
-            </MantineButton>
+            <Button color="danger" onClick={() => setShowDeleteModal(true)}>
+              Delete App
+            </Button>
             <Flex justify={"flex-end"} gap="20px">
-              <Button className="outline" onClick={onClose} type="button">
+              <Button variant="outline" onClick={onClose} type="button">
                 Cancel
               </Button>
               <Button

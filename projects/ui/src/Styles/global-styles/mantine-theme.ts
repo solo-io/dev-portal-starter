@@ -57,5 +57,17 @@ export const mantineThemeOverride: MantineThemeOverride = {
       colors.darkGreenDark20,
       colors.darkGreenDark20,
     ],
+    blue: [
+      colors.splashBlue, // button text, subtle-button hover
+      colors.lakeBlue,
+      colors.lakeBlue,
+      colors.lakeBlue,
+      colors.lakeBlue,
+      colors.lakeBlue,
+      colors.lakeBlue, // button standard color
+      colors.lakeBlueDark10, // button hover + active color
+      colors.lakeBlueDark10,
+      colors.neptuneBlue,
+    ],
   },
 };

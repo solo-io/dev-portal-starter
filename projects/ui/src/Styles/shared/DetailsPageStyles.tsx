@@ -62,7 +62,6 @@ export namespace DetailsPageStyles {
         min-width: unset;
       }
       svg {
-        /* width: 20px; */
         height: 100%;
       }
       ${svgColorReplace(theme.augustGrey)}

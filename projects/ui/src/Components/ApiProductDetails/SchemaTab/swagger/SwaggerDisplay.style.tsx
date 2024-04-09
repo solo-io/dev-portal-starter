@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { contentWidth } from "../../../../Styles/ContentWidthHelpers";
 import { borderRadiusConstants } from "../../../../Styles/constants";
-import { makeStyledButtonCSS } from "../../../Common/Button";
+import { makeStyledButtonCSS } from "../ApiSchemaDisplay.style";
 
 /*
 *   EXPLANATION OF div[id^="display-swagger"]

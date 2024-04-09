@@ -51,7 +51,6 @@ export function DataPairPill({
       <div>{value}</div>{" "}
       {!!onRemove && (
         <button
-          className="removingX"
           aria-label={`Remove ${pairKey} : ${value} pair`}
           onClick={onRemove}
         >
