@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from "@mantine/core";
+import { Box, Flex } from "@mantine/core";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Subscription } from "../../../../Apis/api-types";
@@ -7,6 +7,7 @@ import {
   getApiProductDetailsDocsTabLink,
   getApiProductDetailsSpecTabLink,
 } from "../../../../Utility/link-builders";
+import { Button } from "../../Button";
 import { SubscriptionState } from "../SubscriptionsUtility";
 import DeleteSubscriptionModal from "./Modals/DeleteSubscriptionModal";
 import { SubscriptionInfoCardStyles } from "./SubscriptionInfoCard.style";
@@ -50,14 +51,12 @@ const SubscriptionInfoCardFooter = ({
             </UtilityStyles.NavLinkContainer>
           </Flex>
           <Button
-            color="red"
+            color="danger"
             size="xs"
             disabled={!canDeleteSubscription}
             onClick={() => setShowDeleteSubModal(true)}
           >
-            <Text color="red.0" weight={500}>
-              Delete
-            </Text>
+            Delete
           </Button>
         </Flex>
       </SubscriptionInfoCardStyles.Footer>

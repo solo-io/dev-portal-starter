@@ -1,6 +1,6 @@
-import { Button } from "@mantine/core";
 import { Icon } from "../../Assets/Icons";
 import { UtilityStyles } from "../../Styles/shared/Utility.style";
+import { Button } from "./Button";
 
 /**
  * Shared between details pages.

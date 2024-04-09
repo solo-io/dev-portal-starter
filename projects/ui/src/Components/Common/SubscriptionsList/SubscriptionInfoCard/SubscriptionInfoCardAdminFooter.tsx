@@ -1,6 +1,7 @@
-import { Box, Button, Flex, Text } from "@mantine/core";
+import { Box, Flex } from "@mantine/core";
 import { useState } from "react";
 import { Subscription } from "../../../../Apis/api-types";
+import { Button } from "../../Button";
 import { SubscriptionState } from "../SubscriptionsUtility";
 import ApproveSubscriptionModal from "./Modals/ApproveSubscriptionModal";
 import DeleteSubscriptionModal from "./Modals/DeleteSubscriptionModal";
@@ -31,36 +32,30 @@ const SubscriptionInfoCardAdminFooter = ({
         <Box py="5px">
           <Flex gap="15px" wrap={"wrap"}>
             <Button
-              color="green"
+              color="success"
               size="xs"
               disabled={!canApproveRejectSubscription}
               onClick={() => setShowApproveSubModal(true)}
             >
-              <Text color="green.0" weight={500}>
-                Approve
-              </Text>
+              Approve
             </Button>
 
             <Button
-              color="yellow"
+              color="warning"
               size="xs"
               disabled={!canApproveRejectSubscription}
               onClick={() => setShowRejectSubModal(true)}
             >
-              <Text color="red.6" weight={500}>
-                Reject
-              </Text>
+              Reject
             </Button>
 
             <Button
-              color="red"
+              color="danger"
               size="xs"
               disabled={!canDeleteSubscription}
               onClick={() => setShowDeleteSubModal(true)}
             >
-              <Text color="red.0" weight={500}>
-                Delete
-              </Text>
+              Delete
             </Button>
           </Flex>
         </Box>

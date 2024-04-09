@@ -82,6 +82,7 @@ const NewSubscriptionModal = ({
         : !formAppId));
   useEffect(() => {
     // The form resets here when `open` or the default fields change.
+    setIsShowingAddAppSubSection(false);
     setFormApiProductId(apiProduct?.id ?? "");
     setFormAppId(app?.id ?? "");
   }, [apiProduct, app, opened]);
@@ -243,7 +244,7 @@ const NewSubscriptionModal = ({
               </FormModalStyles.InputContainer>
             ))}
           <Flex justify={"flex-end"} gap="20px">
-            <Button className="outline" onClick={onClose} type="button">
+            <Button variant="outline" onClick={onClose} type="button">
               Cancel
             </Button>
             <Button disabled={isFormDisabled} onClick={onSubmit} type="submit">

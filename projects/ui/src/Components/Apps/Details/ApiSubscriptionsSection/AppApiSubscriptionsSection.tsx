@@ -1,14 +1,15 @@
-import { Box, Button, Flex } from "@mantine/core";
+import { Box, Flex } from "@mantine/core";
 import { useMemo, useState } from "react";
 import { App, Subscription } from "../../../../Apis/api-types";
 import { Icon } from "../../../../Assets/Icons";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
 import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
+import { Button } from "../../../Common/Button";
 import { EmptyData } from "../../../Common/EmptyData";
 import SubscriptionInfoCard from "../../../Common/SubscriptionsList/SubscriptionInfoCard/SubscriptionInfoCard";
 import NewSubscriptionModal from "../Modals/NewSubscriptionModal";
 
-const AddSubscriptionButton = (props: typeof Button.defaultProps) => {
+const AddSubscriptionButton = (props: { onClick: () => void }) => {
   return (
     <Button {...props} variant="subtle">
       <UtilityStyles.ButtonContentsWithIcon>

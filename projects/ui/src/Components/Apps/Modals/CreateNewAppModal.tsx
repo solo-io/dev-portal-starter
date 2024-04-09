@@ -90,7 +90,7 @@ const CreateNewAppModal = ({
             }}
           />
           <Flex justify={"flex-end"} gap="20px">
-            <Button className="outline" onClick={onClose} type="button">
+            <Button variant="outline" onClick={onClose} type="button">
               Cancel
             </Button>
             <Button disabled={isFormDisabled} onClick={onSubmit} type="submit">
