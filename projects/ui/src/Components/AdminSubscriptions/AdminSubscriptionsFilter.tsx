@@ -5,19 +5,16 @@ import { Icon } from "../../Assets/Icons";
 import { FilterStyles as Styles } from "../../Styles/shared/Filters.style";
 import { FilterPair, FilterType } from "../../Utility/filter-utility";
 import { capitalize, getEnumValues } from "../../Utility/utility";
-
-export type AdminSubscriptionsFiltrationProp = {
-  allFilters: FilterPair[];
-  setAllFilters: (newFiltersList: FilterPair[]) => void;
-  nameFilter: string;
-  setNameFilter: (newNamesList: string) => void;
-};
+import {
+  AppliedFiltersSection,
+  FiltrationProp,
+} from "../Common/Filters/AppliedFiltersSection";
 
 export function AdminSubscriptionsFilter({
   filters,
   teams,
 }: {
-  filters: AdminSubscriptionsFiltrationProp;
+  filters: FiltrationProp;
   teams: Team[];
 }) {
   const addNameFilter = (evt: { target: { value: string } }) => {
@@ -154,34 +151,7 @@ export function AdminSubscriptionsFilter({
           </div>
         </div>
 
-        {filters.allFilters.length > 0 && (
-          // TODO: This bottom section that displays the applied filters could probably be extracted to it's own component.
-          <div className="currentFiltersArea">
-            <Styles.ActiveFiltersGrid>
-              {filters.allFilters.map((activeFilter, idx) => (
-                <Styles.ActiveFilter key={idx}>
-                  {activeFilter.displayName}
-                  <button
-                    className="closingX"
-                    aria-label={`Remove ${activeFilter.displayName} filter`}
-                    onClick={() => removeFilter(activeFilter)}
-                  >
-                    <Icon.SmallX />
-                  </button>
-                </Styles.ActiveFilter>
-              ))}
-            </Styles.ActiveFiltersGrid>
-            <Styles.ClearAllButton
-              aria-label={`Remove all filters`}
-              onClick={clearAll}
-            >
-              Clear All
-              <span className="closingX">
-                <Icon.SmallX />
-              </span>
-            </Styles.ClearAllButton>
-          </div>
-        )}
+        <AppliedFiltersSection filters={filters} />
       </Styles.FilterArea>
     </Box>
   );
