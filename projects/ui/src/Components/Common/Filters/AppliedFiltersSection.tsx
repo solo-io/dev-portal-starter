@@ -28,35 +28,31 @@ export const AppliedFiltersSection = ({
     filters.setAllFilters([]);
   };
 
+  if (filters.allFilters.length === 0) {
+    return null;
+  }
   return (
-    <>
-      {filters.allFilters.length > 0 && (
-        <div className="currentFiltersArea">
-          <Styles.ActiveFiltersGrid>
-            {filters.allFilters.map((activeFilter, idx) => (
-              <Styles.ActiveFilter key={idx}>
-                {activeFilter.displayName}
-                <button
-                  className="closingX"
-                  aria-label={`Remove ${activeFilter.displayName} filter`}
-                  onClick={() => removeFilter(activeFilter)}
-                >
-                  <Icon.SmallX />
-                </button>
-              </Styles.ActiveFilter>
-            ))}
-          </Styles.ActiveFiltersGrid>
-          <Styles.ClearAllButton
-            aria-label={`Remove all filters`}
-            onClick={clearAll}
-          >
-            Clear All
-            <span className="closingX">
+    <Styles.AppliedFiltersArea>
+      <Styles.ActiveFiltersGrid>
+        {filters.allFilters.map((activeFilter, idx) => (
+          <Styles.ActiveFilter key={idx}>
+            {activeFilter.displayName}
+            <Styles.CloseFilterButton
+              aria-label={`Remove ${activeFilter.displayName} filter`}
+              onClick={() => removeFilter(activeFilter)}
+            >
               <Icon.SmallX />
-            </span>
-          </Styles.ClearAllButton>
-        </div>
-      )}
-    </>
+            </Styles.CloseFilterButton>
+          </Styles.ActiveFilter>
+        ))}
+      </Styles.ActiveFiltersGrid>
+      <Styles.ClearAllButton
+        aria-label={`Remove all filters`}
+        onClick={clearAll}
+      >
+        Clear All
+        <Icon.SmallX />
+      </Styles.ClearAllButton>
+    </Styles.AppliedFiltersArea>
   );
 };
