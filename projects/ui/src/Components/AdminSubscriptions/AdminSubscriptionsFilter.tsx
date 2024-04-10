@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { SubscriptionStatus, Team } from "../../Apis/api-types";
 import { Icon } from "../../Assets/Icons";
 import { FilterStyles as Styles } from "../../Styles/shared/Filters.style";
-import { FilterPair, FilterType } from "../../Utility/filter-utility";
+import { FilterType } from "../../Utility/filter-utility";
 import { capitalize, getEnumValues } from "../../Utility/utility";
 import {
   AppliedFiltersSection,
@@ -60,19 +60,6 @@ export function AdminSubscriptionsFilter({
       ...newFilters,
       { displayName: value, type: FilterType.subscriptionStatus, value: value },
     ]);
-  };
-
-  const removeFilter = (filterPair: FilterPair) => {
-    filters.setAllFilters(
-      filters.allFilters.filter(
-        (filter) =>
-          filter.type !== filterPair.type || filter.value !== filterPair.value
-      )
-    );
-  };
-
-  const clearAll = () => {
-    filters.setAllFilters([]);
   };
 
   const selectableTeams = useMemo(

@@ -4,7 +4,7 @@ import { Team } from "../../../Apis/api-types";
 import { Icon } from "../../../Assets/Icons";
 import { AppContext } from "../../../Context/AppContext";
 import { FilterStyles as Styles } from "../../../Styles/shared/Filters.style";
-import { FilterPair, FilterType } from "../../../Utility/filter-utility";
+import { FilterType } from "../../../Utility/filter-utility";
 import {
   AppliedFiltersSection,
   FiltrationProp,
@@ -52,19 +52,6 @@ export function AppsFilter({
       ...newFilters,
       { displayName: team.name, type: FilterType.team, value: team.id },
     ]);
-  };
-
-  const removeFilter = (filterPair: FilterPair) => {
-    filters.setAllFilters(
-      filters.allFilters.filter(
-        (filter) =>
-          filter.type !== filterPair.type || filter.value !== filterPair.value
-      )
-    );
-  };
-
-  const clearAll = () => {
-    filters.setAllFilters([]);
   };
 
   const selectableTeams = useMemo(
