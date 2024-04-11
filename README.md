@@ -117,7 +117,7 @@ The simplest way to replace the logo used in the top-left of the page is to repl
 
 Other images are intended as samples, but are reusable. They can be found at the top level of the `/Assets` folder as well, except for the favicon which is found in `/public`.
 
-All icons can be found, as the others, in the `/Assets` folder, inside `/Icons`. The icons are all SVGs where the colors can be overriden by styling them with Sass or by modifying the SVG file. If an icon is added and you want to insert it with our standard approach of `<Icon.some-icon-name />` you will need to also add a reference to it in the `Icons.tsx` file found in the same folder.
+All icons can be found, as the others, in the `/Assets` folder, inside `/Icons`. The icons are all SVGs where the colors can be overriden by styling them or by modifying the SVG file. If an icon is added and you want to insert it with our standard approach of `<Icon.some-icon-name />` you will need to also add a reference to it in the `Icons.tsx` file found in the same folder.
 
 ## Environment Variables
 
