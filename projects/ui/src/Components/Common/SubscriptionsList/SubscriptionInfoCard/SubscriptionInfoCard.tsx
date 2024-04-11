@@ -19,7 +19,7 @@ import {
   capitalize,
   omitErrorMessageResponse,
 } from "../../../../Utility/utility";
-import { AdminSubscriptionsFiltrationProp } from "../../../AdminSubscriptions/AdminSubscriptionsFilter";
+import { FiltrationProp } from "../../Filters/AppliedFiltersSection";
 import {
   GetSubscriptionState,
   SubscriptionState,
@@ -35,7 +35,7 @@ const SubscriptionInfoCard = ({
   filters,
 }: {
   subscription: Subscription;
-  filters?: AdminSubscriptionsFiltrationProp;
+  filters?: FiltrationProp;
 }) => {
   di(useListTeams, useListAppsForTeams);
   const { isAdmin } = useContext(AuthContext);

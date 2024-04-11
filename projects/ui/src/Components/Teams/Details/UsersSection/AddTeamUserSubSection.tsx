@@ -70,12 +70,7 @@ const AddTeamUserSubSection = ({
             value={formEmail}
             onChange={(e) => setFormEmail(e.target.value)}
           />
-          <Button
-            className={`small`}
-            disabled={isFormDisabled}
-            tabIndex={isFormDisabled ? -1 : 0}
-            type={"submit"}
-          >
+          <Button className={`small`} disabled={isFormDisabled} type={"submit"}>
             ADD USER
           </Button>
         </DetailsPageStyles.AddItemForm>

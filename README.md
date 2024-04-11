@@ -89,7 +89,7 @@ make run-ui
 
 ## UI Iteration with Storybook and Mock Data
 
-UI iteration can also be done with [Storybook](https://storybook.js.org/). Storybook can run without any kubernetes resources set up. API responses are mocked using [react-magnetic-di](https://www.npmjs.com/package/react-magnetic-di) and [@faker-js/faker](https://fakerjs.dev/). See the documentation in `./projects/ui/src/stories/usage-plans/UsagePlansPage.stories.tsx` for how to set up new stories with mock data. The Storybook server can be run on [http:localhost:6006](http:localhost:6006) using the command:
+UI iteration can also be done with [Storybook](https://storybook.js.org/). Storybook can run without any kubernetes resources set up. API responses are mocked using [react-magnetic-di](https://www.npmjs.com/package/react-magnetic-di) and [@faker-js/faker](https://fakerjs.dev/). The Storybook server can be run on [http:localhost:6006](http:localhost:6006) using the command:
 
 ```shell
 make run-storybook
@@ -107,9 +107,7 @@ The API details page includes a button to toggle between the Redoc and Swagger v
 
 ### Colors
 
-[Sass](https://sass-lang.com/) and class names are used for styling, and Sass variables are used throughout the app.
-
-Colors may be overridden in `./projects/ui/src/Styles/_constants.scss`. See `_default-constants.scss` for the variable names that can be overridden.
+Components from the [Mantine library](https://v6.mantine.dev/) are used across the app. Both Mantine and custom components use the colors defined in `./projects/ui/src/Styles/colors.ts`. See `./projects/ui/src/Styles/global-styles/mantine-theme.ts` for how this maps to the Mantine library components.
 
 ### Logo
 

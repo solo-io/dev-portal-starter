@@ -1,8 +1,8 @@
 import { Box, Flex, Loader } from "@mantine/core";
 import { ErrorMessageResponse, Subscription } from "../../../Apis/api-types";
 import { colors } from "../../../Styles";
-import { AdminSubscriptionsFiltrationProp } from "../../AdminSubscriptions/AdminSubscriptionsFilter";
 import { EmptyData } from "../../Common/EmptyData";
+import { FiltrationProp } from "../Filters/AppliedFiltersSection";
 import SubscriptionInfoCard from "./SubscriptionInfoCard/SubscriptionInfoCard";
 
 const SubscriptionsList = ({
@@ -12,7 +12,7 @@ const SubscriptionsList = ({
 }: {
   isLoadingSubscriptions: boolean;
   subscriptions: Subscription[] | ErrorMessageResponse | undefined;
-  filters?: AdminSubscriptionsFiltrationProp;
+  filters?: FiltrationProp;
 }) => {
   const subscriptionsError = subscriptions && "message" in subscriptions;
 
