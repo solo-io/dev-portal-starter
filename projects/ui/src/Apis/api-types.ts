@@ -106,6 +106,21 @@ export type ErrorMessageResponse = {
   message: string;
 };
 
+export const isErrorMessageResponse = <T>(value: T | ErrorMessageResponse) =>
+  value !== null &&
+  typeof value === "object" &&
+  "isError" in value &&
+  !!value.isError;
+
+/**
+ * This may be returned from the subscriptions list endpoint, and if so is an error.
+ */
+export type SubscriptionsListError = { message: string };
+
+export const isSubscriptionsListError = (
+  s: SubscriptionsListError | Subscription[] | undefined
+) => !!s && typeof s === "object" && "message" in s;
+
 type SchemaPropertyType = "string" | "integer" | "array" | "object";
 export type ApiVersionSchema = {
   components?: {
