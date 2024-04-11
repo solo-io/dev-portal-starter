@@ -96,9 +96,13 @@ export type Subscription = {
   updatedAt: string;
 };
 
+/**
+ * This is an error message that is returned by the useMultiSwrWithAuth function.
+ * Since it includes multiple requests, it wouldn't be a good UX to throw an error if one fails.
+ * Instead we can filter on isError and show the results that succeeded.
+ */
 export type ErrorMessageResponse = {
-  // TODO: This isn't used but could be useful in a refactor.
-  // isError: true;
+  isError: true;
   message: string;
 };
 
