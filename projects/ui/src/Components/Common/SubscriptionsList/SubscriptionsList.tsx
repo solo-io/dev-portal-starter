@@ -14,6 +14,7 @@ const SubscriptionsList = ({
   subscriptions: Subscription[] | { message: string } | undefined;
   filters?: FiltrationProp;
 }) => {
+  // If the subscriptions list has a message, it is an error and shouldn't be displayed.
   const subscriptionsError = subscriptions && "message" in subscriptions;
 
   //
