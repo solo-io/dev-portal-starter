@@ -2,7 +2,10 @@ import { Box, Flex, Loader, Tabs } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { di } from "react-magnetic-di";
 import { useLocation, useNavigate } from "react-router-dom";
-import { SubscriptionStatus } from "../../Apis/api-types";
+import {
+  SubscriptionStatus,
+  isSubscriptionsListError,
+} from "../../Apis/api-types";
 import {
   useListApiProducts,
   useListSubscriptionsForStatus,
@@ -33,7 +36,9 @@ export function ApisPage() {
     error: subscriptionsErr,
   } = useListSubscriptionsForStatus(SubscriptionStatus.PENDING);
   const subscriptionsError =
-    !!subscriptionsErr || (subscriptions && "message" in subscriptions);
+    !!subscriptionsErr ||
+    isSubscriptionsListError(subscriptions) ||
+    !Array.isArray(subscriptions);
   const isLoading = isLoadingApiProducts || isLoadingSubscriptions;
 
   //

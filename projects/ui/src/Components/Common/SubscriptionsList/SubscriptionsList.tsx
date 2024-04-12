@@ -1,5 +1,9 @@
 import { Box, Flex, Loader } from "@mantine/core";
-import { ErrorMessageResponse, Subscription } from "../../../Apis/api-types";
+import {
+  Subscription,
+  SubscriptionsListError,
+  isSubscriptionsListError,
+} from "../../../Apis/api-types";
 import { colors } from "../../../Styles";
 import { EmptyData } from "../../Common/EmptyData";
 import { FiltrationProp } from "../Filters/AppliedFiltersSection";
@@ -11,10 +15,11 @@ const SubscriptionsList = ({
   filters,
 }: {
   isLoadingSubscriptions: boolean;
-  subscriptions: Subscription[] | ErrorMessageResponse | undefined;
+  subscriptions: Subscription[] | SubscriptionsListError | undefined;
   filters?: FiltrationProp;
 }) => {
-  const subscriptionsError = subscriptions && "message" in subscriptions;
+  const subscriptionsError =
+    !Array.isArray(subscriptions) || isSubscriptionsListError(subscriptions);
 
   //
   // Render

@@ -2,7 +2,7 @@ import { Box } from "@mantine/core";
 import { useMemo, useState } from "react";
 import { Subscription } from "../../Apis/api-types";
 import {
-  useListFlatAppsForTeams,
+  useListFlatAppsForTeamsOmitErrors,
   useListSubscriptionsForApps,
   useListTeams,
 } from "../../Apis/hooks";
@@ -26,7 +26,7 @@ const AdminSubscriptionsPage = () => {
 
   // Then the apps for those teams (these are the apps we can access)...
   const { isLoading: isLoadingApps, data: flatAppsForTeams } =
-    useListFlatAppsForTeams(teams ?? []);
+    useListFlatAppsForTeamsOmitErrors(teams ?? []);
 
   // Then the subscriptions for the apps...
   const { isLoading: isLoadingSubscriptions, data: subscriptionsForApps } =

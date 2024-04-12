@@ -13,7 +13,7 @@ import {
   useCreateSubscriptionMutation,
   useListApiProducts,
   useListAppsForTeams,
-  useListFlatAppsForTeams,
+  useListFlatAppsForTeamsOmitErrors,
   useListTeams,
 } from "../../../../Apis/hooks";
 import { FormModalStyles } from "../../../../Styles/shared/FormModalStyles";
@@ -51,9 +51,8 @@ const NewSubscriptionModal = ({
   const { isLoading: isLoadingApiProducts, data: apiProducts } =
     useListApiProducts();
   const { isLoading: isLoadingTeams, data: teams } = useListTeams();
-  const { isLoading: isLoadingApps, data: apps } = useListFlatAppsForTeams(
-    teams ?? []
-  );
+  const { isLoading: isLoadingApps, data: apps } =
+    useListFlatAppsForTeamsOmitErrors(teams ?? []);
 
   //
   // Form Fields

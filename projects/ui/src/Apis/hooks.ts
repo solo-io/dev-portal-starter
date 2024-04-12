@@ -8,12 +8,13 @@ import {
   ApiProductSummary,
   ApiVersion,
   App,
-  ErrorMessageResponse,
   Member,
   Subscription,
   SubscriptionStatus,
+  SubscriptionsListError,
   Team,
   User,
+  isSubscriptionsListError,
 } from "./api-types";
 import { fetchJSON, useMultiSwrWithAuth, useSwrWithAuth } from "./utility";
 
@@ -38,7 +39,7 @@ export function useListAppsForTeams(teams: Team[]) {
     skipFetching ? null : TEAM_APPS_SWR_KEY
   );
 }
-export function useListFlatAppsForTeams(teams: Team[]) {
+export function useListFlatAppsForTeamsOmitErrors(teams: Team[]) {
   // This flattens the apps for teams result, in cases where we don't
   // need the mapped team data.
   const swrRes = useListAppsForTeams(teams);
@@ -81,26 +82,33 @@ export function useGetApiProductVersions(id?: string) {
 // Subscriptions
 // this is an admin endpoint
 export function useListSubscriptionsForStatus(status: SubscriptionStatus) {
-  const swrResponse = useSwrWithAuth<Subscription[] | ErrorMessageResponse>(
+  const swrResponse = useSwrWithAuth<Subscription[] | SubscriptionsListError>(
     `/subscriptions?status=${status}`
   );
   useEffect(() => {
-    if (!!swrResponse.data && "message" in swrResponse.data) {
+    if (isSubscriptionsListError(swrResponse.data)) {
       // eslint-disable-next-line no-console
-      console.warn(swrResponse.data.message);
+      console.warn((swrResponse.data as SubscriptionsListError).message);
     }
   }, [swrResponse]);
   return swrResponse;
 }
 export function useListSubscriptionsForApp(appId: string) {
-  return useSwrWithAuth<Subscription[] | { message: string }>(
+  const swrResponse = useSwrWithAuth<Subscription[] | SubscriptionsListError>(
     `/apps/${appId}/subscriptions`
   );
+  useEffect(() => {
+    if (isSubscriptionsListError(swrResponse.data)) {
+      // eslint-disable-next-line no-console
+      console.warn((swrResponse.data as SubscriptionsListError).message);
+    }
+  }, [swrResponse]);
+  return swrResponse;
 }
 const APP_SUBS_SWR_KEY = "app-subscriptions";
 export function useListSubscriptionsForApps(apps: App[]) {
   const skipFetching = apps.length === 0;
-  return useMultiSwrWithAuth<Subscription[] | { message: string }>(
+  return useMultiSwrWithAuth<Subscription[] | SubscriptionsListError>(
     apps.map((app) => `/apps/${app.id}/subscriptions`),
     skipFetching ? null : APP_SUBS_SWR_KEY
   );

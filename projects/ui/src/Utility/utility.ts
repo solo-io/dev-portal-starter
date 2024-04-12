@@ -2,7 +2,10 @@
 // From https://stackoverflow.com/a/65996386
 // navigator.clipboard.writeText doesn't always work.
 
-import { ErrorMessageResponse } from "../Apis/api-types";
+import {
+  ErrorMessageResponse,
+  isErrorMessageResponse,
+} from "../Apis/api-types";
 
 //
 export async function copyToClipboard(textToCopy: string) {
@@ -102,27 +105,8 @@ export function capitalize(input: string) {
   return input[0].toUpperCase() + input.substring(1);
 }
 
-// /**
-//  * TODO: This isn't used but could be useful in a refactor
-//  */
-// export function isErrorMessageResponse<T>(value: T | ErrorMessageResponse) {
-//   return (
-//     value !== null &&
-//     typeof value === "object" &&
-//     "isError" in value &&
-//     !!value.isError
-//   );
-// }
-
 export function omitErrorMessageResponse<T>(value: T | ErrorMessageResponse) {
-  // TODO: This isn't used but could be useful in a refactor
-  // if (value === null || isErrorMessageResponse(value)) {
-  //   return null;
-  // }
-  if (value === null) {
-    return null;
-  }
-  if (typeof value === "object" && "message" in value) {
+  if (value === null || isErrorMessageResponse(value)) {
     return null;
   }
   return value as T;

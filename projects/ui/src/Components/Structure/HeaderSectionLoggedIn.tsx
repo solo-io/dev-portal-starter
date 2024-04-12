@@ -29,7 +29,7 @@ export const StyledUserDropdown = styled(Popover.Dropdown)(
       border-bottom: 0px solid transparent !important;
       color: ${theme.defaultColoredText};
 
-      &:first-child {
+      &:first-of-type {
         border-top-left-radius: 2px;
         border-top-right-radius: 2px;
       }

@@ -96,11 +96,30 @@ export type Subscription = {
   updatedAt: string;
 };
 
+/**
+ * This is an error message that is returned by the useMultiSwrWithAuth function.
+ * Since it includes multiple requests, it wouldn't be a good UX to throw an error if one fails.
+ * Instead we can filter on isError and show the results that succeeded.
+ */
 export type ErrorMessageResponse = {
-  // TODO: This isn't used but could be useful in a refactor.
-  // isError: true;
+  isError: true;
   message: string;
 };
+
+export const isErrorMessageResponse = <T>(value: T | ErrorMessageResponse) =>
+  value !== null &&
+  typeof value === "object" &&
+  "isError" in value &&
+  !!value.isError;
+
+/**
+ * This may be returned from the subscriptions list endpoint, and if so is an error.
+ */
+export type SubscriptionsListError = { message: string };
+
+export const isSubscriptionsListError = (
+  s: SubscriptionsListError | Subscription[] | undefined
+) => !!s && typeof s === "object" && "message" in s;
 
 type SchemaPropertyType = "string" | "integer" | "array" | "object";
 export type ApiVersionSchema = {

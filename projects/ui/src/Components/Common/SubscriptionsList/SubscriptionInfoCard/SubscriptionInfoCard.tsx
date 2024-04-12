@@ -60,7 +60,7 @@ const SubscriptionInfoCard = ({
       apps?.find(
         (app) =>
           omitErrorMessageResponse(app)?.id === subscription.applicationId
-      )
+      ) ?? null
     );
   }, [apps, subscription]);
 
