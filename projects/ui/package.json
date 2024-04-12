@@ -63,16 +63,17 @@
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-storybook": "^0.6.11",
     "lint-staged": "^13.1.2",
-    "sass": "^1.56.2",
     "typescript": "5.0.4",
-    "vite": "4.5.2",
+    "vite": "^4.5.3",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-svgr": "^2.4.0"
   },
-  "overrides": {
-    "swagger-ui-react": {
-      "react-inspector": "6.0.1",
-      "react-copy-to-clipboard": "5.1.0"
-    }
+  "resolutions": {
+    "express": "^4.19.2",
+    "react-inspector": "^6.0.1",
+    "react-copy-to-clipboard": "^5.1.0",
+    "undici": "^5.28.4",
+    "tar": "^6.2.1",
+    "follow-redirects": "^1.15.6"
   }
 }

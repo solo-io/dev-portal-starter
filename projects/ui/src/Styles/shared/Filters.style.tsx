@@ -210,15 +210,16 @@ export namespace FilterStyles {
           }
         }
       }
+    `
+  );
 
-      //  FILTERS IN EFFECT
-      .currentFiltersArea {
-        display: flex;
-
-        padding: 8px 15px 0 25px;
-        border-radius: ${`0 0 ${borderRadiusConstants.small} ${borderRadiusConstants.small}`};
-        background: ${theme.splashBlue};
-      }
+  //  FILTERS IN EFFECT
+  export const AppliedFiltersArea = styled.div(
+    ({ theme }) => css`
+      display: flex;
+      padding: 8px 15px 0 25px;
+      border-radius: ${`0 0 ${borderRadiusConstants.small} ${borderRadiusConstants.small}`};
+      background: ${theme.splashBlue};
     `
   );
 
@@ -228,38 +229,38 @@ export namespace FilterStyles {
     flex-wrap: wrap;
   `;
 
-  export const ActiveFilter = styled(PrimaryTrimmedSmallWhiteContainer)(
-    ({ theme }) => css`
-      display: inline-flex;
-      align-items: center;
-      font-size: 12px;
-      line-height: 22px;
-      height: 22px;
-      margin: 0 8px 8px 0;
-      font-size: 13px;
-      padding-right: 2px;
+  export const ActiveFilter = styled(PrimaryTrimmedSmallWhiteContainer)`
+    display: inline-flex;
+    align-items: center;
+    font-size: 12px;
+    line-height: 22px;
+    height: 22px;
+    margin: 0 8px 8px 0;
+    font-size: 13px;
+    padding-right: 2px;
+  `;
 
-      button.closingX {
-        margin-left: 5px;
-        border-radius: 50%;
-        padding: 5px;
-        svg {
-          width: 8px;
-          height: 8px;
-          margin-left: 0px !important;
-          * {
-            stroke: ${theme.primary};
-          }
+  export const CloseFilterButton = styled.button(
+    ({ theme }) => css`
+      margin-left: 5px;
+      border-radius: 50%;
+      padding: 5px;
+      svg {
+        width: 8px;
+        height: 8px;
+        margin-left: 0px !important;
+        * {
+          stroke: ${theme.primary};
         }
-        &:hover {
-          background: ${theme.splashBlueLight7};
-          svg * {
-            fill: white;
-          }
+      }
+      &:hover {
+        background: ${theme.splashBlueLight7};
+        svg * {
+          fill: white;
         }
-        &:active {
-          background: ${theme.splashBlue};
-        }
+      }
+      &:active {
+        background: ${theme.splashBlue};
       }
     `
   );
@@ -295,6 +296,12 @@ export namespace FilterStyles {
       &:active {
         border-color: ${theme.primaryLight20};
         background: ${theme.primaryLight20};
+      }
+      ${svgColorReplace("white")}
+      svg {
+        margin-left: 10px;
+        width: 10px;
+        height: 10px;
       }
     `
   );

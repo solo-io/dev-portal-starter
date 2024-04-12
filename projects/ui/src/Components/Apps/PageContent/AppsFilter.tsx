@@ -4,21 +4,18 @@ import { Team } from "../../../Apis/api-types";
 import { Icon } from "../../../Assets/Icons";
 import { AppContext } from "../../../Context/AppContext";
 import { FilterStyles as Styles } from "../../../Styles/shared/Filters.style";
-import { FilterPair, FilterType } from "../../../Utility/filter-utility";
+import { FilterType } from "../../../Utility/filter-utility";
+import {
+  AppliedFiltersSection,
+  FiltrationProp,
+} from "../../Common/Filters/AppliedFiltersSection";
 import GridListToggle from "../../Common/GridListToggle";
-
-type AppsFiltrationProp = {
-  allFilters: FilterPair[];
-  setAllFilters: (newFiltersList: FilterPair[]) => void;
-  nameFilter: string;
-  setNameFilter: (newNamesList: string) => void;
-};
 
 export function AppsFilter({
   filters,
   teams,
 }: {
-  filters: AppsFiltrationProp;
+  filters: FiltrationProp;
   teams: Team[];
 }) {
   const { preferGridView, setPreferGridView } = useContext(AppContext);
@@ -55,19 +52,6 @@ export function AppsFilter({
       ...newFilters,
       { displayName: team.name, type: FilterType.team, value: team.id },
     ]);
-  };
-
-  const removeFilter = (filterPair: FilterPair) => {
-    filters.setAllFilters(
-      filters.allFilters.filter(
-        (filter) =>
-          filter.type !== filterPair.type || filter.value !== filterPair.value
-      )
-    );
-  };
-
-  const clearAll = () => {
-    filters.setAllFilters([]);
   };
 
   const selectableTeams = useMemo(
@@ -121,33 +105,7 @@ export function AppsFilter({
         />
       </div>
 
-      {filters.allFilters.length > 0 && (
-        <div className="currentFiltersArea">
-          <Styles.ActiveFiltersGrid>
-            {filters.allFilters.map((activeFilter, idx) => (
-              <Styles.ActiveFilter key={idx}>
-                {activeFilter.displayName}
-                <button
-                  className="closingX"
-                  aria-label={`Remove ${activeFilter.displayName} filter`}
-                  onClick={() => removeFilter(activeFilter)}
-                >
-                  <Icon.SmallX />
-                </button>
-              </Styles.ActiveFilter>
-            ))}
-          </Styles.ActiveFiltersGrid>
-          <Styles.ClearAllButton
-            aria-label={`Remove all filters`}
-            onClick={clearAll}
-          >
-            Clear All
-            <span className="closingX">
-              <Icon.SmallX />
-            </span>
-          </Styles.ClearAllButton>
-        </div>
-      )}
+      <AppliedFiltersSection filters={filters} />
     </Styles.FilterArea>
   );
 }
