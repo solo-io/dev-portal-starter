@@ -52,6 +52,7 @@ export function ApiProductDetailsPageBody({
   if (!selectedApiVersion) {
     return null;
   }
+  const includesDocumentation = !!selectedApiVersion.documentation;
   return (
     <ContentWidthDiv pageContentIsWide={true}>
       <Tabs value={tab} onTabChange={(v) => setTab(v ?? defaultTabValue)}>
@@ -61,7 +62,9 @@ export function ApiProductDetailsPageBody({
         */}
         <Tabs.List>
           <Tabs.Tab value={apiProductDetailsTabValues.SPEC}>Spec</Tabs.Tab>
-          <Tabs.Tab value={apiProductDetailsTabValues.DOCS}>Docs</Tabs.Tab>
+          {includesDocumentation && (
+            <Tabs.Tab value={apiProductDetailsTabValues.DOCS}>Docs</Tabs.Tab>
+          )}
         </Tabs.List>
         {/*
           
@@ -75,9 +78,11 @@ export function ApiProductDetailsPageBody({
             selectedApiVersion={selectedApiVersion}
           />
         </Tabs.Panel>
-        <Tabs.Panel value={apiProductDetailsTabValues.DOCS} pt={"xl"}>
-          <DocsTabContent selectedApiVersion={selectedApiVersion} />
-        </Tabs.Panel>
+        {includesDocumentation && (
+          <Tabs.Panel value={apiProductDetailsTabValues.DOCS} pt={"xl"}>
+            <DocsTabContent selectedApiVersion={selectedApiVersion} />
+          </Tabs.Panel>
+        )}
       </Tabs>
     </ContentWidthDiv>
   );

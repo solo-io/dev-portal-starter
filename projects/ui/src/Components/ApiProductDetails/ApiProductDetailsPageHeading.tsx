@@ -1,5 +1,4 @@
 import { Flex, Select } from "@mantine/core";
-import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import {
   ApiProductDetails,
@@ -7,10 +6,8 @@ import {
   ApiVersionSchema,
 } from "../../Apis/api-types";
 import { Icon } from "../../Assets/Icons";
-import { AuthContext } from "../../Context/AuthContext";
 import { FormModalStyles } from "../../Styles/shared/FormModalStyles";
 import { downloadFile } from "../../Utility/utility";
-import NewSubscriptionModal from "../Apps/Details/Modals/NewSubscriptionModal";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 import { Button } from "../Common/Button";
@@ -29,8 +26,8 @@ const ApiProductDetailsPageHeading = ({
   onSelectedApiVersionChange: (newVersionId: string | null) => void;
   apiVersionSpec: ApiVersionSchema | undefined;
 }) => {
-  const { isLoggedIn } = useContext(AuthContext);
-  const [showSubscribeModal, setShowSubscribeModal] = useState(false);
+  // const { isLoggedIn } = useContext(AuthContext);
+  // const [showSubscribeModal, setShowSubscribeModal] = useState(false);
 
   const downloadApiSpec = () => {
     if (!selectedApiVersion?.apiSpec) {
@@ -92,11 +89,14 @@ const ApiProductDetailsPageHeading = ({
                   />
                 </FormModalStyles.InputContainer>
               )}
+              {/* 
+              // Note: Removing sections for GGv2 demo.
+
               {isLoggedIn && (
                 <Button onClick={() => setShowSubscribeModal(true)}>
                   SUBSCRIBE
                 </Button>
-              )}
+              )} */}
               <Button
                 disabled={!selectedApiVersion.apiSpec}
                 onClick={downloadApiSpec}
@@ -104,11 +104,13 @@ const ApiProductDetailsPageHeading = ({
                 DOWNLOAD SPEC
               </Button>
             </Flex>
+            {/*
+            // Note: Removing sections for GGv2 demo.
             <NewSubscriptionModal
               opened={showSubscribeModal}
               onClose={() => setShowSubscribeModal(false)}
               apiProduct={apiProduct}
-            />
+            /> */}
           </Styles.ApiDetailsHeaderAddition>
         ) : undefined
       }

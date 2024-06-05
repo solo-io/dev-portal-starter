@@ -4,18 +4,18 @@ import {
   oidcAuthCodeConfigCallbackPath,
   oidcAuthCodeConfigLogoutPath,
 } from "../user_variables.tmplr";
-import AdminSubscriptionsPage from "./AdminSubscriptions/AdminSubscriptionsPage";
-import AdminTeamsPage from "./AdminTeams/AdminTeamsPage";
 import { ApiProductDetailsPage } from "./ApiProductDetails/ApiProductDetailsPage";
 import { ApisPage } from "./Apis/ApisPage";
-import { AppsPage } from "./Apps/AppsPage";
-import AppDetailsPage from "./Apps/Details/AppDetailsPage";
 import { ErrorBoundary } from "./Common/ErrorBoundary";
 import LoggedOut from "./Common/LoggedOut";
 import { HomePage } from "./Home/HomePage";
 import { Footer } from "./Structure/Footer";
-import TeamDetailsPage from "./Teams/Details/TeamDetailsPage";
-import { TeamsPage } from "./Teams/TeamsPage";
+// import AdminSubscriptionsPage from "./AdminSubscriptions/AdminSubscriptionsPage";
+// import AdminTeamsPage from "./AdminTeams/AdminTeamsPage";
+// import { AppsPage } from "./Apps/AppsPage";
+// import AppDetailsPage from "./Apps/Details/AppDetailsPage";
+// import TeamDetailsPage from "./Teams/Details/TeamDetailsPage";
+// import { TeamsPage } from "./Teams/TeamsPage";
 
 const MainContentContainer = styled.div`
   grid-area: contentcontainer;
@@ -82,6 +82,7 @@ function AppContentRoutes() {
             </ErrorBoundary>
           }
         />
+        {/* // Note: Removing sections for GGv2 demo.
         <Route
           path="/apps"
           element={
@@ -113,11 +114,11 @@ function AppContentRoutes() {
               <TeamDetailsPage />
             </ErrorBoundary>
           }
-        />
+        /> 
         {/*
         
         // Admin Routes
-        */}
+        * /}
         <Route
           path="/admin/subscriptions"
           element={
@@ -133,7 +134,7 @@ function AppContentRoutes() {
               <AdminTeamsPage />
             </ErrorBoundary>
           }
-        />
+        />*/}
       </Routes>
 
       <Footer />

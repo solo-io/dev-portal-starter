@@ -1,24 +1,17 @@
-import { Box, Flex, Loader, Tabs } from "@mantine/core";
+import { Box, Tabs } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { di } from "react-magnetic-di";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  SubscriptionStatus,
-  isSubscriptionsListError,
-} from "../../Apis/api-types";
 import {
   useListApiProducts,
   useListSubscriptionsForStatus,
 } from "../../Apis/hooks";
 import { Icon } from "../../Assets/Icons";
-import { colors } from "../../Styles";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 import { Loading } from "../Common/Loading";
 import { PageContainer } from "../Common/PageContainer";
-import { ApisPageStyles } from "./ApisPage.style";
 import { ApisTabContent } from "./ApisTab/ApisTabContent";
-import PendingSubscriptionsTabContent from "./PendingSubscriptionsTab/PendingSubscriptionsTabContent";
 
 const URL_SEARCH_PARAM_TAB_KEY = "tab";
 const tabValues = {
@@ -30,16 +23,20 @@ const defaultTabValue = tabValues.APIS;
 export function ApisPage() {
   di(useListApiProducts, useListSubscriptionsForStatus);
   const { isLoading: isLoadingApiProducts } = useListApiProducts();
-  const {
-    isLoading: isLoadingSubscriptions,
-    data: subscriptions,
-    error: subscriptionsErr,
-  } = useListSubscriptionsForStatus(SubscriptionStatus.PENDING);
-  const subscriptionsError =
-    !!subscriptionsErr ||
-    isSubscriptionsListError(subscriptions) ||
-    !Array.isArray(subscriptions);
-  const isLoading = isLoadingApiProducts || isLoadingSubscriptions;
+
+  // Note: Removing sections for GGv2 demo.
+
+  // const {
+  //   isLoading: isLoadingSubscriptions,
+  //   data: subscriptions,
+  //   error: subscriptionsErr,
+  // } = useListSubscriptionsForStatus(SubscriptionStatus.PENDING);
+  // const subscriptionsError =
+  //   !!subscriptionsErr ||
+  //   isSubscriptionsListError(subscriptions) ||
+  //   !Array.isArray(subscriptions);
+  // const isLoading = isLoadingApiProducts || isLoadingSubscriptions;
+  const isLoading = isLoadingApiProducts;
 
   //
   // Tab navigation
@@ -78,10 +75,10 @@ export function ApisPage() {
         {isLoading ? (
           // Make sure the APIs are finished loading since they are a dependency of both tabs.
           <Loading message="Getting list of apis..." />
-        ) : subscriptionsError ? (
-          // If there was a subscriptions error message, don't show the subscriptions.
-          <ApisTabContent />
         ) : (
+          // ) : subscriptionsError ? (
+          //   // If there was a subscriptions error message, don't show the subscriptions.
+          //   <ApisTabContent />
           <Tabs value={tab} onTabChange={(t) => setTab(t ?? defaultTabValue)}>
             {/*
           
@@ -89,7 +86,7 @@ export function ApisPage() {
             */}
             <Tabs.List>
               <Tabs.Tab value={tabValues.APIS}>APIs</Tabs.Tab>
-              <Tabs.Tab value={tabValues.SUBS}>
+              {/* <Tabs.Tab value={tabValues.SUBS}>
                 <Flex align="center" justify="center" gap={10}>
                   <span>Pending API Subscriptions</span>
                   {isLoadingSubscriptions || !subscriptions ? (
@@ -104,7 +101,7 @@ export function ApisPage() {
                     )
                   )}
                 </Flex>
-              </Tabs.Tab>
+              </Tabs.Tab> */}
             </Tabs.List>
             {/*
           
@@ -113,12 +110,13 @@ export function ApisPage() {
             <Tabs.Panel value={tabValues.APIS} pt={"xl"}>
               <ApisTabContent />
             </Tabs.Panel>
-            <Tabs.Panel value={tabValues.SUBS} pt={"xl"}>
+            {/* <Tabs.Panel value={tabValues.SUBS} pt={"xl"}>
               <PendingSubscriptionsTabContent
                 subscriptions={subscriptions}
                 isLoadingSubscriptions={isLoadingSubscriptions}
-              />
+              /> 
             </Tabs.Panel>
+            */}
           </Tabs>
         )}
       </Box>
