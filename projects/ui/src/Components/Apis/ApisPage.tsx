@@ -1,28 +1,20 @@
-import { Box, Tabs } from "@mantine/core";
-import { useEffect, useState } from "react";
-import { di } from "react-magnetic-di";
-import { useLocation, useNavigate } from "react-router-dom";
-import {
-  useListApiProducts,
-  useListSubscriptionsForStatus,
-} from "../../Apis/hooks";
+import { Box } from "@mantine/core";
 import { Icon } from "../../Assets/Icons";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
-import { Loading } from "../Common/Loading";
 import { PageContainer } from "../Common/PageContainer";
 import { ApisTabContent } from "./ApisTab/ApisTabContent";
 
-const URL_SEARCH_PARAM_TAB_KEY = "tab";
-const tabValues = {
-  APIS: "apis",
-  SUBS: "subs",
-};
-const defaultTabValue = tabValues.APIS;
+// const URL_SEARCH_PARAM_TAB_KEY = "tab";
+// const tabValues = {
+//   APIS: "apis",
+//   SUBS: "subs",
+// };
+// const defaultTabValue = tabValues.APIS;
 
 export function ApisPage() {
-  di(useListApiProducts, useListSubscriptionsForStatus);
-  const { isLoading: isLoadingApiProducts } = useListApiProducts();
+  // di(useListApiProducts, useListSubscriptionsForStatus);
+  // const { isLoading: isLoadingApiProducts } = useListApiProducts();
 
   // Note: Removing sections for GGv2 demo.
 
@@ -36,27 +28,27 @@ export function ApisPage() {
   //   isSubscriptionsListError(subscriptions) ||
   //   !Array.isArray(subscriptions);
   // const isLoading = isLoadingApiProducts || isLoadingSubscriptions;
-  const isLoading = isLoadingApiProducts;
+  // const isLoading = isLoadingApiProducts;
 
   //
   // Tab navigation
   //
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [tab, setTab] = useState(
-    new URLSearchParams(location.search).get(URL_SEARCH_PARAM_TAB_KEY) ??
-      defaultTabValue
-  );
-  // Update the URL when the selected tab changes.
-  useEffect(() => {
-    const newSearchParams = new URLSearchParams(location.search);
-    if (!!tab) {
-      newSearchParams.set(URL_SEARCH_PARAM_TAB_KEY, tab);
-    }
-    navigate(location.pathname + `?${newSearchParams.toString()}`, {
-      replace: true,
-    });
-  }, [tab, location.search]);
+  // const navigate = useNavigate();
+  // const location = useLocation();
+  // const [tab, setTab] = useState(
+  //   new URLSearchParams(location.search).get(URL_SEARCH_PARAM_TAB_KEY) ??
+  //     defaultTabValue
+  // );
+  // // Update the URL when the selected tab changes.
+  // useEffect(() => {
+  //   const newSearchParams = new URLSearchParams(location.search);
+  //   if (!!tab) {
+  //     newSearchParams.set(URL_SEARCH_PARAM_TAB_KEY, tab);
+  //   }
+  //   navigate(location.pathname + `?${newSearchParams.toString()}`, {
+  //     replace: true,
+  //   });
+  // }, [tab, location.search]);
 
   //
   // Render
@@ -72,21 +64,22 @@ export function ApisPage() {
       />
 
       <Box px={30} mb={60}>
-        {isLoading ? (
+        {/* {isLoading ? (
           // Make sure the APIs are finished loading since they are a dependency of both tabs.
           <Loading message="Getting list of apis..." />
-        ) : (
-          // ) : subscriptionsError ? (
+        ) : ( 
+          ) : subscriptionsError ? (
           //   // If there was a subscriptions error message, don't show the subscriptions.
-          //   <ApisTabContent />
-          <Tabs value={tab} onTabChange={(t) => setTab(t ?? defaultTabValue)}>
+*/}
+        <ApisTabContent />
+        {/* <Tabs value={tab} onTabChange={(t) => setTab(t ?? defaultTabValue)}>
             {/*
           
             Tab Titles
-            */}
+            * /}
             <Tabs.List>
               <Tabs.Tab value={tabValues.APIS}>APIs</Tabs.Tab>
-              {/* <Tabs.Tab value={tabValues.SUBS}>
+               <Tabs.Tab value={tabValues.SUBS}>
                 <Flex align="center" justify="center" gap={10}>
                   <span>Pending API Subscriptions</span>
                   {isLoadingSubscriptions || !subscriptions ? (
@@ -101,24 +94,24 @@ export function ApisPage() {
                     )
                   )}
                 </Flex>
-              </Tabs.Tab> */}
+              </Tabs.Tab> 
             </Tabs.List>
             {/*
           
             Tab Content
-            */}
-            <Tabs.Panel value={tabValues.APIS} pt={"xl"}>
-              <ApisTabContent />
-            </Tabs.Panel>
-            {/* <Tabs.Panel value={tabValues.SUBS} pt={"xl"}>
+            * /}
+        <Tabs.Panel value={tabValues.APIS} pt={"xl"}>
+          <ApisTabContent />
+        </Tabs.Panel>
+        {/* <Tabs.Panel value={tabValues.SUBS} pt={"xl"}>
               <PendingSubscriptionsTabContent
                 subscriptions={subscriptions}
                 isLoadingSubscriptions={isLoadingSubscriptions}
               /> 
             </Tabs.Panel>
-            */}
-          </Tabs>
-        )}
+            * /}
+          </Tabs> 
+        )}*/}
       </Box>
     </PageContainer>
   );

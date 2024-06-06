@@ -16,7 +16,7 @@ export function ApisList({
   nameFilter: string;
 }) {
   const { preferGridView } = useContext(AppContext);
-  const { isLoading, data: apiProductsList } = useListApiProducts();
+  const { data: apiProductsList } = useListApiProducts();
 
   //
   // Filter the list of api products.
@@ -64,7 +64,9 @@ export function ApisList({
   //
   // Render
   //
-  if (isLoading) {
+  // The SWR loading check causes the page to flicker when it's loading, even if it's just re-fetching.
+  // This alternative removes flickering, but causes the loading wheel to persist.
+  if (apiProductsList === undefined) {
     return <Loading message="Getting list of apis..." />;
   }
   if (!filteredApiProductsList.length) {
