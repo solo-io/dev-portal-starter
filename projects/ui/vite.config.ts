@@ -14,7 +14,4 @@ export default defineConfig({
     eslint(),
     svgr(),
   ],
-  define: {
-    global: {},
-  },
 });
