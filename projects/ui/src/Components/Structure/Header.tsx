@@ -21,36 +21,40 @@ if (!window.isSecureContext) {
  **/
 export function Header() {
   const routerLocation = useLocation();
-  const { isLoggedIn, isAdmin } = useContext(AuthContext);
+  const { isLoggedIn } = useContext(AuthContext);
 
   const inArea = (paths: string[]) => {
     return paths.some((s) => routerLocation.pathname.includes(s));
   };
 
-  const inAdminTeamsArea = useMemo(
-    () => inArea(["/admin/teams"]),
-    [routerLocation.pathname]
-  );
+  // Note: Removing sections for GGv2 demo.
 
-  const inAdminSubscriptionsArea = useMemo(
-    () => inArea(["/admin/subscriptions"]),
-    [routerLocation.pathname]
-  );
+  // const inAdminTeamsArea = useMemo(
+  //   () => inArea(["/admin/teams"]),
+  //   [routerLocation.pathname]
+  // );
+
+  // const inAdminSubscriptionsArea = useMemo(
+  //   () => inArea(["/admin/subscriptions"]),
+  //   [routerLocation.pathname]
+  // );
 
   const inAPIsArea = useMemo(
     () => inArea(["/apis", "/api-details/"]),
     [routerLocation.pathname]
   );
 
-  const inAppsArea = useMemo(
-    () => inArea(["/apps", "/app-details/"]),
-    [routerLocation.pathname]
-  );
+  // Note: Removing sections for GGv2 demo.
 
-  const inTeamsArea = useMemo(
-    () => inArea(["/teams", "/team-details/"]),
-    [routerLocation.pathname]
-  );
+  // const inAppsArea = useMemo(
+  //   () => inArea(["/apps", "/app-details/"]),
+  //   [routerLocation.pathname]
+  // );
+
+  // const inTeamsArea = useMemo(
+  //   () => inArea(["/teams", "/team-details/"]),
+  //   [routerLocation.pathname]
+  // );
 
   const { pageContentIsWide } = useContext(AppContext);
 
@@ -66,6 +70,10 @@ export function Header() {
           <NavLink to={"/"} className={"navLink"} end>
             Home
           </NavLink>
+
+          {/*
+          // Note: Removing sections for GGv2 demo.
+
           {!isAdmin && (
             // If we allow admins to access the APIs page, things get a bit
             // more confusing, since we will have to consider the behavior
@@ -73,13 +81,19 @@ export function Header() {
             // For example, a user can create an App from the API details page,
             // so it would be strange for the admin not to have access to
             // the Apps page in that case.
-            <NavLink
-              to={"/apis"}
-              className={`navLink ${inAPIsArea ? "active" : ""}`}
-            >
-              APIs
-            </NavLink>
-          )}
+          */}
+          <NavLink
+            to={"/apis"}
+            className={`navLink ${inAPIsArea ? "active" : ""}`}
+          >
+            APIs
+          </NavLink>
+          {/* )} */}
+
+          {/* 
+
+          // Note: Removing sections for GGv2 demo.
+
           {isLoggedIn &&
             (isAdmin ? (
               //
@@ -120,6 +134,7 @@ export function Header() {
                 </NavLink>
               </>
             ))}
+            */}
 
           <div className="divider" />
           <ErrorBoundary fallback="Access issues" class="horizontalError">
