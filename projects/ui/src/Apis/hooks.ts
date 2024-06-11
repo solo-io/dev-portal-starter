@@ -70,13 +70,13 @@ export function useGetTeamDetails(id?: string) {
 
 // Api Products
 export function useListApiProducts() {
-  return useSwrWithAuth<ApiProductSummary[]>("/apis");
+  return useSwrWithAuth<ApiProductSummary[]>("/api-products");
 }
 export function useGetApiProductDetails(id?: string) {
-  return useSwrWithAuth<ApiProductDetails>(`/apis/${id}`);
+  return useSwrWithAuth<ApiProductDetails>(`/api-products/${id}`);
 }
 export function useGetApiProductVersions(id?: string) {
-  return useSwrWithAuth<ApiVersion[]>(`/apis/${id}/versions`);
+  return useSwrWithAuth<ApiVersion[]>(`/api-products/${id}/versions`);
 }
 
 // Subscriptions
