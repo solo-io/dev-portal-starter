@@ -64,6 +64,13 @@ const colorMap = {
 
   darkGreenDark20: Color(baseColors.darkGreen).darken(0.2).hex(),
 
+  lightGreyTransparentDark10: Color(baseColors.lightGreyTransparent)
+    .darken(0.1)
+    .hex(),
+  lightGreyTransparentDark25: Color(baseColors.lightGreyTransparent)
+    .darken(0.25)
+    .hex(),
+
   lightRedDark10: Color(baseColors.lightRed).darken(0.1).desaturate(0.25).hex(),
   lightMidRed: Color(baseColors.midRed).lighten(1.2).desaturate(0.2).hex(),
   darkRedDark20: Color(baseColors.darkRed).darken(0.2).hex(),

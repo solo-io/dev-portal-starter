@@ -48,6 +48,7 @@ export function Button(
      * This can be used when rendering a single SVG inside the button.
      */
     isText?: boolean;
+    title?: string;
   } & ButtonProps
 ) {
   // default to a primary, filled button.

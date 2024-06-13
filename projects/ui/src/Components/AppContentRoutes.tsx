@@ -1,5 +1,7 @@
 import styled from "@emotion/styled";
+import { useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
+import { AppContext } from "../Context/AppContext";
 import {
   oidcAuthCodeConfigCallbackPath,
   oidcAuthCodeConfigLogoutPath,
@@ -10,6 +12,7 @@ import { ErrorBoundary } from "./Common/ErrorBoundary";
 import LoggedOut from "./Common/LoggedOut";
 import { HomePage } from "./Home/HomePage";
 import { Footer } from "./Structure/Footer";
+import { UsagePlansPage } from "./UsagePlans/UsagePlansPage";
 // import AdminSubscriptionsPage from "./AdminSubscriptions/AdminSubscriptionsPage";
 // import AdminTeamsPage from "./AdminTeams/AdminTeamsPage";
 // import { AppsPage } from "./Apps/AppsPage";
@@ -39,6 +42,8 @@ const MainContentContainer = styled.div`
  *      know the area that failed.
  **/
 function AppContentRoutes() {
+  const { portalServerType } = useContext(AppContext);
+
   return (
     <MainContentContainer>
       <Routes>
@@ -135,6 +140,30 @@ function AppContentRoutes() {
             </ErrorBoundary>
           }
         />*/}
+        {/* 
+
+        Gloo Mesh Gateway Routes
+        */}
+        {portalServerType === "gloo-mesh-gateway" && (
+          <>
+            <Route
+              path="/usage-plans"
+              element={
+                <ErrorBoundary fallback="There was an issue displaying the list of Usage Plans">
+                  <UsagePlansPage />
+                </ErrorBoundary>
+              }
+            />
+            <Route
+              path="/usage-plans/:apiId"
+              element={
+                <ErrorBoundary fallback="There was an issue displaying information about the Usage Plan">
+                  <UsagePlansPage />
+                </ErrorBoundary>
+              }
+            />
+          </>
+        )}
       </Routes>
 
       <Footer />
