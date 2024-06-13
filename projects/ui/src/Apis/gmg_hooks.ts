@@ -2,12 +2,16 @@ import { useContext } from "react";
 import { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
 import { AuthContext } from "../Context/AuthContext";
-import { APIKey, UsagePlan } from "./api-types";
+import { APIKey, ApiVersionSchema, UsagePlan } from "./api-types";
 import { fetchJSON, portalServerUrl, useSwrWithAuth } from "./utility";
 
 //
 // Queries
 //
+
+export function useGetApiDetails(id?: string) {
+  return useSwrWithAuth<ApiVersionSchema>(`/apis/${id}/schema`);
+}
 
 export function useListUsagePlans() {
   return useSwrWithAuth<UsagePlan[]>(`/usage-plans`);

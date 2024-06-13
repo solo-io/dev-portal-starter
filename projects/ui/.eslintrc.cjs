@@ -45,6 +45,16 @@ module.exports = {
         allowEmptyCatch: true,
       },
     ],
+    "react/jsx-pascal-case": "off",
+    // "react/jsx-pascal-case": [
+    //   "warning",
+    //   {
+    //     allowAllCaps: "warn",
+    //     allowNamespace: "warn",
+    //     allowLeadingUnderscore: "warn",
+    //     ignore: "warn",
+    //   },
+    // ],
   },
   globals: {
     JSX: true,

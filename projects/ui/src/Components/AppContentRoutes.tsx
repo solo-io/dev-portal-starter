@@ -6,7 +6,7 @@ import {
   oidcAuthCodeConfigCallbackPath,
   oidcAuthCodeConfigLogoutPath,
 } from "../user_variables.tmplr";
-import { ApiProductDetailsPage } from "./ApiProductDetails/ApiProductDetailsPage";
+import { ApiDetailsPage } from "./ApiDetails/ApiDetailsPage";
 import { ApisPage } from "./Apis/ApisPage";
 import { ErrorBoundary } from "./Common/ErrorBoundary";
 import LoggedOut from "./Common/LoggedOut";
@@ -80,10 +80,10 @@ function AppContentRoutes() {
           }
         />
         <Route
-          path="/apis/:apiProductId"
+          path="/apis/:id"
           element={
             <ErrorBoundary fallback="There was an issue displaying the API Product details">
-              <ApiProductDetailsPage />
+              <ApiDetailsPage />
             </ErrorBoundary>
           }
         />

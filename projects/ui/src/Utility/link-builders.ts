@@ -2,7 +2,7 @@ import { App, Team } from "../Apis/api-types";
 import {
   API_DETAILS_URL_SEARCH_PARAM_TAB_KEY,
   apiProductDetailsTabValues,
-} from "../Components/ApiProductDetails/ApiProductDetailsPageBody";
+} from "../Components/ApiDetails/gloo-gateway-components/ApiProductDetailsPageBody";
 
 export function getApiProductDetailsDocsTabLink(apiProductId: string) {
   return `/apis/${apiProductId}?${API_DETAILS_URL_SEARCH_PARAM_TAB_KEY}=${apiProductDetailsTabValues.DOCS}`;
