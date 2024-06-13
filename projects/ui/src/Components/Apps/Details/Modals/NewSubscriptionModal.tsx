@@ -15,7 +15,7 @@ import {
   useListAppsForTeams,
   useListFlatAppsForTeamsOmitErrors,
   useListTeams,
-} from "../../../../Apis/hooks";
+} from "../../../../Apis/gg_hooks";
 import { FormModalStyles } from "../../../../Styles/shared/FormModalStyles";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { Accordion } from "../../../Common/Accordion";

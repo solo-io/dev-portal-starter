@@ -1,4 +1,4 @@
-import { useListApis } from "../Apis/hooks";
+import { useListApis } from "../Apis/shared_hooks";
 
 const PortalServerTypeChecker = () => {
   // The useListApis call updates the PortalAppContext's portalServerType field.

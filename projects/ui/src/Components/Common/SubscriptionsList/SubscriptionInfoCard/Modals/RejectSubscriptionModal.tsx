@@ -3,7 +3,7 @@ import { FormEvent } from "react";
 import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
 import { Subscription } from "../../../../../Apis/api-types";
-import { useAdminRejectSubscriptionMutation } from "../../../../../Apis/hooks";
+import { useAdminRejectSubscriptionMutation } from "../../../../../Apis/gg_hooks";
 import { FormModalStyles } from "../../../../../Styles/shared/FormModalStyles";
 import { Button } from "../../../Button";
 

@@ -5,7 +5,7 @@ import { Member, Team } from "../../../../Apis/api-types";
 import {
   useGetCurrentUser,
   useListMembersForTeam,
-} from "../../../../Apis/hooks";
+} from "../../../../Apis/gg_hooks";
 import { Icon } from "../../../../Assets/Icons";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";

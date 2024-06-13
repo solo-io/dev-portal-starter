@@ -1,6 +1,6 @@
 import { di } from "react-magnetic-di";
 import { API } from "../../../Apis/api-types";
-import { useListApis } from "../../../Apis/hooks";
+import { useListApis } from "../../../Apis/shared_hooks";
 import { EmptyData } from "../../Common/EmptyData";
 import { Loading } from "../../Common/Loading";
 import { ApiSummaryGridCard } from "./ApiSummaryGridCard";

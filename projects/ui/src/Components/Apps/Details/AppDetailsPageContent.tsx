@@ -1,7 +1,7 @@
 import { Box, Flex, Loader } from "@mantine/core";
 import { di } from "react-magnetic-di";
 import { App } from "../../../Apis/api-types";
-import { useListSubscriptionsForApp } from "../../../Apis/hooks";
+import { useListSubscriptionsForApp } from "../../../Apis/gg_hooks";
 import { BannerHeading } from "../../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../../Common/Banner/BannerHeadingTitle";
 import { PageContainer } from "../../Common/PageContainer";

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { di } from "react-magnetic-di";
 import { API } from "../../../Apis/api-types";
-import { useListApis } from "../../../Apis/hooks";
+import { useListApis } from "../../../Apis/shared_hooks";
 import { EmptyData } from "../../Common/EmptyData";
 import { ErrorBoundary } from "../../Common/ErrorBoundary";
 import { Loading } from "../../Common/Loading";

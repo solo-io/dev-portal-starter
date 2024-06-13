@@ -3,7 +3,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
 import { Team } from "../../../../Apis/api-types";
-import { useAddTeamMemberMutation } from "../../../../Apis/hooks";
+import { useAddTeamMemberMutation } from "../../../../Apis/gg_hooks";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
 import { Accordion } from "../../../Common/Accordion";
 import { Button } from "../../../Common/Button";

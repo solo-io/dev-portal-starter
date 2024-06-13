@@ -25,9 +25,6 @@ const SwaggerViewToggleHolder = styled.div(
   `
 );
 
-// This is a flag to enable the backstage yaml download button.
-const BACKSTAGE_YAML_DEMO_ENABLED = false;
-
 /**
  * MAIN COMPONENT
  **/

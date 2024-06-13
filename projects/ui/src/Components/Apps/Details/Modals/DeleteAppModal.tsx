@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
 import { useNavigate } from "react-router-dom";
 import { App } from "../../../../Apis/api-types";
-import { useDeleteAppMutation } from "../../../../Apis/hooks";
+import { useDeleteAppMutation } from "../../../../Apis/gg_hooks";
 import { FormModalStyles } from "../../../../Styles/shared/FormModalStyles";
 import { Button } from "../../../Common/Button";
 

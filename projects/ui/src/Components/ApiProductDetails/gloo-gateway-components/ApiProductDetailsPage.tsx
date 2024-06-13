@@ -10,11 +10,11 @@ import { ApiProductDetailsPageContent } from "./ApiProductDetailsPageContent";
 
 const URL_SEARCH_PARAMS_API_VERSION_ID_KEY = "v";
 
-export function GG_ApiProductDetailsPage() {
+export function ApiProductDetailsPage() {
   di(useParams, useListApiProducts, useGetApiProductVersions);
   const location = useLocation();
   const navigate = useNavigate();
-  const { id: apiProductId } = useParams();
+  const { apiProductId } = useParams();
   const { isLoading: isLoadingApiProduct, data: apiProduct } =
     useGetApiProductDetails(apiProductId);
   const { isLoading: isLoadingApiProductVersions, data: apiProductVersions } =
