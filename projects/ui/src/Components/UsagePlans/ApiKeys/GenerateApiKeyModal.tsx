@@ -2,11 +2,11 @@ import { Alert, Button as MantineButton, TextInput } from "@mantine/core";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { APIKey } from "../../../Apis/api-types";
-import { useCreateKeyMutation } from "../../../Apis/hooks";
+import { useCreateKeyMutation } from "../../../Apis/gmg_hooks";
 import { Icon } from "../../../Assets/Icons";
 import { copyToClipboard } from "../../../Utility/utility";
 import { Button } from "../../Common/Button";
-import { Modal } from "../../Common/Modal";
+import { NotificationModal } from "../../Common/NotificationModal/NotificationModal";
 
 function CreateKeyActions({
   apiKeyName,
@@ -165,7 +165,7 @@ export function GenerateApiKeyModal({
   const [hasCopiedKey, setHasCopiedKey] = useState(false);
 
   return (
-    <Modal
+    <NotificationModal
       onClose={() => {
         // If we have generated and not copied the API key,
         // prevent the user from closing the modal.

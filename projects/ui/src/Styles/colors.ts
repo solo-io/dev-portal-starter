@@ -1,58 +1,26 @@
-// For checking the output of a SASS color lighten/darken function,
-// The SASS playground can be used: https://sass-lang.com/playground
+import Color from "color";
 
-const colorMap = {
-  /**
-   * SIZING
-   **/
-  // normalContentWidth: "1385px",
-  // largeContentWidth: "1920px",
-
-  // standardBorderRadius: "15px",
-  // smallBorderRadius: "4px",
-
-  /**
-   * COLORS
-   **/
+const baseColors = {
   januaryGrey: "#f0f5f7",
   marchGrey: "#e9eef3",
-  marchGreyDark3: "#dfe6ee",
-  marchGreyDark5: "#d9e1ea",
-  marchGreyDark10: "#c8d5e1",
-  marchGreyLight5: "#fafbfc",
   aprilGrey: "#d4d8de",
   augustGrey: "#8693a5",
   septemberGrey: "#6e7477",
   novemberGrey: "#35393b",
 
   lightGreyTransparent: "#ccd4db21",
-  lightGreyTransparentDark10: "rgba(174, 187, 198, 0.1294117647)",
-  lightGreyTransparentDark25: "rgba(129, 149, 166, 0.1294117647)",
-  midGreyTransparent: "#253e580b",
   darkGreyTransparent: "#253e5812",
-  blackTransparent: "#00000026",
-
-  greyOpaque: "#8693a5a2",
-  greyBlueOpaque: "#253e58cc",
 
   dropBlue: "#f8fafb",
   splashBlue: "#dbe4ec",
-  splashBlueLight7: "#f2f6f8",
-  splashBlueLight10: "#fcfdfe",
-  splashBlueDark10: "#bacbda",
   pondBlue: "#55b8e3",
   lakeBlue: "#158bc2",
-  lakeBlueDark10: "#1274a2",
-  lakeBlueLight10: "#23a9e7",
-  lakeBlueLight20: "#51bbec",
   seaBlue: "#45698a",
   oceanBlue: "#325476",
   neptuneBlue: "#253e58",
 
   lightGreen: "#ebfff9",
   midGreen: "#0dce93",
-  midGreenLight10: "#1df1b0",
-  midGreenLight20: "#4df4c1",
   darkGreen: "#0fac7c",
 
   royalPurple: "#7e4bc6",
@@ -68,13 +36,53 @@ const colorMap = {
   lightYellow: "#fff6e5",
   midYellow: "#ffb831",
   darkYellow: "#c98709",
+} as const;
 
-  // SEMANTIC COLORS
-} as const; // "as const" forces all the color values to be an `as const` value instead of `string`
+// We can modify the base colors using the color package.
+// https://www.npmjs.com/package/color
+const colorMap = {
+  ...baseColors,
 
-// Site wide
+  marchGreyDark3: Color(baseColors.marchGrey).darken(0.03).hex(),
+  marchGreyDark5: Color(baseColors.marchGrey).darken(0.05).hex(),
+  marchGreyDark10: Color(baseColors.marchGrey).darken(0.1).hex(),
+  marchGreyLight5: Color(baseColors.marchGrey).lighten(0.05).hex(),
+
+  aprilGreyDark10: Color(baseColors.aprilGrey).darken(0.1).hex(),
+
+  splashBlueLight5: Color(baseColors.splashBlue).lighten(0.05).hex(),
+  splashBlueLight7: Color(baseColors.splashBlue).lighten(0.07).hex(),
+  splashBlueLight10: Color(baseColors.splashBlue).lighten(0.1).hex(),
+  splashBlueDark10: Color(baseColors.splashBlue).darken(0.1).hex(),
+
+  lakeBlueDark10: Color(baseColors.lakeBlue).darken(0.1).hex(),
+  lakeBlueLight10: Color(baseColors.lakeBlue).lighten(0.1).hex(),
+  lakeBlueLight20: Color(baseColors.lakeBlue).lighten(0.2).hex(),
+
+  midGreenLight10: Color(baseColors.midGreen).lighten(0.1).hex(),
+  midGreenLight20: Color(baseColors.midGreen).lighten(0.2).hex(),
+
+  darkGreenDark20: Color(baseColors.darkGreen).darken(0.2).hex(),
+
+  lightGreyTransparentDark10: Color(baseColors.lightGreyTransparent)
+    .darken(0.1)
+    .hex(),
+  lightGreyTransparentDark25: Color(baseColors.lightGreyTransparent)
+    .darken(0.25)
+    .hex(),
+
+  lightRedDark10: Color(baseColors.lightRed).darken(0.1).desaturate(0.25).hex(),
+  lightMidRed: Color(baseColors.midRed).lighten(1.2).desaturate(0.2).hex(),
+  darkRedDark20: Color(baseColors.darkRed).darken(0.2).hex(),
+
+  pumpkinOrangeLight10: Color(baseColors.pumpkinOrange).lighten(0.1).hex(),
+  pumpkinOrangeLight20: Color(baseColors.pumpkinOrange).lighten(0.2).hex(),
+
+  midYellowDark20: Color(baseColors.midYellow).darken(0.2).hex(),
+} as const;
+
 const semanticColorMap = {
-  modalBack: colorMap.greyBlueOpaque,
+  // Site wide
   primary: colorMap.lakeBlue,
   primaryLight10: colorMap.lakeBlueLight10,
   primaryLight20: colorMap.lakeBlueLight20,
@@ -82,7 +90,6 @@ const semanticColorMap = {
   background: colorMap.dropBlue,
   defaultText: colorMap.novemberGrey,
   defaultColoredText: colorMap.neptuneBlue,
-  iconsColor: colorMap.lakeBlue,
   internalLinkColor: colorMap.lakeBlue,
   internalLinkColorDark10: colorMap.lakeBlueDark10,
   externalLinkColor: colorMap.neptuneBlue,
@@ -97,4 +104,5 @@ const semanticColorMap = {
   apiDocumentationText: colorMap.neptuneBlue,
 } as const;
 
+// Exporting "as const" forces all the color values to be an `as const` value instead of `string`.
 export const colors = { ...colorMap, ...semanticColorMap } as const;

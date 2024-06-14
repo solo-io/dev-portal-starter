@@ -1,142 +1,106 @@
-import { Theme, css } from "@emotion/react";
-import styled from "@emotion/styled";
+import {
+  ButtonProps,
+  DefaultMantineColor,
+  Button as MantineButton,
+  Text,
+  TextProps,
+} from "@mantine/core";
+import { MouseEventHandler } from "react";
+import { borderRadiusConstants } from "../../Styles/constants";
 
-export const makeStyledButtonCSS = (theme: Theme) => css`
-  // A consistent button for general use.
-  //  We've avoided being opionated here about "display"
-  //    type here, but one could certainly follow "inline-..." conventions.
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: currentColor;
-  cursor: pointer;
-
-  border-radius: 2px;
-  height: 40px;
-  min-width: 90px;
-  line-height: 40px;
-  padding: 0 10px;
-  color: white;
-  font-size: 14px;
-  font-weight: 600;
-  transition: background-color 0.1s linear;
-
-  //
-  // Primary states
-  //
-  border: 1px solid ${theme.januaryGrey};
-  background-color: ${theme.primary};
-  &:hover {
-    background-color: ${theme.primaryLight10};
-  }
-  &:active {
-    background-color: ${theme.primaryLight20};
-  }
-
-  //
-  // Pale states
-  //
-  &.paleButton {
-    border-color: ${theme.primary};
-    background-color: white;
-    color: ${theme.primary};
-    &:hover {
-      background-color: ${theme.primaryLight10};
-      border-color: ${theme.primaryLight10};
-      color: white;
-    }
-    &:active {
-      background-color: ${theme.primaryLight20};
-      border-color: ${theme.primaryLight20};
-      color: white;
-    }
-  }
-
-  &.smallButton {
-    height: 26px;
-    line-height: 26px;
-  }
-
-  //
-  // Just text states
-  //
-  &.justText {
-    display: inline;
-    height: auto;
-    line-height: inherit;
-    border: none;
-    background-color: transparent;
-    font-size: inherit;
-    padding: 0;
-
-    color: ${theme.primary};
-    font-weight: 500;
-    &:hover {
-      color: ${theme.primaryLight10};
-    }
-    &:active {
-      color: ${theme.primaryLight20};
-    }
-  }
-
-  //
-  // Success states
-  //
-  &.success {
-    background-color: ${theme.midGreen};
-    &:hover {
-      background-color: ${theme.midGreenLight10};
-    }
-    &:active {
-      background-color: ${theme.midGreenLight20};
-    }
-  }
-
-  //
-  // Error states
-  //
-  &.error {
-    background-color: ${theme.pumpkinOrange};
-    &:hover {
-      background-color: ${theme.pumpkinOrangeLight10};
-    }
-    &:active {
-      background-color: ${theme.pumpkinOrangeLight20};
-    }
-  }
-
-  //
-  // Disabled states
-  //
-  &.disabled,
-  &.disabled:hover,
-  &.disabled:active {
-    cursor: not-allowed;
-    background-color: ${theme.augustGrey};
-  }
-`;
-
-export const StyledButton = styled.button(({ theme }) =>
-  makeStyledButtonCSS(theme)
-);
+const colorMap: {
+  [key: string]: {
+    button: DefaultMantineColor;
+    lightButton?: DefaultMantineColor;
+    text: DefaultMantineColor;
+  };
+} = {
+  success: {
+    button: "green",
+    text: "green.0",
+  },
+  primary: {
+    button: "blue.6",
+    text: "white",
+  },
+  secondary: {
+    button: "gray.4",
+    text: "gray.9",
+  },
+  warning: {
+    button: "yellow.6",
+    text: "red.6",
+  },
+  danger: {
+    lightButton: "red.4",
+    button: "red.6",
+    text: "red.0",
+  },
+};
 
 export function Button(
-  props: React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  >
+  props: {
+    color?: "primary" | "success" | "warning" | "danger" | "secondary";
+    variant?: "outline" | "subtle" | "light" | "filled";
+    onClick?: MouseEventHandler<HTMLButtonElement>;
+    /**
+     * `isText` defaults to true, and can be set to false to render the contents directly under the button.
+     * This can be used when rendering a single SVG inside the button.
+     */
+    isText?: boolean;
+    title?: string;
+  } & ButtonProps
 ) {
-  const { disabled, ...rest } = props;
+  // default to a primary, filled button.
+  const color = props.color ?? "primary";
+  const variant = props.variant ?? "filled";
+  const isText = props.isText ?? true;
 
+  const colorInfo = colorMap[color];
+
+  //
+  // Text
+  //
+  let textColor = colorInfo.text;
+  if (variant === "filled") {
+    textColor = colorInfo.text;
+  } else {
+    textColor = colorInfo.button;
+  }
+  const textProps: TextProps = {
+    sx: !props.size ? { fontWeight: 600, fontSize: "14px" } : undefined,
+    size: props.size,
+    color: textColor,
+  };
+
+  //
+  // Button
+  //
+  let buttonColor = colorInfo.button;
+  if (variant === "light") {
+    if (!!colorInfo.lightButton) {
+      buttonColor = colorInfo.lightButton;
+    } else {
+      buttonColor = colorInfo.text;
+    }
+  }
+  const buttonProps: ButtonProps = {
+    sx: { borderRadius: borderRadiusConstants.xs },
+    ...props,
+    variant,
+    color: buttonColor,
+  };
+
+  //
+  // Render
+  //
   return (
-    <StyledButton
-      {...rest}
-      aria-disabled={disabled}
-      className={`styledButton ${rest.className ?? ""} ${
-        disabled ? "disabled" : ""
-      }`}
-    >
-      {rest.children}
-    </StyledButton>
+    <MantineButton {...buttonProps}>
+      {!!isText ? (
+        <Text {...textProps}>{props.children}</Text>
+      ) : (
+        <>{props.children}</>
+      )}
+    </MantineButton>
   );
 }

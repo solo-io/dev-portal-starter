@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { di } from "react-magnetic-di";
-import { useListApis } from "../../../Apis/hooks";
+import { API } from "../../../Apis/api-types";
+import { useListApis } from "../../../Apis/shared_hooks";
 import { EmptyData } from "../../Common/EmptyData";
 import { ErrorBoundary } from "../../Common/ErrorBoundary";
 import { Loading } from "../../Common/Loading";
@@ -15,14 +16,16 @@ export function APIUsagePlansList() {
 
   // No filtering to do here, but let's make sure the ordering
   //   stays consistent.
-  const displayedApisList = useMemo(
+  const displayedApisList = useMemo<API[]>(
     () =>
       !!apisList?.length
-        ? apisList.sort((apiA, apiB) =>
-            apiA.title
-              .toLocaleLowerCase()
-              .localeCompare(apiB.title.toLocaleLowerCase())
-          )
+        ? (apisList
+            .sort((apiA, apiB) =>
+              apiA.title
+                .toLocaleLowerCase()
+                .localeCompare(apiB.title.toLocaleLowerCase())
+            )
+            .filter((a) => "apiId" in a) as API[])
         : [],
     [apisList]
   );

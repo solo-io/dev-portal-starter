@@ -1,97 +1,16 @@
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
-import { di } from "react-magnetic-di";
-import { useParams } from "react-router-dom";
-import { APISchema } from "../../Apis/api-types";
-import { useGetApiDetails } from "../../Apis/hooks";
-import { Icon } from "../../Assets/Icons";
-import { BannerHeading } from "../Common/Banner/BannerHeading";
-import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
-import { ErrorBoundary } from "../Common/ErrorBoundary";
-import { ApiSchemaDisplay } from "./ApiSchemaDisplay";
+import { useContext } from "react";
+import { AppContext } from "../../Context/AppContext";
+import { GG_ApiProductDetailsPage } from "./gloo-gateway-components/GG_ApiProductDetailsPage";
+import { GMG_ApiDetailsPage } from "./gloo-mesh-gateway-components/GMG_ApiDetailsPage";
 
-const ApiDetailsHeaderAddition = styled.div(
-  ({ theme }) => css`
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    font-size: 18px;
-    font-weight: 500;
-    color: ${theme.defaultColoredText};
-  `
-);
-
-const ApiDetailsExtraInfo = styled.div(
-  ({ theme }) => css`
-    display: flex;
-    align-items: center;
-    margin-right: 25px;
-
-    svg {
-      width: 23px;
-      height: 23px;
-      margin-right: 8px;
-
-      * {
-        fill: ${theme.primary};
-      }
-    }
-  `
-);
-
-/**
- * HELPER COMPONENT
- **/
-function HeaderSummary({ apiSchema }: { apiSchema: APISchema }) {
-  return (
-    <ApiDetailsHeaderAddition>
-      <ApiDetailsExtraInfo>
-        <Icon.HtmlTag /> {Object.keys(apiSchema.paths).length} Operations
-      </ApiDetailsExtraInfo>
-      <ApiDetailsExtraInfo>
-        <Icon.OpenApiIcon /> OpenAPI
-      </ApiDetailsExtraInfo>
-    </ApiDetailsHeaderAddition>
-  );
-}
-
-/**
- * MAIN COMPONENT
- **/
 export function ApiDetailsPage() {
-  di(useGetApiDetails, useParams);
-  const { apiId } = useParams();
-  const { data: apiSchema } = useGetApiDetails(apiId);
+  const { portalServerType } = useContext(AppContext);
 
-  return (
-    <div>
-      <BannerHeading
-        title={
-          <BannerHeadingTitle
-            text={apiSchema?.info.title ?? apiId ?? "Unsupported Schema"}
-            stylingTweaks={{
-              fontSize: "32px",
-              lineHeight: "36px",
-            }}
-          />
-        }
-        fullIcon={<Icon.Bug />}
-        description={
-          "Browse the list of APIs and documentation in this portal. From here you can get the information you need to make API calls."
-        }
-        additionalContent={
-          !!apiSchema ? <HeaderSummary apiSchema={apiSchema} /> : undefined
-        }
-        breadcrumbItems={[
-          { label: "Home", link: "/" },
-          { label: "APIs", link: "/apis" },
-          { label: apiSchema?.info.title ?? "" },
-        ]}
-      />
-
-      <ErrorBoundary fallback="There was an issue displaying the schema details">
-        <ApiSchemaDisplay />
-      </ErrorBoundary>
-    </div>
-  );
+  if (portalServerType === "gloo-gateway") {
+    return <GG_ApiProductDetailsPage />;
+  }
+  if (portalServerType === "gloo-mesh-gateway") {
+    return <GMG_ApiDetailsPage />;
+  }
+  return null;
 }

@@ -4,9 +4,10 @@ import { Popover } from "@mantine/core";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
 import { NavLink, useLocation, useSearchParams } from "react-router-dom";
-import { useGetCurrentUser } from "../../Apis/hooks";
+import { useGetCurrentUser } from "../../Apis/gg_hooks";
 import { Icon } from "../../Assets/Icons";
-import { PortalAuthContext } from "../../Context/PortalAuthContext";
+import { AppContext } from "../../Context/AppContext";
+import { AuthContext } from "../../Context/AuthContext";
 import { logoutEndpoint } from "../../user_variables.tmplr";
 
 export const StyledUserDropdown = styled(Popover.Dropdown)(
@@ -29,7 +30,7 @@ export const StyledUserDropdown = styled(Popover.Dropdown)(
       border-bottom: 0px solid transparent !important;
       color: ${theme.defaultColoredText};
 
-      &:first-child {
+      &:first-of-type {
         border-top-left-radius: 2px;
         border-top-right-radius: 2px;
       }
@@ -50,15 +51,11 @@ export const StyledUserDropdown = styled(Popover.Dropdown)(
 
 const HeaderSectionLoggedIn = () => {
   di(useGetCurrentUser);
-  const { idToken } = useContext(PortalAuthContext);
-  const { data: user } = useGetCurrentUser();
   const routerLocation = useLocation();
+  const { portalServerType } = useContext(AppContext);
+  const { idToken } = useContext(AuthContext);
+  const { data: user } = useGetCurrentUser();
   const [opened, setOpened] = useState(false);
-
-  const inUsagePlansArea = useMemo(
-    () => routerLocation.pathname.includes("/usage-plans"),
-    [routerLocation.pathname]
-  );
 
   const [searchParams, setSearchParams] = useSearchParams();
   useEffect(() => {
@@ -68,6 +65,11 @@ const HeaderSectionLoggedIn = () => {
     newSearchParams.delete("code");
     setSearchParams(newSearchParams);
   }, [setSearchParams]);
+
+  const inUsagePlansArea = useMemo(
+    () => routerLocation.pathname.includes("/usage-plans"),
+    [routerLocation.pathname]
+  );
 
   return (
     <Popover position="bottom" opened={opened} onChange={setOpened}>
@@ -87,13 +89,15 @@ const HeaderSectionLoggedIn = () => {
       </Popover.Target>
       <StyledUserDropdown>
         <>
-          <NavLink
-            to={"/usage-plans"}
-            className={inUsagePlansArea ? "active" : ""}
-            onClick={() => setOpened(!opened)}
-          >
-            API Keys
-          </NavLink>
+          {portalServerType === "gloo-mesh-gateway" && (
+            <NavLink
+              to={"/usage-plans"}
+              className={inUsagePlansArea ? "active" : ""}
+              onClick={() => setOpened(!opened)}
+            >
+              API Keys
+            </NavLink>
+          )}
           <a
             href={`${logoutEndpoint}?id_token_hint=${idToken}&post_logout_redirect_uri=${window.location.origin}/logout`}
             className="logout"

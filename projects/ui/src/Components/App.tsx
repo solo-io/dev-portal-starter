@@ -2,6 +2,8 @@ import { Global, ThemeProvider } from "@emotion/react";
 import { MantineProvider } from "@mantine/core";
 import { AppContextProvider } from "../Context/AppContext";
 import { defaultTheme, globalStyles } from "../Styles";
+import { mantineThemeOverride } from "../Styles/global-styles/mantine-theme";
+import PortalServerTypeChecker from "../Utility/PortalServerTypeChecker";
 import AppContent from "./AppContent";
 
 /**
@@ -14,7 +16,13 @@ export function App() {
     <ThemeProvider theme={defaultTheme}>
       <Global styles={globalStyles} />
       <AppContextProvider>
-        <MantineProvider withGlobalStyles withNormalizeCSS>
+        <PortalServerTypeChecker />
+
+        <MantineProvider
+          withGlobalStyles
+          withNormalizeCSS
+          theme={mantineThemeOverride}
+        >
           <AppContent />
         </MantineProvider>
       </AppContextProvider>

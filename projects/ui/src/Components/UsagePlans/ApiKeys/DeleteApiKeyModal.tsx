@@ -2,10 +2,10 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useDeleteKeyMutation } from "../../../Apis/hooks";
+import { useDeleteKeyMutation } from "../../../Apis/gmg_hooks";
 import { Icon } from "../../../Assets/Icons";
 import { Button } from "../../Common/Button";
-import { Modal } from "../../Common/Modal";
+import { NotificationModal } from "../../Common/NotificationModal/NotificationModal";
 
 const StyledDeleteKeyModalBody = styled.div(
   ({ theme }) => css`
@@ -99,7 +99,7 @@ export function DeleteApiKeyModal({
   const [deleted, setDeleted] = useState(false);
 
   return (
-    <Modal
+    <NotificationModal
       onClose={onClose}
       headContent={
         <>{deleted ? <Icon.SuccessCheckmark /> : <Icon.WarningExclamation />}</>

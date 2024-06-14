@@ -1,6 +1,12 @@
 //
 // From https://stackoverflow.com/a/65996386
 // navigator.clipboard.writeText doesn't always work.
+
+import {
+  ErrorMessageResponse,
+  isErrorMessageResponse,
+} from "../Apis/api-types";
+
 //
 export async function copyToClipboard(textToCopy: string) {
   // Navigator clipboard api needs a secure context (https)
@@ -55,3 +61,60 @@ export function parseJwt(token: string) {
   );
   return JSON.parse(jsonPayload);
 }
+
+/**
+ * Returns the date formatted like MM/DD/YYYY (or local equivalent)
+ */
+export const formatDateToMMDDYYYY = (d: Date) => {
+  // Locale left out so it defaults to local equivalent
+  return d.toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+};
+
+export const jwtDecode = (t: string) => {
+  return {
+    header: JSON.parse(window.atob(t.split(".")[0])),
+    payload: JSON.parse(window.atob(t.split(".")[1])),
+  };
+};
+
+// Since enum can't be passed as a generic with type constraints, this is used to
+// limit what can be passed into the function
+export type StandardEnum<T> = {
+  [id: string]: T | string;
+  [nu: number]: string;
+};
+
+// Pass back all enum values as an array
+export function getEnumValues<Enum>(pEnum: StandardEnum<Enum>): Enum[] {
+  return (
+    Object.entries(pEnum)
+      // filter out any number keys - these only represent values (which are used in enums to easily find key name)
+      .filter(([key]) => isNaN(key as any))
+      .map(([, val]) => val as Enum)
+  );
+}
+
+/**
+ * @param {string} input - String to capitalize first letter
+ */
+export function capitalize(input: string) {
+  return input[0].toUpperCase() + input.substring(1);
+}
+
+export function omitErrorMessageResponse<T>(value: T | ErrorMessageResponse) {
+  if (value === null || isErrorMessageResponse(value)) {
+    return null;
+  }
+  return value as T;
+}
+
+export const customLog = (...args: Parameters<typeof console.log>) => {
+  if (localStorage.getItem("gloo-platform-portal:logging-enabled") === "true") {
+    // eslint-disable-next-line no-console
+    console.log(...args);
+  }
+};

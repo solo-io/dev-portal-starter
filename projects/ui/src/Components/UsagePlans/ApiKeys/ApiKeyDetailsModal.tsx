@@ -1,7 +1,7 @@
 import { APIKey } from "../../../Apis/api-types";
 import { Icon } from "../../../Assets/Icons";
 import { DataPairPill, DataPairPillList } from "../../Common/DataPairPill";
-import { Modal } from "../../Common/Modal";
+import { NotificationModal } from "../../Common/NotificationModal/NotificationModal";
 
 export function ApiKeyDetailsModal({
   apiKey,
@@ -13,7 +13,7 @@ export function ApiKeyDetailsModal({
   onClose: () => any;
 }) {
   return (
-    <Modal
+    <NotificationModal
       onClose={onClose}
       headContent={<Icon.CircledKey />}
       title={"Key Details"}

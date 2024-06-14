@@ -1,6 +1,6 @@
 import { di } from "react-magnetic-di";
 import { APIKey, UsagePlan } from "../../../Apis/api-types";
-import { useListApiKeys } from "../../../Apis/hooks";
+import { useListApiKeys } from "../../../Apis/gmg_hooks";
 import { Icon } from "../../../Assets/Icons";
 import { Button } from "../../Common/Button";
 import { ErrorBoundary } from "../../Common/ErrorBoundary";

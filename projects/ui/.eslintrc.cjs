@@ -45,6 +45,7 @@ module.exports = {
         allowEmptyCatch: true,
       },
     ],
+    "react/jsx-pascal-case": "off",
   },
   globals: {
     JSX: true,

@@ -1,14 +1,6 @@
-/**
- * Some basic types modeling the data received from the backend.
- *   These could be expanded on for different usage, especially
- *   within the Schema.
- */
-
-export type User = {
-  name: string;
-  email: string;
-  username: string;
-};
+//
+// Gloo Mesh Gateway Types
+//
 
 type RateLimitPolicy = {
   unit: "UNKNOWN" | "SECOND" | "MINUTE" | "HOUR" | "DAY";
@@ -65,8 +57,138 @@ export type APIProduct = {
   }[];
 };
 
+//
+// Gloo Gateway Types
+//
+
+export type ApiProductSummary = {
+  createdAt: string;
+  description: string;
+  id: string;
+  name: string;
+  updatedAt: string;
+  versionsCount: number;
+};
+
+export type ApiProductDetails = {
+  autoApproval: boolean;
+  contactEmail: string;
+  createdAt: string;
+  description: string;
+  id: string;
+  metadata: Record<string, string> | null;
+  name: string;
+  updatedAt: string;
+};
+
+export type ApiVersion = {
+  apiSpec?: string | ApiVersionSchema;
+  createdAt: string;
+  documentation: string;
+  id: string;
+  name: string;
+  publicVisible?: boolean;
+  status: string; // 'published',
+  title: string;
+  updatedAt: string;
+};
+
+export type App = {
+  createdAt: string;
+  deletedAt: string;
+  updatedAt: string;
+  id: string;
+  idpClientId: string;
+  idpClientName: string;
+  idpClientSecret: string;
+  name: string;
+  description: string;
+  teamId: string;
+};
+
+export type Team = {
+  createdAt: string;
+  description: string;
+  id: string;
+  name: string;
+  updatedAt: string;
+};
+
+export type Member = {
+  createdAt: string;
+  email: string;
+  id: string;
+  name: string;
+  username: string;
+  // synced = has user logged in.
+  synced: boolean;
+  updatedAt: string;
+  deletedAt?: string;
+};
+
+export enum SubscriptionStatus {
+  APPROVED = "approved",
+  PENDING = "pending",
+  REJECTED = "rejected",
+}
+export type Subscription = {
+  apiProductId: string;
+  applicationId: string;
+  approved?: boolean;
+  approvedAt?: string;
+  rejected?: boolean;
+  rejectedAt?: string;
+  createdAt?: string;
+  deletedAt?: string;
+  id: string;
+  requestedAt: string;
+  updatedAt: string;
+};
+
+export type ApiVersionExtended = ApiVersion & {
+  apiProductDescription: string;
+  apiProductName: string;
+};
+
+//
+// Shared Types
+//
+
+export type User = {
+  name: string;
+  email: string;
+  username: string;
+  // TODO: Once auth is working, check if we can get admin info here and update the areas that use admin endpoints (e.g. subscriptions areas).
+  // admin: string;
+};
+
+/**
+ * This is an error message that is returned by the useMultiSwrWithAuth function.
+ * Since it includes multiple requests, it wouldn't be a good UX to throw an error if one fails.
+ * Instead we can filter on isError and show the results that succeeded.
+ */
+export type ErrorMessageResponse = {
+  isError: true;
+  message: string;
+};
+
+export const isErrorMessageResponse = <T>(value: T | ErrorMessageResponse) =>
+  value !== null &&
+  typeof value === "object" &&
+  "isError" in value &&
+  !!value.isError;
+
+/**
+ * This may be returned from the subscriptions list endpoint, and if so is an error.
+ */
+export type SubscriptionsListError = { message: string };
+
+export const isSubscriptionsListError = (
+  s: SubscriptionsListError | Subscription[] | undefined
+) => !!s && typeof s === "object" && "message" in s;
+
 type SchemaPropertyType = "string" | "integer" | "array" | "object";
-export type APISchema = {
+export type ApiVersionSchema = {
   components?: {
     schemas: {
       Author?: {
@@ -83,7 +205,7 @@ export type APISchema = {
       };
     };
   };
-  info: {
+  info?: {
     title: string;
     version: string;
   };

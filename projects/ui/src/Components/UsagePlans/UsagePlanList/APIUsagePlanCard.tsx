@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { di } from "react-magnetic-di";
 import { API, UsagePlan } from "../../../Apis/api-types";
-import { useListUsagePlans } from "../../../Apis/hooks";
+import { useListUsagePlans } from "../../../Apis/gmg_hooks";
 import { Icon } from "../../../Assets/Icons";
 import { ErrorBoundary } from "../../Common/ErrorBoundary";
 import { Loading } from "../../Common/Loading";

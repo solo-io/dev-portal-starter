@@ -1,9 +1,12 @@
 import { createContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { customLog } from "../Utility/utility";
 
 //
 // Types
 //
+// Initial state: PortalServerType='unknown'
+type PortalServerType = "gloo-gateway" | "gloo-mesh-gateway" | "unknown";
 interface AppProviderProps {
   children?: any;
 }
@@ -11,7 +14,12 @@ interface IAppContext extends AppProviderProps {
   isMobileView: boolean;
   isDarkMode: boolean;
   setIsDarkMode: (isDarkMode: boolean) => void;
+  preferGridView: boolean;
+  setPreferGridView: (newValue: boolean) => void;
   pageContentIsWide: boolean;
+
+  portalServerType: PortalServerType;
+  updatePortalServerType(newType: PortalServerType): void;
 }
 
 /*** Mobile breakpoint width in pixels. */
@@ -44,13 +52,33 @@ export const AppContextProvider = (props: AppProviderProps) => {
     localStorage.setItem("dark-mode", isDarkMode ? "true" : "false");
   }, [isDarkMode]);
 
+  const [preferGridView, setPreferGridView] = useState(
+    localStorage.getItem("prefer-grid-view") !== "false"
+  );
+  useEffect(() => {
+    localStorage.setItem("prefer-grid-view", preferGridView ? "true" : "false");
+  }, [preferGridView]);
+
+  // Portal Server Type
+  const [portalServerType, setPortalServerType] = useState<PortalServerType>(
+    (window as any)._gloo_portal_server_type ?? "unknown"
+  );
+
   return (
     <AppContext.Provider
       value={{
         isMobileView,
         isDarkMode,
         setIsDarkMode,
-        pageContentIsWide: routeLocation.pathname.includes("/api-details/"),
+        preferGridView,
+        setPreferGridView,
+        pageContentIsWide: routeLocation.pathname.includes("/apis/"),
+        portalServerType,
+        updatePortalServerType: (t) => {
+          customLog("Updating portal server type: ", t);
+          (window as any)._gloo_portal_server_type = t;
+          setPortalServerType(t);
+        },
       }}
     >
       {props.children}

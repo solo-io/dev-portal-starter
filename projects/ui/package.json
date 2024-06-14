@@ -23,14 +23,18 @@
     "@faker-js/faker": "^7.6.0",
     "@mantine/core": "^6.0.6",
     "@mantine/hooks": "^6.0.6",
+    "@types/color": "^3.0.6",
+    "color": "^4.2.3",
     "mobx": "^6.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.0",
     "react-loader-spinner": "^5.3.4",
     "react-magnetic-di": "^2.2.13",
+    "react-markdown": "^9.0.1",
     "react-router-dom": "^6.4.5",
     "redoc": "^2.0.0",
+    "remark-gfm": "^4.0.0",
     "storybook": "^7.6.17",
     "styled-components": "^5.3.6",
     "swagger-ui": "^5.11.7",
@@ -43,10 +47,10 @@
     "@storybook/addon-essentials": "^7.6.16",
     "@storybook/addon-interactions": "^7.6.16",
     "@storybook/addon-links": "^7.6.16",
-    "@storybook/react": "^7.6.16",
-    "@storybook/testing-library": "^0.2.2",
     "@storybook/blocks": "^7.0.2",
+    "@storybook/react": "^7.6.16",
     "@storybook/react-vite": "^7.0.2",
+    "@storybook/testing-library": "^0.2.2",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
     "@types/swagger-ui": "^3.52.4",
@@ -59,16 +63,17 @@
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-storybook": "^0.6.11",
     "lint-staged": "^13.1.2",
-    "sass": "^1.56.2",
     "typescript": "5.0.4",
-    "vite": "4.5.2",
+    "vite": "^4.5.3",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-svgr": "^2.4.0"
   },
-  "overrides": {
-    "swagger-ui-react": {
-      "react-inspector": "6.0.1",
-      "react-copy-to-clipboard": "5.1.0"
-    }
+  "resolutions": {
+    "express": "^4.19.2",
+    "react-inspector": "^6.0.1",
+    "react-copy-to-clipboard": "^5.1.0",
+    "undici": "^5.28.4",
+    "tar": "^6.2.1",
+    "follow-redirects": "^1.15.6"
   }
 }
