@@ -23,6 +23,10 @@ import { makeStyledButtonCSS } from "../../../gloo-gateway-components/SchemaTab/
 export const SwaggerDisplayContainer = styled.div(
   ({ theme }) => css`
     display: contents;
+    * {
+      // Reset the text color
+      color: unset;
+    }
     div[id^="display-swagger"] {
       width: 100%;
 

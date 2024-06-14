@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import SwaggerUIConstructor from "swagger-ui";
 import "swagger-ui/dist/swagger-ui.css";
 import { ApiVersionSchema } from "../../../../../Apis/api-types";
+import { swaggerConfigUrl } from "../../../../../user_variables.tmplr";
 import { SwaggerDisplayContainer } from "./SwaggerDisplay.style";
 
 const sanitize = (id: string) => id.replaceAll(".", "-");
@@ -31,7 +32,7 @@ export function SwaggerDisplay({
       dom_id: `#display-swagger-${sanitizedDomId}`,
       withCredentials: true,
       deepLinking: true,
-      syntaxHighlight: { activate: false },
+      configUrl: swaggerConfigUrl !== "" ? swaggerConfigUrl : undefined,
     });
   }, [sanitizedDomId, apiVersionSpec]);
 

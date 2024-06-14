@@ -31,6 +31,10 @@ export const RedocDisplayContainer = styled.div(
     border-radius: ${borderRadiusConstants.small};
     width: 100%;
     margin-bottom: 40px;
+    * {
+      // Reset the text color
+      color: unset;
+    }
 
     .redoc-wrap {
       /***

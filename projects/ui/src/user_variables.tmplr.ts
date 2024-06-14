@@ -106,3 +106,12 @@ export const oidcAuthCodeConfigLogoutPath = templateString(
   import.meta.env.VITE_OIDC_AUTH_CODE_CONFIG_LOGOUT_PATH,
   (import.meta.env.VITE_PORTAL_SERVER_URL ?? "") + "/logout"
 );
+
+/**
+ * This is optional.
+ */
+export const swaggerConfigUrl = templateString(
+  "{{ tmplr.swaggerConfigUrl }}",
+  import.meta.env.VITE_SWAGGER_CONFIG_URL,
+  ""
+);
