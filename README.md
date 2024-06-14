@@ -126,7 +126,7 @@ You can add these environment variables to a `.env.local` file in the `projects/
 - `VITE_PORTAL_SERVER_URL` - This is the URL for the Gloo Platform Portal REST server. The default value is "/v1".
   - Note: If using the example `RouteTable` for the "oidcAuthorizationCode" `ExtAuthPolicy` configuration, this should be set to "/portal-server/v1"
 - `VITE_SWAGGER_CONFIG_URL` - This is an optional URL for your Swagger configuration file. The URL can be an absolute or relative path, and can be a JSON or YAML file. If you would like to configure the Swagger UI using the [Swagger UI configuration options](https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/), you can do this by:
-  1. setting this variable in your `.env.local` file to `"/swagger-config.yaml"`,
+  1. setting this variable, in your `.env.local` file, to `"/swagger-config.yaml"`,
   2. editing the `/projects/ui/swagger-config.yaml` file
   3. verifying your changes (with the `make run-ui` command),
   4. rebuilding the project.
