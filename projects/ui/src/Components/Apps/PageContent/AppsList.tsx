@@ -1,7 +1,7 @@
 import { useContext, useMemo } from "react";
 import { di } from "react-magnetic-di";
 import { App, Team } from "../../../Apis/api-types";
-import { useListAppsForTeams } from "../../../Apis/hooks";
+import { useListAppsForTeams } from "../../../Apis/gg_hooks";
 import { AppContext } from "../../../Context/AppContext";
 import { FilterPair, FilterType } from "../../../Utility/filter-utility";
 import { omitErrorMessageResponse } from "../../../Utility/utility";

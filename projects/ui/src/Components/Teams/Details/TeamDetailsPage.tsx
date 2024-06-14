@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetTeamDetails } from "../../../Apis/hooks";
+import { useGetTeamDetails } from "../../../Apis/gg_hooks";
 import { Loading } from "../../Common/Loading";
 import TeamDetailsPageContent from "./TeamDetailsPageContent";
 

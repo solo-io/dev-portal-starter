@@ -2,7 +2,7 @@ import { Popover } from "@mantine/core";
 import { useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
 import { NavLink, useLocation } from "react-router-dom";
-import { useGetCurrentUser } from "../../../Apis/hooks";
+import { useGetCurrentUser } from "../../../Apis/gg_hooks";
 import { Icon } from "../../../Assets/Icons";
 import {
   oidcAuthCodeConfigCallbackPath,

@@ -1,6 +1,6 @@
 import { Box, Flex } from "@mantine/core";
 import { di } from "react-magnetic-di";
-import { useListTeams } from "../../../Apis/hooks";
+import { useListTeams } from "../../../Apis/gg_hooks";
 import { EmptyData } from "../../Common/EmptyData";
 import { Loading } from "../../Common/Loading";
 import { TeamSummaryGridCard } from "./TeamSummaryCards/TeamSummaryGridCard";

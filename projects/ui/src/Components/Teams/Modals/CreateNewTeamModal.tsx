@@ -2,7 +2,7 @@ import { CloseButton, Flex, Input } from "@mantine/core";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
-import { useCreateTeamMutation } from "../../../Apis/hooks";
+import { useCreateTeamMutation } from "../../../Apis/gg_hooks";
 import { FormModalStyles } from "../../../Styles/shared/FormModalStyles";
 import { Button } from "../../Common/Button";
 

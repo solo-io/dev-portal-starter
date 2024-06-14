@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { di } from "react-magnetic-di";
-import { useListTeams } from "../../../Apis/hooks";
+import { useListTeams } from "../../../Apis/gg_hooks";
 import { FilterPair } from "../../../Utility/filter-utility";
 import { ErrorBoundary } from "../../Common/ErrorBoundary";
 import { Loading } from "../../Common/Loading";

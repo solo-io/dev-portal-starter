@@ -3,7 +3,7 @@ import { useContext, useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
 import { NavLink } from "react-router-dom";
 import { Team } from "../../../../Apis/api-types";
-import { useListAppsForTeam } from "../../../../Apis/hooks";
+import { useListAppsForTeam } from "../../../../Apis/gg_hooks";
 import { AuthContext } from "../../../../Context/AuthContext";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";

@@ -16,7 +16,8 @@ export const portalServerUrl: string = _portalServerUrl ?? "/v1";
 
 async function doFetch(...args: Parameters<typeof fetch>) {
   if (typeof args[0] !== "string") return;
-  let url = portalServerUrl + args[0];
+  let url =
+    args[0].substring(0, 4) === "http" ? args[0] : portalServerUrl + args[0];
   const newArgs: typeof args = [
     url,
     {

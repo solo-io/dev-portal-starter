@@ -6,7 +6,7 @@ import {
   useListApiProducts,
   useListAppsForTeams,
   useListTeams,
-} from "../../../../Apis/hooks";
+} from "../../../../Apis/gg_hooks";
 import { Icon } from "../../../../Assets/Icons";
 import { AuthContext } from "../../../../Context/AuthContext";
 import { CardStyles } from "../../../../Styles/shared/Card.style";

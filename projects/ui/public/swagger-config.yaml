@@ -1,0 +1,18 @@
+##############################################################################
+#                                                                            #
+# This configuration file is set with the VITE_SWAGGER_CONFIG_URL parameter: #
+# VITE_SWAGGER_CONFIG_URL="/swagger-config.yaml"                             #
+#                                                                            #
+# - This file can be JSON or YAML.                                           #
+# - The URL can be specified with a relative or absolute path.               #
+#                                                                            #
+# For configuration options, see:                                            #
+# https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/  #
+#                                                                            #
+##############################################################################
+
+# docExpansion: String=["list"*, "full", "none"].
+#   Controls the default expansion setting for the operations and tags.
+#   It can be 'list' (expands only the tags), 'full' (expands the tags and operations)
+#   or 'none' (expands nothing).
+docExpansion: full

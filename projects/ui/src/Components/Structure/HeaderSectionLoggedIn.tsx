@@ -1,11 +1,12 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Popover } from "@mantine/core";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
-import { useSearchParams } from "react-router-dom";
-import { useGetCurrentUser } from "../../Apis/hooks";
+import { NavLink, useLocation, useSearchParams } from "react-router-dom";
+import { useGetCurrentUser } from "../../Apis/gg_hooks";
 import { Icon } from "../../Assets/Icons";
+import { AppContext } from "../../Context/AppContext";
 import { AuthContext } from "../../Context/AuthContext";
 import { logoutEndpoint } from "../../user_variables.tmplr";
 
@@ -50,6 +51,8 @@ export const StyledUserDropdown = styled(Popover.Dropdown)(
 
 const HeaderSectionLoggedIn = () => {
   di(useGetCurrentUser);
+  const routerLocation = useLocation();
+  const { portalServerType } = useContext(AppContext);
   const { idToken } = useContext(AuthContext);
   const { data: user } = useGetCurrentUser();
   const [opened, setOpened] = useState(false);
@@ -62,6 +65,11 @@ const HeaderSectionLoggedIn = () => {
     newSearchParams.delete("code");
     setSearchParams(newSearchParams);
   }, [setSearchParams]);
+
+  const inUsagePlansArea = useMemo(
+    () => routerLocation.pathname.includes("/usage-plans"),
+    [routerLocation.pathname]
+  );
 
   return (
     <Popover position="bottom" opened={opened} onChange={setOpened}>
@@ -81,6 +89,15 @@ const HeaderSectionLoggedIn = () => {
       </Popover.Target>
       <StyledUserDropdown>
         <>
+          {portalServerType === "gloo-mesh-gateway" && (
+            <NavLink
+              to={"/usage-plans"}
+              className={inUsagePlansArea ? "active" : ""}
+              onClick={() => setOpened(!opened)}
+            >
+              API Keys
+            </NavLink>
+          )}
           <a
             href={`${logoutEndpoint}?id_token_hint=${idToken}&post_logout_redirect_uri=${window.location.origin}/logout`}
             className="logout"

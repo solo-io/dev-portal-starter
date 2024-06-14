@@ -5,7 +5,7 @@ import {
   useListFlatAppsForTeamsOmitErrors,
   useListSubscriptionsForApps,
   useListTeams,
-} from "../../Apis/hooks";
+} from "../../Apis/gg_hooks";
 import { Icon } from "../../Assets/Icons";
 import { FilterPair } from "../../Utility/filter-utility";
 import { BannerHeading } from "../Common/Banner/BannerHeading";

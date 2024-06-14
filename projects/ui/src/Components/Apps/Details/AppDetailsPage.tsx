@@ -1,6 +1,6 @@
 import { di } from "react-magnetic-di";
 import { useParams } from "react-router-dom";
-import { useGetAppDetails } from "../../../Apis/hooks";
+import { useGetAppDetails } from "../../../Apis/gg_hooks";
 import { Loading } from "../../Common/Loading";
 import { AppDetailsPageContent } from "./AppDetailsPageContent";
 

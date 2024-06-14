@@ -111,3 +111,10 @@ export function omitErrorMessageResponse<T>(value: T | ErrorMessageResponse) {
   }
   return value as T;
 }
+
+export const customLog = (...args: Parameters<typeof console.log>) => {
+  if (localStorage.getItem("gloo-platform-portal:logging-enabled") === "true") {
+    // eslint-disable-next-line no-console
+    console.log(...args);
+  }
+};

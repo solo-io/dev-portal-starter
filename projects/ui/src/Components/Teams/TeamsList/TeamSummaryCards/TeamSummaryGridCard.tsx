@@ -5,7 +5,7 @@ import { Team } from "../../../../Apis/api-types";
 import {
   useListAppsForTeam,
   useListMembersForTeam,
-} from "../../../../Apis/hooks";
+} from "../../../../Apis/gg_hooks";
 import { Icon } from "../../../../Assets/Icons";
 import { CardStyles } from "../../../../Styles/shared/Card.style";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
