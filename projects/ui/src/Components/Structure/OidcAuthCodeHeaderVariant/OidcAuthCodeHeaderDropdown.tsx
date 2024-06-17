@@ -1,9 +1,10 @@
 import { Popover } from "@mantine/core";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
 import { NavLink, useLocation } from "react-router-dom";
 import { useGetCurrentUser } from "../../../Apis/gg_hooks";
 import { Icon } from "../../../Assets/Icons";
+import { AppContext } from "../../../Context/AppContext";
 import {
   oidcAuthCodeConfigCallbackPath,
   oidcAuthCodeConfigLogoutPath,
@@ -16,6 +17,7 @@ import { StyledUserDropdown } from "../HeaderSectionLoggedIn";
 export function OidcAuthCodeHeaderDropdown() {
   di(useGetCurrentUser);
   const { data: user } = useGetCurrentUser();
+  const { portalServerType } = useContext(AppContext);
 
   const routerLocation = useLocation();
   const inUsagePlansArea = useMemo(
@@ -52,13 +54,15 @@ export function OidcAuthCodeHeaderDropdown() {
       </Popover.Target>
       <StyledUserDropdown>
         <>
-          <NavLink
-            to={"/usage-plans"}
-            className={inUsagePlansArea ? "active" : ""}
-            onClick={() => setOpened(!opened)}
-          >
-            API Keys
-          </NavLink>
+          {portalServerType === "gloo-mesh-gateway" && (
+            <NavLink
+              to={"/usage-plans"}
+              className={inUsagePlansArea ? "active" : ""}
+              onClick={() => setOpened(!opened)}
+            >
+              API Keys
+            </NavLink>
+          )}
           <a
             href={oidcAuthCodeConfigLogoutPath}
             onClick={() => setOpened(!opened)}
