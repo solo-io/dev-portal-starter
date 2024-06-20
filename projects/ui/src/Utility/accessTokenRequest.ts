@@ -12,6 +12,9 @@ export const doAccessTokenRequest = async (
   if (grantType === "refresh_token" && !formData.refresh_token) {
     return undefined;
   }
+  if (!!audience) {
+    formData.audience = audience;
+  }
   //
   // Encode the form request payload.
   //
@@ -21,9 +24,6 @@ export const doAccessTokenRequest = async (
     const encodedKey = encodeURIComponent(property);
     const encodedValue = encodeURIComponent(formData[property]);
     payloadItems.push(`${encodedKey}=${encodedValue}`);
-  }
-  if (!!audience) {
-    payloadItems.push(`audience=${audience}`);
   }
   //
   // Make the request

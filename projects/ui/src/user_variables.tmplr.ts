@@ -130,6 +130,9 @@ export const audience = templateString(
  */
 export const authProvider = templateString(
   "{{ tmplr.authProvider }}",
-  import.meta.env.VITE_AUTH_PROVIDER,
+  !!import.meta.env.VITE_AUTH_PROVIDER &&
+    typeof import.meta.env.VITE_AUTH_PROVIDER === "string"
+    ? import.meta.env.VITE_AUTH_PROVIDER.toUpperCase()
+    : "",
   ""
 );
