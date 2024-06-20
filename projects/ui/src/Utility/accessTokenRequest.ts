@@ -1,8 +1,8 @@
+import { audience, clientId, tokenEndpoint } from "../user_variables.tmplr";
+
 export const doAccessTokenRequest = async (
   formData: Record<string, string>,
-  grantType: "refresh_token" | "authorization_code",
-  tokenEndpoint: string,
-  clientId: string
+  grantType: "refresh_token" | "authorization_code"
 ) => {
   //
   // Build the request payload for a new oauth access token.
@@ -21,6 +21,9 @@ export const doAccessTokenRequest = async (
     const encodedKey = encodeURIComponent(property);
     const encodedValue = encodeURIComponent(formData[property]);
     payloadItems.push(`${encodedKey}=${encodedValue}`);
+  }
+  if (!!audience) {
+    payloadItems.push(`audience=${audience}`);
   }
   //
   // Make the request

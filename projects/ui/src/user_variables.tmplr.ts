@@ -115,3 +115,21 @@ export const swaggerConfigUrl = templateString(
   import.meta.env.VITE_SWAGGER_CONFIG_URL,
   ""
 );
+
+/**
+ * This is optional, used with Auth0.
+ */
+export const audience = templateString(
+  "{{ tmplr.audience }}",
+  import.meta.env.VITE_AUDIENCE,
+  ""
+);
+
+/**
+ * This is optional.
+ */
+export const authProvider = templateString(
+  "{{ tmplr.authProvider }}",
+  import.meta.env.VITE_AUTH_PROVIDER,
+  ""
+);
