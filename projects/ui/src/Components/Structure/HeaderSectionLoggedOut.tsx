@@ -6,11 +6,7 @@ import {
   LOCAL_STORAGE_AUTH_VERIFIER,
 } from "../../Context/AuthContext";
 import { doAccessTokenRequest } from "../../Utility/accessTokenRequest";
-import {
-  authEndpoint,
-  clientId,
-  tokenEndpoint,
-} from "../../user_variables.tmplr";
+import { authEndpoint, clientId } from "../../user_variables.tmplr";
 import { Button } from "../Common/Button";
 
 //
@@ -145,9 +141,7 @@ const HeaderSectionLoggedOut = () => {
           code_verifier: previousVerifier,
           redirect_uri: window.location.origin + window.location.pathname,
         },
-        "authorization_code",
-        tokenEndpoint,
-        clientId
+        "authorization_code"
       );
       onLogin(res);
     })();
