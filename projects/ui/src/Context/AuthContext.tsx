@@ -5,7 +5,6 @@ import { mutate } from "swr";
 import { AccessTokensResponse } from "../Apis/api-types";
 import { doAccessTokenRequest } from "../Utility/accessTokenRequest";
 import { jwtDecode, parseJwt } from "../Utility/utility";
-import { clientId, tokenEndpoint } from "../user_variables.tmplr";
 
 //
 // Types
@@ -125,9 +124,7 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
         try {
           const res = await doAccessTokenRequest(
             { refresh_token: tokensJSON.refresh_token },
-            "refresh_token",
-            tokenEndpoint,
-            clientId
+            "refresh_token"
           );
           setTokensResponse(res);
         } catch (e) {
@@ -192,8 +189,18 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
     if (!tokensResponse?.access_token) {
       return false;
     }
-    const accessTokenDecoded = jwtDecode(tokensResponse.access_token);
-    return accessTokenDecoded.payload?.group === "admin";
+    let accessTokenDecoded: ReturnType<typeof jwtDecode> | undefined;
+    let idTokenDecoded: ReturnType<typeof jwtDecode> | undefined;
+    try {
+      accessTokenDecoded = jwtDecode(tokensResponse.access_token);
+    } catch {}
+    try {
+      idTokenDecoded = jwtDecode(tokensResponse.id_token);
+    } catch {}
+    return (
+      accessTokenDecoded?.payload?.group === "admin" ||
+      idTokenDecoded?.payload?.group === "admin"
+    );
   }, [tokensResponse]);
 
   return (

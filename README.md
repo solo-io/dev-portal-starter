@@ -130,6 +130,8 @@ You can add these environment variables to a `.env.local` file in the `projects/
   2. editing the `/projects/ui/public/swagger-config.yaml` file,
   3. verifying your changes (with the `make run-ui` command),
   4. rebuilding the project.
+- `VITE_AUDIENCE` - This is an optional parameter if using Auth0 and need to send an audience parameter in your authorization requests. This should not be URL encoded, since it will be URL encoded when the request is sent.
+- `VITE_AUTH_PROVIDER` - This is an optional parameter. Auth0 uses slightly different URL options, so this is only used in that case, when it's set to `"AUTH0"`. Otherwise it should not be set.
 
 #### Environment Variables for PKCE Authorization Flow
 
