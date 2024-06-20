@@ -8,11 +8,7 @@ import { useGetCurrentUser } from "../../Apis/gg_hooks";
 import { Icon } from "../../Assets/Icons";
 import { AppContext } from "../../Context/AppContext";
 import { AuthContext } from "../../Context/AuthContext";
-import {
-  authProvider,
-  clientId,
-  logoutEndpoint,
-} from "../../user_variables.tmplr";
+import { logoutEndpoint } from "../../user_variables.tmplr";
 
 export const StyledUserDropdown = styled(Popover.Dropdown)(
   ({ theme }) => css`
@@ -103,11 +99,7 @@ const HeaderSectionLoggedIn = () => {
             </NavLink>
           )}
           <a
-            href={
-              authProvider === "AUTH0"
-                ? `${logoutEndpoint}?client_id=${clientId}&returnTo=${window.location.origin}/logout`
-                : `${logoutEndpoint}?id_token_hint=${idToken}&post_logout_redirect_uri=${window.location.origin}/logout`
-            }
+            href={`${logoutEndpoint}?id_token_hint=${idToken}&post_logout_redirect_uri=${window.location.origin}/logout`}
             className="logout"
           >
             Logout
