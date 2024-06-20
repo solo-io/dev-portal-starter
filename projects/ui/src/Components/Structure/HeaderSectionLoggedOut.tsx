@@ -6,7 +6,7 @@ import {
   LOCAL_STORAGE_AUTH_VERIFIER,
 } from "../../Context/AuthContext";
 import { doAccessTokenRequest } from "../../Utility/accessTokenRequest";
-import { authEndpoint, clientId } from "../../user_variables.tmplr";
+import { audience, authEndpoint, clientId } from "../../user_variables.tmplr";
 import { Button } from "../Common/Button";
 
 //
@@ -86,9 +86,12 @@ const AuthFlowStarter = () => {
       return;
     }
 
-    const url = `${authEndpoint}?client_id=${clientId}&scope=openid&response_type=code&state=${stateValue}&code_challenge=${codeChallenge}&code_challenge_method=S256&redirect_uri=${
+    let url = `${authEndpoint}?client_id=${clientId}&scope=openid&response_type=code&state=${stateValue}&code_challenge=${codeChallenge}&code_challenge_method=S256&redirect_uri=${
       window.location.origin + window.location.pathname
     }`;
+    if (!!audience) {
+      url += `&audience=${encodeURI(audience)}`;
+    }
 
     window.location.href = url;
   }, [stateValue, codeChallenge]);

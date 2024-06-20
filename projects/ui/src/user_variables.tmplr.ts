@@ -124,12 +124,3 @@ export const audience = templateString(
   import.meta.env.VITE_AUDIENCE,
   ""
 );
-
-/**
- * This is optional.
- */
-export const authProvider = templateString(
-  "{{ tmplr.authProvider }}",
-  import.meta.env.VITE_AUTH_PROVIDER,
-  ""
-);
