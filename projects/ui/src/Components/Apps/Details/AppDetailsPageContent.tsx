@@ -18,8 +18,8 @@ export const AppDetailsPageContent = ({ app }: { app: App }) => {
   // app.idpClientId = "4df81266-f855-466d-8ded-699056780850";
   // app.idpClientName = "test-idp";
   // app.idpClientSecret = "hidden";
-  const appHasOAuthClient =
-    app.idpClientId && app.idpClientName && app.idpClientSecret;
+  // const appHasOAuthClient =
+  //   app.idpClientId && app.idpClientName && app.idpClientSecret;
 
   return (
     <PageContainer>
@@ -43,7 +43,8 @@ export const AppDetailsPageContent = ({ app }: { app: App }) => {
       />
       <Box px={"30px"}>
         <Flex gap={"30px"} direction={"column"}>
-          {appHasOAuthClient && <AppAuthenticationSection app={app} />}
+          {/* {appHasOAuthClient && <AppAuthenticationSection app={app} />} */}
+          <AppAuthenticationSection app={app} />
           {isLoadingSubscriptions || subscriptions === undefined ? (
             <Loader />
           ) : (
