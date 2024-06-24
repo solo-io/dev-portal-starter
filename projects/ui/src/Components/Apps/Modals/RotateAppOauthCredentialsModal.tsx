@@ -99,7 +99,7 @@ const RotateAppOauthCredentialsModal = ({
               Cancel
             </Button>
             <Button
-              color="danger"
+              color="primary"
               disabled={isFormDisabled}
               onClick={onSubmit}
               type="submit"
