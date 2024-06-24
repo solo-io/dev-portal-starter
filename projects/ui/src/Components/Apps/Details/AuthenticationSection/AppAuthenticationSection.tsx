@@ -1,5 +1,5 @@
 import { Box, Flex, Text } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { App } from "../../../../Apis/api-types";
 import { Icon } from "../../../../Assets/Icons";
 import { colors } from "../../../../Styles";
@@ -24,9 +24,6 @@ export type AppOauthCredentials = {
 type AppOauthMap = Record<string, AppOauthCredentials>;
 
 const LS_APP_OAUTH_MAP_KEY = "app-oauth-map";
-const appOauthMap: AppOauthMap = JSON.parse(
-  localStorage.getItem(LS_APP_OAUTH_MAP_KEY) ?? "{}"
-);
 
 const HorizLine = () => {
   return (
@@ -46,15 +43,20 @@ const AppAuthenticationSection = ({ app }: { app: App }) => {
   const [isRevokeModalOpen, setIsRevokeModalOpen] = useState(false);
   const [isRotateModalOpen, setIsRotateModalOpen] = useState(false);
 
+  const appOauthMap: AppOauthMap = useMemo(() => {
+    return JSON.parse(localStorage.getItem(LS_APP_OAUTH_MAP_KEY) ?? "{}");
+  }, []);
+
   const [appOauthCredentials, setAppOauthCredentials] = useState<
     AppOauthCredentials | undefined
   >(appOauthMap[app.id]);
+
   useEffect(() => {
     localStorage.setItem(
       LS_APP_OAUTH_MAP_KEY,
       JSON.stringify({ ...appOauthMap, [app.id]: appOauthCredentials })
     );
-  }, [app, appOauthCredentials]);
+  }, [app, appOauthCredentials, appOauthMap]);
 
   const noOAuthCredentials = appOauthCredentials === undefined;
 
