@@ -7,6 +7,7 @@ import {
 } from "../../../Apis/api-types";
 import { Icon } from "../../../Assets/Icons";
 import { FormModalStyles } from "../../../Styles/shared/FormModalStyles";
+import { useGetImageUrl } from "../../../Utility/custom-image-utility";
 import { downloadFile } from "../../../Utility/utility";
 import { BannerHeading } from "../../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../../Common/Banner/BannerHeadingTitle";
@@ -42,8 +43,14 @@ const ApiProductDetailsPageHeading = ({
     toast.success("Downloaded " + fileName);
   };
 
+  const bgImageUrl = useGetImageUrl(
+    selectedApiVersion?.productVersionMetadata,
+    "none"
+  );
+
   return (
     <BannerHeading
+      bgImageUrl={bgImageUrl}
       title={
         <BannerHeadingTitle
           text={apiProduct.name}
