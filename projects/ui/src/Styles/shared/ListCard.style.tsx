@@ -3,22 +3,14 @@ import styled from "@emotion/styled";
 import { borderRadiusConstants } from "../constants";
 
 export namespace ListCardStyles {
-  export const MajorIconHolder = styled.div(
+  export const ApiImageHolder = styled.div(
     ({ theme }) => css`
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 192px;
+      height: 140px;
       border-right: 1px solid ${theme.splashBlue};
 
-      svg {
-        width: 100px;
-        max-width: 95%;
-        height: 100px;
-        * {
-          stroke: ${theme.primary};
-          fill: ${theme.primary};
-        }
+      img {
+        width: auto;
+        height: 100%;
       }
     `
   );

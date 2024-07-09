@@ -1,12 +1,13 @@
 import { Flex, Select } from "@mantine/core";
 import toast from "react-hot-toast";
 import {
-  ApiProductDetails,
+  ApiProductSummary,
   ApiVersion,
   ApiVersionSchema,
 } from "../../../Apis/api-types";
 import { Icon } from "../../../Assets/Icons";
 import { FormModalStyles } from "../../../Styles/shared/FormModalStyles";
+import { useGetImageURL } from "../../../Utility/custom-image-utility";
 import { downloadFile } from "../../../Utility/utility";
 import { BannerHeading } from "../../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../../Common/Banner/BannerHeadingTitle";
@@ -20,7 +21,7 @@ const ApiProductDetailsPageHeading = ({
   onSelectedApiVersionChange,
   apiVersionSpec,
 }: {
-  apiProduct: ApiProductDetails;
+  apiProduct: ApiProductSummary;
   apiProductVersions: ApiVersion[];
   selectedApiVersion: ApiVersion | null;
   onSelectedApiVersionChange: (newVersionId: string | null) => void;
@@ -42,8 +43,16 @@ const ApiProductDetailsPageHeading = ({
     toast.success("Downloaded " + fileName);
   };
 
+  const apiVersionBgImageURL = useGetImageURL(
+    selectedApiVersion?.productVersionMetadata
+  );
+  const apiProductBgImageURL = useGetImageURL(apiProduct.apiProductMetadata);
+  // Try to use apiVersionBgImageURL, then if that doesn't work use the apiProductBgImageURL.
+  const bgImageURL = apiVersionBgImageURL ?? apiProductBgImageURL;
+
   return (
     <BannerHeading
+      bgImageURL={bgImageURL}
       title={
         <BannerHeadingTitle
           text={apiProduct.name}

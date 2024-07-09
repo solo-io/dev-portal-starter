@@ -3,7 +3,7 @@ import { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
 import { AuthContext } from "../Context/AuthContext";
 import { APIKey, ApiVersionSchema, UsagePlan } from "./api-types";
-import { fetchJSON, portalServerUrl, useSwrWithAuth } from "./utility";
+import { fetchJSON, portalServerURL, useSwrWithAuth } from "./utility";
 
 //
 // Queries
@@ -80,7 +80,7 @@ export function useDeleteKeyMutation() {
       authHeaders.Authorization = `Bearer ${latestAccessToken}`;
     }
     try {
-      await fetch(`${portalServerUrl}${url}/${apiKeyId}`, {
+      await fetch(`${portalServerURL}${url}/${apiKeyId}`, {
         method: "DELETE",
         headers: authHeaders,
         credentials: "include",

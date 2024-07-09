@@ -10,7 +10,7 @@ import {
   ApiVersion,
   ApiVersionExtended,
 } from "./api-types";
-import { fetchJSON, portalServerUrl } from "./utility";
+import { fetchJSON, portalServerURL } from "./utility";
 
 type ApisEndpointResponseType =
   | API[]
@@ -34,8 +34,8 @@ export const useSwrWithAuthListApis = () => {
   }
 
   return useSWR<(API | ApiVersionExtended)[]>("list-apis", async () => {
-    const gg_apisEndpoint = portalServerUrl + "/api-products";
-    const gmg_apisEndpoint = portalServerUrl + "/apis";
+    const gg_apisEndpoint = portalServerURL + "/api-products";
+    const gmg_apisEndpoint = portalServerURL + "/apis";
 
     // For portalServerType:
     // - "unknown, and "gloo-mesh-gateway": use GMG endpoint
@@ -126,16 +126,16 @@ export const useSwrWithAuthListApis = () => {
         // We have to do a separate request for each ApiProduct in order to get their versions.
         for (let i = 0; i < summaries.length; i++) {
           const apiProductSummary = summaries[i];
-          const getVersionsUrl = `${apisEndpoint}/${apiProductSummary.id}/versions`;
+          const getVersionsURL = `${apisEndpoint}/${apiProductSummary.id}/versions`;
           customLog(
-            `Fetching API versions from ${getVersionsUrl} (identified as ${identifiedPortalServerType}).`
+            `Fetching API versions from ${getVersionsURL} (identified as ${identifiedPortalServerType}).`
           );
           let versions: ApiVersion[] = [];
           try {
-            versions = await (await fetch(getVersionsUrl, fetchInit)).json();
+            versions = await (await fetch(getVersionsURL, fetchInit)).json();
           } catch {}
           customLog(
-            `Fetched ${getVersionsUrl} (identified as ${identifiedPortalServerType}) and recieved the response: ${JSON.stringify(
+            `Fetched ${getVersionsURL} (identified as ${identifiedPortalServerType}) and recieved the response: ${JSON.stringify(
               versions
             )}`
           );
