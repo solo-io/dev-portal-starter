@@ -110,8 +110,8 @@ export const oidcAuthCodeConfigLogoutPath = templateString(
 /**
  * This is optional.
  */
-export const swaggerConfigUrl = templateString(
-  "{{ tmplr.swaggerConfigUrl }}",
+export const swaggerConfigURL = templateString(
+  "{{ tmplr.swaggerConfigURL }}",
   import.meta.env.VITE_SWAGGER_CONFIG_URL,
   ""
 );

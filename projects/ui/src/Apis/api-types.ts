@@ -68,6 +68,7 @@ export type ApiProductSummary = {
   name: string;
   updatedAt: string;
   versionsCount: number;
+  apiProductMetadata?: Record<string, string>;
 };
 
 export type ApiProductDetails = {
@@ -76,7 +77,7 @@ export type ApiProductDetails = {
   createdAt: string;
   description: string;
   id: string;
-  metadata: Record<string, string> | null;
+  apiProductMetadata: Record<string, string> | null;
   name: string;
   updatedAt: string;
 };
@@ -91,6 +92,7 @@ export type ApiVersion = {
   status: string; // 'published',
   title: string;
   updatedAt: string;
+  productVersionMetadata?: Record<string, string>;
 };
 
 export type App = {
