@@ -3,21 +3,21 @@ import useSWR from "swr";
 import { AuthContext } from "../Context/AuthContext";
 import { ErrorMessageResponse } from "./api-types";
 
-let _portalServerUrl = import.meta.env.VITE_PORTAL_SERVER_URL;
+let _portalServerURL = import.meta.env.VITE_PORTAL_SERVER_URL;
 if (
-  _portalServerUrl &&
-  typeof _portalServerUrl === "string" &&
-  _portalServerUrl.at(-1) === "/"
+  _portalServerURL &&
+  typeof _portalServerURL === "string" &&
+  _portalServerURL.at(-1) === "/"
 ) {
   // This allows the VITE_PORTAL_SERVER_URL env variable to work with or without a trailing "/"
-  _portalServerUrl = _portalServerUrl.substring(0, _portalServerUrl.length - 1);
+  _portalServerURL = _portalServerURL.substring(0, _portalServerURL.length - 1);
 }
-export const portalServerUrl: string = _portalServerUrl ?? "/v1";
+export const portalServerURL: string = _portalServerURL ?? "/v1";
 
 async function doFetch(...args: Parameters<typeof fetch>) {
   if (typeof args[0] !== "string") return;
   let url =
-    args[0].substring(0, 4) === "http" ? args[0] : portalServerUrl + args[0];
+    args[0].substring(0, 4) === "http" ? args[0] : portalServerURL + args[0];
   const newArgs: typeof args = [
     url,
     {

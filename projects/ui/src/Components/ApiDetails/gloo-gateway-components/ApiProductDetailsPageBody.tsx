@@ -2,7 +2,7 @@ import { Tabs } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
-  ApiProductDetails,
+  ApiProductSummary,
   ApiVersion,
   ApiVersionSchema,
 } from "../../../Apis/api-types";
@@ -23,7 +23,7 @@ export function ApiProductDetailsPageBody({
   apiProductVersions,
   apiVersionSpec,
 }: {
-  apiProduct: ApiProductDetails;
+  apiProduct: ApiProductSummary;
   selectedApiVersion: ApiVersion | null;
   apiProductVersions: ApiVersion[];
   apiVersionSpec: ApiVersionSchema | undefined;

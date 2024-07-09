@@ -1,19 +1,23 @@
 import { NavLink } from "react-router-dom";
 import { API } from "../../../Apis/api-types";
 import { Icon } from "../../../Assets/Icons";
+import { ListCardStyles } from "../../../Styles/shared/ListCard.style";
+import { useGetImageURL } from "../../../Utility/custom-image-utility";
 import { DataPairPill, DataPairPillList } from "../../Common/DataPairPill";
 
 /**
  * MAIN COMPONENT
  **/
 export function ApiSummaryListCard({ api }: { api: API }) {
+  const bgImageURL = useGetImageURL(api.customMetadata, "tacos");
   return (
     <NavLink to={`/apis/${api.apiId}`}>
       <div className="apiListCard">
         <div className="content">
-          <div className="majorIconHolder">
-            <Icon.WrenchGear className="colorIt" />
-          </div>
+          <ListCardStyles.ApiImageHolder>
+            <img src={bgImageURL} alt="API thumbnail" role="banner" />
+          </ListCardStyles.ApiImageHolder>
+
           <div className="details">
             <div>
               <h4 className="title">{api.title}</h4>

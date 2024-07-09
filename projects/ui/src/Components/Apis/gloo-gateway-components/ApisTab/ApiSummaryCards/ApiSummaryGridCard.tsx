@@ -3,7 +3,7 @@ import { ApiProductSummary } from "../../../../../Apis/api-types";
 import { Icon } from "../../../../../Assets/Icons";
 import { CardStyles } from "../../../../../Styles/shared/Card.style";
 import { GridCardStyles } from "../../../../../Styles/shared/GridCard.style";
-import { useGetImageUrl } from "../../../../../Utility/custom-image-utility";
+import { useGetImageURL } from "../../../../../Utility/custom-image-utility";
 import { getApiProductDetailsSpecTabLink } from "../../../../../Utility/link-builders";
 
 /**
@@ -14,13 +14,13 @@ export function ApiSummaryGridCard({
 }: {
   apiProduct: ApiProductSummary;
 }) {
-  const bgImageUrl = useGetImageUrl(apiProduct.apiProductMetadata, "tacos");
+  const bgImageURL = useGetImageURL(apiProduct.apiProductMetadata, "tacos");
   return (
     <GridCardStyles.GridCardWithLink
       to={getApiProductDetailsSpecTabLink(apiProduct.id)}
     >
       <GridCardStyles.ApiImageHolder>
-        <img src={bgImageUrl} alt="API thumbnail" role="banner" />
+        <img src={bgImageURL} alt="API thumbnail" role="banner" />
       </GridCardStyles.ApiImageHolder>
       <Box pb={"25px"}>
         <GridCardStyles.Title>{apiProduct.name}</GridCardStyles.Title>

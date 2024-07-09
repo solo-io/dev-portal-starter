@@ -12,7 +12,7 @@ export function BannerHeading({
   additionalContent,
   tall,
   breadcrumbItems,
-  bgImageUrl,
+  bgImageURL,
 }: {
   title: React.ReactNode;
   description: React.ReactNode;
@@ -20,7 +20,7 @@ export function BannerHeading({
   additionalContent?: React.ReactNode;
   tall?: boolean;
   breadcrumbItems?: { link?: string; label: string }[];
-  bgImageUrl?: string;
+  bgImageURL?: string;
 }) {
   const { pageContentIsWide } = useContext(AppContext);
 
@@ -45,7 +45,7 @@ export function BannerHeading({
         </Styles.BannerContent>
 
         <Styles.BannerImageContainer pageContentIsWide={pageContentIsWide}>
-          <img src={bgImageUrl ?? Banner} alt="background" role="banner" />
+          <img src={bgImageURL ?? Banner} alt="background" role="banner" />
         </Styles.BannerImageContainer>
       </Styles.BannerHeadingContentContainer>
     </>

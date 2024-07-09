@@ -77,7 +77,7 @@ export type ApiProductDetails = {
   createdAt: string;
   description: string;
   id: string;
-  metadata: Record<string, string> | null;
+  apiProductMetadata: Record<string, string> | null;
   name: string;
   updatedAt: string;
 };

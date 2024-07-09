@@ -119,6 +119,7 @@ export namespace BannerStyles {
 
       img {
         min-height: 100%;
+        min-width: 100%;
         background-size: contain;
       }
     `

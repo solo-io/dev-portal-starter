@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
-  useGetApiProductDetails,
   useGetApiProductVersions,
   useListApiProducts,
 } from "../../../Apis/gg_hooks";
@@ -15,8 +14,15 @@ export function GG_ApiProductDetailsPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const { id: apiProductId } = useParams();
-  const { isLoading: isLoadingApiProduct, data: apiProduct } =
-    useGetApiProductDetails(apiProductId);
+  // TODO: The details call doesn't return the full information (metadata, etc)
+  // const { isLoading: isLoadingApiProduct, data: apiProduct } =
+  //   useGetApiProductDetails(apiProductId);
+  const { isLoading: isLoadingApiProduct, data: apiProducts } =
+    useListApiProducts();
+  const apiProduct = useMemo(
+    () => apiProducts?.find((a) => a.id === apiProductId),
+    [apiProducts]
+  );
   const { isLoading: isLoadingApiProductVersions, data: apiProductVersions } =
     useGetApiProductVersions(apiProductId);
 

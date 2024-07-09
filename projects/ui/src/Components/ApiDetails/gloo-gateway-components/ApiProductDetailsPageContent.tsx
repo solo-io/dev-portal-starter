@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import {
-  ApiProductDetails,
+  ApiProductSummary,
   ApiVersion,
   ApiVersionSchema,
 } from "../../../Apis/api-types";
@@ -13,7 +13,7 @@ export function ApiProductDetailsPageContent({
   selectedApiVersion,
   onSelectedApiVersionChange,
 }: {
-  apiProduct: ApiProductDetails;
+  apiProduct: ApiProductSummary;
   apiProductVersions: ApiVersion[];
   selectedApiVersion: ApiVersion | null;
   onSelectedApiVersionChange: (newVersionId: string | null) => void;

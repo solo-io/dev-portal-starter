@@ -1,6 +1,6 @@
 import { Box } from "@mantine/core";
 import {
-  ApiProductDetails,
+  ApiProductSummary,
   ApiVersion,
   ApiVersionSchema,
 } from "../../../../Apis/api-types";
@@ -14,7 +14,7 @@ const SchemaTabContent = ({
   apiProductVersions,
   apiVersionSpec,
 }: {
-  apiProduct: ApiProductDetails;
+  apiProduct: ApiProductSummary;
   selectedApiVersion: ApiVersion;
   apiProductVersions: ApiVersion[];
   apiVersionSpec: ApiVersionSchema | undefined;
