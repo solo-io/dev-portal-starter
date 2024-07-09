@@ -14,7 +14,7 @@ export function GG_ApiProductDetailsPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const { id: apiProductId } = useParams();
-  // TODO: The details call doesn't return the full information (metadata, etc)
+  // The details call doesn't return the full information (metadata, etc)
   // const { isLoading: isLoadingApiProduct, data: apiProduct } =
   //   useGetApiProductDetails(apiProductId);
   const { isLoading: isLoadingApiProduct, data: apiProducts } =
