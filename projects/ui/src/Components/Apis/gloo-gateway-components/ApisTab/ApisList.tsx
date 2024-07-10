@@ -1,7 +1,11 @@
 import { useContext, useMemo } from "react";
 import { useListApiProducts } from "../../../../Apis/gg_hooks";
 import { AppContext } from "../../../../Context/AppContext";
-import { FilterPair, FilterType } from "../../../../Utility/filter-utility";
+import {
+  FilterPair,
+  FilterType,
+  parsePairString,
+} from "../../../../Utility/filter-utility";
 import { EmptyData } from "../../../Common/EmptyData";
 import { Loading } from "../../../Common/Loading";
 import { ApisPageStyles } from "../../ApisPage.style";
@@ -38,24 +42,13 @@ export function ApisList({
                 api.name
                   .toLocaleLowerCase()
                   .includes(filter.displayName.toLocaleLowerCase())) ||
-              filter.type !== FilterType.name
+              (filter.type === FilterType.keyValuePair &&
+                !!api.apiProductMetadata &&
+                api.apiProductMetadata[
+                  parsePairString(filter.displayName).pairKey
+                ] === parsePairString(filter.displayName).value) ||
+              filter.type === FilterType.apiType
           );
-        // api.apiVersions.some((apiVersion) => {
-        //   return allFilters.every((filter) => {
-        //     return (
-        //       (filter.type === FilterType.name &&
-        //         api.apiProductDisplayName
-        //           .toLocaleLowerCase()
-        //           .includes(filter.displayName.toLocaleLowerCase())) ||
-        //       (filter.type === FilterType.keyValuePair &&
-        //         apiVersion.customMetadata &&
-        //         apiVersion.customMetadata[
-        //           parsePairString(filter.displayName).pairKey
-        //         ] === parsePairString(filter.displayName).value) ||
-        //       (filter.type === FilterType.apiType && true) // This is the only type available for now
-        //     );
-        //   });
-        // });
         return passesNameFilter && passesFilterList;
       })
       .sort((a, b) => a.name.localeCompare(b.name));

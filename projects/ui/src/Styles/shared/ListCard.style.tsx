@@ -5,12 +5,17 @@ import { borderRadiusConstants } from "../constants";
 export namespace ListCardStyles {
   export const ApiImageHolder = styled.div(
     ({ theme }) => css`
-      height: 140px;
+      display: flex;
+      padding: 2px;
+      align-items: center;
       border-right: 1px solid ${theme.splashBlue};
 
       img {
+        display: inline-block;
         width: auto;
-        height: 100%;
+        height: 200px;
+        border-radius: ${borderRadiusConstants.xs};
+        box-shadow: 0 0 2px ${theme.augustGrey};
       }
     `
   );

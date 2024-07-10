@@ -6,6 +6,10 @@ import { CardStyles } from "../../../../../Styles/shared/Card.style";
 import { ListCardStyles } from "../../../../../Styles/shared/ListCard.style";
 import { useGetImageURL } from "../../../../../Utility/custom-image-utility";
 import { getApiProductDetailsSpecTabLink } from "../../../../../Utility/link-builders";
+import {
+  DataPairPill,
+  DataPairPillList,
+} from "../../../../Common/DataPairPill";
 
 /**
  * MAIN COMPONENT
@@ -29,6 +33,21 @@ export function ApiSummaryListCard({
             <Box mb="5px">API Versions: {apiProduct.versionsCount}</Box>
             {apiProduct.description && (
               <Text color="gray.6">{apiProduct.description}</Text>
+            )}
+            {!!apiProduct.apiProductMetadata && (
+              <Box pt={"5px"}>
+                <DataPairPillList className="metadataList">
+                  {Object.entries(apiProduct.apiProductMetadata).map(
+                    ([pairKey, pairValue], idx) => (
+                      <DataPairPill
+                        key={idx}
+                        pairKey={pairKey}
+                        value={pairValue}
+                      />
+                    )
+                  )}
+                </DataPairPillList>
+              </Box>
             )}
           </Box>
         </Flex>

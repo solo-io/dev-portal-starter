@@ -5,6 +5,10 @@ import { CardStyles } from "../../../../../Styles/shared/Card.style";
 import { GridCardStyles } from "../../../../../Styles/shared/GridCard.style";
 import { useGetImageURL } from "../../../../../Utility/custom-image-utility";
 import { getApiProductDetailsSpecTabLink } from "../../../../../Utility/link-builders";
+import {
+  DataPairPill,
+  DataPairPillList,
+} from "../../../../Common/DataPairPill";
 
 /**
  * MAIN COMPONENT
@@ -25,11 +29,22 @@ export function ApiSummaryGridCard({
       <Box pb={"25px"}>
         <GridCardStyles.Title>{apiProduct.name}</GridCardStyles.Title>
         API Versions: {apiProduct.versionsCount}
-        {apiProduct.description && (
+        {!!apiProduct.description && (
           <Box pt={"15px"}>
             <GridCardStyles.Description>
               {apiProduct.description}
             </GridCardStyles.Description>
+          </Box>
+        )}
+        {!!apiProduct.apiProductMetadata && (
+          <Box pt={"15px"}>
+            <DataPairPillList className="metadataList">
+              {Object.entries(apiProduct.apiProductMetadata).map(
+                ([pairKey, pairValue], idx) => (
+                  <DataPairPill key={idx} pairKey={pairKey} value={pairValue} />
+                )
+              )}
+            </DataPairPillList>
           </Box>
         )}
       </Box>
