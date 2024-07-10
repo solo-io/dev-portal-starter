@@ -1,4 +1,4 @@
-import { Flex, Select } from "@mantine/core";
+import { Box, Flex, Select } from "@mantine/core";
 import toast from "react-hot-toast";
 import {
   ApiProductSummary,
@@ -12,6 +12,7 @@ import { downloadFile } from "../../../Utility/utility";
 import { BannerHeading } from "../../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../../Common/Banner/BannerHeadingTitle";
 import { Button } from "../../Common/Button";
+import { DataPairPill, DataPairPillList } from "../../Common/DataPairPill";
 import { ApiProductDetailsPageStyles as Styles } from "./ApiProductDetailsPage.style";
 
 const ApiProductDetailsPageHeading = ({
@@ -113,6 +114,21 @@ const ApiProductDetailsPageHeading = ({
                 DOWNLOAD SPEC
               </Button>
             </Flex>
+            {selectedApiVersion.productVersionMetadata && (
+              <Box mt={"5px"} sx={{ flexBasis: "100%" }}>
+                <DataPairPillList className="metadataList">
+                  {Object.entries(
+                    selectedApiVersion.productVersionMetadata
+                  ).map(([pairKey, pairValue], idx) => (
+                    <DataPairPill
+                      key={idx}
+                      pairKey={pairKey}
+                      value={pairValue}
+                    />
+                  ))}
+                </DataPairPillList>
+              </Box>
+            )}
             {/*
             // Note: Removing sections for GGv2 demo.
             <NewSubscriptionModal
