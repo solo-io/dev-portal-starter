@@ -19,7 +19,26 @@ export namespace ListCardStyles {
       }
     `
   );
-  //
+
+  export const MajorIconHolder = styled.div(
+    ({ theme }) => css`
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 192px;
+      border-right: 1px solid ${theme.splashBlue};
+
+      svg {
+        width: 100px;
+        max-width: 95%;
+        height: 100px;
+        * {
+          stroke: ${theme.primary};
+          fill: ${theme.primary};
+        }
+      }
+    `
+  );
 
   export const Details = styled.div`
     display: flex;
