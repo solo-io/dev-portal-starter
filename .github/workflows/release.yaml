@@ -16,11 +16,11 @@ jobs:
       GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
     steps:
-      - name: Build UI
-        uses: ./.github/actions/build-ui
-
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Build the UI to verify it
+        uses: ./.github/actions/build-ui
 
       - name: Setup Git
         run: |
