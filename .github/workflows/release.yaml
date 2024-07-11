@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Build UI
-        uses: actions/build-ui
+        uses: ./.github/actions/build-ui
 
       - name: Checkout repository
         uses: actions/checkout@v2

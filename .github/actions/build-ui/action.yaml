@@ -1,4 +1,5 @@
 name: Build UI
+description: Builds the UI.
 runs:
   using: "composite"
   steps:
@@ -9,5 +10,6 @@ runs:
         cache: "yarn"
         cache-dependency-path: "projects/ui/yarn.lock"
     - name: Build
+      shell: bash
       run: |
         make build-ui
