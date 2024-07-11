@@ -4,7 +4,7 @@ import { App } from "./Components/App";
 import { ToasterWithOptions } from "./Components/Common/ToasterWithOptions";
 import { AuthContextProvider } from "./Context/AuthContext";
 
-ReactDM.createRoot(document.getElementById("root") as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <RouterProvider
     router={createBrowserRouter([
       {
