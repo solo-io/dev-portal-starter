@@ -16,6 +16,9 @@ jobs:
       GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
     steps:
+      - name: Build UI
+        uses: actions/build-ui
+
       - name: Checkout repository
         uses: actions/checkout@v2
 

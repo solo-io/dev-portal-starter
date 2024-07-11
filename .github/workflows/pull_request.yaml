@@ -13,12 +13,5 @@ jobs:
     if: ${{ !github.event.pull_request.draft }}
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: ".nvmrc"
-          cache: "yarn"
-          cache-dependency-path: "projects/ui/yarn.lock"
-      - name: Build
-        run: |
-          make build-ui
+      - name: Build UI
+        uses: actions/build-ui
