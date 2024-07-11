@@ -19,6 +19,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - uses: ./.github/actions/build-ui
+
       - name: Setup Git
         run: |
           git config user.name $GIT_USER_NAME
