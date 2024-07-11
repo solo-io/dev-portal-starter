@@ -20,7 +20,7 @@ jobs:
       - name: Install Yarn
         shell: bash
         run: |
-          ./ci/circleci/install-yarn.sh
+          ./.github/scripts/install-yarn.sh
       - name: Build
         run: |
           make build-ui
