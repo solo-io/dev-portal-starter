@@ -9,7 +9,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  check-api-changes:
+  build-ui:
     if: ${{ !github.event.pull_request.draft }}
     runs-on: ubuntu-20.04
     steps:
