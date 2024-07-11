@@ -19,6 +19,7 @@ export namespace ListCardStyles {
       }
     `
   );
+  //
 
   export const Details = styled.div`
     display: flex;
