@@ -92,6 +92,7 @@ clean:
 install-tools: update-ui-deps
 
 # test
+# test 2
 .PHONY: update-ui-deps
 update-ui-deps:
 	yarn --cwd=$(UI_ROOT_DIR) --prefer-offline install
