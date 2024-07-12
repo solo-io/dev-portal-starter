@@ -1,11 +1,11 @@
 import { Box, Flex, Text } from "@mantine/core";
 import { NavLink } from "react-router-dom";
 import { ApiProductSummary } from "../../../../../Apis/api-types";
-import { Icon } from "../../../../../Assets/Icons";
 import { CardStyles } from "../../../../../Styles/shared/Card.style";
 import { ListCardStyles } from "../../../../../Styles/shared/ListCard.style";
 import { useGetImageURL } from "../../../../../Utility/custom-image-utility";
 import { getApiProductDetailsSpecTabLink } from "../../../../../Utility/link-builders";
+import { filterMetadataToDisplay } from "../../../../../Utility/utility";
 import {
   DataPairPill,
   DataPairPillList,
@@ -37,21 +37,21 @@ export function ApiSummaryListCard({
             {!!apiProduct.apiProductMetadata && (
               <Box pt={"5px"}>
                 <DataPairPillList className="metadataList">
-                  {Object.entries(apiProduct.apiProductMetadata).map(
-                    ([pairKey, pairValue], idx) => (
+                  {Object.entries(apiProduct.apiProductMetadata)
+                    .filter(filterMetadataToDisplay)
+                    .map(([pairKey, pairValue], idx) => (
                       <DataPairPill
                         key={idx}
                         pairKey={pairKey}
                         value={pairValue}
                       />
-                    )
-                  )}
+                    ))}
                 </DataPairPillList>
               </Box>
             )}
           </Box>
         </Flex>
-        <ListCardStyles.Footer>
+        {/* <ListCardStyles.Footer>
           <CardStyles.MetaInfo>
             <Icon.SmallCodeGear />
             <CardStyles.SecondaryInfo>OpenAPI</CardStyles.SecondaryInfo>
@@ -59,7 +59,7 @@ export function ApiSummaryListCard({
           <ListCardStyles.TypeIcon>
             <Icon.OpenApiIcon />
           </ListCardStyles.TypeIcon>
-        </ListCardStyles.Footer>
+        </ListCardStyles.Footer> */}
       </ListCardStyles.ListCardWithLink>
     </NavLink>
   );

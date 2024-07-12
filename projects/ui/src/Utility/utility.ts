@@ -118,3 +118,8 @@ export const customLog = (...args: Parameters<typeof console.log>) => {
     console.log(...args);
   }
 };
+
+export const filterMetadataToDisplay = ([pairKey]: [
+  key: string,
+  value: string
+]) => pairKey !== "imageURL";

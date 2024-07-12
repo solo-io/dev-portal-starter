@@ -117,7 +117,7 @@ export function APIUsagePlanCard({ api }: { api: API }) {
         </div>
       )}
 
-      <div className="apiFooter">
+      {/* <div className="apiFooter">
         <div className="metaInfo">
           <Icon.SmallCodeGear />
           <div className="typeTitle" aria-label="API Type">
@@ -127,7 +127,7 @@ export function APIUsagePlanCard({ api }: { api: API }) {
         <div className="typeIcon">
           <Icon.OpenApiIcon />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
