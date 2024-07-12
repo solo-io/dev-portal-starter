@@ -8,7 +8,10 @@ import {
 import { Icon } from "../../../Assets/Icons";
 import { FormModalStyles } from "../../../Styles/shared/FormModalStyles";
 import { useGetImageURL } from "../../../Utility/custom-image-utility";
-import { downloadFile } from "../../../Utility/utility";
+import {
+  downloadFile,
+  filterMetadataToDisplay,
+} from "../../../Utility/utility";
 import { BannerHeading } from "../../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../../Common/Banner/BannerHeadingTitle";
 import { Button } from "../../Common/Button";
@@ -78,9 +81,9 @@ const ApiProductDetailsPageHeading = ({
                   Operations
                 </Styles.ApiDetailsExtraInfo>
               )}
-              <Styles.ApiDetailsExtraInfo>
+              {/* <Styles.ApiDetailsExtraInfo>
                 <Icon.OpenApiIcon /> OpenAPI
-              </Styles.ApiDetailsExtraInfo>
+              </Styles.ApiDetailsExtraInfo> */}
             </Flex>
             <Flex gap="10px" align={"center"} sx={{ flexWrap: "wrap" }}>
               {apiProductVersions.length > 0 && (
@@ -117,15 +120,15 @@ const ApiProductDetailsPageHeading = ({
             {selectedApiVersion.productVersionMetadata && (
               <Box mt={"5px"} sx={{ flexBasis: "100%" }}>
                 <DataPairPillList className="metadataList">
-                  {Object.entries(
-                    selectedApiVersion.productVersionMetadata
-                  ).map(([pairKey, pairValue], idx) => (
-                    <DataPairPill
-                      key={idx}
-                      pairKey={pairKey}
-                      value={pairValue}
-                    />
-                  ))}
+                  {Object.entries(selectedApiVersion.productVersionMetadata)
+                    .filter(filterMetadataToDisplay)
+                    .map(([pairKey, pairValue], idx) => (
+                      <DataPairPill
+                        key={idx}
+                        pairKey={pairKey}
+                        value={pairValue}
+                      />
+                    ))}
                 </DataPairPillList>
               </Box>
             )}
