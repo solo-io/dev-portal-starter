@@ -27,7 +27,8 @@ export namespace GridCardStyles {
     ({ theme, whiteBg, wide }) => css`
       display: flex;
       flex-direction: column;
-      width: ${wide ? "unset" : "350px"};
+      // This shows 3 API products per row.
+      width: ${wide ? "unset" : "421px"};
       ${mediaQueryWithScreenSize.mediumAndSmaller} {
         flex-grow: 1;
       }

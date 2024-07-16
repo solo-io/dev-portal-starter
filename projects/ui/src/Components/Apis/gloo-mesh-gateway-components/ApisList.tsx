@@ -1,6 +1,11 @@
+import { Box } from "@mantine/core";
+import { useMemo } from "react";
 import { di } from "react-magnetic-di";
 import { API } from "../../../Apis/api-types";
 import { useListApis } from "../../../Apis/shared_hooks";
+import CustomPagination, {
+  useCustomPagination,
+} from "../../Common/CustomPagination";
 import { EmptyData } from "../../Common/EmptyData";
 import { Loading } from "../../Common/Loading";
 import { ApiSummaryGridCard } from "./ApiSummaryGridCard";
@@ -22,53 +27,59 @@ export function ApisList({
   di(useListApis);
   const { isLoading, data: apisList } = useListApis();
 
+  // We can say this is an API[] since if we get here, the portal server is GMG.
+  const displayedApisList: API[] = useMemo(() => {
+    if (!apisList) {
+      return [];
+    }
+    return apisList.filter((api) => {
+      return (
+        "apiId" in api &&
+        (!nameFilter ||
+          api.title
+            .toLocaleLowerCase()
+            .includes(nameFilter.toLocaleLowerCase())) &&
+        (!allFilters.length ||
+          allFilters.every((filter) => {
+            return (
+              (filter.type === FilterType.name &&
+                api.title
+                  .toLocaleLowerCase()
+                  .includes(filter.displayName.toLocaleLowerCase())) ||
+              (filter.type === FilterType.keyValuePair &&
+                api.customMetadata &&
+                api.customMetadata[
+                  parsePairString(filter.displayName).pairKey
+                ] === parsePairString(filter.displayName).value) ||
+              (filter.type === FilterType.apiType && true) // This is the only type available for now
+            );
+          }))
+      );
+    }) as API[];
+  }, [apisList, allFilters, nameFilter]);
+
+  const customPaginationData = useCustomPagination(displayedApisList);
+  const { paginatedData } = customPaginationData;
+
   if (isLoading) {
     return <Loading message="Getting list of apis..." />;
   }
 
-  // We can say this is an API[] since if we get here, the portal server is GMG.
-  const displayedApisList: API[] = apisList
-    ? (apisList
-        .filter((api) => {
-          return (
-            "apiId" in api &&
-            (!nameFilter ||
-              api.title
-                .toLocaleLowerCase()
-                .includes(nameFilter.toLocaleLowerCase())) &&
-            (!allFilters.length ||
-              allFilters.every((filter) => {
-                return (
-                  (filter.type === FilterType.name &&
-                    api.title
-                      .toLocaleLowerCase()
-                      .includes(filter.displayName.toLocaleLowerCase())) ||
-                  (filter.type === FilterType.keyValuePair &&
-                    api.customMetadata &&
-                    api.customMetadata[
-                      parsePairString(filter.displayName).pairKey
-                    ] === parsePairString(filter.displayName).value) ||
-                  (filter.type === FilterType.apiType && true) // This is the only type available for now
-                );
-              }))
-          );
-        })
-        .sort((filterA, filterB) =>
-          filterA.title.localeCompare(filterB.title)
-        ) as API[])
-    : [];
-
-  return displayedApisList.length ? (
-    <div className={usingGridView ? "apiGridList" : ""}>
-      {usingGridView
-        ? displayedApisList.map((api) => (
-            <ApiSummaryGridCard api={api} key={api.apiId} />
-          ))
-        : displayedApisList.map((api) => (
-            <ApiSummaryListCard api={api} key={api.apiId} />
-          ))}
-    </div>
-  ) : (
-    <EmptyData topic="API" />
+  if (!displayedApisList.length) {
+    return <EmptyData topic="API" />;
+  }
+  return (
+    <>
+      <Box mb="30px" className={usingGridView ? "apiGridList" : ""}>
+        {usingGridView
+          ? paginatedData.map((api) => (
+              <ApiSummaryGridCard api={api} key={api.apiId} />
+            ))
+          : paginatedData.map((api) => (
+              <ApiSummaryListCard api={api} key={api.apiId} />
+            ))}
+      </Box>
+      <CustomPagination customPaginationData={customPaginationData} />
+    </>
   );
 }

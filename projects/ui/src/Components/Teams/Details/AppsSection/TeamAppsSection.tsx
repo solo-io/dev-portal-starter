@@ -10,9 +10,11 @@ import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
 import { getAppDetailsLink } from "../../../../Utility/link-builders";
 import { formatDateToMMDDYYYY } from "../../../../Utility/utility";
+import CustomPagination, {
+  useCustomPagination,
+} from "../../../Common/CustomPagination";
 import { EmptyData } from "../../../Common/EmptyData";
 import { Loading } from "../../../Common/Loading";
-import Pagination, { usePagination } from "../../../Common/Pagination";
 import Table from "../../../Common/Table";
 import ToggleAddButton from "../../../Common/ToggleAddButton";
 import AddTeamAppSubSection from "./AddTeamAppSubSection";
@@ -24,14 +26,11 @@ const TeamAppsSection = ({ team }: { team: Team }) => {
   const [showAddTeamAppSubSection, setShowAddTeamAppSubSection] =
     useState(false);
 
-  const {
-    paginatedDataSlice: paginatedApps,
-    onPageChange,
-    totalPages,
-  } = usePagination(apps, 5);
+  const customPaginationData = useCustomPagination(apps ?? [], [5, 10, 20], 0);
+  const { paginatedData } = customPaginationData;
 
   const rows = useMemo(() => {
-    return paginatedApps?.map(
+    return paginatedData?.map(
       (app) =>
         (
           <tr key={app.id}>
@@ -55,7 +54,7 @@ const TeamAppsSection = ({ team }: { team: Team }) => {
           </tr>
         ) ?? []
     );
-  }, [paginatedApps]);
+  }, [paginatedData]);
 
   if (isLoading) {
     return <Loading />;
@@ -108,12 +107,12 @@ const TeamAppsSection = ({ team }: { team: Team }) => {
                 <tbody>{rows}</tbody>
                 <tfoot>
                   <tr>
-                    <td colSpan={2}>
-                      <Pagination
-                        dataCount={apps.length}
-                        totalPages={totalPages}
-                        onChange={onPageChange}
-                      />
+                    <td colSpan={7}>
+                      <Box p=".6rem">
+                        <CustomPagination
+                          customPaginationData={customPaginationData}
+                        />
+                      </Box>
                     </td>
                   </tr>
                 </tfoot>
