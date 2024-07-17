@@ -131,6 +131,9 @@ You can add these environment variables to a `.env.local` file in the `projects/
   3. verifying your changes (with the `make run-ui` command),
   4. rebuilding the project.
 - `VITE_AUDIENCE` - This is an optional parameter if using Auth0 and need to send an audience parameter in your authorization requests. This should not be URL encoded, since it will be URL encoded when the request is sent.
+- `VITE_HOME_IMAGE_URL` - This is an optional parameter to set the image URL on the home page.
+- `VITE_APIS_IMAGE_URL` - This is an optional parameter to set the image URL on the apis page.
+- `VITE_LOGO_IMAGE_URL` - This is an optional parameter to set the image URL for the logo in the upper left.
 
 #### Environment Variables for PKCE Authorization Flow
 
