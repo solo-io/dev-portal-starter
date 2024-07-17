@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Icon } from "../../../Assets/Icons";
+import { apisImageURL } from "../../../user_variables.tmplr";
 import { BannerHeading } from "../../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../../Common/Banner/BannerHeadingTitle";
 import { ErrorBoundary } from "../../Common/ErrorBoundary";
@@ -29,6 +30,7 @@ export function GMG_ApisPage() {
   return (
     <PageContainer>
       <BannerHeading
+        bgImageURL={apisImageURL}
         title={<BannerHeadingTitle text={"APIs"} logo={<Icon.CodeGear />} />}
         description={
           "Browse the list of APIs and documentation in this portal. From here you can get the information you need to make API calls."

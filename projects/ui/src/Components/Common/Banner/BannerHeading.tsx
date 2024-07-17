@@ -45,7 +45,11 @@ export function BannerHeading({
         </Styles.BannerContent>
 
         <Styles.BannerImageContainer pageContentIsWide={pageContentIsWide}>
-          <img src={bgImageURL ?? Banner} alt="background" role="banner" />
+          <img
+            src={!!bgImageURL ? bgImageURL : Banner}
+            alt="background"
+            role="banner"
+          />
         </Styles.BannerImageContainer>
       </Styles.BannerHeadingContentContainer>
     </>

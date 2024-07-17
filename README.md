@@ -4,6 +4,8 @@
 
 This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vite](https://vitejs.dev/), and configured to use React and Typescript. It can be used to view information about your APIs and usage plans, add or delete API keys, and view your OpenAPI schemas using an embedded [Redoc UI](https://github.com/Redocly/redoc) or [Swagger UI](https://swagger.io/tools/swagger-ui/) view. It also can be personalized with images and colors to match your branding and preferences.
 
+![homepage](readme_assets/banner.png "The home page with the default images.")
+
 ## Setup
 
 **For the full setup instructions, including the required Gloo Gateway Kubernetes resources, please check the [solo.io docs site](https://docs.solo.io/gloo-gateway/main/portal/dev-portal/frontend/portal-frontend/). The following steps assume that these resources are already applied.**
@@ -123,6 +125,7 @@ All icons can be found, as the others, in the `/Assets` folder, inside `/Icons`.
 
 You can add these environment variables to a `.env.local` file in the `projects/ui` folder. All Vite environment variables need to start with `VITE_` in order for the app to be able to read them.
 
+- `VITE_COMPANY_NAME` - This is the company name that is used for your Portal.
 - `VITE_PORTAL_SERVER_URL` - This is the URL for the Gloo Platform Portal REST server. The default value is "/v1".
   - Note: If using the example `RouteTable` for the "oidcAuthorizationCode" `ExtAuthPolicy` configuration, this should be set to "/portal-server/v1"
 - `VITE_SWAGGER_CONFIG_URL` - This is an optional URL for your Swagger configuration file. The URL can be an absolute or relative path, and can be a JSON or YAML file. If you would like to configure the Swagger UI using the [Swagger UI configuration options](https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/), you can do this by:
@@ -131,6 +134,9 @@ You can add these environment variables to a `.env.local` file in the `projects/
   3. verifying your changes (with the `make run-ui` command),
   4. rebuilding the project.
 - `VITE_AUDIENCE` - This is an optional parameter if using Auth0 and need to send an audience parameter in your authorization requests. This should not be URL encoded, since it will be URL encoded when the request is sent.
+- `VITE_HOME_IMAGE_URL` - This is an optional parameter to set the image URL on the home page.
+- `VITE_APIS_IMAGE_URL` - This is an optional parameter to set the image URL on the apis page.
+- `VITE_LOGO_IMAGE_URL` - This is an optional parameter to set the image URL for the logo in the upper left.
 
 #### Environment Variables for PKCE Authorization Flow
 
@@ -156,3 +162,11 @@ In your Keycloak administration console, make sure that "Direct Access Grants" i
 ## Creating Releases
 
 When making a new release, use the GitHub UI, and name your release in the format: v1.2.3. When the release is published, a new branch will be made (v1.2.x), and a build of that version will be tagged and published to gcr.io/solo-public/docs/portal-frontend:v1.2.3 (replacing v1.2.3 with your tag name).
+
+## Screenshots
+
+![homepage](readme_assets/homepage.png "The home page with the default images.")
+
+![apis page](readme_assets/apis.png "The apis page with the default images.")
+
+![api details page](readme_assets/api-details.png "An API details page with the default images.")

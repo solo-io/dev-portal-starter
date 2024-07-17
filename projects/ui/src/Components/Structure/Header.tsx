@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { ReactComponent as Logo } from "../../Assets/logo.svg";
 import { AppContext } from "../../Context/AppContext";
 import { AuthContext } from "../../Context/AuthContext";
+import { logoImageURL } from "../../user_variables.tmplr";
 import { ErrorBoundary } from "../Common/ErrorBoundary";
 import { HeaderStyles } from "./Header.style";
 import HeaderSectionLoggedIn from "./HeaderSectionLoggedIn";
@@ -63,7 +64,11 @@ export function Header() {
       <HeaderStyles.StyledTopNavContent pageContentIsWide={pageContentIsWide}>
         <div className="logoContainer">
           <Link to="/" aria-hidden="true">
-            <Logo />
+            {!!logoImageURL ? (
+              <HeaderStyles.StyledLogoImg src={logoImageURL} alt="logo" />
+            ) : (
+              <Logo />
+            )}
           </Link>
         </div>
         <div className="siteNavigating">

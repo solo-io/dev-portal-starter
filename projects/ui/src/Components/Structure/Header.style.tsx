@@ -3,6 +3,11 @@ import styled from "@emotion/styled";
 import { ContentWidthNav } from "../../Styles/ContentWidthHelpers";
 
 export namespace HeaderStyles {
+  export const StyledLogoImg = styled.img`
+    height: 90px;
+    padding: 5px 0px;
+  `;
+
   export const StyledTopNavHeader = styled.header(
     ({ theme }) => css`
       grid-area: header;
@@ -84,7 +89,9 @@ export namespace HeaderStyles {
 
           color: ${theme.externalLinkColor};
           border-bottom: 4px solid white;
-          transition: background-color 0.25s, border-bottom-color 0.25s,
+          transition:
+            background-color 0.25s,
+            border-bottom-color 0.25s,
             color 0.25s;
           &.active,
           &.active:hover,
