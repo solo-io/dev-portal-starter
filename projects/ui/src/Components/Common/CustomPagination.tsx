@@ -130,7 +130,7 @@ const CustomPagination = ({
   customPaginationData: CustomPaginationData<any>;
 }) => {
   // If there aren't enough items to be able to use pagination, don't show anything.
-  if (pageOptions.options.length > 0 && totalItems < pageOptions.options[0]) {
+  if (pageOptions.options.length > 0 && totalItems <= pageOptions.options[0]) {
     return null;
   }
   return (
