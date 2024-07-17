@@ -4,6 +4,8 @@
 
 This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vite](https://vitejs.dev/), and configured to use React and Typescript. It can be used to view information about your APIs and usage plans, add or delete API keys, and view your OpenAPI schemas using an embedded [Redoc UI](https://github.com/Redocly/redoc) or [Swagger UI](https://swagger.io/tools/swagger-ui/) view. It also can be personalized with images and colors to match your branding and preferences.
 
+![homepage](readme_assets/banner.png "The home page with the default images.")
+
 ## Setup
 
 **For the full setup instructions, including the required Gloo Gateway Kubernetes resources, please check the [solo.io docs site](https://docs.solo.io/gloo-gateway/main/portal/dev-portal/frontend/portal-frontend/). The following steps assume that these resources are already applied.**
