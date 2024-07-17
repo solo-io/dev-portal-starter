@@ -36,7 +36,7 @@ export function ApiSummaryGridCard({
           </Box>
         )}
         {!!apiProduct.apiProductMetadata && (
-          <Box pt={"15px"}>
+          <Box px={'5px'} pt={"15px"}>
             <DataPairPillList className="metadataList">
               {Object.entries(apiProduct.apiProductMetadata)
                 .filter(filterMetadataToDisplay)

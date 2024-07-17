@@ -12,9 +12,12 @@ import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
 import { formatDateToMMDDYYYY } from "../../../../Utility/utility";
 import { Button } from "../../../Common/Button";
+import CustomPagination, {
+  pageOptions,
+  useCustomPagination,
+} from "../../../Common/CustomPagination";
 import { EmptyData } from "../../../Common/EmptyData";
 import { Loading } from "../../../Common/Loading";
-import Pagination, { usePagination } from "../../../Common/Pagination";
 import Table from "../../../Common/Table";
 import ToggleAddButton from "../../../Common/ToggleAddButton";
 import ConfirmRemoveTeamMemberModal from "../Modals/ConfirmRemoveTeamMemberModal";
@@ -27,17 +30,17 @@ const TeamUsersSection = ({ team }: { team: Team }) => {
     useState(false);
   const { data: user } = useGetCurrentUser();
 
-  const {
-    paginatedDataSlice: paginatedMembers,
-    onPageChange,
-    totalPages,
-  } = usePagination(members, 5);
+  const customPaginationData = useCustomPagination(
+    members ?? [],
+    pageOptions.table
+  );
+  const { paginatedData } = customPaginationData;
 
   const [confirmRemoveTeamMember, setConfirmRemoveTeamMember] =
     useState<Member>();
 
   const rows = useMemo(() => {
-    return paginatedMembers?.map(
+    return paginatedData?.map(
       (member) =>
         (
           <tr key={member.id}>
@@ -73,7 +76,7 @@ const TeamUsersSection = ({ team }: { team: Team }) => {
           </tr>
         ) ?? []
     );
-  }, [paginatedMembers]);
+  }, [paginatedData]);
 
   if (isLoading) {
     return <Loading />;
@@ -127,11 +130,11 @@ const TeamUsersSection = ({ team }: { team: Team }) => {
                 <tfoot>
                   <tr>
                     <td colSpan={7}>
-                      <Pagination
-                        dataCount={members.length}
-                        totalPages={totalPages}
-                        onChange={onPageChange}
-                      />
+                      <Box p=".6rem">
+                        <CustomPagination
+                          customPaginationData={customPaginationData}
+                        />
+                      </Box>
                     </td>
                   </tr>
                 </tfoot>
