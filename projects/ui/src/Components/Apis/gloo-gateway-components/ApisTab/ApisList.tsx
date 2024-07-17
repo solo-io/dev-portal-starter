@@ -9,6 +9,7 @@ import {
   parsePairString,
 } from "../../../../Utility/filter-utility";
 import CustomPagination, {
+  pageOptions,
   useCustomPagination,
 } from "../../../Common/CustomPagination";
 import { EmptyData } from "../../../Common/EmptyData";
@@ -35,33 +36,38 @@ export function ApisList({
     if (!apiProductsList?.length) {
       return [];
     }
-    return apiProductsList.filter((api) => {
-      let passesNameFilter =
-        !nameFilter ||
-        api.name.toLocaleLowerCase().includes(nameFilter.toLocaleLowerCase());
-      const passesFilterList =
-        !allFilters.length ||
-        allFilters.every(
-          (filter) =>
-            (filter.type === FilterType.name &&
-              api.name
-                .toLocaleLowerCase()
-                .includes(filter.displayName.toLocaleLowerCase())) ||
-            (filter.type === FilterType.keyValuePair &&
-              !!api.apiProductMetadata &&
-              api.apiProductMetadata[
-                parsePairString(filter.displayName).pairKey
-              ] === parsePairString(filter.displayName).value) ||
-            filter.type === FilterType.apiType
-        );
-      return passesNameFilter && passesFilterList;
-    });
+    return apiProductsList
+      .filter((api) => {
+        let passesNameFilter =
+          !nameFilter ||
+          api.name.toLocaleLowerCase().includes(nameFilter.toLocaleLowerCase());
+        const passesFilterList =
+          !allFilters.length ||
+          allFilters.every(
+            (filter) =>
+              (filter.type === FilterType.name &&
+                api.name
+                  .toLocaleLowerCase()
+                  .includes(filter.displayName.toLocaleLowerCase())) ||
+              (filter.type === FilterType.keyValuePair &&
+                !!api.apiProductMetadata &&
+                api.apiProductMetadata[
+                  parsePairString(filter.displayName).pairKey
+                ] === parsePairString(filter.displayName).value) ||
+              filter.type === FilterType.apiType
+          );
+        return passesNameFilter && passesFilterList;
+      })
+      .sort((a, b) => a.name.localeCompare(b.name));
   }, [apiProductsList, allFilters, nameFilter]);
 
   //
   // Pagination
   //
-  const customPaginationData = useCustomPagination(filteredApiProductsList);
+  const customPaginationData = useCustomPagination(
+    filteredApiProductsList,
+    pageOptions.fullPage
+  );
   const { paginatedData } = customPaginationData;
 
   //

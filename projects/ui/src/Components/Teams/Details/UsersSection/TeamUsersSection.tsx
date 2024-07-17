@@ -13,6 +13,7 @@ import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
 import { formatDateToMMDDYYYY } from "../../../../Utility/utility";
 import { Button } from "../../../Common/Button";
 import CustomPagination, {
+  pageOptions,
   useCustomPagination,
 } from "../../../Common/CustomPagination";
 import { EmptyData } from "../../../Common/EmptyData";
@@ -31,8 +32,7 @@ const TeamUsersSection = ({ team }: { team: Team }) => {
 
   const customPaginationData = useCustomPagination(
     members ?? [],
-    [5, 10, 20],
-    0
+    pageOptions.table
   );
   const { paginatedData } = customPaginationData;
 

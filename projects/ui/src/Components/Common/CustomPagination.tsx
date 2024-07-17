@@ -18,18 +18,40 @@ export interface CustomPaginationData<T> {
   totalItems: number;
 }
 
+interface PageOptions {
+  options: number[];
+  defaultOptionIndex: number;
+}
+
+//
+// Options
+//
+
+export const pageOptions: {
+  fullPage: PageOptions;
+  table: PageOptions;
+} = {
+  fullPage: {
+    options: [3, 6, 12, 24],
+    defaultOptionIndex: 1,
+  },
+  table: {
+    options: [5, 10, 20],
+    defaultOptionIndex: 0,
+  },
+};
+
 //
 // Hook
 //
 
 export function useCustomPagination<T>(
   data: T[],
-  pageSizeOptions = [3, 6, 12, 24],
-  initialPageSizeOptionsIdx = 1
+  pageOptions: PageOptions
 ): CustomPaginationData<T> {
   const perPageText = " / Page";
   const [pageSize, setPageSize] = useState(
-    pageSizeOptions[initialPageSizeOptionsIdx]
+    pageOptions.options[pageOptions.defaultOptionIndex]
   );
   const [curPage, setCurPage] = useState(1);
 
@@ -43,7 +65,7 @@ export function useCustomPagination<T>(
   }, [data, curPage, pageSize]);
 
   return {
-    pageSizeOptions: pageSizeOptions.map((o) => o.toString() + perPageText),
+    pageSizeOptions: pageOptions.options.map((o) => o.toString() + perPageText),
     paginatedData,
     onCurPageChange: setCurPage,
     curPage,

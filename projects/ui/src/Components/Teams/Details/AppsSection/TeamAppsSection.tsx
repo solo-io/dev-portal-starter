@@ -11,6 +11,7 @@ import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
 import { getAppDetailsLink } from "../../../../Utility/link-builders";
 import { formatDateToMMDDYYYY } from "../../../../Utility/utility";
 import CustomPagination, {
+  pageOptions,
   useCustomPagination,
 } from "../../../Common/CustomPagination";
 import { EmptyData } from "../../../Common/EmptyData";
@@ -26,7 +27,10 @@ const TeamAppsSection = ({ team }: { team: Team }) => {
   const [showAddTeamAppSubSection, setShowAddTeamAppSubSection] =
     useState(false);
 
-  const customPaginationData = useCustomPagination(apps ?? [], [5, 10, 20], 0);
+  const customPaginationData = useCustomPagination(
+    apps ?? [],
+    pageOptions.table
+  );
   const { paginatedData } = customPaginationData;
 
   const rows = useMemo(() => {
