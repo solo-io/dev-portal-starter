@@ -16,6 +16,7 @@ export interface CustomPaginationData<T> {
   onPageSizeChange: (value: string | null) => void;
   totalPages: number;
   totalItems: number;
+  pageOptions: PageOptions;
 }
 
 interface PageOptions {
@@ -80,6 +81,7 @@ export function useCustomPagination<T>(
     },
     totalPages: Math.ceil(data.length / pageSize),
     totalItems: data.length,
+    pageOptions: pageOptions,
   };
 }
 
@@ -122,10 +124,15 @@ const CustomPagination = ({
     pageSizeOptions,
     onPageSizeChange,
     totalItems,
+    pageOptions,
   },
 }: {
   customPaginationData: CustomPaginationData<any>;
 }) => {
+  // If there aren't enough items to be able to use pagination, don't show anything.
+  if (pageOptions.options.length > 0 && totalItems < pageOptions.options[0]) {
+    return null;
+  }
   return (
     <Flex align="center" justify={"space-between"} gap={"10px"}>
       <TotalText>Total: {totalItems}</TotalText>

@@ -159,3 +159,11 @@ In your Keycloak administration console, make sure that "Direct Access Grants" i
 ## Creating Releases
 
 When making a new release, use the GitHub UI, and name your release in the format: v1.2.3. When the release is published, a new branch will be made (v1.2.x), and a build of that version will be tagged and published to gcr.io/solo-public/docs/portal-frontend:v1.2.3 (replacing v1.2.3 with your tag name).
+
+## Screenshots
+
+![homepage](readme_assets/homepage.png "The home page with the default images.")
+
+![apis page](readme_assets/apis.png "The apis page with the default images.")
+
+![api details page](readme_assets/api-details.png "An API details page with the default images.")
