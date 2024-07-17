@@ -1,8 +1,8 @@
 import { NavLink } from "react-router-dom";
 import { API } from "../../../Apis/api-types";
-import { Icon } from "../../../Assets/Icons";
 import { ListCardStyles } from "../../../Styles/shared/ListCard.style";
 import { useGetImageURL } from "../../../Utility/custom-image-utility";
+import { filterMetadataToDisplay } from "../../../Utility/utility";
 import { DataPairPill, DataPairPillList } from "../../Common/DataPairPill";
 
 /**
@@ -36,21 +36,21 @@ export function ApiSummaryListCard({ api }: { api: API }) {
               <div className="description">{api.description}</div>
               {api.customMetadata && (
                 <DataPairPillList className="metadataList">
-                  {Object.entries(api.customMetadata).map(
-                    ([pairKey, pairValue], idx) => (
+                  {Object.entries(api.customMetadata)
+                    .filter(filterMetadataToDisplay)
+                    .map(([pairKey, pairValue], idx) => (
                       <DataPairPill
                         key={idx}
                         pairKey={pairKey}
                         value={pairValue}
                       />
-                    )
-                  )}
+                    ))}
                 </DataPairPillList>
               )}
             </div>
           </div>
         </div>
-        <div className="footer">
+        {/* <div className="footer">
           <div className="metaInfo">
             <Icon.SmallCodeGear />
             <div className="typeTitle" aria-label="API Type">
@@ -60,7 +60,7 @@ export function ApiSummaryListCard({ api }: { api: API }) {
           <div className="typeIcon">
             <Icon.OpenApiIcon />
           </div>
-        </div>
+        </div> */}
       </div>
     </NavLink>
   );

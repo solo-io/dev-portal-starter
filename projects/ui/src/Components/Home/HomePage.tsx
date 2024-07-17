@@ -2,7 +2,7 @@ import { Box } from "@mantine/core";
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
-import { companyName } from "../../user_variables.tmplr";
+import { companyName, homeImageURL } from "../../user_variables.tmplr";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 import { Button } from "../Common/Button";
@@ -22,6 +22,7 @@ export function HomePage() {
     <PageContainer>
       <div>
         <BannerHeading
+          bgImageURL={homeImageURL}
           title={<BannerHeadingTitle text={"Developers Welcome!"} />}
           description={`Welcome to the ${companyName} Developer Portal. Connect, partner, and build with us to create the next generation of digital experiences.`}
           additionalContent={

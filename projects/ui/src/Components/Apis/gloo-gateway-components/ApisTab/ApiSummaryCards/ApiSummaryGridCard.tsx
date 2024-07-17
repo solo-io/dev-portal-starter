@@ -1,10 +1,9 @@
 import { Box } from "@mantine/core";
 import { ApiProductSummary } from "../../../../../Apis/api-types";
-import { Icon } from "../../../../../Assets/Icons";
-import { CardStyles } from "../../../../../Styles/shared/Card.style";
 import { GridCardStyles } from "../../../../../Styles/shared/GridCard.style";
 import { useGetImageURL } from "../../../../../Utility/custom-image-utility";
 import { getApiProductDetailsSpecTabLink } from "../../../../../Utility/link-builders";
+import { filterMetadataToDisplay } from "../../../../../Utility/utility";
 import {
   DataPairPill,
   DataPairPillList,
@@ -37,23 +36,23 @@ export function ApiSummaryGridCard({
           </Box>
         )}
         {!!apiProduct.apiProductMetadata && (
-          <Box pt={"15px"}>
+          <Box px={'5px'} pt={"15px"}>
             <DataPairPillList className="metadataList">
-              {Object.entries(apiProduct.apiProductMetadata).map(
-                ([pairKey, pairValue], idx) => (
+              {Object.entries(apiProduct.apiProductMetadata)
+                .filter(filterMetadataToDisplay)
+                .map(([pairKey, pairValue], idx) => (
                   <DataPairPill key={idx} pairKey={pairKey} value={pairValue} />
-                )
-              )}
+                ))}
             </DataPairPillList>
           </Box>
         )}
       </Box>
-      <GridCardStyles.Footer>
+      {/* <GridCardStyles.Footer>
         <CardStyles.MetaInfo>
           <Icon.SmallCodeGear />
           <CardStyles.SecondaryInfo>OpenAPI</CardStyles.SecondaryInfo>
         </CardStyles.MetaInfo>
-      </GridCardStyles.Footer>
+      </GridCardStyles.Footer> */}
     </GridCardStyles.GridCardWithLink>
   );
 }

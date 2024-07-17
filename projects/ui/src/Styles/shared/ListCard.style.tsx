@@ -60,7 +60,9 @@ export namespace ListCardStyles {
       //
       box-shadow: 1px 1px 5px ${theme.splashBlue};
       border: 1px solid ${theme.splashBlue};
-      transition: 0.1s box-shadow, 0.1s outline-color;
+      transition:
+        0.1s box-shadow,
+        0.1s outline-color;
       outline-offset: 2px;
       outline: 2px solid transparent;
       &:hover {

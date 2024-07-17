@@ -1,4 +1,6 @@
+import { Box } from "@mantine/core";
 import { useContext, useMemo } from "react";
+import { di } from "react-magnetic-di";
 import { useListApiProducts } from "../../../../Apis/gg_hooks";
 import { AppContext } from "../../../../Context/AppContext";
 import {
@@ -6,6 +8,10 @@ import {
   FilterType,
   parsePairString,
 } from "../../../../Utility/filter-utility";
+import CustomPagination, {
+  pageOptions,
+  useCustomPagination,
+} from "../../../Common/CustomPagination";
 import { EmptyData } from "../../../Common/EmptyData";
 import { Loading } from "../../../Common/Loading";
 import { ApisPageStyles } from "../../ApisPage.style";
@@ -19,6 +25,7 @@ export function ApisList({
   allFilters: FilterPair[];
   nameFilter: string;
 }) {
+  di(useListApiProducts);
   const { preferGridView } = useContext(AppContext);
   const { data: apiProductsList } = useListApiProducts();
 
@@ -55,6 +62,15 @@ export function ApisList({
   }, [apiProductsList, allFilters, nameFilter]);
 
   //
+  // Pagination
+  //
+  const customPaginationData = useCustomPagination(
+    filteredApiProductsList,
+    pageOptions.fullPage
+  );
+  const { paginatedData } = customPaginationData;
+
+  //
   // Render
   //
   // The SWR loading check causes the page to flicker when it's loading, even if it's just re-fetching.
@@ -67,18 +83,24 @@ export function ApisList({
   }
   if (preferGridView) {
     return (
-      <ApisPageStyles.ApiGridList>
-        {filteredApiProductsList.map((apiProduct) => (
-          <ApiSummaryGridCard apiProduct={apiProduct} key={apiProduct.id} />
-        ))}
-      </ApisPageStyles.ApiGridList>
+      <>
+        <ApisPageStyles.ApiGridList>
+          {paginatedData.map((apiProduct) => (
+            <ApiSummaryGridCard apiProduct={apiProduct} key={apiProduct.id} />
+          ))}
+        </ApisPageStyles.ApiGridList>
+        <Box pt={"30px"}>
+          <CustomPagination customPaginationData={customPaginationData} />
+        </Box>
+      </>
     );
   }
   return (
     <div>
-      {filteredApiProductsList.map((apiProduct) => (
+      {paginatedData.map((apiProduct) => (
         <ApiSummaryListCard apiProduct={apiProduct} key={apiProduct.id} />
       ))}
+      <CustomPagination customPaginationData={customPaginationData} />
     </div>
   );
 }

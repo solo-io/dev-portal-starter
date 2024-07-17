@@ -32,7 +32,8 @@ function templateString(templateString: string, ...defaultValues: string[]) {
 //
 export const companyName = templateString(
   "{{ tmplr.company_name }}",
-  "Acme Co."
+  import.meta.env.VITE_COMPANY_NAME,
+  "Example Company"
 );
 document.title = companyName + " Portal";
 
@@ -122,5 +123,32 @@ export const swaggerConfigURL = templateString(
 export const audience = templateString(
   "{{ tmplr.audience }}",
   import.meta.env.VITE_AUDIENCE,
+  ""
+);
+
+/**
+ * This is optional. Used on the home ("/") page.
+ */
+export const homeImageURL = templateString(
+  "{{ tmplr.homeImageURL }}",
+  import.meta.env.VITE_HOME_IMAGE_URL,
+  ""
+);
+
+/**
+ * This is optional. Used on the API's ("/apis") page.
+ */
+export const apisImageURL = templateString(
+  "{{ tmplr.apisImageURL }}",
+  import.meta.env.VITE_APIS_IMAGE_URL,
+  ""
+);
+
+/**
+ * This is optional. Used on the upper left corder of the website.
+ */
+export const logoImageURL = templateString(
+  "{{ tmplr.logoImageURL }}",
+  import.meta.env.VITE_LOGO_IMAGE_URL,
   ""
 );
