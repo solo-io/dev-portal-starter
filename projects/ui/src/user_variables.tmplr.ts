@@ -32,7 +32,8 @@ function templateString(templateString: string, ...defaultValues: string[]) {
 //
 export const companyName = templateString(
   "{{ tmplr.company_name }}",
-  "Acme Co."
+  import.meta.env.VITE_COMPANY_NAME,
+  "Example Company"
 );
 document.title = companyName + " Portal";
 

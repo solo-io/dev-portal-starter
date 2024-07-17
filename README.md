@@ -125,6 +125,7 @@ All icons can be found, as the others, in the `/Assets` folder, inside `/Icons`.
 
 You can add these environment variables to a `.env.local` file in the `projects/ui` folder. All Vite environment variables need to start with `VITE_` in order for the app to be able to read them.
 
+- `VITE_COMPANY_NAME` - This is the company name that is used for your Portal.
 - `VITE_PORTAL_SERVER_URL` - This is the URL for the Gloo Platform Portal REST server. The default value is "/v1".
   - Note: If using the example `RouteTable` for the "oidcAuthorizationCode" `ExtAuthPolicy` configuration, this should be set to "/portal-server/v1"
 - `VITE_SWAGGER_CONFIG_URL` - This is an optional URL for your Swagger configuration file. The URL can be an absolute or relative path, and can be a JSON or YAML file. If you would like to configure the Swagger UI using the [Swagger UI configuration options](https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/), you can do this by:
