@@ -25,7 +25,7 @@ export function ApiSummaryListCard({
       <ListCardStyles.ListCardWithLink>
         <Flex>
           <ListCardStyles.ApiImageHolder>
-            <img src={bgImageURL} alt="API thumbnail" role="banner" />
+            <img src={bgImageURL} alt="API thumbnail" />
           </ListCardStyles.ApiImageHolder>
 
           <Box p={"30px"}>

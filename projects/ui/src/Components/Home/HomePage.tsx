@@ -40,7 +40,9 @@ export function HomePage() {
 
       <HomePageStyles.HomePageCategories role="region">
         <Box p={"10px"}>
-          <h3>API Categories</h3>
+          <HomePageStyles.ApiCategoriesTitle>
+            API Categories
+          </HomePageStyles.ApiCategoriesTitle>
         </Box>
         <HomePageStyles.CategoriesList>
           <HomePageCategoryCard

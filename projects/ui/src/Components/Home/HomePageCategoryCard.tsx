@@ -14,7 +14,7 @@ export function HomePageCategoryCard({
   return (
     <HomePageStyles.CategoriesCard>
       <HomePageStyles.CategoryImageHolder>
-        <img src={imageSrc} alt={imageAlt} role="banner" />
+        <img src={imageSrc} alt={imageAlt} />
       </HomePageStyles.CategoryImageHolder>
       <HomePageStyles.CategoryName>{categoryName}</HomePageStyles.CategoryName>
       <HomePageStyles.CategoryDescription>
