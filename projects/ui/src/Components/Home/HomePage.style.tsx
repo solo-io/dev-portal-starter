@@ -14,14 +14,14 @@ export namespace HomePageStyles {
       border: 1px solid ${theme.aprilGrey};
       background: ${theme.lightGreyTransparent};
       color: ${theme.novemberGrey};
-
-      h3 {
-        font-size: 34px;
-        text-align: center;
-        margin-bottom: 20px;
-      }
     `
   );
+
+  export const ApiCategoriesTitle = styled.div`
+    font-size: 34px;
+    text-align: center;
+    margin-bottom: 20px;
+  `;
 
   export const CategoriesList = styled.div`
     display: flex;
@@ -87,10 +87,9 @@ export namespace HomePageStyles {
       // This is a best-guess background fit attempt for user-supplied images.
       height: 100%;
       ${mediaQueryWithScreenSize.mediumAndSmaller} {
-        height: unset;
         width: 100%;
       }
-      background-size: cover;
+      object-fit: cover;
     }
   `;
 

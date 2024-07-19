@@ -216,7 +216,7 @@ export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
   return (
     <div className="filterArea">
       <div className="choicesArea">
-        <h3 className="title">Filters</h3>
+        <div className="title">Filters</div>
         <form
           onSubmit={(e) => {
             e.preventDefault();

@@ -118,9 +118,9 @@ export namespace BannerStyles {
       z-index: 0;
 
       img {
-        min-height: 100%;
-        min-width: 100%;
-        background-size: contain;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
     `
   );

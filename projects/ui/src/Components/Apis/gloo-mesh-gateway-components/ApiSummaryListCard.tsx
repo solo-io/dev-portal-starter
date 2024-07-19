@@ -15,7 +15,7 @@ export function ApiSummaryListCard({ api }: { api: API }) {
       <div className="apiListCard">
         <div className="content">
           <ListCardStyles.ApiImageHolder>
-            <img src={bgImageURL} alt="API thumbnail" role="banner" />
+            <img src={bgImageURL} alt="API thumbnail" />
           </ListCardStyles.ApiImageHolder>
 
           <div className="details">

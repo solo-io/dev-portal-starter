@@ -13,7 +13,7 @@ export function ApiSummaryGridCard({ api }: { api: API }) {
     <NavLink to={`/apis/${api.apiId}`} className="apiGridCard">
       <div className="content">
         <div className="apiImageHolder">
-          <img src={bgImageURL} alt="API thumbnail" role="banner" />
+          <img src={bgImageURL} alt="API thumbnail" />
         </div>
         <div className="details">
           <div>
