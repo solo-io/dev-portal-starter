@@ -1,6 +1,6 @@
 import { Box } from "@mantine/core";
 import { useContext } from "react";
-import Banner from "../../../Assets/banner.png";
+import Banner from "../../../Assets/banner@2x.webp";
 import { AppContext } from "../../../Context/AppContext";
 import Breadcrumbs from "../Breadcrumbs";
 import { BannerStyles as Styles } from "./BannerHeading.style";

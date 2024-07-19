@@ -14,4 +14,7 @@ export default defineConfig({
     eslint(),
     svgr(),
   ],
+  build: {
+    sourcemap: true,
+  },
 });

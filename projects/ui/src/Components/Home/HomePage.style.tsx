@@ -87,10 +87,9 @@ export namespace HomePageStyles {
       // This is a best-guess background fit attempt for user-supplied images.
       height: 100%;
       ${mediaQueryWithScreenSize.mediumAndSmaller} {
-        height: unset;
         width: 100%;
       }
-      background-size: cover;
+      object-fit: cover;
     }
   `;
 
