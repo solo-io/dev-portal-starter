@@ -15,6 +15,8 @@ export default defineConfig({
     svgr(),
   ],
   build: {
-    sourcemap: true,
+    // This can be enabled for Google Lighthouse testing, but should be set
+    // to false for actual builds since it adds a lot to the build size.
+    sourcemap: false,
   },
 });
