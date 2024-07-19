@@ -1,0 +1,5 @@
+changelog:
+  - type: NON_USER_FACING
+    description: >-
+      Includes accessibility, best-practices, and performance 
+      improvements related to Google Chrome lighthouse tests.
