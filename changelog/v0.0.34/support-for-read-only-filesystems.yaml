@@ -1,0 +1,6 @@
+changelog:
+  - type: FIX
+    issueLink: https://github.com/solo-io/gloo-mesh-enterprise/issues/18336
+    description: >-
+      Adds a server with a view engine to the project, which only is used to
+      serve the UI and insert configuration from environment variables.
