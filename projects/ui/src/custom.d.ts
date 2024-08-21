@@ -8,7 +8,7 @@ declare module "*.svg" {
 }
 
 /**
- * This is a global variable that /projects/server/index.js inserts
+ * This is a global variable that /projects/server/app.js inserts
  * into the UI build when serving it. It is used so that the
  * environment variables can be dynamically updated after the
  * Docker image is built.
