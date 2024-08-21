@@ -8,7 +8,7 @@ app.set("view engine", "ejs");
 
 // The environment variables that we will pass through to the React app.
 var variablesInit = `
-window.__appEnvironmentVariables = ${JSON.stringify(
+const insertedEnvironmentVariables = ${JSON.stringify(
   Object.fromEntries(
     Object.entries(process.env).filter(([key, _value]) =>
       key.startsWith("VITE_")
