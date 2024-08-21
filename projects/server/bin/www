@@ -1,4 +1,10 @@
 /**
+ * This file was pulled from the Express generator's pug template, and does the following:
+ *   - Creates an http server on the requested port, using the Express app from `../app.js`.
+ *   - Adds some logging messages for different statuses.
+ */
+
+/**
  * Module dependencies.
  */
 

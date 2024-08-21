@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "./bin/www",
   "scripts": {
     "start": "node ./bin/www"
   },
