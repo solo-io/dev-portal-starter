@@ -26,7 +26,7 @@ cat ./projects/server/public/dist/index.html |
 # 2. Run steps
 #############################
 
-# Read the environment variables.
+# Read the environment variables in and then start the server.
 source projects/ui/.env.local
 VITE_PORTAL_SERVER_URL=${VITE_PORTAL_SERVER_URL} \
     VITE_CLIENT_ID=${VITE_CLIENT_ID} \
