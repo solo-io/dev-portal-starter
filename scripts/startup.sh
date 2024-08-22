@@ -1,11 +1,11 @@
-#############################
-#
-# Builds the UI, and runs the Express server for it.
-#
-#############################
+##########################################################
+#                                                        #
+# Builds the UI, and optionally runs the Express server. #
+#                                                        #
+##########################################################
 
 #############################
-# 1. Build steps
+# 1. Build steps            #
 #############################
 
 # Build the UI.
@@ -23,14 +23,16 @@ cat ./projects/server/public/dist/index.html |
         >./projects/server/public/dist/index.ejs
 
 #############################
-# 2. Run steps
+# 2. Run steps              #
 #############################
 
-# Read the environment variables in and then start the server.
-source projects/ui/.env.local
-VITE_PORTAL_SERVER_URL=${VITE_PORTAL_SERVER_URL} \
-    VITE_CLIENT_ID=${VITE_CLIENT_ID} \
-    VITE_TOKEN_ENDPOINT=${VITE_TOKEN_ENDPOINT} \
-    VITE_AUTH_ENDPOINT=${VITE_AUTH_ENDPOINT} \
-    VITE_LOGOUT_ENDPOINT=${VITE_LOGOUT_ENDPOINT} \
-    yarn --cwd ./projects/server start
+if [ "$START_SERVER" != 'false' ]; then
+    # Read the environment variables in and then start the server.
+    source projects/ui/.env.local
+    VITE_PORTAL_SERVER_URL=${VITE_PORTAL_SERVER_URL} \
+        VITE_CLIENT_ID=${VITE_CLIENT_ID} \
+        VITE_TOKEN_ENDPOINT=${VITE_TOKEN_ENDPOINT} \
+        VITE_AUTH_ENDPOINT=${VITE_AUTH_ENDPOINT} \
+        VITE_LOGOUT_ENDPOINT=${VITE_LOGOUT_ENDPOINT} \
+        yarn --cwd ./projects/server start
+fi
