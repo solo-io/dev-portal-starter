@@ -16,6 +16,7 @@ COPY ./scripts scripts
 
 # Run the startup script, without starting the server.
 # This script:
+#  - Installs dependencies.
 #  - Builds the UI.
 #  - Moves the UI build folder to the server project.
 #  - Inserts an EJS view engine variable into the UI build,
