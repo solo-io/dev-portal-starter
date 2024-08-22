@@ -8,6 +8,10 @@
 # 1. Build steps            #
 #############################
 
+# Install dependencies.
+yarn --cwd ./projects/ui
+yarn --cwd ./projects/server
+
 # Build the UI.
 yarn --cwd ./projects/ui build
 
