@@ -5,6 +5,7 @@
 ###############
 
 FROM node:18.16.0 AS build_stage
+
 # Install global dependencies.
 RUN apt-get update && apt-get install -y build-essential
 
