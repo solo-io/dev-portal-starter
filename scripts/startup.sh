@@ -19,7 +19,7 @@ mv ./projects/ui/dist ./projects/server/public/dist
 
 # Copy the index file and add in the `insertedEnvironmentVariables` variable.
 cat ./projects/server/public/dist/index.html |
-    sed s/\<body\>/\<body\>\<script\ type=\"text\\/javascript\"\>\<\%-\ VariablesInit\ \%\>\<\\/script\>/ \
+    sed s/const\ insertedEnvironmentVariables\ =\ {}\;/\<\%-\ VariablesInit\ \%\>/ \
         >./projects/server/public/dist/index.ejs
 
 #############################
