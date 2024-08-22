@@ -21,7 +21,8 @@ rm -rf ./projects/server/public/dist || true
 # Move the UI build to the server.
 mv ./projects/ui/dist ./projects/server/public/dist
 
-# Copy the index file and add in the `insertedEnvironmentVariables` variable.
+# Copy the index file, and replace the `insertedEnvironmentVariables` variable
+# with `<%- VariablesInit %>`, since that variable will be generated when served.
 cat ./projects/server/public/dist/index.html |
     sed s/const\ insertedEnvironmentVariables\ =\ {}\;/\<\%-\ VariablesInit\ \%\>/ \
         >./projects/server/public/dist/index.ejs
