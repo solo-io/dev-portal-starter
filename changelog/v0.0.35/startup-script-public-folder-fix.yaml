@@ -1,0 +1,4 @@
+changelog:
+  - type: FIX
+    description: >-
+      Fixes an issue with the startup script where it didn't create the project/server/public folder.
