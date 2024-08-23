@@ -53,6 +53,9 @@ COPY --from=build_stage /app/projects/server .
 
 # Pass through the environment variables, and then start the server.
 # These variables will change when the image is deployed.
+# This needs to be `node ./bin/www` instead of `yarn start because
+# running yarn causes a yarn cache file to change, which doesn't work
+# in read-only environments.
 ENTRYPOINT VITE_PORTAL_SERVER_URL=$VITE_PORTAL_SERVER_URL \
     VITE_CLIENT_ID=$VITE_CLIENT_ID \
     VITE_TOKEN_ENDPOINT=$VITE_TOKEN_ENDPOINT \
@@ -67,4 +70,4 @@ ENTRYPOINT VITE_PORTAL_SERVER_URL=$VITE_PORTAL_SERVER_URL \
     VITE_APIS_IMAGE_URL=$VITE_APIS_IMAGE_URL \
     VITE_LOGO_IMAGE_URL=$VITE_LOGO_IMAGE_URL \
     VITE_COMPANY_NAME=$VITE_COMPANY_NAME \
-    yarn start
+    node ./bin/www
