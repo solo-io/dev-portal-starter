@@ -18,6 +18,9 @@ yarn --cwd ./projects/ui build
 # Cleanup old server files if they exist.
 rm -rf ./projects/server/public/dist || true
 
+# Make sure the public folder is there.
+mkdir -p ./projects/server/public || true
+
 # Move the UI build to the server.
 mv ./projects/ui/dist ./projects/server/public/dist
 
