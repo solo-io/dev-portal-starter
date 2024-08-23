@@ -1,4 +1,36 @@
-FROM node:18.16.0
+###############
+#             #
+# Build Stage #
+#             #
+###############
+
+FROM node:18.16.0 AS build_stage
+
+# Install global dependencies.
+RUN apt-get update && apt-get install -y build-essential
+
+# Copy all project files.
+WORKDIR /app
+COPY ./projects projects
+COPY ./scripts scripts
+
+# Run the startup script, without starting the server.
+# This script:
+#  - Installs dependencies.
+#  - Builds the UI.
+#  - Moves the UI build folder to the server project.
+#  - Inserts an EJS view engine variable into the UI build,
+#    so that the server can send the live environment variables
+#    along with the UI when the build is served.
+RUN START_SERVER=false sh ./scripts/startup.sh
+
+###############
+#             #
+# Serve Stage #
+#             #
+###############
+
+FROM node:18.16.0 AS serve_stage
 
 ENV VITE_PORTAL_SERVER_URL=$VITE_PORTAL_SERVER_URL \
     VITE_CLIENT_ID=$VITE_CLIENT_ID \
@@ -15,19 +47,15 @@ ENV VITE_PORTAL_SERVER_URL=$VITE_PORTAL_SERVER_URL \
     VITE_LOGO_IMAGE_URL=$VITE_LOGO_IMAGE_URL \
     VITE_COMPANY_NAME=$VITE_COMPANY_NAME
 
-# Copy files for build
+# Copy the server files, (this includes the UI build).
 WORKDIR /app
-COPY ./projects projects
-WORKDIR /app/projects/ui
+COPY --from=build_stage /app/projects/server .
 
-# Install global dependencies and set up for runtime
-RUN apt-get update && apt-get install -y build-essential
-RUN yarn install
-EXPOSE 4000
-
-# Build the app and pass in the environment variables, then start it.
-# The build can't happen in 2 stages (build and runtime),
-# since these variables will change when the image is deployed.
+# Pass through the environment variables, and then start the server.
+# These variables will change when the image is deployed.
+# This needs to be `node ./bin/www` instead of `yarn start because
+# running yarn causes a yarn cache file to change, which doesn't work
+# in read-only environments.
 ENTRYPOINT VITE_PORTAL_SERVER_URL=$VITE_PORTAL_SERVER_URL \
     VITE_CLIENT_ID=$VITE_CLIENT_ID \
     VITE_TOKEN_ENDPOINT=$VITE_TOKEN_ENDPOINT \
@@ -42,4 +70,4 @@ ENTRYPOINT VITE_PORTAL_SERVER_URL=$VITE_PORTAL_SERVER_URL \
     VITE_APIS_IMAGE_URL=$VITE_APIS_IMAGE_URL \
     VITE_LOGO_IMAGE_URL=$VITE_LOGO_IMAGE_URL \
     VITE_COMPANY_NAME=$VITE_COMPANY_NAME \
-    yarn build && yarn run vite preview --port 4000 --host
+    node ./bin/www

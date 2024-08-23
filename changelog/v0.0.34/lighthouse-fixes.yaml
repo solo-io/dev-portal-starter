@@ -1,0 +1,6 @@
+changelog:
+  - type: NON_USER_FACING
+    issueLink: https://github.com/solo-io/gloo-mesh-enterprise/issues/15009
+    description: >-
+      Includes accessibility, best-practices, and performance 
+      improvements related to Google Chrome lighthouse tests.

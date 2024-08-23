@@ -63,7 +63,7 @@ export function Header() {
     <HeaderStyles.StyledTopNavHeader aria-label="Site top level menus">
       <HeaderStyles.StyledTopNavContent pageContentIsWide={pageContentIsWide}>
         <div className="logoContainer">
-          <Link to="/" aria-hidden="true">
+          <Link aria-label="Home" to="/">
             {!!logoImageURL ? (
               <HeaderStyles.StyledLogoImg src={logoImageURL} alt="logo" />
             ) : (

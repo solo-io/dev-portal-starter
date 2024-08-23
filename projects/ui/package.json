@@ -1,7 +1,7 @@
 {
   "name": "gloo-platform-portal-ui",
   "private": true,
-  "version": "0.0.33",
+  "version": "0.0.13",
   "type": "module",
   "scripts": {
     "start": "vite --port=4000",
@@ -59,7 +59,6 @@
     "@typescript-eslint/eslint-plugin": "^5.57.1",
     "@typescript-eslint/parser": "^5.57.1",
     "@vitejs/plugin-react": "^3.0.0",
-    "babel-loader": "^8.3.0",
     "eslint": "^8.34.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-storybook": "^0.8.0",
@@ -77,6 +76,7 @@
     "tar": "^6.2.1",
     "follow-redirects": "^1.15.6",
     "braces": "^3.0.3",
-    "ws": "^8.17.1"
+    "ws": "^8.17.1",
+    "axios": "^1.7.4"
   }
 }

@@ -12,9 +12,9 @@ import { HomePageCategoryCard } from "./HomePageCategoryCard";
 
 /* TODO: Clean this up. Is there a better way to display this? Should 
     these images be coming from the backend */
-import CardImage1 from "../../Assets/card-option-1.png";
-import CardImage2 from "../../Assets/card-option-2.png";
-import CardImage3 from "../../Assets/card-option-3.png";
+import CardImage1 from "../../Assets/card-option-1@2x.webp";
+import CardImage2 from "../../Assets/card-option-2@2x.webp";
+import CardImage3 from "../../Assets/card-option-3@2x.webp";
 
 export function HomePage() {
   const { isAdmin } = useContext(AuthContext);
@@ -40,7 +40,9 @@ export function HomePage() {
 
       <HomePageStyles.HomePageCategories role="region">
         <Box p={"10px"}>
-          <h3>API Categories</h3>
+          <HomePageStyles.ApiCategoriesTitle>
+            API Categories
+          </HomePageStyles.ApiCategoriesTitle>
         </Box>
         <HomePageStyles.CategoriesList>
           <HomePageCategoryCard

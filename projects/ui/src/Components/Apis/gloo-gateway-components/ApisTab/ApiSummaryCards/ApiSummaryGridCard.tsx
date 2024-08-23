@@ -23,7 +23,7 @@ export function ApiSummaryGridCard({
       to={getApiProductDetailsSpecTabLink(apiProduct.id)}
     >
       <GridCardStyles.ApiImageHolder>
-        <img src={bgImageURL} alt="API thumbnail" role="banner" />
+        <img src={bgImageURL} alt="API thumbnail" />
       </GridCardStyles.ApiImageHolder>
       <Box pb={"25px"}>
         <GridCardStyles.Title>{apiProduct.name}</GridCardStyles.Title>
@@ -36,7 +36,7 @@ export function ApiSummaryGridCard({
           </Box>
         )}
         {!!apiProduct.apiProductMetadata && (
-          <Box px={'5px'} pt={"15px"}>
+          <Box px={"5px"} pt={"15px"}>
             <DataPairPillList className="metadataList">
               {Object.entries(apiProduct.apiProductMetadata)
                 .filter(filterMetadataToDisplay)

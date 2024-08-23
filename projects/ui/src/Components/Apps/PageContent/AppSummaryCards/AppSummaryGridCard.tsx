@@ -27,7 +27,7 @@ export function AppSummaryGridCard({ app }: { app: AppWithTeam }) {
   return (
     <GridCardStyles.GridCardWithLink to={getAppDetailsLink(app)}>
       <GridCardStyles.ApiImageHolder>
-        <img src={defaultCardImage} alt="placeholder" role="banner" />
+        <img src={defaultCardImage} alt="placeholder" />
       </GridCardStyles.ApiImageHolder>
       <Box px={"20px"}>
         <CardStyles.TitleLarge>{app.name}</CardStyles.TitleLarge>
