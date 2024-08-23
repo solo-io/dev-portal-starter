@@ -12,7 +12,10 @@
  * If it has not been transformed, the next truthy value is returned.
  * Otherwise, the transformed value is returned.
  */
-function templateString(templateString: string, ...defaultValues: string[]) {
+function templateString(
+  templateString: string,
+  ...defaultValues: (string | undefined)[]
+) {
   if (/{{.*}}$/.test(templateString)) {
     let defaultValue = "";
     for (let i = 0; i < defaultValues.length; i++) {
@@ -32,6 +35,7 @@ function templateString(templateString: string, ...defaultValues: string[]) {
 //
 export const companyName = templateString(
   "{{ tmplr.company_name }}",
+  insertedEnvironmentVariables?.VITE_COMPANY_NAME,
   import.meta.env.VITE_COMPANY_NAME,
   "Example Company"
 );
@@ -44,6 +48,7 @@ document.title = companyName + " Portal";
  */
 export const tokenEndpoint = templateString(
   "{{ tmplr.tokenEndpoint }}",
+  insertedEnvironmentVariables?.VITE_TOKEN_ENDPOINT,
   import.meta.env.VITE_TOKEN_ENDPOINT
 );
 
@@ -54,6 +59,7 @@ export const tokenEndpoint = templateString(
  */
 export const authEndpoint = templateString(
   "{{ tmplr.authEndpoint }}",
+  insertedEnvironmentVariables?.VITE_AUTH_ENDPOINT,
   import.meta.env.VITE_AUTH_ENDPOINT
 );
 
@@ -64,6 +70,7 @@ export const authEndpoint = templateString(
  */
 export const logoutEndpoint = templateString(
   "{{ tmplr.logoutEndpoint }}",
+  insertedEnvironmentVariables?.VITE_LOGOUT_ENDPOINT,
   import.meta.env.VITE_LOGOUT_ENDPOINT
 );
 
@@ -74,6 +81,7 @@ export const logoutEndpoint = templateString(
  */
 export const clientId = templateString(
   "{{ tmplr.clientId }}",
+  insertedEnvironmentVariables?.VITE_CLIENT_ID,
   import.meta.env.VITE_CLIENT_ID
 );
 
@@ -83,6 +91,7 @@ export const clientId = templateString(
  */
 export const appliedOidcAuthCodeConfig = templateString(
   "{{ tmplr.appliedOidcAuthCodeConfig }}",
+  insertedEnvironmentVariables?.VITE_APPLIED_OIDC_AUTH_CODE_CONFIG,
   import.meta.env.VITE_APPLIED_OIDC_AUTH_CODE_CONFIG
 );
 
@@ -93,6 +102,7 @@ export const appliedOidcAuthCodeConfig = templateString(
  */
 export const oidcAuthCodeConfigCallbackPath = templateString(
   "{{ tmplr.oidcAuthCodeConfigCallbackPath }}",
+  insertedEnvironmentVariables?.VITE_OIDC_AUTH_CODE_CONFIG_CALLBACK_PATH,
   import.meta.env.VITE_OIDC_AUTH_CODE_CONFIG_CALLBACK_PATH,
   (import.meta.env.VITE_PORTAL_SERVER_URL ?? "") + "/login"
 );
@@ -104,6 +114,7 @@ export const oidcAuthCodeConfigCallbackPath = templateString(
  */
 export const oidcAuthCodeConfigLogoutPath = templateString(
   "{{ tmplr.oidcAuthCodeConfigLogoutPath }}",
+  insertedEnvironmentVariables?.VITE_OIDC_AUTH_CODE_CONFIG_LOGOUT_PATH,
   import.meta.env.VITE_OIDC_AUTH_CODE_CONFIG_LOGOUT_PATH,
   (import.meta.env.VITE_PORTAL_SERVER_URL ?? "") + "/logout"
 );
@@ -113,6 +124,7 @@ export const oidcAuthCodeConfigLogoutPath = templateString(
  */
 export const swaggerConfigURL = templateString(
   "{{ tmplr.swaggerConfigURL }}",
+  insertedEnvironmentVariables?.VITE_SWAGGER_CONFIG_URL,
   import.meta.env.VITE_SWAGGER_CONFIG_URL,
   ""
 );
@@ -122,6 +134,7 @@ export const swaggerConfigURL = templateString(
  */
 export const audience = templateString(
   "{{ tmplr.audience }}",
+  insertedEnvironmentVariables?.VITE_AUDIENCE,
   import.meta.env.VITE_AUDIENCE,
   ""
 );
@@ -131,6 +144,7 @@ export const audience = templateString(
  */
 export const homeImageURL = templateString(
   "{{ tmplr.homeImageURL }}",
+  insertedEnvironmentVariables?.VITE_HOME_IMAGE_URL,
   import.meta.env.VITE_HOME_IMAGE_URL,
   ""
 );
@@ -140,6 +154,7 @@ export const homeImageURL = templateString(
  */
 export const apisImageURL = templateString(
   "{{ tmplr.apisImageURL }}",
+  insertedEnvironmentVariables?.VITE_APIS_IMAGE_URL,
   import.meta.env.VITE_APIS_IMAGE_URL,
   ""
 );
@@ -149,6 +164,7 @@ export const apisImageURL = templateString(
  */
 export const logoImageURL = templateString(
   "{{ tmplr.logoImageURL }}",
+  insertedEnvironmentVariables?.VITE_LOGO_IMAGE_URL,
   import.meta.env.VITE_LOGO_IMAGE_URL,
   ""
 );

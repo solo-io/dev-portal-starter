@@ -3,7 +3,10 @@ import useSWR from "swr";
 import { AuthContext } from "../Context/AuthContext";
 import { ErrorMessageResponse } from "./api-types";
 
-let _portalServerURL = import.meta.env.VITE_PORTAL_SERVER_URL;
+let _portalServerURL = insertedEnvironmentVariables?.VITE_PORTAL_SERVER_URL;
+if (_portalServerURL === undefined) {
+  _portalServerURL = import.meta.env.VITE_PORTAL_SERVER_URL;
+}
 if (
   _portalServerURL &&
   typeof _portalServerURL === "string" &&

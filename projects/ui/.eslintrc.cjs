@@ -49,6 +49,7 @@ module.exports = {
   },
   globals: {
     JSX: true,
+    insertedEnvironmentVariables: "readonly",
   },
   env: {
     es6: true,
