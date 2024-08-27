@@ -1,5 +1,5 @@
 changelog:
-  - type: FIX
-    issueLink: https://github.com/solo-io/gloo-mesh-enterprise/issues/18336
+  - type: NEW_FEATURE
+    issueLink: https://github.com/solo-io/solo-projects/issues/6808
     description: >-
-      Fixes an issue with the startup script where it didn't create the project/server/public folder.
+      Adds the teams page in to the gloo gateway version of the UI.
