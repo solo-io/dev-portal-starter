@@ -22,9 +22,12 @@ const SubscriptionInfoCardFooter = ({
   subscriptionState: SubscriptionState;
 }) => {
   const [showDeleteSubModal, setShowDeleteSubModal] = useState(false);
-  const canDeleteSubscription =
-    subscriptionState === SubscriptionState.PENDING ||
-    subscriptionState === SubscriptionState.ACCEPTED;
+  const canDeleteSubscription = true;
+  // We could limit what's able to be deleted like this.
+  // But it's possible that an admin accidentally rejects a subscription and a user wants to recreate it.
+  // const canDeleteSubscription =
+  //   subscriptionState === SubscriptionState.PENDING ||
+  //   subscriptionState === SubscriptionState.APPROVED;
 
   //
   // Render

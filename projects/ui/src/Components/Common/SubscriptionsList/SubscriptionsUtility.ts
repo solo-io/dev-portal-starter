@@ -3,7 +3,7 @@ import { colors } from "../../../Styles";
 
 export enum SubscriptionState {
   PENDING,
-  ACCEPTED,
+  APPROVED,
   REJECTED,
   DELETED,
 }
@@ -14,9 +14,9 @@ export const subscriptionStateMap = {
     accentColor: colors.seaBlue,
     borderColor: colors.splashBlue,
   },
-  [SubscriptionState.ACCEPTED]: {
-    subscriptionState: SubscriptionState.ACCEPTED,
-    label: "ACCEPTED",
+  [SubscriptionState.APPROVED]: {
+    subscriptionState: SubscriptionState.APPROVED,
+    label: "APPROVED",
     accentColor: colors.midGreen,
     borderColor: colors.splashBlue,
   },
@@ -40,7 +40,7 @@ const dateHasValue = (dateString: string | undefined) => {
 
 export const GetSubscriptionState = (subscription: Subscription) => {
   if (!!subscription.approved) {
-    return SubscriptionState.ACCEPTED;
+    return SubscriptionState.APPROVED;
   }
   if (dateHasValue(subscription.deletedAt)) {
     return SubscriptionState.DELETED;
