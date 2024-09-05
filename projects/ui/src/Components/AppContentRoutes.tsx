@@ -81,16 +81,16 @@ function AppContentRoutes() {
             </ErrorBoundary>
           }
         />
+        <Route
+          path="/apis/:id"
+          element={
+            <ErrorBoundary fallback="There was an issue displaying the API Product details">
+              <ApiDetailsPage />
+            </ErrorBoundary>
+          }
+        />
         {portalServerType === "gloo-gateway" && isLoggedIn && (
           <>
-            <Route
-              path="/apis/:id"
-              element={
-                <ErrorBoundary fallback="There was an issue displaying the API Product details">
-                  <ApiDetailsPage />
-                </ErrorBoundary>
-              }
-            />
             <Route
               path="/apps"
               element={
@@ -151,14 +151,6 @@ function AppContentRoutes() {
         */}
         {portalServerType === "gloo-mesh-gateway" && (
           <>
-            <Route
-              path="/apis/:id"
-              element={
-                <ErrorBoundary fallback="There was an issue displaying the API Product details">
-                  <ApiDetailsPage />
-                </ErrorBoundary>
-              }
-            />
             {isLoggedIn && (
               <>
                 <Route
