@@ -1,13 +1,15 @@
-import { Box, Code } from "@mantine/core";
+import { Code } from "@mantine/core";
 import { useContext } from "react";
 import { Icon } from "../../Assets/Icons";
 import { AuthContext } from "../../Context/AuthContext";
-import { colors } from "../../Styles";
 import { apisImageURL } from "../../user_variables.tmplr";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 import { PageContainer } from "../Common/PageContainer";
-import { StyledApisListMain } from "./gloo-mesh-gateway-components/ApisPage.style";
+import {
+  StyledApisListMain,
+  StyledEmptyContent,
+} from "./gloo-mesh-gateway-components/ApisPage.style";
 
 export function EmptyApisPage() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -24,14 +26,7 @@ export function EmptyApisPage() {
           breadcrumbItems={[{ label: "Home", link: "/" }, { label: "APIs" }]}
         />
         <StyledApisListMain>
-          <Box
-            sx={{
-              textAlign: "center",
-              lineHeight: "2rem",
-              backgroundColor: colors.marchGrey,
-              padding: "30px",
-            }}
-          >
+          <StyledEmptyContent>
             {!isLoggedIn ? (
               <>
                 <b>No API Products were found.</b>
@@ -46,26 +41,7 @@ export function EmptyApisPage() {
             ) : (
               <>No API Products have been created.</>
             )}
-          </Box>
-          {/* <EmptyData
-            topicMessageOverride={
-              <>
-                {!isLoggedIn ? (
-                  <>
-                    No API Products were found in any Portals that have
-                    `spec.visibility.public = true`.
-                    <br />
-                    To view API Products in private portals, you must log in.
-                  </>
-                ) : (
-                  <>
-                    no API Products have been created that you are able to
-                    access.
-                  </>
-                )}
-              </>
-            }
-          /> */}
+          </StyledEmptyContent>
         </StyledApisListMain>
       </PageContainer>
     </>

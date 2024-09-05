@@ -42,7 +42,6 @@ export function GG_ApisPage() {
     isSubscriptionsListError(subscriptions) ||
     !Array.isArray(subscriptions);
   const isLoading = isLoadingApiProducts || isLoadingSubscriptions;
-  // const isLoading = isLoadingApiProducts;
 
   //
   // Tab navigation
