@@ -6,7 +6,7 @@ type EmptyDataProps =
       message?: string;
     }
   | {
-      topicMessageOverride: string;
+      topicMessageOverride: React.ReactNode;
     };
 export function EmptyData(props: EmptyDataProps) {
   return (

@@ -2,23 +2,24 @@ import styled from "@emotion/styled";
 import { useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AppContext } from "../Context/AppContext";
+import { AuthContext } from "../Context/AuthContext";
 import {
   oidcAuthCodeConfigCallbackPath,
   oidcAuthCodeConfigLogoutPath,
 } from "../user_variables.tmplr";
+import AdminSubscriptionsPage from "./AdminSubscriptions/AdminSubscriptionsPage";
+import AdminTeamsPage from "./AdminTeams/AdminTeamsPage";
 import { ApiDetailsPage } from "./ApiDetails/ApiDetailsPage";
 import { ApisPage } from "./Apis/ApisPage";
+import { AppsPage } from "./Apps/AppsPage";
+import AppDetailsPage from "./Apps/Details/AppDetailsPage";
 import { ErrorBoundary } from "./Common/ErrorBoundary";
 import LoggedOut from "./Common/LoggedOut";
 import { HomePage } from "./Home/HomePage";
 import { Footer } from "./Structure/Footer";
+import TeamDetailsPage from "./Teams/Details/TeamDetailsPage";
+import { TeamsPage } from "./Teams/TeamsPage";
 import { UsagePlansPage } from "./UsagePlans/UsagePlansPage";
-// import AdminSubscriptionsPage from "./AdminSubscriptions/AdminSubscriptionsPage";
-// import AdminTeamsPage from "./AdminTeams/AdminTeamsPage";
-// import { AppsPage } from "./Apps/AppsPage";
-// import AppDetailsPage from "./Apps/Details/AppDetailsPage";
-// import TeamDetailsPage from "./Teams/Details/TeamDetailsPage";
-// import { TeamsPage } from "./Teams/TeamsPage";
 
 const MainContentContainer = styled.div`
   grid-area: contentcontainer;
@@ -42,6 +43,7 @@ const MainContentContainer = styled.div`
  *      know the area that failed.
  **/
 function AppContentRoutes() {
+  const { isLoggedIn } = useContext(AuthContext);
   const { portalServerType } = useContext(AppContext);
 
   return (
@@ -87,81 +89,88 @@ function AppContentRoutes() {
             </ErrorBoundary>
           }
         />
-        {/* // Note: Removing sections for GGv2 demo.
-        <Route
-          path="/apps"
-          element={
-            <ErrorBoundary fallback="There was an issue displaying the list of Apps">
-              <AppsPage />
-            </ErrorBoundary>
-          }
-        />
-        <Route
-          path="/apps/:appId"
-          element={
-            <ErrorBoundary fallback="There was an issue displaying the App details">
-              <AppDetailsPage />
-            </ErrorBoundary>
-          }
-        />
-        <Route
-          path="/teams"
-          element={
-            <ErrorBoundary fallback="There was an issue displaying the list of Teams">
-              <TeamsPage />
-            </ErrorBoundary>
-          }
-        />
-        <Route
-          path="/teams/:teamId"
-          element={
-            <ErrorBoundary fallback="There was an issue displaying the Team details">
-              <TeamDetailsPage />
-            </ErrorBoundary>
-          }
-        /> 
-        {/*
+        {portalServerType === "gloo-gateway" && isLoggedIn && (
+          <>
+            <Route
+              path="/apps"
+              element={
+                <ErrorBoundary fallback="There was an issue displaying the list of Apps">
+                  <AppsPage />
+                </ErrorBoundary>
+              }
+            />
+            <Route
+              path="/apps/:appId"
+              element={
+                <ErrorBoundary fallback="There was an issue displaying the App details">
+                  <AppDetailsPage />
+                </ErrorBoundary>
+              }
+            />
+            <Route
+              path="/teams"
+              element={
+                <ErrorBoundary fallback="There was an issue displaying the list of Teams">
+                  <TeamsPage />
+                </ErrorBoundary>
+              }
+            />
+            <Route
+              path="/teams/:teamId"
+              element={
+                <ErrorBoundary fallback="There was an issue displaying the Team details">
+                  <TeamDetailsPage />
+                </ErrorBoundary>
+              }
+            />
+            {/*
         
-        // Admin Routes
-        * /}
-        <Route
-          path="/admin/subscriptions"
-          element={
-            <ErrorBoundary fallback="There was an issue displaying the Admin Teams page">
-              <AdminSubscriptionsPage />
-            </ErrorBoundary>
-          }
-        />
-        <Route
-          path="/admin/teams"
-          element={
-            <ErrorBoundary fallback="There was an issue displaying the Admin Subscriptions page">
-              <AdminTeamsPage />
-            </ErrorBoundary>
-          }
-        />*/}
+            Admin Routes
+            */}
+            <Route
+              path="/admin/subscriptions"
+              element={
+                <ErrorBoundary fallback="There was an issue displaying the Admin Teams page">
+                  <AdminSubscriptionsPage />
+                </ErrorBoundary>
+              }
+            />
+            <Route
+              path="/admin/teams"
+              element={
+                <ErrorBoundary fallback="There was an issue displaying the Admin Subscriptions page">
+                  <AdminTeamsPage />
+                </ErrorBoundary>
+              }
+            />
+          </>
+        )}
         {/* 
 
         Gloo Mesh Gateway Routes
         */}
         {portalServerType === "gloo-mesh-gateway" && (
           <>
-            <Route
-              path="/usage-plans"
-              element={
-                <ErrorBoundary fallback="There was an issue displaying the list of Usage Plans">
-                  <UsagePlansPage />
-                </ErrorBoundary>
-              }
-            />
-            <Route
-              path="/usage-plans/:apiId"
-              element={
-                <ErrorBoundary fallback="There was an issue displaying information about the Usage Plan">
-                  <UsagePlansPage />
-                </ErrorBoundary>
-              }
-            />
+            {isLoggedIn && (
+              <>
+                <Route
+                  path="/usage-plans"
+                  element={
+                    <ErrorBoundary fallback="There was an issue displaying the list of Usage Plans">
+                      <UsagePlansPage />
+                    </ErrorBoundary>
+                  }
+                />
+                <Route
+                  path="/usage-plans/:apiId"
+                  element={
+                    <ErrorBoundary fallback="There was an issue displaying information about the Usage Plan">
+                      <UsagePlansPage />
+                    </ErrorBoundary>
+                  }
+                />
+              </>
+            )}
           </>
         )}
       </Routes>

@@ -4,10 +4,14 @@ import {
   AuthContext,
   LOCAL_STORAGE_AUTH_STATE,
   LOCAL_STORAGE_AUTH_VERIFIER,
-} from "../../Context/AuthContext";
-import { doAccessTokenRequest } from "../../Utility/accessTokenRequest";
-import { audience, authEndpoint, clientId } from "../../user_variables.tmplr";
-import { Button } from "../Common/Button";
+} from "../../../Context/AuthContext";
+import { doAccessTokenRequest } from "../../../Utility/accessTokenRequest";
+import {
+  audience,
+  authEndpoint,
+  clientId,
+} from "../../../user_variables.tmplr";
+import { Button } from "../../Common/Button";
 
 //
 // From https://stackoverflow.com/a/63336562
@@ -71,9 +75,8 @@ const AuthFlowStarter = () => {
   const [codeChallenge, setCodeChallenge] = useState<string>();
   useEffect(() => {
     (async () => {
-      const newCodeChallenge = await generateCodeChallengeFromVerifier(
-        verifier
-      );
+      const newCodeChallenge =
+        await generateCodeChallengeFromVerifier(verifier);
       setCodeChallenge(newCodeChallenge);
     })();
   }, [setCodeChallenge]);
