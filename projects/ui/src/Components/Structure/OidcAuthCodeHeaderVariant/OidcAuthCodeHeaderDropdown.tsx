@@ -9,7 +9,7 @@ import {
   oidcAuthCodeConfigCallbackPath,
   oidcAuthCodeConfigLogoutPath,
 } from "../../../user_variables.tmplr";
-import { StyledUserDropdown } from "../HeaderSectionLoggedIn";
+import { StyledUserDropdown } from "../BasicAuthVariant/HeaderSectionLoggedIn";
 
 /**
  * MAIN COMPONENT

@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { AppContext } from "../Context/AppContext";
 import { appliedOidcAuthCodeConfig } from "../user_variables.tmplr";
 import AppContentRoutes from "./AppContentRoutes";
-import { Header } from "./Structure/Header";
+import { Header } from "./Structure/BasicAuthVariant/Header";
 import OidcAuthCodeHeaderVariant from "./Structure/OidcAuthCodeHeaderVariant/OidcAuthCodeHeaderVariant";
 
 export const StyledAppContainer = styled.div(

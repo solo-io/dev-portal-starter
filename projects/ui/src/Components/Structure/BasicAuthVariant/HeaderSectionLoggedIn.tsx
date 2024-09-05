@@ -4,11 +4,11 @@ import { Popover } from "@mantine/core";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
 import { NavLink, useLocation, useSearchParams } from "react-router-dom";
-import { useGetCurrentUser } from "../../Apis/gg_hooks";
-import { Icon } from "../../Assets/Icons";
-import { AppContext } from "../../Context/AppContext";
-import { AuthContext } from "../../Context/AuthContext";
-import { logoutEndpoint } from "../../user_variables.tmplr";
+import { useGetCurrentUser } from "../../../Apis/gg_hooks";
+import { Icon } from "../../../Assets/Icons";
+import { AppContext } from "../../../Context/AppContext";
+import { AuthContext } from "../../../Context/AuthContext";
+import { logoutEndpoint } from "../../../user_variables.tmplr";
 
 export const StyledUserDropdown = styled(Popover.Dropdown)(
   ({ theme }) => css`

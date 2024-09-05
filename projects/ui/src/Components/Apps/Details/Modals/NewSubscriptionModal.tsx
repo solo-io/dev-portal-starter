@@ -119,7 +119,10 @@ const NewSubscriptionModal = ({
       await toast.promise(
         createSubscription({ apiProductId: formApiProductId }),
         {
-          error: "There was an error creating the subscription.",
+          error: (e) =>
+            "message" in e
+              ? "Error: " + e.message
+              : "There was an error creating the subscription.",
           loading: "Creating the subscription...",
           success: "Created the subscription!",
         }

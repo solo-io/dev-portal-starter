@@ -12,10 +12,10 @@ export function TeamsList() {
   //
   // Render
   //
-  if (isLoading) {
+  if (teamsList === undefined || isLoading) {
     return <Loading message="Getting list of teams..." />;
   }
-  if (!teamsList?.length) {
+  if (!teamsList.length) {
     return <EmptyData topic="team" />;
   }
   return (
