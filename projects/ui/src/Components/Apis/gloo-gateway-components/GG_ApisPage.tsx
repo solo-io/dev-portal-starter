@@ -18,6 +18,7 @@ import { BannerHeadingTitle } from "../../Common/Banner/BannerHeadingTitle";
 import { Loading } from "../../Common/Loading";
 import { PageContainer } from "../../Common/PageContainer";
 import { ApisPageStyles } from "../ApisPage.style";
+import { EmptyApisPageContent } from "../EmptyApisPage";
 import { ApisTabContent } from "./ApisTab/ApisTabContent";
 import PendingSubscriptionsTabContent from "./PendingSubscriptionsTab/PendingSubscriptionsTabContent";
 
@@ -51,7 +52,7 @@ export function GG_ApisPage() {
 
 function GG_ApisPageContent() {
   di(useListApiProducts, useListSubscriptionsForStatus);
-  const { data: apiProducts } = useListApiProducts();
+  const { data: apiProducts, error: apiProductsError } = useListApiProducts();
 
   const { data: subscriptions, error: subscriptionsErr } =
     useListSubscriptionsForStatus(SubscriptionStatus.PENDING);
@@ -61,7 +62,8 @@ function GG_ApisPageContent() {
     !Array.isArray(subscriptions);
   const isLoadingSubscriptions =
     subscriptions === undefined && !subscriptionsErr;
-  const isLoading = apiProducts === undefined || isLoadingSubscriptions;
+
+  const isLoading = apiProducts === undefined || subscriptions === undefined;
 
   //
   // Tab navigation
@@ -83,13 +85,16 @@ function GG_ApisPageContent() {
     });
   }, [tab, location.search]);
 
-  if (isLoading) {
-    // Make sure the APIs are finished loading since they are a dependency of both tabs.
-    return <Loading message="Getting list of apis..." />;
+  if (!!apiProductsError) {
+    return <EmptyApisPageContent />;
   }
   if (subscriptionsError) {
     // If there was a subscriptions error message, don't show the subscriptions.
     return <ApisTabContent />;
+  }
+  if (isLoading) {
+    // Make sure the APIs are finished loading since they are a dependency of both tabs.
+    return <Loading message="Getting list of apis..." />;
   }
   return (
     <Tabs value={tab} onTabChange={(t) => setTab(t ?? defaultTabValue)}>

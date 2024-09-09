@@ -6,6 +6,7 @@ const StyledEmptyContentOuter = styled.div(
   ({ theme }) => css`
     display: flex;
     justify-content: center;
+    text-align: center;
     line-height: 2rem;
     background-color: ${theme.marchGrey};
     padding: 30px;
@@ -25,7 +26,6 @@ export const SimpleEmptyContent = (props: {
         {props.title && (
           <Box
             sx={{
-              textAlign: "center",
               fontWeight: "bold",
               marginBottom: "10px",
             }}

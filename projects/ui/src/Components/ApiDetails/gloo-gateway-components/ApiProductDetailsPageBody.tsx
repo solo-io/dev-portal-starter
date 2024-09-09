@@ -83,11 +83,13 @@ export function ApiProductDetailsPageBody({
           ) : (
             <SimpleEmptyContent title="No documentation found.">
               <small>
-                You may add documentation for this API Product version in the{" "}
+                You may add documentation for this API in the{" "}
                 <Code sx={{ whiteSpace: "nowrap" }}>
                   spec.versions[your-version].openapiMetadata.description
                 </Code>{" "}
-                field of this API Product resource. Markdown is supported.
+                field of this{" "}
+                <Code sx={{ whiteSpace: "nowrap" }}>ApiProduct</Code> resource.
+                Markdown is supported.
               </small>
             </SimpleEmptyContent>
           )}
