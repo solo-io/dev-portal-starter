@@ -1,8 +1,14 @@
-import { Box } from "@mantine/core";
+import { Box, Flex, Tooltip } from "@mantine/core";
+import { NavLink } from "react-router-dom";
 import { Icon } from "../../../../Assets/Icons";
 import { CardStyles } from "../../../../Styles/shared/Card.style";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
-import { getAppDetailsLink } from "../../../../Utility/link-builders";
+import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
+import {
+  getAppDetailsLink,
+  getTeamDetailsLink,
+} from "../../../../Utility/link-builders";
+import { SubscriptionInfoCardStyles } from "../../../Common/SubscriptionsList/SubscriptionInfoCard/SubscriptionInfoCard.style";
 import { AppWithTeam } from "../AppsList";
 
 /**
@@ -10,17 +16,34 @@ import { AppWithTeam } from "../AppsList";
  **/
 export function AppSummaryGridCard({ app }: { app: AppWithTeam }) {
   return (
-    <GridCardStyles.GridCardWithLink to={getAppDetailsLink(app)}>
-      <Box px={"20px"} sx={{ textAlign: "left", marginTop: "10px" }}>
-        <CardStyles.TitleMedium>{app.name}</CardStyles.TitleMedium>
-        <CardStyles.Description>{app.description}</CardStyles.Description>
-      </Box>
-      <GridCardStyles.Footer>
-        <CardStyles.MetaInfo>
-          <Icon.TeamsIcon />
-          <CardStyles.SecondaryInfo>{app.team.name}</CardStyles.SecondaryInfo>
-        </CardStyles.MetaInfo>
-      </GridCardStyles.Footer>
-    </GridCardStyles.GridCardWithLink>
+    // <GridCardStyles.GridCardWithLink whiteBg to={getAppDetailsLink(app)}>
+    <GridCardStyles.GridCard whiteBg>
+      <div className="content">
+        <Box p={"20px"}>
+          <Flex direction={"column"} align={"flex-start"} gap={"5px"}>
+            <CardStyles.TitleSmall bold>{app.name}</CardStyles.TitleSmall>
+            <Flex align={"center"} justify={"flex-start"} gap={"8px"}>
+              <Tooltip label="Team" position="right">
+                <UtilityStyles.NavLinkContainer
+                  withArrow={false}
+                  flexCenter={true}
+                >
+                  <NavLink to={getTeamDetailsLink(app.team)}>
+                    <Icon.TeamsIcon width={20} />
+                    {app.team.name}
+                  </NavLink>
+                </UtilityStyles.NavLinkContainer>
+              </Tooltip>
+            </Flex>
+            <CardStyles.Description>{app.description}</CardStyles.Description>
+          </Flex>
+        </Box>
+      </div>
+      <SubscriptionInfoCardStyles.Footer>
+        <UtilityStyles.NavLinkContainer>
+          <NavLink to={getAppDetailsLink(app)}>DETAILS</NavLink>
+        </UtilityStyles.NavLinkContainer>
+      </SubscriptionInfoCardStyles.Footer>
+    </GridCardStyles.GridCard>
   );
 }

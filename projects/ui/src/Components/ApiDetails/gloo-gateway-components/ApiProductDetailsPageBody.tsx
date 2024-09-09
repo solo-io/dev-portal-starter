@@ -1,4 +1,4 @@
-import { Tabs } from "@mantine/core";
+import { Code, Tabs } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -7,6 +7,7 @@ import {
   ApiVersionSchema,
 } from "../../../Apis/api-types";
 import { ContentWidthDiv } from "../../../Styles/ContentWidthHelpers";
+import { SimpleEmptyContent } from "../../Common/EmptyData";
 import DocsTabContent from "./DocsTab/DocsTabContent";
 import SchemaTabContent from "./SchemaTab/SchemaTabContent";
 
@@ -62,9 +63,7 @@ export function ApiProductDetailsPageBody({
         */}
         <Tabs.List>
           <Tabs.Tab value={apiProductDetailsTabValues.SPEC}>Spec</Tabs.Tab>
-          {includesDocumentation && (
-            <Tabs.Tab value={apiProductDetailsTabValues.DOCS}>Docs</Tabs.Tab>
-          )}
+          <Tabs.Tab value={apiProductDetailsTabValues.DOCS}>Docs</Tabs.Tab>
         </Tabs.List>
         {/*
           
@@ -78,11 +77,23 @@ export function ApiProductDetailsPageBody({
             selectedApiVersion={selectedApiVersion}
           />
         </Tabs.Panel>
-        {includesDocumentation && (
-          <Tabs.Panel value={apiProductDetailsTabValues.DOCS} pt={"xl"}>
+        <Tabs.Panel value={apiProductDetailsTabValues.DOCS} pt={"xl"}>
+          {includesDocumentation ? (
             <DocsTabContent selectedApiVersion={selectedApiVersion} />
-          </Tabs.Panel>
-        )}
+          ) : (
+            <SimpleEmptyContent title="No documentation found.">
+              <small>
+                You may add documentation for this API in the{" "}
+                <Code sx={{ whiteSpace: "nowrap" }}>
+                  spec.versions[your-version].openapiMetadata.description
+                </Code>{" "}
+                field of this{" "}
+                <Code sx={{ whiteSpace: "nowrap" }}>ApiProduct</Code> resource.
+                Markdown is supported.
+              </small>
+            </SimpleEmptyContent>
+          )}
+        </Tabs.Panel>
       </Tabs>
     </ContentWidthDiv>
   );

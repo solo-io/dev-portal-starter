@@ -1,0 +1,17 @@
+changelog:
+  - type: FIX
+    issueLink: https://github.com/solo-io/solo-projects/issues/6853
+    description: >-
+      Fixes flickering loading state on landing pages.
+  - type: FIX
+    issueLink: https://github.com/solo-io/solo-projects/issues/6852
+    description: >-
+      Adds docs setup information to API details page.
+  - type: FIX
+    issueLink: https://github.com/solo-io/solo-projects/issues/6851
+    description: >-
+      Removes placeholder images for apps.
+  - type: FIX
+    issueLink: https://github.com/solo-io/solo-projects/issues/6854
+    description: >-
+      Adds information when in a logged out empty state on private Portals.

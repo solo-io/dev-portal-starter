@@ -38,15 +38,6 @@ const makeFilterBoxCSS = (theme: Theme) => css`
   background: white;
 `;
 
-export const StyledEmptyContent = styled.div(
-  ({ theme }) => css`
-    text-align: center;
-    line-height: 2rem;
-    background-color: ${theme.marchGrey};
-    padding: 30px;
-  `
-);
-
 export const StyledApisListMain = styled.main(
   ({ theme }) => css`
     padding: 0 30px;
