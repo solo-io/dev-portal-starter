@@ -1,4 +1,4 @@
-import { Box, Flex } from "@mantine/core";
+import { Box, Flex, Tooltip } from "@mantine/core";
 import { NavLink } from "react-router-dom";
 import { Icon } from "../../../../Assets/Icons";
 import { CardStyles } from "../../../../Styles/shared/Card.style";
@@ -23,15 +23,17 @@ export function AppSummaryGridCard({ app }: { app: AppWithTeam }) {
           <Flex direction={"column"} align={"flex-start"} gap={"5px"}>
             <CardStyles.TitleSmall bold>{app.name}</CardStyles.TitleSmall>
             <Flex align={"center"} justify={"flex-start"} gap={"8px"}>
-              <UtilityStyles.NavLinkContainer
-                withArrow={false}
-                flexCenter={true}
-              >
-                <NavLink to={getTeamDetailsLink(app.team)}>
-                  <Icon.TeamsIcon width={20} />
-                  {app.team.name}
-                </NavLink>
-              </UtilityStyles.NavLinkContainer>
+              <Tooltip label="Team" position="right">
+                <UtilityStyles.NavLinkContainer
+                  withArrow={false}
+                  flexCenter={true}
+                >
+                  <NavLink to={getTeamDetailsLink(app.team)}>
+                    <Icon.TeamsIcon width={20} />
+                    {app.team.name}
+                  </NavLink>
+                </UtilityStyles.NavLinkContainer>
+              </Tooltip>
             </Flex>
             <CardStyles.Description>{app.description}</CardStyles.Description>
           </Flex>

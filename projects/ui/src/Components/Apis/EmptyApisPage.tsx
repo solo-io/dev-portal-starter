@@ -5,11 +5,9 @@ import { AuthContext } from "../../Context/AuthContext";
 import { apisImageURL } from "../../user_variables.tmplr";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
+import { SimpleEmptyContent } from "../Common/EmptyData";
 import { PageContainer } from "../Common/PageContainer";
-import {
-  StyledApisListMain,
-  StyledEmptyContent,
-} from "./gloo-mesh-gateway-components/ApisPage.style";
+import { StyledApisListMain } from "./gloo-mesh-gateway-components/ApisPage.style";
 
 export function EmptyApisPage() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -26,22 +24,20 @@ export function EmptyApisPage() {
           breadcrumbItems={[{ label: "Home", link: "/" }, { label: "APIs" }]}
         />
         <StyledApisListMain>
-          <StyledEmptyContent>
-            {!isLoggedIn ? (
-              <>
-                <b>No API Products were found.</b>
+          {!isLoggedIn ? (
+            <SimpleEmptyContent>
+              No API Products have been created.
+            </SimpleEmptyContent>
+          ) : (
+            <SimpleEmptyContent title="No API Products were found.">
+              <small>
+                To view API Products in private Portals, please log in.
                 <br />
-                <small>
-                  To view API Products in private Portals, please log in.
-                  <br />
-                  To view API Products in public Portals, the Portal resource
-                  must have <Code>spec.visibility.public = true</Code>.
-                </small>
-              </>
-            ) : (
-              <>No API Products have been created.</>
-            )}
-          </StyledEmptyContent>
+                To view API Products in public Portals, the Portal resource must
+                have <Code>spec.visibility.public = true</Code>.
+              </small>
+            </SimpleEmptyContent>
+          )}
         </StyledApisListMain>
       </PageContainer>
     </>

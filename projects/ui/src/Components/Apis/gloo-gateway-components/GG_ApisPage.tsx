@@ -29,19 +29,39 @@ const tabValues = {
 const defaultTabValue = tabValues.APIS;
 
 export function GG_ApisPage() {
-  di(useListApiProducts, useListSubscriptionsForStatus);
-  const { isLoading: isLoadingApiProducts } = useListApiProducts();
+  //
+  // Render
+  //
+  return (
+    <PageContainer>
+      <BannerHeading
+        bgImageURL={apisImageURL}
+        title={<BannerHeadingTitle text={"APIs"} logo={<Icon.CodeGear />} />}
+        description={
+          "Browse the list of APIs and documentation in this portal. From here you can get the information you need to make API calls."
+        }
+        breadcrumbItems={[{ label: "Home", link: "/" }, { label: "APIs" }]}
+      />
+      <Box px={30} mb={60}>
+        <GG_ApisPageContent />
+      </Box>
+    </PageContainer>
+  );
+}
 
-  const {
-    isLoading: isLoadingSubscriptions,
-    data: subscriptions,
-    error: subscriptionsErr,
-  } = useListSubscriptionsForStatus(SubscriptionStatus.PENDING);
+function GG_ApisPageContent() {
+  di(useListApiProducts, useListSubscriptionsForStatus);
+  const { data: apiProducts } = useListApiProducts();
+
+  const { data: subscriptions, error: subscriptionsErr } =
+    useListSubscriptionsForStatus(SubscriptionStatus.PENDING);
   const subscriptionsError =
     !!subscriptionsErr ||
     isSubscriptionsListError(subscriptions) ||
     !Array.isArray(subscriptions);
-  const isLoading = isLoadingApiProducts || isLoadingSubscriptions;
+  const isLoadingSubscriptions =
+    subscriptions === undefined && !subscriptionsErr;
+  const isLoading = apiProducts === undefined || isLoadingSubscriptions;
 
   //
   // Tab navigation
@@ -63,68 +83,52 @@ export function GG_ApisPage() {
     });
   }, [tab, location.search]);
 
-  //
-  // Render
-  //
+  if (isLoading) {
+    // Make sure the APIs are finished loading since they are a dependency of both tabs.
+    return <Loading message="Getting list of apis..." />;
+  }
+  if (subscriptionsError) {
+    // If there was a subscriptions error message, don't show the subscriptions.
+    return <ApisTabContent />;
+  }
   return (
-    <PageContainer>
-      <BannerHeading
-        bgImageURL={apisImageURL}
-        title={<BannerHeadingTitle text={"APIs"} logo={<Icon.CodeGear />} />}
-        description={
-          "Browse the list of APIs and documentation in this portal. From here you can get the information you need to make API calls."
-        }
-        breadcrumbItems={[{ label: "Home", link: "/" }, { label: "APIs" }]}
-      />
+    <Tabs value={tab} onTabChange={(t) => setTab(t ?? defaultTabValue)}>
+      {/*
 
-      <Box px={30} mb={60}>
-        {isLoading ? (
-          // Make sure the APIs are finished loading since they are a dependency of both tabs.
-          <Loading message="Getting list of apis..." />
-        ) : subscriptionsError ? (
-          // If there was a subscriptions error message, don't show the subscriptions.
-          <ApisTabContent />
-        ) : (
-          <Tabs value={tab} onTabChange={(t) => setTab(t ?? defaultTabValue)}>
-            {/*
+      Tab Titles
+      */}
+      <Tabs.List>
+        <Tabs.Tab value={tabValues.APIS}>APIs</Tabs.Tab>
+        <Tabs.Tab value={tabValues.SUBS}>
+          <Flex align="center" justify="center" gap={10}>
+            <span>Pending API Subscriptions</span>
+            {!subscriptions ? (
+              <Box pl={5} mb={-10}>
+                <Loader size={"20px"} color={colors.seaBlue} />
+              </Box>
+            ) : (
+              subscriptions.length > 0 && (
+                <ApisPageStyles.NumberInCircle>
+                  {subscriptions.length}
+                </ApisPageStyles.NumberInCircle>
+              )
+            )}
+          </Flex>
+        </Tabs.Tab>
+      </Tabs.List>
+      {/*
           
-            Tab Titles
-            */}
-            <Tabs.List>
-              <Tabs.Tab value={tabValues.APIS}>APIs</Tabs.Tab>
-              <Tabs.Tab value={tabValues.SUBS}>
-                <Flex align="center" justify="center" gap={10}>
-                  <span>Pending API Subscriptions</span>
-                  {isLoadingSubscriptions || !subscriptions ? (
-                    <Box pl={5} mb={-10}>
-                      <Loader size={"20px"} color={colors.seaBlue} />
-                    </Box>
-                  ) : (
-                    subscriptions.length > 0 && (
-                      <ApisPageStyles.NumberInCircle>
-                        {subscriptions.length}
-                      </ApisPageStyles.NumberInCircle>
-                    )
-                  )}
-                </Flex>
-              </Tabs.Tab>
-            </Tabs.List>
-            {/*
-          
-            Tab Content
-            */}
-            <Tabs.Panel value={tabValues.APIS} pt={"xl"}>
-              <ApisTabContent />
-            </Tabs.Panel>
-            <Tabs.Panel value={tabValues.SUBS} pt={"xl"}>
-              <PendingSubscriptionsTabContent
-                subscriptions={subscriptions}
-                isLoadingSubscriptions={isLoadingSubscriptions}
-              />
-            </Tabs.Panel>
-          </Tabs>
-        )}
-      </Box>
-    </PageContainer>
+      Tab Content
+      */}
+      <Tabs.Panel value={tabValues.APIS} pt={"xl"}>
+        <ApisTabContent />
+      </Tabs.Panel>
+      <Tabs.Panel value={tabValues.SUBS} pt={"xl"}>
+        <PendingSubscriptionsTabContent
+          subscriptions={subscriptions}
+          isLoadingSubscriptions={isLoadingSubscriptions}
+        />
+      </Tabs.Panel>
+    </Tabs>
   );
 }
