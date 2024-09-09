@@ -11,8 +11,7 @@ changelog:
     issueLink: https://github.com/solo-io/solo-projects/issues/6851
     description: >-
       Removes placeholder images for apps.
-  # Check if this is relevant here:
-  # - type: FIX
-  #   issueLink: https://github.com/solo-io/solo-projects/issues/6854
-  #   description: >-
-  #     Adds information when in a logged out empty state on private Portals.
+  - type: FIX
+    issueLink: https://github.com/solo-io/solo-projects/issues/6854
+    description: >-
+      Adds information when in a logged out empty state on private Portals.
