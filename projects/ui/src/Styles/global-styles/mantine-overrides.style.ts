@@ -63,4 +63,8 @@ export const mantineGlobalStyles = css`
       }
     }
   }
+
+  code.mantine-Code-root {
+    background-color: ${colors.januaryGreyDark1};
+  }
 `;

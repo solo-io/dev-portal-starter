@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Box, Flex, Text } from "@mantine/core";
+import { borderRadiusConstants } from "../../Styles/constants";
 
 const StyledEmptyContentOuter = styled.div(
   ({ theme }) => css`
@@ -8,7 +9,12 @@ const StyledEmptyContentOuter = styled.div(
     justify-content: center;
     text-align: center;
     line-height: 2rem;
-    background-color: ${theme.marchGrey};
+    /* background-color: ${theme.splashBlueLight7}; */
+    background-color: white;
+    box-shadow: 1px 1px 5px ${theme.splashBlue};
+    border: 1px solid ${theme.splashBlue};
+    border-radius: ${borderRadiusConstants.small};
+    margin-bottom: 30px;
     padding: 30px;
   `
 );
@@ -26,14 +32,18 @@ export const SimpleEmptyContent = (props: {
         {props.title && (
           <Box
             sx={{
-              fontWeight: "bold",
-              marginBottom: "10px",
+              fontWeight: 400,
+              fontSize: "1.2rem",
             }}
           >
             {props.title}
           </Box>
         )}
-        {props.children}
+        {!!props.children && (
+          <Box sx={{ fontSize: "1rem", marginTop: "12px" }}>
+            {props.children}
+          </Box>
+        )}
       </Box>
     </StyledEmptyContentOuter>
   );
