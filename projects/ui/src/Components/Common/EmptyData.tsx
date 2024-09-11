@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Box, Flex, Text } from "@mantine/core";
+import { Box } from "@mantine/core";
+import { borderRadiusConstants } from "../../Styles/constants";
 
 const StyledEmptyContentOuter = styled.div(
   ({ theme }) => css`
@@ -8,15 +9,16 @@ const StyledEmptyContentOuter = styled.div(
     justify-content: center;
     text-align: center;
     line-height: 2rem;
-    background-color: ${theme.marchGrey};
+    background-color: white;
+    box-shadow: 1px 1px 5px ${theme.splashBlue};
+    border: 1px solid ${theme.splashBlue};
+    border-radius: ${borderRadiusConstants.small};
+    margin-bottom: 30px;
     padding: 30px;
   `
 );
 
-/**
- *  This is typically used for Empty sections with more custom content.
- */
-export const SimpleEmptyContent = (props: {
+export const EmptyData = (props: {
   children?: React.ReactNode;
   title?: React.ReactNode;
 }) => {
@@ -26,46 +28,19 @@ export const SimpleEmptyContent = (props: {
         {props.title && (
           <Box
             sx={{
-              fontWeight: "bold",
-              marginBottom: "10px",
+              fontWeight: 400,
+              fontSize: "1.2rem",
             }}
           >
             {props.title}
           </Box>
         )}
-        {props.children}
+        {!!props.children && (
+          <Box sx={{ fontSize: "1rem", marginTop: "10px" }}>
+            {props.children}
+          </Box>
+        )}
       </Box>
     </StyledEmptyContentOuter>
   );
 };
-
-/**
- *  This is typically used for Empty data for topics.
- */
-export function EmptyData(
-  props:
-    | {
-        topic: string;
-        message?: string;
-      }
-    | {
-        topicMessageOverride: React.ReactNode;
-      }
-) {
-  return (
-    <Flex justify={"center"}>
-      <Text color="gray.6" italic>
-        {"topicMessageOverride" in props ? (
-          <>{props.topicMessageOverride}</>
-        ) : (
-          <>No {props.topic} results were found</>
-        )}
-      </Text>
-      {"message" in props && !!props.message && (
-        <Text color="gray.6" italic>
-          {props.message}
-        </Text>
-      )}
-    </Flex>
-  );
-}

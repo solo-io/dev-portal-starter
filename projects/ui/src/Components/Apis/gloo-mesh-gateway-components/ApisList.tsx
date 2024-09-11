@@ -72,7 +72,7 @@ export function ApisList({
   }
 
   if (!displayedApisList.length) {
-    return <EmptyData topic="API" />;
+    return <EmptyData title="No APIs were found matching these filters." />;
   }
   return (
     <>

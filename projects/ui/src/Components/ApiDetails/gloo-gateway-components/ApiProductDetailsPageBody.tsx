@@ -7,7 +7,7 @@ import {
   ApiVersionSchema,
 } from "../../../Apis/api-types";
 import { ContentWidthDiv } from "../../../Styles/ContentWidthHelpers";
-import { SimpleEmptyContent } from "../../Common/EmptyData";
+import { EmptyData } from "../../Common/EmptyData";
 import DocsTabContent from "./DocsTab/DocsTabContent";
 import SchemaTabContent from "./SchemaTab/SchemaTabContent";
 
@@ -71,7 +71,6 @@ export function ApiProductDetailsPageBody({
         */}
         <Tabs.Panel value={apiProductDetailsTabValues.SPEC} pt={"xl"}>
           <SchemaTabContent
-            apiProduct={apiProduct}
             apiProductVersions={apiProductVersions}
             apiVersionSpec={apiVersionSpec}
             selectedApiVersion={selectedApiVersion}
@@ -81,17 +80,16 @@ export function ApiProductDetailsPageBody({
           {includesDocumentation ? (
             <DocsTabContent selectedApiVersion={selectedApiVersion} />
           ) : (
-            <SimpleEmptyContent title="No documentation found.">
+            <EmptyData title="No documentation found.">
               <small>
                 You may add documentation for this API in the{" "}
-                <Code sx={{ whiteSpace: "nowrap" }}>
+                <Code>
                   spec.versions[your-version].openapiMetadata.description
                 </Code>{" "}
-                field of this{" "}
-                <Code sx={{ whiteSpace: "nowrap" }}>ApiProduct</Code> resource.
-                Markdown is supported.
+                field of this <Code>ApiProduct</Code> resource. Markdown is
+                supported.
               </small>
-            </SimpleEmptyContent>
+            </EmptyData>
           )}
         </Tabs.Panel>
       </Tabs>

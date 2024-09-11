@@ -1,15 +1,17 @@
 import { Box, Flex } from "@mantine/core";
 import { useContext, useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
-import { NavLink } from "react-router-dom";
-import { Team } from "../../../../Apis/api-types";
-import { useListAppsForTeam } from "../../../../Apis/gg_hooks";
+import { APIKey, App } from "../../../../Apis/api-types";
+import {
+  useListApiKeysForApp,
+  useListAppsForTeam,
+} from "../../../../Apis/gg_hooks";
 import { AuthContext } from "../../../../Context/AuthContext";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
-import { getAppDetailsLink } from "../../../../Utility/link-builders";
 import { formatDateToMMDDYYYY } from "../../../../Utility/utility";
+import { Button } from "../../../Common/Button";
 import CustomPagination, {
   pageOptions,
   useCustomPagination,
@@ -18,46 +20,47 @@ import { EmptyData } from "../../../Common/EmptyData";
 import { Loading } from "../../../Common/Loading";
 import Table from "../../../Common/Table";
 import ToggleAddButton from "../../../Common/ToggleAddButton";
-import AddTeamAppSubSection from "./AddTeamAppSubSection";
+import ConfirmDeleteApiKeyModal from "../Modals/ConfirmDeleteApiKeyModal";
+import AddApiKeysSubSection from "./AddApiKeysSubSection";
 
-const TeamAppsSection = ({ team }: { team: Team }) => {
+const AppApiKeysSection = ({ app }: { app: App }) => {
   di(useListAppsForTeam);
   const { isAdmin } = useContext(AuthContext);
-  const { isLoading, data: apps } = useListAppsForTeam(team);
-  const [showAddTeamAppSubSection, setShowAddTeamAppSubSection] =
-    useState(false);
+  const { isLoading, data: apiKeys } = useListApiKeysForApp(app.id);
+  const [showAddApiKeySubSection, setShowAddApiKeySubSection] = useState(false);
 
   const customPaginationData = useCustomPagination(
-    apps ?? [],
+    apiKeys ?? [],
     pageOptions.table
   );
   const { paginatedData } = customPaginationData;
 
+  const [confirmDeleteApiKey, setConfirmDeleteApiKey] = useState<APIKey>();
+
   const rows = useMemo(() => {
-    return paginatedData?.map(
-      (app) =>
+    return paginatedData?.map((apiKey) => {
+      return (
         (
-          <tr key={app.id}>
-            <td>{app.name}</td>
-            <td>{formatDateToMMDDYYYY(new Date(app.createdAt))}</td>
-            <td>{formatDateToMMDDYYYY(new Date(app.updatedAt))}</td>
+          <tr key={apiKey.id}>
+            <td>{apiKey.name}</td>
+            <td>{formatDateToMMDDYYYY(new Date(apiKey.createdAt))}</td>
+            {/* <td>{JSON.stringify(apiKey.metadata)}</td> */}
             <td>
-              {app.deletedAt && formatDateToMMDDYYYY(new Date(app.deletedAt))}
+              <UtilityStyles.CenteredCellContent>
+                <Button
+                  size="xs"
+                  variant="light"
+                  color="danger"
+                  onClick={() => setConfirmDeleteApiKey(apiKey)}
+                >
+                  Delete
+                </Button>
+              </UtilityStyles.CenteredCellContent>
             </td>
-            {!isAdmin && (
-              <td>
-                <UtilityStyles.CenteredCellContent>
-                  <Box mr={"-5%"}>
-                    <UtilityStyles.NavLinkContainer>
-                      <NavLink to={getAppDetailsLink(app)}>DETAILS</NavLink>
-                    </UtilityStyles.NavLinkContainer>
-                  </Box>
-                </UtilityStyles.CenteredCellContent>
-              </td>
-            )}
           </tr>
         ) ?? []
-    );
+      );
+    });
   }, [paginatedData]);
 
   if (isLoading) {
@@ -66,27 +69,25 @@ const TeamAppsSection = ({ team }: { team: Team }) => {
   return (
     <DetailsPageStyles.Section>
       <Flex justify={"space-between"}>
-        <DetailsPageStyles.Title>Apps</DetailsPageStyles.Title>
+        <DetailsPageStyles.Title>API Keys</DetailsPageStyles.Title>
         {!isAdmin && (
           <ToggleAddButton
-            topicUpperCase="APP"
-            isAdding={showAddTeamAppSubSection}
+            topicUpperCase="API KEY"
+            isAdding={showAddApiKeySubSection}
             toggleAdding={() =>
-              setShowAddTeamAppSubSection(!showAddTeamAppSubSection)
+              setShowAddApiKeySubSection(!showAddApiKeySubSection)
             }
           />
         )}
       </Flex>
-      {!isAdmin && (
-        <AddTeamAppSubSection
-          team={team}
-          open={showAddTeamAppSubSection}
-          onClose={() => setShowAddTeamAppSubSection(false)}
-        />
-      )}
-      {!apps?.length ? (
-        <Box mb={"-30px"} mt={"30px"}>
-          <EmptyData title="No Apps were found." />
+      <AddApiKeysSubSection
+        app={app}
+        open={showAddApiKeySubSection}
+        onClose={() => setShowAddApiKeySubSection(false)}
+      />
+      {!apiKeys?.length ? (
+        <Box mb={"-30px"} mt={"10px"}>
+          <EmptyData title="No API Keys were found." />
         </Box>
       ) : (
         <Box pt={"5px"}>
@@ -97,15 +98,11 @@ const TeamAppsSection = ({ team }: { team: Team }) => {
                   <tr>
                     <th>Name</th>
                     <th>Created</th>
-                    <th>Updated</th>
-                    <th>Deleted</th>
-                    {!isAdmin && (
-                      <th>
-                        <UtilityStyles.CenteredCellContent>
-                          Details
-                        </UtilityStyles.CenteredCellContent>
-                      </th>
-                    )}
+                    <th>
+                      <UtilityStyles.CenteredCellContent>
+                        Delete
+                      </UtilityStyles.CenteredCellContent>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>{rows}</tbody>
@@ -125,8 +122,14 @@ const TeamAppsSection = ({ team }: { team: Team }) => {
           </GridCardStyles.GridCard>
         </Box>
       )}
+      <ConfirmDeleteApiKeyModal
+        open={!!confirmDeleteApiKey}
+        apiKeyId={confirmDeleteApiKey?.id ?? ""}
+        appId={app.id}
+        onClose={() => setConfirmDeleteApiKey(undefined)}
+      />
     </DetailsPageStyles.Section>
   );
 };
 
-export default TeamAppsSection;
+export default AppApiKeysSection;

@@ -1,6 +1,7 @@
 import { Box, Flex } from "@mantine/core";
 import { useContext } from "react";
 import { Team } from "../../../Apis/api-types";
+import { Icon } from "../../../Assets/Icons";
 import { AuthContext } from "../../../Context/AuthContext";
 import { BannerHeading } from "../../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../../Common/Banner/BannerHeadingTitle";
@@ -17,6 +18,7 @@ const TeamDetailsPageContent = ({ team }: { team: Team }) => {
         title={
           <BannerHeadingTitle
             text={team.name}
+            logo={<Icon.TeamsIcon />}
             stylingTweaks={{
               fontSize: "32px",
               lineHeight: "36px",

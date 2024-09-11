@@ -43,6 +43,8 @@ const baseColors = {
 const colorMap = {
   ...baseColors,
 
+  januaryGreyDark1: Color(baseColors.januaryGrey).darken(0.01).hex(),
+
   marchGreyDark3: Color(baseColors.marchGrey).darken(0.03).hex(),
   marchGreyDark5: Color(baseColors.marchGrey).darken(0.05).hex(),
   marchGreyDark10: Color(baseColors.marchGrey).darken(0.1).hex(),

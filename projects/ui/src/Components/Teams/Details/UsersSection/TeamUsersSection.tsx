@@ -100,7 +100,8 @@ const TeamUsersSection = ({ team }: { team: Team }) => {
       />
       {!members?.length ? (
         <Box mb={"-30px"}>
-          <EmptyData topic="Members" />
+          {/* We never should get here, since the user must be a member. */}
+          <EmptyData title="No were found in this Team." />
         </Box>
       ) : (
         <Box pt={"5px"}>

@@ -85,8 +85,11 @@ export function AppsList({
   if (isLoading) {
     return <Loading message="Getting list of apps..." />;
   }
+  if (!appsList?.length) {
+    return <EmptyData title="No Apps were found." />;
+  }
   if (!filteredAppsList.length) {
-    return <EmptyData topic="app" />;
+    return <EmptyData title="No Apps were found matching these filters." />;
   }
   return (
     <AppsPageStyles.AppGridList>

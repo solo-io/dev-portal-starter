@@ -108,6 +108,16 @@ export type App = {
   teamId: string;
 };
 
+export type ApiKey = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+  apiKey: string;
+  name: string;
+  metadata: Record<string, string>;
+};
+
 export type Team = {
   createdAt: string;
   description: string;

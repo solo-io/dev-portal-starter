@@ -4,6 +4,7 @@ import useSWRMutation from "swr/mutation";
 import { AuthContext } from "../Context/AuthContext";
 import { omitErrorMessageResponse } from "../Utility/utility";
 import {
+  ApiKey,
   ApiProductDetails,
   ApiProductSummary,
   ApiVersion,
@@ -19,15 +20,15 @@ import {
 import { fetchJSON, useMultiSwrWithAuth, useSwrWithAuth } from "./utility";
 
 //
-// Queries
+// region Queries
 //
 
-// User
+// region User
 export function useGetCurrentUser() {
   return useSwrWithAuth<User>("/me");
 }
 
-// Apps
+// region Apps + API Keys
 export function useListAppsForTeam(team: Team) {
   return useSwrWithAuth<App[]>(`/teams/${team.id}/apps`);
 }
@@ -55,8 +56,11 @@ export function useListFlatAppsForTeamsOmitErrors(teams: Team[]) {
 export function useGetAppDetails(id?: string) {
   return useSwrWithAuth<App>(`/apps/${id}`);
 }
+export function useListApiKeysForApp(appId: string) {
+  return useSwrWithAuth<ApiKey[]>(`/apps/${appId}/api-keys`);
+}
 
-// Teams
+// region Teams
 const TEAMS_SWR_KEY = "teams";
 export function useListTeams() {
   return useSwrWithAuth<Team[]>(`/teams`);
@@ -68,7 +72,7 @@ export function useGetTeamDetails(id?: string) {
   return useSwrWithAuth<Team>(`/teams/${id}`);
 }
 
-// Api Products
+// region API Products
 export function useListApiProducts() {
   return useSwrWithAuth<ApiProductSummary[]>("/api-products");
 }
@@ -79,7 +83,7 @@ export function useGetApiProductVersions(id?: string) {
   return useSwrWithAuth<ApiVersion[]>(`/api-products/${id}/versions`);
 }
 
-// Subscriptions
+// region Subscriptions
 // this is an admin endpoint
 export function useListSubscriptionsForStatus(status: SubscriptionStatus) {
   const swrResponse = useSwrWithAuth<Subscription[] | SubscriptionsListError>(
@@ -115,7 +119,7 @@ export function useListSubscriptionsForApps(apps: App[]) {
 }
 
 //
-// Mutations
+// region Mutations
 //
 
 const getLatestAuthHeaders = (latestAccessToken: string | undefined) => {
@@ -129,7 +133,7 @@ const getLatestAuthHeaders = (latestAccessToken: string | undefined) => {
 type MutationWithArgs<T> = { arg: T };
 
 // ------------------------ //
-// Create Team
+// region Create Team
 
 type CreateTeamParams = MutationWithArgs<{ name: string; description: string }>;
 
@@ -149,7 +153,7 @@ export function useCreateTeamMutation() {
 }
 
 // ------------------------ //
-// Create Team Member
+// region Create Team Member
 
 type AddTeamMemberParams = MutationWithArgs<{ email: string; teamId: string }>;
 
@@ -169,7 +173,7 @@ export function useAddTeamMemberMutation() {
 }
 
 // ------------------------ //
-// Remove Team Member
+// region Remove Team Member
 
 type AdminRemoveTeamMemberParams = MutationWithArgs<{
   teamId: string;
@@ -194,7 +198,7 @@ export function useRemoveTeamMemberMutation() {
 }
 
 // ------------------------ //
-// Create App
+// region Create App
 
 type CreateAppParams = MutationWithArgs<{ name: string; description: string }>;
 
@@ -220,7 +224,7 @@ export function useCreateAppMutation(teamId: string | undefined) {
 }
 
 // ------------------------ //
-// Update App
+// region Update App
 
 type UpdateAppParams = MutationWithArgs<{
   appId: string;
@@ -247,7 +251,7 @@ export function useUpdateAppMutation() {
 }
 
 // ------------------------ //
-// Update Team
+// region Update Team
 
 type UpdateTeamParams = MutationWithArgs<{
   teamId: string;
@@ -272,7 +276,7 @@ export function useUpdateTeamMutation() {
 }
 
 // ------------------------ //
-// Create App and Subscription
+// region Create App and Subscription
 
 type CreateAppAndSubscriptionParams = MutationWithArgs<{
   appName: string;
@@ -315,7 +319,7 @@ export function useCreateAppAndSubscriptionMutation() {
 }
 
 // ------------------------ //
-// Create Subscription
+// region Create Subscription
 
 type CreateSubscriptionParams = MutationWithArgs<{
   apiProductId: string;
@@ -344,7 +348,7 @@ export function useCreateSubscriptionMutation(appId: string) {
 }
 
 // -------------------------------- //
-// (Admin) Approve/Reject Subscription
+// region (Admin) Approve/Reject Subscription
 
 type UpdateSubscriptionParams = MutationWithArgs<{
   subscription: Subscription;
@@ -387,7 +391,7 @@ export function useAdminRejectSubscriptionMutation() {
 }
 
 // -------------------------------- //
-// Delete Subscription
+// region Delete Subscription
 
 export function useDeleteSubscriptionMutation() {
   const { latestAccessToken } = useContext(AuthContext);
@@ -406,7 +410,7 @@ export function useDeleteSubscriptionMutation() {
 }
 
 // -------------------------------- //
-// Delete Team
+// region Delete Team
 
 type DeleteTeamParams = MutationWithArgs<{ teamId: string }>;
 
@@ -424,7 +428,7 @@ export function useDeleteTeamMutation() {
 }
 
 // -------------------------------- //
-// Delete App
+// region Delete App
 
 type DeleteAppParams = MutationWithArgs<{ appId: string }>;
 
@@ -439,4 +443,40 @@ export function useDeleteAppMutation() {
     mutate(TEAMS_SWR_KEY);
   };
   return useSWRMutation(`delete-team`, deleteApp);
+}
+
+// -------------------------------- //
+// region Create API Key
+
+type CreateApiKeyParams = MutationWithArgs<{ apiKeyName: string }>;
+
+export function useCreateApiKeyMutation(appId: string) {
+  const { latestAccessToken } = useContext(AuthContext);
+  const createApiKey = async (_: string, { arg }: CreateApiKeyParams) => {
+    return await fetchJSON(`/apps/${appId}/api-keys`, {
+      method: "POST",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify(arg),
+    });
+  };
+  return useSWRMutation<ApiKey, any, string, CreateApiKeyParams["arg"]>(
+    `/apps/${appId}/api-keys`,
+    createApiKey
+  );
+}
+
+// -------------------------------- //
+// region Delete API Key
+
+type DeleteApiKeyParams = MutationWithArgs<{ apiKeyId: string }>;
+
+export function useDeleteApiKeyMutation(appId: string) {
+  const { latestAccessToken } = useContext(AuthContext);
+  const deleteApiKey = async (_: string, { arg }: DeleteApiKeyParams) => {
+    await fetchJSON(`/api-keys/${arg.apiKeyId}`, {
+      method: "DELETE",
+      headers: getLatestAuthHeaders(latestAccessToken),
+    });
+  };
+  return useSWRMutation(`/apps/${appId}/api-keys`, deleteApiKey);
 }
