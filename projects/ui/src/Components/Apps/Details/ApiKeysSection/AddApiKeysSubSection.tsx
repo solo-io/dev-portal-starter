@@ -7,6 +7,7 @@ import { useCreateApiKeyMutation } from "../../../../Apis/gg_hooks";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
 import { Accordion } from "../../../Common/Accordion";
 import { Button } from "../../../Common/Button";
+import ViewCreatedApiKeyModal from "../Modals/ViewCreatedApiKeyModal";
 
 const AddApiKeysSubSection = ({
   open,
@@ -37,6 +38,7 @@ const AddApiKeysSubSection = ({
   //
   // Form Submit
   //
+  const [createdApiKey, setCreatedApiKey] = useState<string>("");
   const { trigger: createApiKey } = useCreateApiKeyMutation(app.id);
   const onSubmit = async (e?: FormEvent) => {
     e?.preventDefault();
@@ -44,37 +46,45 @@ const AddApiKeysSubSection = ({
     if (!isValid || isFormDisabled) {
       return;
     }
-    await toast.promise(createApiKey({ apiKeyName: formAppName }), {
+    const res = await toast.promise(createApiKey({ apiKeyName: formAppName }), {
       error: "There was an error creating the API Key.",
       loading: "Creating the API Key...",
       success: "Created the API Key!",
     });
     onClose();
+    setCreatedApiKey(res.apiKey);
   };
 
   //
   // Render
   //
   return (
-    <Accordion open={open}>
-      <Box pb={"5px"}>
-        <DetailsPageStyles.AddItemForm ref={formRef} onSubmit={onSubmit}>
-          <Input
-            id="api-key-name-input"
-            aria-label="api-key name"
-            required
-            placeholder="API Key Name"
-            disabled={!open}
-            autoComplete="off"
-            value={formAppName}
-            onChange={(e) => setFormAppName(e.target.value)}
-          />
-          <Button disabled={isFormDisabled} type={"submit"}>
-            ADD API Key
-          </Button>
-        </DetailsPageStyles.AddItemForm>
-      </Box>
-    </Accordion>
+    <>
+      <Accordion open={open}>
+        <Box pb={"5px"}>
+          <DetailsPageStyles.AddItemForm ref={formRef} onSubmit={onSubmit}>
+            <Input
+              id="api-key-name-input"
+              aria-label="api-key name"
+              required
+              placeholder="API Key Name"
+              disabled={!open}
+              autoComplete="off"
+              value={formAppName}
+              onChange={(e) => setFormAppName(e.target.value)}
+            />
+            <Button disabled={isFormDisabled} type={"submit"}>
+              ADD API Key
+            </Button>
+          </DetailsPageStyles.AddItemForm>
+        </Box>
+      </Accordion>
+      <ViewCreatedApiKeyModal
+        apiKey={createdApiKey}
+        open={!!createdApiKey}
+        onCloseModal={() => setCreatedApiKey("")}
+      />
+    </>
   );
 };
 

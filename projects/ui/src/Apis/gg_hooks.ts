@@ -453,13 +453,16 @@ type CreateApiKeyParams = MutationWithArgs<{ apiKeyName: string }>;
 export function useCreateApiKeyMutation(appId: string) {
   const { latestAccessToken } = useContext(AuthContext);
   const createApiKey = async (_: string, { arg }: CreateApiKeyParams) => {
-    await fetchJSON(`/apps/${appId}/api-keys`, {
+    return await fetchJSON(`/apps/${appId}/api-keys`, {
       method: "POST",
       headers: getLatestAuthHeaders(latestAccessToken),
       body: JSON.stringify(arg),
     });
   };
-  return useSWRMutation(`/apps/${appId}/api-keys`, createApiKey);
+  return useSWRMutation<ApiKey, any, string, CreateApiKeyParams["arg"]>(
+    `/apps/${appId}/api-keys`,
+    createApiKey
+  );
 }
 
 // -------------------------------- //
