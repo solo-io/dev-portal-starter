@@ -16,7 +16,7 @@ import CustomPagination, {
   pageOptions,
   useCustomPagination,
 } from "../../../Common/CustomPagination";
-import { SimpleEmptyContent } from "../../../Common/EmptyData";
+import { EmptyData } from "../../../Common/EmptyData";
 import { Loading } from "../../../Common/Loading";
 import Table from "../../../Common/Table";
 import ToggleAddButton from "../../../Common/ToggleAddButton";
@@ -101,7 +101,7 @@ const TeamUsersSection = ({ team }: { team: Team }) => {
       {!members?.length ? (
         <Box mb={"-30px"}>
           {/* We never should get here, since the user must be a member. */}
-          <SimpleEmptyContent title="No were found in this Team." />
+          <EmptyData title="No were found in this Team." />
         </Box>
       ) : (
         <Box pt={"5px"}>

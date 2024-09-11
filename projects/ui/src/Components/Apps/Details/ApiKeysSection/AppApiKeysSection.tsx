@@ -16,7 +16,7 @@ import CustomPagination, {
   pageOptions,
   useCustomPagination,
 } from "../../../Common/CustomPagination";
-import { SimpleEmptyContent } from "../../../Common/EmptyData";
+import { EmptyData } from "../../../Common/EmptyData";
 import { Loading } from "../../../Common/Loading";
 import Table from "../../../Common/Table";
 import ToggleAddButton from "../../../Common/ToggleAddButton";
@@ -87,7 +87,7 @@ const AppApiKeysSection = ({ app }: { app: App }) => {
       />
       {!apiKeys?.length ? (
         <Box mb={"-30px"} mt={"10px"}>
-          <SimpleEmptyContent title="No API Keys were found." />
+          <EmptyData title="No API Keys were found." />
         </Box>
       ) : (
         <Box pt={"5px"}>

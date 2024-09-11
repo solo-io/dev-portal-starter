@@ -18,7 +18,7 @@ const StyledEmptyContentOuter = styled.div(
   `
 );
 
-export const SimpleEmptyContent = (props: {
+export const EmptyData = (props: {
   children?: React.ReactNode;
   title?: React.ReactNode;
 }) => {

@@ -1,6 +1,6 @@
 import { Box, Code } from "@mantine/core";
 import { ApiVersion, ApiVersionSchema } from "../../../../Apis/api-types";
-import { SimpleEmptyContent } from "../../../Common/EmptyData";
+import { EmptyData } from "../../../Common/EmptyData";
 import { ErrorBoundary } from "../../../Common/ErrorBoundary";
 import { ApiSchemaDisplay } from "./ApiSchemaDisplay";
 
@@ -16,10 +16,10 @@ const SchemaTabContent = ({
   if (!apiProductVersions.length) {
     return (
       <Box m="60px">
-        <SimpleEmptyContent title={`No API versions found.`}>
+        <EmptyData title={`No API versions found.`}>
           Add a version to the <Code>spec.versions</Code> field of this{" "}
           <Code>ApiProduct</Code> for data to appear.
-        </SimpleEmptyContent>
+        </EmptyData>
       </Box>
     );
   }
@@ -31,13 +31,13 @@ const SchemaTabContent = ({
     // There is a selected API version, but no schema.
     return (
       <Box m="60px">
-        <SimpleEmptyContent title={`No schema found.`}>
+        <EmptyData title={`No schema found.`}>
           The schema was not returned for this <Code>ApiProduct</Code> version.
           <br />
           Verify that your OpenApi spec was generated correctly in the
           corresponding <Code>ApiDoc</Code> resource for this{" "}
           <Code>Service</Code>.
-        </SimpleEmptyContent>
+        </EmptyData>
       </Box>
     );
   }

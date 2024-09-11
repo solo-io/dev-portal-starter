@@ -5,7 +5,7 @@ import {
   isSubscriptionsListError,
 } from "../../../Apis/api-types";
 import { colors } from "../../../Styles";
-import { SimpleEmptyContent } from "../../Common/EmptyData";
+import { EmptyData } from "../../Common/EmptyData";
 import { FiltrationProp } from "../Filters/AppliedFiltersSection";
 import SubscriptionInfoCard from "./SubscriptionInfoCard/SubscriptionInfoCard";
 
@@ -35,7 +35,7 @@ const SubscriptionsList = ({
     return null;
   }
   if (subscriptions.length === 0) {
-    return <SimpleEmptyContent title="No Subscriptions were found." />;
+    return <EmptyData title="No Subscriptions were found." />;
   }
   return (
     <Box pb={"60px"}>

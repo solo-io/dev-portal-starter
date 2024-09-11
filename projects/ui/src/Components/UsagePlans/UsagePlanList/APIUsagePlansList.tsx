@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { di } from "react-magnetic-di";
 import { API } from "../../../Apis/api-types";
 import { useListApis } from "../../../Apis/shared_hooks";
-import { SimpleEmptyContent } from "../../Common/EmptyData";
+import { EmptyData } from "../../Common/EmptyData";
 import { ErrorBoundary } from "../../Common/ErrorBoundary";
 import { Loading } from "../../Common/Loading";
 import { APIUsagePlanCard } from "./APIUsagePlanCard";
@@ -46,7 +46,7 @@ export function APIUsagePlansList() {
           </ErrorBoundary>
         ))
       ) : (
-        <SimpleEmptyContent title="No API Products were found." />
+        <EmptyData title="No API Products were found." />
       )}
     </>
   );

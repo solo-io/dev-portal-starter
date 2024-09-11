@@ -7,7 +7,7 @@ import CustomPagination, {
   pageOptions,
   useCustomPagination,
 } from "../../Common/CustomPagination";
-import { SimpleEmptyContent } from "../../Common/EmptyData";
+import { EmptyData } from "../../Common/EmptyData";
 import { Loading } from "../../Common/Loading";
 import { ApiSummaryGridCard } from "./ApiSummaryGridCard";
 import { ApiSummaryListCard } from "./ApiSummaryListCard";
@@ -72,9 +72,7 @@ export function ApisList({
   }
 
   if (!displayedApisList.length) {
-    return (
-      <SimpleEmptyContent title="No APIs were found matching these filters." />
-    );
+    return <EmptyData title="No APIs were found matching these filters." />;
   }
   return (
     <>
