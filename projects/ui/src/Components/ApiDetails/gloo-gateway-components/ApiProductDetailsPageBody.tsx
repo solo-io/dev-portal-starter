@@ -71,7 +71,6 @@ export function ApiProductDetailsPageBody({
         */}
         <Tabs.Panel value={apiProductDetailsTabValues.SPEC} pt={"xl"}>
           <SchemaTabContent
-            apiProduct={apiProduct}
             apiProductVersions={apiProductVersions}
             apiVersionSpec={apiVersionSpec}
             selectedApiVersion={selectedApiVersion}

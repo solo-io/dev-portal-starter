@@ -4,7 +4,7 @@ import { App, Team } from "../../../Apis/api-types";
 import { useListAppsForTeams } from "../../../Apis/gg_hooks";
 import { FilterPair, FilterType } from "../../../Utility/filter-utility";
 import { omitErrorMessageResponse } from "../../../Utility/utility";
-import { EmptyData } from "../../Common/EmptyData";
+import { SimpleEmptyContent } from "../../Common/EmptyData";
 import { Loading } from "../../Common/Loading";
 import { AppsPageStyles } from "../AppsPage.style";
 import { AppSummaryGridCard } from "./AppSummaryCards/AppSummaryGridCard";
@@ -85,8 +85,13 @@ export function AppsList({
   if (isLoading) {
     return <Loading message="Getting list of apps..." />;
   }
+  if (!appsList?.length) {
+    return <SimpleEmptyContent title="No Apps were found." />;
+  }
   if (!filteredAppsList.length) {
-    return <EmptyData topic="app" />;
+    return (
+      <SimpleEmptyContent title="No Apps were found matching these filters." />
+    );
   }
   return (
     <AppsPageStyles.AppGridList>

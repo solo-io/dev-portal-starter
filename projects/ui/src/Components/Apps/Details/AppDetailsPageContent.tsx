@@ -23,7 +23,7 @@ export const AppDetailsPageContent = ({ app }: { app: App }) => {
   const { isLoading: isLoadingSubscriptions, data: subscriptions } =
     useListSubscriptionsForApp(app.id);
 
-  const { isLoading: isLoadingTeams, data: teams } = useListTeams();
+  const { data: teams } = useListTeams();
   const team = useMemo(
     () => teams?.find((t) => t.id === app.teamId),
     [teams, app]

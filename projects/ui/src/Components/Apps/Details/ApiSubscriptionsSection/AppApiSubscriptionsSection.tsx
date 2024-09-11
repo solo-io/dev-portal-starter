@@ -5,7 +5,7 @@ import { Icon } from "../../../../Assets/Icons";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
 import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
 import { Button } from "../../../Common/Button";
-import { EmptyData } from "../../../Common/EmptyData";
+import { SimpleEmptyContent } from "../../../Common/EmptyData";
 import SubscriptionInfoCard from "../../../Common/SubscriptionsList/SubscriptionInfoCard/SubscriptionInfoCard";
 import NewSubscriptionModal from "../Modals/NewSubscriptionModal";
 
@@ -43,8 +43,8 @@ const AppApiSubscriptionsSection = ({
         />
       </Flex>
       {subscriptions.length === 0 && (
-        <Box pt="30px">
-          <EmptyData topic={"API Subscription"} />
+        <Box pt="10px">
+          <SimpleEmptyContent title="No API Subscriptions were found." />
         </Box>
       )}
       <Box pt={"5px"}>

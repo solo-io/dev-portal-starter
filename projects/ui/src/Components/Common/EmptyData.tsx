@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Box, Flex, Text } from "@mantine/core";
+import { Box } from "@mantine/core";
 import { borderRadiusConstants } from "../../Styles/constants";
 
 const StyledEmptyContentOuter = styled.div(
@@ -9,7 +9,6 @@ const StyledEmptyContentOuter = styled.div(
     justify-content: center;
     text-align: center;
     line-height: 2rem;
-    /* background-color: ${theme.splashBlueLight7}; */
     background-color: white;
     box-shadow: 1px 1px 5px ${theme.splashBlue};
     border: 1px solid ${theme.splashBlue};
@@ -19,9 +18,6 @@ const StyledEmptyContentOuter = styled.div(
   `
 );
 
-/**
- *  This is typically used for Empty sections with more custom content.
- */
 export const SimpleEmptyContent = (props: {
   children?: React.ReactNode;
   title?: React.ReactNode;
@@ -40,7 +36,7 @@ export const SimpleEmptyContent = (props: {
           </Box>
         )}
         {!!props.children && (
-          <Box sx={{ fontSize: "1rem", marginTop: "12px" }}>
+          <Box sx={{ fontSize: "1rem", marginTop: "10px" }}>
             {props.children}
           </Box>
         )}
@@ -48,34 +44,3 @@ export const SimpleEmptyContent = (props: {
     </StyledEmptyContentOuter>
   );
 };
-
-/**
- *  This is typically used for Empty data for topics.
- */
-export function EmptyData(
-  props:
-    | {
-        topic: string;
-        message?: string;
-      }
-    | {
-        topicMessageOverride: React.ReactNode;
-      }
-) {
-  return (
-    <Flex justify={"center"}>
-      <Text color="gray.6" italic>
-        {"topicMessageOverride" in props ? (
-          <>{props.topicMessageOverride}</>
-        ) : (
-          <>No {props.topic} results were found</>
-        )}
-      </Text>
-      {"message" in props && !!props.message && (
-        <Text color="gray.6" italic>
-          {props.message}
-        </Text>
-      )}
-    </Flex>
-  );
-}

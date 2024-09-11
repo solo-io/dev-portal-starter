@@ -86,10 +86,8 @@ const AppApiKeysSection = ({ app }: { app: App }) => {
         onClose={() => setShowAddApiKeySubSection(false)}
       />
       {!apiKeys?.length ? (
-        // <Box mt={"30px"} mb="30px">
         <Box mb={"-30px"} mt={"10px"}>
-          <SimpleEmptyContent title="No API Keys found" />
-          {/* <EmptyData topic="API Key" /> */}
+          <SimpleEmptyContent title="No API Keys were found." />
         </Box>
       ) : (
         <Box pt={"5px"}>

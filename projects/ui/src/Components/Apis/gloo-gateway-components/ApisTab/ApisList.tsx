@@ -12,7 +12,7 @@ import CustomPagination, {
   pageOptions,
   useCustomPagination,
 } from "../../../Common/CustomPagination";
-import { EmptyData } from "../../../Common/EmptyData";
+import { SimpleEmptyContent } from "../../../Common/EmptyData";
 import { Loading } from "../../../Common/Loading";
 import { ApisPageStyles } from "../../ApisPage.style";
 import { ApiSummaryGridCard } from "./ApiSummaryCards/ApiSummaryGridCard";
@@ -78,8 +78,13 @@ export function ApisList({
   if (apiProductsList === undefined) {
     return <Loading message="Getting list of apis..." />;
   }
+  if (!apiProductsList.length) {
+    return <SimpleEmptyContent title="No API Products were found." />;
+  }
   if (!filteredApiProductsList.length) {
-    return <EmptyData topic="API" />;
+    return (
+      <SimpleEmptyContent title="No API Products were found matching these filters." />
+    );
   }
   if (preferGridView) {
     return (

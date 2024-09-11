@@ -14,7 +14,7 @@ import CustomPagination, {
   pageOptions,
   useCustomPagination,
 } from "../../../Common/CustomPagination";
-import { EmptyData } from "../../../Common/EmptyData";
+import { SimpleEmptyContent } from "../../../Common/EmptyData";
 import { Loading } from "../../../Common/Loading";
 import Table from "../../../Common/Table";
 import ToggleAddButton from "../../../Common/ToggleAddButton";
@@ -86,7 +86,7 @@ const TeamAppsSection = ({ team }: { team: Team }) => {
       )}
       {!apps?.length ? (
         <Box mb={"-30px"} mt={"30px"}>
-          <EmptyData topic="App" />
+          <SimpleEmptyContent title="No Apps were found." />
         </Box>
       ) : (
         <Box pt={"5px"}>

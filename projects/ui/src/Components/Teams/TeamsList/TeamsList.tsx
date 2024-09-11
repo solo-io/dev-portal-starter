@@ -1,7 +1,7 @@
 import { Box, Flex } from "@mantine/core";
 import { di } from "react-magnetic-di";
 import { useListTeams } from "../../../Apis/gg_hooks";
-import { EmptyData } from "../../Common/EmptyData";
+import { SimpleEmptyContent } from "../../Common/EmptyData";
 import { Loading } from "../../Common/Loading";
 import { TeamSummaryGridCard } from "./TeamSummaryCards/TeamSummaryGridCard";
 
@@ -15,8 +15,8 @@ export function TeamsList() {
   if (teamsList === undefined || isLoading) {
     return <Loading message="Getting list of teams..." />;
   }
-  if (!teamsList.length) {
-    return <EmptyData topic="team" />;
+  if (!teamsList?.length) {
+    return <SimpleEmptyContent title="No Teams were found." />;
   }
   return (
     <Box mb="30px">
