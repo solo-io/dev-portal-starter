@@ -1,21 +1,21 @@
-# Markdown Page Test (h1)
+# Example Markdown Page (#)
 
 This is a custom Markdown page test.
 
-## Section 1 (h2)
+## Section 1 (##)
 
 - Supports bullet points
 - Supports bullet points
 
-### 1.1 (h3)
+### 1.1 (###)
 
 Testing that **Bold works** here.
 
-#### 1.1.1 (h4)
+#### 1.1.1 (####)
 
 Testing that _Italics works_ here.
 
-##### 1.1.1 (h5)
+##### 1.1.1 (#####)
 
 Links work: [www.solo.io](www.solo.io)
 

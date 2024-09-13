@@ -103,7 +103,9 @@ const CustomPageLanding = () => {
       />
     );
   }
-  return <CustomHtmlPage customPageUrl={customPage.path} />;
+  return (
+    <CustomHtmlPage customPage={customPage} customPageUrl={customPage.path} />
+  );
 };
 
 export default CustomPageLanding;
