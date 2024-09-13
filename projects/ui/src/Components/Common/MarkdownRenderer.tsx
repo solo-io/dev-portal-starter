@@ -62,6 +62,13 @@ const MarkdownRenderer = ({ markdown }: { markdown: string }) => {
     for (let i = 0; i < codeElements.length; i++) {
       hljs.highlightElement(codeElements[i]);
     }
+    return () => {
+      // If this "data-highlighted" attribute isn't reset, it may not
+      // highlight the code correctly when the page is revisited.
+      for (let i = 0; i < codeElements.length; i++) {
+        codeElements[i]?.removeAttribute("data-highlighted");
+      }
+    };
   }, [markdown, mdContainerRef.current]);
 
   return (

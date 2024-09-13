@@ -1,5 +1,7 @@
-import { useContext, useMemo } from "react";
+import { Box, Popover } from "@mantine/core";
+import { useContext, useMemo, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
+import { Icon } from "../../../Assets/Icons";
 import { ReactComponent as Logo } from "../../../Assets/logo.svg";
 import { AppContext } from "../../../Context/AppContext";
 import { AuthContext } from "../../../Context/AuthContext";
@@ -7,7 +9,9 @@ import { customPages, logoImageURL } from "../../../user_variables.tmplr";
 import { getCustomPagePath } from "../../../Utility/utility";
 import { ErrorBoundary } from "../../Common/ErrorBoundary";
 import { HeaderStyles } from "../Header.style";
-import HeaderSectionLoggedIn from "./HeaderSectionLoggedIn";
+import HeaderSectionLoggedIn, {
+  StyledUserDropdown,
+} from "./HeaderSectionLoggedIn";
 import HeaderSectionLoggedOut from "./HeaderSectionLoggedOut";
 
 if (!window.isSecureContext) {
@@ -18,6 +22,13 @@ if (!window.isSecureContext) {
   );
 }
 
+const inArea = (
+  paths: string[],
+  routerLocation: ReturnType<typeof useLocation>
+) => {
+  return paths.some((s) => routerLocation.pathname.includes(s));
+};
+
 /**
  * MAIN COMPONENT
  **/
@@ -26,32 +37,28 @@ export function Header() {
   const routerLocation = useLocation();
   const { isLoggedIn } = useContext(AuthContext);
 
-  const inArea = (paths: string[]) => {
-    return paths.some((s) => routerLocation.pathname.includes(s));
-  };
-
   const inAdminTeamsArea = useMemo(
-    () => inArea(["/admin/teams"]),
+    () => inArea(["/admin/teams"], routerLocation),
     [routerLocation.pathname]
   );
 
   const inAdminSubscriptionsArea = useMemo(
-    () => inArea(["/admin/subscriptions"]),
+    () => inArea(["/admin/subscriptions"], routerLocation),
     [routerLocation.pathname]
   );
 
   const inAPIsArea = useMemo(
-    () => inArea(["/apis", "/api-details/"]),
+    () => inArea(["/apis", "/api-details/"], routerLocation),
     [routerLocation.pathname]
   );
 
   const inAppsArea = useMemo(
-    () => inArea(["/apps", "/app-details/"]),
+    () => inArea(["/apps", "/app-details/"], routerLocation),
     [routerLocation.pathname]
   );
 
   const inTeamsArea = useMemo(
-    () => inArea(["/teams", "/team-details/"]),
+    () => inArea(["/teams", "/team-details/"], routerLocation),
     [routerLocation.pathname]
   );
 
@@ -139,15 +146,8 @@ export function Header() {
               </NavLink>
             </>
           )}
-          {customPages.map((page) => (
-            <NavLink
-              key={page.path}
-              to={getCustomPagePath(page)}
-              className={`navLink ${inArea([page.path]) ? "active" : ""}`}
-            >
-              {page.title}
-            </NavLink>
-          ))}
+
+          <HeaderCustomPagesNav />
 
           <div className="divider" />
           <ErrorBoundary fallback="Access issues" class="horizontalError">
@@ -162,3 +162,43 @@ export function Header() {
     </HeaderStyles.StyledTopNavHeader>
   );
 }
+
+const HeaderCustomPagesNav = () => {
+  const [opened, setOpened] = useState(false);
+  const routerLocation = useLocation();
+
+  if (!customPages.length) {
+    return null;
+  }
+  return (
+    <Box sx={{ height: "100%", marginRight: "15px" }}>
+      <Popover position="bottom" opened={opened} onChange={setOpened}>
+        <Popover.Target>
+          <button
+            className="userLoginArea loggedIn"
+            onClick={() => setOpened(!opened)}
+          >
+            <div className="userHolder">
+              Navigation
+              <Icon.DownArrow
+                className={`dropdownArrow canRotate ${opened ? "rotate180" : ""}`}
+              />
+            </div>
+          </button>
+        </Popover.Target>
+        <StyledUserDropdown>
+          {customPages.map((page) => (
+            <NavLink
+              onClick={() => setOpened(false)}
+              key={page.path}
+              to={getCustomPagePath(page)}
+              className={`navLink ${inArea([page.path], routerLocation) ? "active" : ""}`}
+            >
+              {page.title}
+            </NavLink>
+          ))}
+        </StyledUserDropdown>
+      </Popover>
+    </Box>
+  );
+};
