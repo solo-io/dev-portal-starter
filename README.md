@@ -143,6 +143,7 @@ You can add these environment variables to a `.env.local` file in the `projects/
   ```
   When the website is opened, there should be two new pages in the top navigation bar.
   ![custom pages example](readme_assets/custom-pages-navbar.png)
+  The custom page's `path` property must be publicly accessible and end with `.md` or `.html`.
 
 #### Environment Variables for PKCE Authorization Flow
 
