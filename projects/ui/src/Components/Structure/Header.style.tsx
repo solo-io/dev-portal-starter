@@ -121,6 +121,7 @@ export namespace HeaderStyles {
         .userHolder {
           display: flex;
           align-items: center;
+          margin-top: -4px;
 
           svg.userCircle {
             width: 40px;
