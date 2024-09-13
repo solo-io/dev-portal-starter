@@ -3,7 +3,8 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { ReactComponent as Logo } from "../../../Assets/logo.svg";
 import { AppContext } from "../../../Context/AppContext";
 import { AuthContext } from "../../../Context/AuthContext";
-import { logoImageURL } from "../../../user_variables.tmplr";
+import { customPages, logoImageURL } from "../../../user_variables.tmplr";
+import { getCustomPagePath } from "../../../Utility/utility";
 import { ErrorBoundary } from "../../Common/ErrorBoundary";
 import { HeaderStyles } from "../Header.style";
 import HeaderSectionLoggedIn from "./HeaderSectionLoggedIn";
@@ -138,6 +139,15 @@ export function Header() {
               </NavLink>
             </>
           )}
+          {customPages.map((page) => (
+            <NavLink
+              key={page.path}
+              to={getCustomPagePath(page)}
+              className={`navLink ${inArea([page.path]) ? "active" : ""}`}
+            >
+              {page.title}
+            </NavLink>
+          ))}
 
           <div className="divider" />
           <ErrorBoundary fallback="Access issues" class="horizontalError">

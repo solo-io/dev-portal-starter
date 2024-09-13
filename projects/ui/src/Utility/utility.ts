@@ -2,10 +2,12 @@
 // From https://stackoverflow.com/a/65996386
 // navigator.clipboard.writeText doesn't always work.
 
+import { DependencyList, useEffect } from "react";
 import {
   ErrorMessageResponse,
   isErrorMessageResponse,
 } from "../Apis/api-types";
+import { CustomPage } from "../user_variables.tmplr";
 
 //
 export async function copyToClipboard(textToCopy: string) {
@@ -121,5 +123,33 @@ export const customLog = (...args: Parameters<typeof console.log>) => {
 
 export const filterMetadataToDisplay = ([pairKey]: [
   key: string,
-  value: string
+  value: string,
 ]) => pairKey !== "imageURL";
+
+const customPagePrefix = "/pages/";
+
+export const getCustomPagePath = (page: CustomPage) => {
+  return (
+    customPagePrefix +
+    encodeURIComponent(page.path.replace(/^\//g, "").replaceAll(/\./g, "_"))
+  );
+};
+
+// Actual hook for above function definitions
+export function useEventListener<Elem extends Window | Document | HTMLElement>(
+  element: Elem,
+  eventName: string,
+  listener: EventListenerOrEventListenerObject,
+  dependencies: DependencyList = [],
+  skip = false
+) {
+  useEffect(() => {
+    // If element doesn't currently exist or hook isn't active then don't add a listener
+    if (!element || !element.addEventListener || skip) return;
+
+    element.addEventListener(eventName, listener);
+    return () => {
+      element.removeEventListener(eventName, listener);
+    };
+  }, [element, skip, ...dependencies]);
+}

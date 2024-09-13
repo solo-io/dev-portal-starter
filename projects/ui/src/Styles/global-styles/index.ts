@@ -8,6 +8,8 @@ import "./style-reset.css";
 import "./fontFace.css";
 // prettier-ignore
 import "./graphiql.min.css";
+// prettier-ignore
+import "./highlight.js.min.css";
 
 export const globalStyles = css`
   ${mantineGlobalStyles}
