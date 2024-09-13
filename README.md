@@ -137,7 +137,7 @@ You can add these environment variables to a `.env.local` file in the `projects/
 - `VITE_HOME_IMAGE_URL` - This is an optional parameter to set the image URL on the home page.
 - `VITE_APIS_IMAGE_URL` - This is an optional parameter to set the image URL on the apis page.
 - `VITE_LOGO_IMAGE_URL` - This is an optional parameter to set the image URL for the logo in the upper left.
-- `VITE_CUSTOM_PAGES` - This is an optional value that describes Markdown or HTML custom pages that have been added to the `projects/ui/src/public` folder. In order to test this feature out out with the provided examples, set your `VITE_CUSTOM_PAGES` value to: `'[{"title": "Markdown Example", "path": "/pages/markdown-example.md"}, {"title": "HTML Example", "path": "/pages/html-example.html"}]'`. When the website is opened, there should be two new pages in the top navigation bar (one for the `"Custom Page"` using Markdown, and one for `"Another Page"`, using HTML).
+- `VITE_CUSTOM_PAGES` - This is an optional value that describes Markdown or HTML custom pages that have been added to the `projects/ui/src/public` folder. In order to test this feature out out with the provided examples, set your `VITE_CUSTOM_PAGES` value to: `'[{"title": "Markdown Example", "path": "/pages/markdown-example.md"}, {"title": "HTML Example", "path": "/pages/html-example.html"}]'`. When the website is opened, there should be two new pages in the top navigation bar.
   ![custom pages example](readme_assets/custom-pages-navbar.png)
 
 #### Environment Variables for PKCE Authorization Flow
