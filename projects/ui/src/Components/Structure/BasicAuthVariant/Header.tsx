@@ -5,6 +5,7 @@ import { Icon } from "../../../Assets/Icons";
 import { ReactComponent as Logo } from "../../../Assets/logo.svg";
 import { AppContext } from "../../../Context/AppContext";
 import { AuthContext } from "../../../Context/AuthContext";
+import { colors } from "../../../Styles";
 import {
   CustomPage,
   customPages,
@@ -29,8 +30,13 @@ if (!window.isSecureContext) {
 const useInArea = (paths: string[]) => {
   const routerLocation = useLocation();
   return useMemo(() => {
-    return paths.some((s) => routerLocation.pathname.includes(s));
-  }, [routerLocation.pathname]);
+    return paths.some((s) => {
+      return (
+        routerLocation.pathname.includes(s) ||
+        routerLocation.pathname.includes(getCustomPagePath(s))
+      );
+    });
+  }, [routerLocation.pathname, paths]);
 };
 
 /**
@@ -149,19 +155,37 @@ export function Header() {
 
 const CustomPagesNavSection = () => {
   const [opened, setOpened] = useState(false);
+  const inAnyCustomPageArea = useInArea(
+    customPages?.map((page) => page.path) ?? []
+  );
 
   if (!customPages.length) {
     return null;
   }
   return (
-    <Box sx={{ height: "100%", marginRight: "15px" }}>
+    <Box
+      sx={{
+        height: "100%",
+        marginRight: "15px",
+        // TODO: The navbar uses classes: should refactor this into a style file.
+        borderBottom: inAnyCustomPageArea ? "4px solid " + colors.lakeBlue : "",
+      }}
+    >
       <Popover position="bottom" opened={opened} onChange={setOpened}>
         <Popover.Target>
           <button
             className="userLoginArea loggedIn"
             onClick={() => setOpened(!opened)}
           >
-            <div className="userHolder">
+            <div
+              className="userHolder"
+              style={
+                inAnyCustomPageArea
+                  ? // TODO: The navbar uses classes: should refactor this into a style file.
+                    { color: colors.lakeBlue, marginTop: "0px" }
+                  : {}
+              }
+            >
               Navigation
               <Icon.DownArrow
                 className={`dropdownArrow canRotate ${opened ? "rotate180" : ""}`}

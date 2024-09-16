@@ -128,10 +128,11 @@ export const filterMetadataToDisplay = ([pairKey]: [
 
 const customPagePrefix = "/pages/";
 
-export const getCustomPagePath = (page: CustomPage) => {
+export const getCustomPagePath = (page: CustomPage | string) => {
+  const pagePath = typeof page === "string" ? page : page.path;
   return (
     customPagePrefix +
-    encodeURIComponent(page.path.replace(/^\//g, "").replaceAll(/\./g, "_"))
+    encodeURIComponent(pagePath.replace(/^\//g, "").replaceAll(/\./g, "_"))
   );
 };
 
