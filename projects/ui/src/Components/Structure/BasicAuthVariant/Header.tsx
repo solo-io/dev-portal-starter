@@ -5,7 +5,11 @@ import { Icon } from "../../../Assets/Icons";
 import { ReactComponent as Logo } from "../../../Assets/logo.svg";
 import { AppContext } from "../../../Context/AppContext";
 import { AuthContext } from "../../../Context/AuthContext";
-import { customPages, logoImageURL } from "../../../user_variables.tmplr";
+import {
+  CustomPage,
+  customPages,
+  logoImageURL,
+} from "../../../user_variables.tmplr";
 import { getCustomPagePath } from "../../../Utility/utility";
 import { ErrorBoundary } from "../../Common/ErrorBoundary";
 import { HeaderStyles } from "../Header.style";
@@ -22,11 +26,11 @@ if (!window.isSecureContext) {
   );
 }
 
-const inArea = (
-  paths: string[],
-  routerLocation: ReturnType<typeof useLocation>
-) => {
-  return paths.some((s) => routerLocation.pathname.includes(s));
+const useInArea = (paths: string[]) => {
+  const routerLocation = useLocation();
+  return useMemo(() => {
+    return paths.some((s) => routerLocation.pathname.includes(s));
+  }, [routerLocation.pathname]);
 };
 
 /**
@@ -34,33 +38,13 @@ const inArea = (
  **/
 export function Header() {
   const { isAdmin } = useContext(AuthContext);
-  const routerLocation = useLocation();
   const { isLoggedIn } = useContext(AuthContext);
 
-  const inAdminTeamsArea = useMemo(
-    () => inArea(["/admin/teams"], routerLocation),
-    [routerLocation.pathname]
-  );
-
-  const inAdminSubscriptionsArea = useMemo(
-    () => inArea(["/admin/subscriptions"], routerLocation),
-    [routerLocation.pathname]
-  );
-
-  const inAPIsArea = useMemo(
-    () => inArea(["/apis", "/api-details/"], routerLocation),
-    [routerLocation.pathname]
-  );
-
-  const inAppsArea = useMemo(
-    () => inArea(["/apps", "/app-details/"], routerLocation),
-    [routerLocation.pathname]
-  );
-
-  const inTeamsArea = useMemo(
-    () => inArea(["/teams", "/team-details/"], routerLocation),
-    [routerLocation.pathname]
-  );
+  const inAdminTeamsArea = useInArea(["/admin/teams"]);
+  const inAdminSubscriptionsArea = useInArea(["/admin/subscriptions"]);
+  const inAPIsArea = useInArea(["/apis", "/api-details/"]);
+  const inAppsArea = useInArea(["/apps", "/app-details/"]);
+  const inTeamsArea = useInArea(["/teams", "/team-details/"]);
 
   const { pageContentIsWide } = useContext(AppContext);
 
@@ -147,7 +131,7 @@ export function Header() {
             </>
           )}
 
-          <HeaderCustomPagesNav />
+          <CustomPagesNavSection />
 
           <div className="divider" />
           <ErrorBoundary fallback="Access issues" class="horizontalError">
@@ -163,9 +147,8 @@ export function Header() {
   );
 }
 
-const HeaderCustomPagesNav = () => {
+const CustomPagesNavSection = () => {
   const [opened, setOpened] = useState(false);
-  const routerLocation = useLocation();
 
   if (!customPages.length) {
     return null;
@@ -188,17 +171,33 @@ const HeaderCustomPagesNav = () => {
         </Popover.Target>
         <StyledUserDropdown>
           {customPages.map((page) => (
-            <NavLink
-              onClick={() => setOpened(false)}
+            <CustomPageNavLink
               key={page.path}
-              to={getCustomPagePath(page)}
-              className={`navLink ${inArea([page.path], routerLocation) ? "active" : ""}`}
-            >
-              {page.title}
-            </NavLink>
+              page={page}
+              onClick={() => setOpened(false)}
+            />
           ))}
         </StyledUserDropdown>
       </Popover>
     </Box>
+  );
+};
+
+const CustomPageNavLink = ({
+  page,
+  onClick,
+}: {
+  page: CustomPage;
+  onClick: () => void;
+}) => {
+  const onThisPage = useInArea([page.path]);
+  return (
+    <NavLink
+      onClick={onClick}
+      to={getCustomPagePath(page)}
+      className={`navLink ${onThisPage ? "active" : ""}`}
+    >
+      {page.title}
+    </NavLink>
   );
 };
