@@ -1,0 +1,6 @@
+changelog:
+  - type: FIX
+    issueLink: https://github.com/solo-io/solo-projects/issues/6859
+    description: >-
+      Adds a configuration option to prefill the Swagger UI Authorization Bearer token
+      if the user is logged in.
