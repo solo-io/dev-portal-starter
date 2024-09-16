@@ -168,3 +168,25 @@ export const logoImageURL = templateString(
   import.meta.env.VITE_LOGO_IMAGE_URL,
   ""
 );
+
+export type CustomPage = {
+  title: string;
+  path: string;
+};
+/**
+ * This is an optional, JSON serialized array of objects.
+ * Each object has a "title" and "path" that corresponds to a ".html" or ".md" file in the `projects/ui/src/public` folder.
+ * The name is the text that is displayed in the navbar header link.
+ * For example:
+ * '[{"title":"Custom Page","path":"/custom-page.md"}, {"title":"Another Page","path":"/some-path/another-page.html"}]'
+ */
+export const customPages = JSON.parse(
+  templateString(
+    "{{ tmplr.customPages }}",
+    insertedEnvironmentVariables?.VITE_CUSTOM_PAGES,
+    import.meta.env.VITE_CUSTOM_PAGES,
+    "[]"
+  )
+) as Array<CustomPage>;
+// TODO: Check the paths and if any overlap with the dev-portal-starter.
+// console.log("Loaded custom pages", customPages);

@@ -5,7 +5,7 @@
 *
 *******************************
 ******************************/
-* {
+*:not(code) {
   font-family: "Proxima Nova", "Open Sans", "Helvetica", "Arial", "sans-serif" !important;
 
   box-sizing: border-box;

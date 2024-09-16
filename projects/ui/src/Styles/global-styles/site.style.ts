@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 import { colors } from "../colors";
 
 export const siteGlobalStyles = css`
-  * {
+  *:not(code) {
     color: ${colors.neptuneBlue};
   }
   //

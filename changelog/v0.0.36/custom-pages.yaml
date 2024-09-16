@@ -1,0 +1,5 @@
+changelog:
+  - type: FIX
+    issueLink: https://github.com/solo-io/solo-projects/issues/6860
+    description: >-
+      Adds the ability for users to create custom pages that show up in the UI.

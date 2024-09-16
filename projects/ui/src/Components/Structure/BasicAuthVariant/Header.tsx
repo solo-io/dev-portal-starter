@@ -1,12 +1,22 @@
-import { useContext, useMemo } from "react";
+import { Box, Popover } from "@mantine/core";
+import { useContext, useMemo, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
+import { Icon } from "../../../Assets/Icons";
 import { ReactComponent as Logo } from "../../../Assets/logo.svg";
 import { AppContext } from "../../../Context/AppContext";
 import { AuthContext } from "../../../Context/AuthContext";
-import { logoImageURL } from "../../../user_variables.tmplr";
+import { colors } from "../../../Styles";
+import {
+  CustomPage,
+  customPages,
+  logoImageURL,
+} from "../../../user_variables.tmplr";
+import { getCustomPagePath } from "../../../Utility/utility";
 import { ErrorBoundary } from "../../Common/ErrorBoundary";
 import { HeaderStyles } from "../Header.style";
-import HeaderSectionLoggedIn from "./HeaderSectionLoggedIn";
+import HeaderSectionLoggedIn, {
+  StyledUserDropdown,
+} from "./HeaderSectionLoggedIn";
 import HeaderSectionLoggedOut from "./HeaderSectionLoggedOut";
 
 if (!window.isSecureContext) {
@@ -17,42 +27,30 @@ if (!window.isSecureContext) {
   );
 }
 
+const useInArea = (paths: string[]) => {
+  const routerLocation = useLocation();
+  return useMemo(() => {
+    return paths.some((s) => {
+      return (
+        routerLocation.pathname.includes(s) ||
+        routerLocation.pathname.includes(getCustomPagePath(s))
+      );
+    });
+  }, [routerLocation.pathname, paths]);
+};
+
 /**
  * MAIN COMPONENT
  **/
 export function Header() {
   const { isAdmin } = useContext(AuthContext);
-  const routerLocation = useLocation();
   const { isLoggedIn } = useContext(AuthContext);
 
-  const inArea = (paths: string[]) => {
-    return paths.some((s) => routerLocation.pathname.includes(s));
-  };
-
-  const inAdminTeamsArea = useMemo(
-    () => inArea(["/admin/teams"]),
-    [routerLocation.pathname]
-  );
-
-  const inAdminSubscriptionsArea = useMemo(
-    () => inArea(["/admin/subscriptions"]),
-    [routerLocation.pathname]
-  );
-
-  const inAPIsArea = useMemo(
-    () => inArea(["/apis", "/api-details/"]),
-    [routerLocation.pathname]
-  );
-
-  const inAppsArea = useMemo(
-    () => inArea(["/apps", "/app-details/"]),
-    [routerLocation.pathname]
-  );
-
-  const inTeamsArea = useMemo(
-    () => inArea(["/teams", "/team-details/"]),
-    [routerLocation.pathname]
-  );
+  const inAdminTeamsArea = useInArea(["/admin/teams"]);
+  const inAdminSubscriptionsArea = useInArea(["/admin/subscriptions"]);
+  const inAPIsArea = useInArea(["/apis", "/api-details/"]);
+  const inAppsArea = useInArea(["/apps", "/app-details/"]);
+  const inTeamsArea = useInArea(["/teams", "/team-details/"]);
 
   const { pageContentIsWide } = useContext(AppContext);
 
@@ -139,6 +137,8 @@ export function Header() {
             </>
           )}
 
+          <CustomPagesNavSection />
+
           <div className="divider" />
           <ErrorBoundary fallback="Access issues" class="horizontalError">
             {isLoggedIn ? (
@@ -152,3 +152,76 @@ export function Header() {
     </HeaderStyles.StyledTopNavHeader>
   );
 }
+
+const CustomPagesNavSection = () => {
+  const [opened, setOpened] = useState(false);
+  const inAnyCustomPageArea = useInArea(
+    customPages?.map((page) => page.path) ?? []
+  );
+
+  if (!customPages.length) {
+    return null;
+  }
+  return (
+    <Box
+      sx={{
+        height: "100%",
+        marginRight: "15px",
+        // TODO: The navbar uses classes: should refactor this into a style file.
+        borderBottom: inAnyCustomPageArea ? "4px solid " + colors.lakeBlue : "",
+      }}
+    >
+      <Popover position="bottom" opened={opened} onChange={setOpened}>
+        <Popover.Target>
+          <button
+            className="userLoginArea loggedIn"
+            onClick={() => setOpened(!opened)}
+          >
+            <div
+              className="userHolder"
+              style={
+                inAnyCustomPageArea
+                  ? // TODO: The navbar uses classes: should refactor this into a style file.
+                    { color: colors.lakeBlue, marginTop: "0px" }
+                  : {}
+              }
+            >
+              Navigation
+              <Icon.DownArrow
+                className={`dropdownArrow canRotate ${opened ? "rotate180" : ""}`}
+              />
+            </div>
+          </button>
+        </Popover.Target>
+        <StyledUserDropdown>
+          {customPages.map((page) => (
+            <CustomPageNavLink
+              key={page.path}
+              page={page}
+              onClick={() => setOpened(false)}
+            />
+          ))}
+        </StyledUserDropdown>
+      </Popover>
+    </Box>
+  );
+};
+
+const CustomPageNavLink = ({
+  page,
+  onClick,
+}: {
+  page: CustomPage;
+  onClick: () => void;
+}) => {
+  const onThisPage = useInArea([page.path]);
+  return (
+    <NavLink
+      onClick={onClick}
+      to={getCustomPagePath(page)}
+      className={`navLink ${onThisPage ? "active" : ""}`}
+    >
+      {page.title}
+    </NavLink>
+  );
+};

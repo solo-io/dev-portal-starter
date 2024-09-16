@@ -4,9 +4,11 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { AppContext } from "../Context/AppContext";
 import { AuthContext } from "../Context/AuthContext";
 import {
+  customPages,
   oidcAuthCodeConfigCallbackPath,
   oidcAuthCodeConfigLogoutPath,
 } from "../user_variables.tmplr";
+import { getCustomPagePath } from "../Utility/utility";
 import AdminSubscriptionsPage from "./AdminSubscriptions/AdminSubscriptionsPage";
 import AdminTeamsPage from "./AdminTeams/AdminTeamsPage";
 import { ApiDetailsPage } from "./ApiDetails/ApiDetailsPage";
@@ -15,6 +17,7 @@ import { AppsPage } from "./Apps/AppsPage";
 import AppDetailsPage from "./Apps/Details/AppDetailsPage";
 import { ErrorBoundary } from "./Common/ErrorBoundary";
 import LoggedOut from "./Common/LoggedOut";
+import CustomPageLanding from "./CustomPage/CustomPageLanding";
 import { HomePage } from "./Home/HomePage";
 import { Footer } from "./Structure/Footer";
 import TeamDetailsPage from "./Teams/Details/TeamDetailsPage";
@@ -173,6 +176,22 @@ function AppContentRoutes() {
             )}
           </>
         )}
+        {customPages.map((page) => (
+          <>
+            {getCustomPagePath(page)}
+            <Route
+              key={page.path}
+              path={getCustomPagePath(page)}
+              element={
+                <ErrorBoundary
+                  fallback={`There was an issue displaying the custom ${page.title} page.`}
+                >
+                  <CustomPageLanding />
+                </ErrorBoundary>
+              }
+            />
+          </>
+        ))}
       </Routes>
 
       <Footer />
