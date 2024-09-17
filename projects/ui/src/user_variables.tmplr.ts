@@ -31,7 +31,7 @@ function templateString(
 }
 
 //
-// region Project Settings
+// Project Settings
 //
 export const companyName = templateString(
   "{{ tmplr.company_name }}",
