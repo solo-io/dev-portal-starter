@@ -51,7 +51,7 @@ export function SwaggerDisplay({
       let apiKeyValue = swaggerPrefillApiKey.apiKeyValue;
       if (!!tokensResponse?.access_token) {
         // Try to find & replace the "{{USER_TOKEN}}" string with this user's access token.
-        // This is documented in our README.md.
+        // This is documented in the README.md.
         apiKeyValue = apiKeyValue.replace(
           "{{USER_TOKEN}}",
           tokensResponse.access_token
