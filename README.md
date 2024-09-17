@@ -144,6 +144,9 @@ You can add these environment variables to a `.env.local` file in the `projects/
   When the website is opened, there should be two new pages in the top navigation bar.
   ![custom pages example](readme_assets/custom-pages-navbar.png)
   The custom page's `path` property must be publicly accessible and end with `.md` or `.html`.
+- `VITE_SWAGGER_PREFILL_API_KEY` - Prefills the Swagger UI authorization configuration for an API key or Bearer authorization scheme with the specified values. This can be set using the following format: `'["authDefinitionKey", "apiKeyValue"]'`, where "authDefinitionKey" is the key name of the security scheme to use from the API definition. In case of OpenAPI 3.0 Bearer scheme, `apiKeyValue` must contain just the token itself without the Bearer prefix. To use the logged in user's authorization token for the `apiKeyValue`, you may use the following syntax: `'["authDefinitionKey", "{{USER_TOKEN}}"]'`.
+- `VITE_SWAGGER_PREFILL_OAUTH` - Prefills the Swagger UI authorization configuration for an OAuth server. This variable should be set to a serialized JSON object that is the OAuth2 configuration. See the [Swagger UI OAuth2 documentation](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/oauth2.md) for more information.
+- `VITE_SWAGGER_PREFILL_BASIC` - Prefills the Swagger UI authorization configuration for a Basic authorization scheme. This can be set using the following format: `'["authDefinitionKey", "username", "password"]'`.
 
 #### Environment Variables for PKCE Authorization Flow
 

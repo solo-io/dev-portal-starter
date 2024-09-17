@@ -31,7 +31,7 @@ function templateString(
 }
 
 //
-// Project Settings
+// region Project Settings
 //
 export const companyName = templateString(
   "{{ tmplr.company_name }}",
@@ -190,3 +190,54 @@ export const customPages = JSON.parse(
 ) as Array<CustomPage>;
 // TODO: Check the paths and if any overlap with the dev-portal-starter.
 // console.log("Loaded custom pages", customPages);
+
+/**
+ * This is optional. Check the README for usage.
+ */
+export const swaggerPrefillApiKey = (() => {
+  const parsed = JSON.parse(
+    templateString(
+      "{{ tmplr.swaggerPrefillApiKey }}",
+      insertedEnvironmentVariables?.VITE_SWAGGER_PREFILL_API_KEY,
+      import.meta.env.VITE_SWAGGER_PREFILL_API_KEY,
+      "[]"
+    )
+  ) as [string, string] | [];
+  return parsed.length === 2
+    ? {
+        authDefinitionKey: parsed[0],
+        apiKeyValue: parsed[1],
+      }
+    : undefined;
+})();
+
+/**
+ * This is optional. Check the README for usage.
+ */
+export const swaggerPrefillOauth = templateString(
+  "{{ tmplr.swaggerPrefillOauth }}",
+  insertedEnvironmentVariables?.VITE_SWAGGER_PREFILL_OAUTH,
+  import.meta.env.VITE_SWAGGER_PREFILL_OAUTH,
+  "{}"
+);
+
+/**
+ * This is optional. Check the README for usage.
+ */
+export const swaggerPrefillBasic = (() => {
+  const parsed = JSON.parse(
+    templateString(
+      "{{ tmplr.swaggerPrefillBasic }}",
+      insertedEnvironmentVariables?.VITE_SWAGGER_PREFILL_BASIC,
+      import.meta.env.VITE_SWAGGER_PREFILL_BASIC,
+      "[]"
+    )
+  ) as [string, string, string] | [];
+  return parsed.length === 3
+    ? {
+        authDefinitionKey: parsed[0],
+        username: parsed[1],
+        password: parsed[2],
+      }
+    : undefined;
+})();
