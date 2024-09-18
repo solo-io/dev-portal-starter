@@ -1,0 +1,7 @@
+changelog:
+  - type: FIX
+    issueLink: https://github.com/solo-io/solo-projects/issues/6859
+    description: >-
+      Adds configuration options to pass through to Swagger UI's instance methods
+      as defined here: https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md#instance-methods
+      Including options to fill the Authorization Bearer token if the user is logged in.
