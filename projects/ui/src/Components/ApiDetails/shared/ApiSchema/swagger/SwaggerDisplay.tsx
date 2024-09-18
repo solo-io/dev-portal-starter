@@ -47,7 +47,7 @@ export function SwaggerDisplay({
     // https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md#instance-methods
 
     // API KEY AUTH
-    if (swaggerPrefillApiKey != undefined) {
+    if (swaggerPrefillApiKey !== undefined) {
       let apiKeyValue = swaggerPrefillApiKey.apiKeyValue;
       if (!!tokensResponse?.access_token) {
         // Try to find & replace the "{{USER_TOKEN}}" string with this user's access token.
@@ -64,15 +64,12 @@ export function SwaggerDisplay({
     }
 
     // OAUTH
-    if (
-      swaggerPrefillOauth != undefined &&
-      !!Object.keys(swaggerPrefillOauth)
-    ) {
+    if (swaggerPrefillOauth !== undefined) {
       swaggerInstance.initOAuth(swaggerPrefillOauth);
     }
 
     // BASIC AUTH
-    if (swaggerPrefillBasic != undefined) {
+    if (swaggerPrefillBasic !== undefined) {
       swaggerInstance.preauthorizeBasic(
         swaggerPrefillBasic.authDefinitionKey,
         swaggerPrefillBasic.username,

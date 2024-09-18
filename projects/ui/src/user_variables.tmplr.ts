@@ -214,12 +214,17 @@ export const swaggerPrefillApiKey = (() => {
 /**
  * This is optional. Check the README for usage.
  */
-export const swaggerPrefillOauth = templateString(
-  "{{ tmplr.swaggerPrefillOauth }}",
-  insertedEnvironmentVariables?.VITE_SWAGGER_PREFILL_OAUTH,
-  import.meta.env.VITE_SWAGGER_PREFILL_OAUTH,
-  "{}"
-);
+export const swaggerPrefillOauth = (() => {
+  const parsed = JSON.parse(
+    templateString(
+      "{{ tmplr.swaggerPrefillOauth }}",
+      insertedEnvironmentVariables?.VITE_SWAGGER_PREFILL_OAUTH,
+      import.meta.env.VITE_SWAGGER_PREFILL_OAUTH,
+      "{}"
+    )
+  );
+  return Object.keys(parsed).length > 0 ? parsed : undefined;
+})();
 
 /**
  * This is optional. Check the README for usage.
