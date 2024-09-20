@@ -1,8 +1,10 @@
-import { createContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
+import { di } from "react-magnetic-di";
 import { useNavigate } from "react-router-dom";
 import { mutate } from "swr";
 import { AccessTokensResponse } from "../Apis/api-types";
+import { useGetCurrentUser } from "../Apis/gg_hooks";
 import { doAccessTokenRequest } from "../Utility/accessTokenRequest";
 import { jwtDecode, parseJwt } from "../Utility/utility";
 
@@ -18,7 +20,6 @@ interface IAuthContext extends AuthProviderProps {
   idToken: string | undefined;
   // The access_token is used for user claims (like "email").
   latestAccessToken: string | undefined;
-  isLoggedIn: boolean;
   tokensResponse: AccessTokensResponse | undefined;
   onLogin: (newTokensResponse: AccessTokensResponse) => void;
   onLogout: () => void;
@@ -207,7 +208,6 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
     <AuthContext.Provider
       value={{
         isAdmin,
-        isLoggedIn: !!tokensResponse?.access_token,
         latestAccessToken: tokensResponse?.access_token,
         idToken: tokensResponse?.id_token,
         tokensResponse,
@@ -219,3 +219,20 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
     </AuthContext.Provider>
   );
 };
+
+function useIsOidcAuthLoggedIn() {
+  di(useGetCurrentUser);
+  const { data: user } = useGetCurrentUser();
+  const isOidcAuthLoggedIn = !!user?.email || !!user?.username || !!user?.name;
+  return isOidcAuthLoggedIn;
+}
+
+/**
+ * Since we support different authorization types, this is the way to tell if someone is logged in.
+ */
+export function useIsLoggedIn() {
+  const { tokensResponse } = useContext(AuthContext);
+  const isAccessTokenAuthLoggedIn = !!tokensResponse?.access_token;
+  const isOidcAuthLoggedIn = useIsOidcAuthLoggedIn();
+  return isAccessTokenAuthLoggedIn || isOidcAuthLoggedIn;
+}

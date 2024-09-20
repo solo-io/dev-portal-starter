@@ -1,7 +1,6 @@
 import { Code } from "@mantine/core";
-import { useContext } from "react";
 import { Icon } from "../../Assets/Icons";
-import { AuthContext } from "../../Context/AuthContext";
+import { useIsLoggedIn } from "../../Context/AuthContext";
 import { apisImageURL } from "../../user_variables.tmplr";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
@@ -28,7 +27,7 @@ export function EmptyApisPage() {
 }
 
 export const EmptyApisPageContent = () => {
-  const { isLoggedIn } = useContext(AuthContext);
+  const isLoggedIn = useIsLoggedIn();
 
   if (!!isLoggedIn)
     return <EmptyData>No API Products have been created.</EmptyData>;

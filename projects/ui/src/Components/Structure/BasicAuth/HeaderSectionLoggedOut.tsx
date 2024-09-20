@@ -4,6 +4,7 @@ import {
   AuthContext,
   LOCAL_STORAGE_AUTH_STATE,
   LOCAL_STORAGE_AUTH_VERIFIER,
+  useIsLoggedIn,
 } from "../../../Context/AuthContext";
 import { doAccessTokenRequest } from "../../../Utility/accessTokenRequest";
 import {
@@ -103,7 +104,8 @@ const AuthFlowStarter = () => {
 };
 
 const HeaderSectionLoggedOut = () => {
-  const { onLogin, isLoggedIn } = useContext(AuthContext);
+  const { onLogin } = useContext(AuthContext);
+  const isLoggedIn = useIsLoggedIn();
   const [searchParams] = useSearchParams();
 
   //

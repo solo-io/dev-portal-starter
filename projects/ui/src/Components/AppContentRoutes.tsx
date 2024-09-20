@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AppContext } from "../Context/AppContext";
-import { AuthContext } from "../Context/AuthContext";
+import { useIsLoggedIn } from "../Context/AuthContext";
 import {
   customPages,
   oidcAuthCodeConfigCallbackPath,
@@ -46,7 +46,7 @@ const MainContentContainer = styled.div`
  *      know the area that failed.
  **/
 function AppContentRoutes() {
-  const { isLoggedIn } = useContext(AuthContext);
+  const isLoggedIn = useIsLoggedIn();
   const { portalServerType } = useContext(AppContext);
 
   return (

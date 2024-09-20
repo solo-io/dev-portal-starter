@@ -1,5 +1,5 @@
 import { Box, Flex, Select } from "@mantine/core";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import {
   ApiProductSummary,
@@ -7,7 +7,7 @@ import {
   ApiVersionSchema,
 } from "../../../Apis/api-types";
 import { Icon } from "../../../Assets/Icons";
-import { AuthContext } from "../../../Context/AuthContext";
+import { useIsLoggedIn } from "../../../Context/AuthContext";
 import { FormModalStyles } from "../../../Styles/shared/FormModalStyles";
 import { useGetImageURL } from "../../../Utility/custom-image-utility";
 import {
@@ -34,7 +34,7 @@ const ApiProductDetailsPageHeading = ({
   onSelectedApiVersionChange: (newVersionId: string | null) => void;
   apiVersionSpec: ApiVersionSchema | undefined;
 }) => {
-  const { isLoggedIn } = useContext(AuthContext);
+  const isLoggedIn = useIsLoggedIn();
   const [showSubscribeModal, setShowSubscribeModal] = useState(false);
 
   const downloadApiSpec = () => {
