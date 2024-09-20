@@ -1,0 +1,6 @@
+changelog:
+  - type: FIX
+    issueLink: https://github.com/solo-io/gloo-mesh-enterprise/issues/18658
+    description: >-
+      Adds links for the new teams + apps pages to the OIDC auth header variant.
+      This also includes some refactoring of that area.

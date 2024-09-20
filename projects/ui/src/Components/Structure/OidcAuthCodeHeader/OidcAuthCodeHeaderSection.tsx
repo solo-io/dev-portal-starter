@@ -1,36 +1,32 @@
 import { Popover } from "@mantine/core";
-import { useContext, useMemo, useState } from "react";
-import { di } from "react-magnetic-di";
-import { NavLink, useLocation } from "react-router-dom";
+import { useContext, useState } from "react";
+import { NavLink } from "react-router-dom";
 import { useGetCurrentUser } from "../../../Apis/gg_hooks";
 import { Icon } from "../../../Assets/Icons";
 import { AppContext } from "../../../Context/AppContext";
+import { useIsLoggedIn } from "../../../Context/AuthContext";
 import {
   oidcAuthCodeConfigCallbackPath,
   oidcAuthCodeConfigLogoutPath,
 } from "../../../user_variables.tmplr";
-import { StyledUserDropdown } from "../BasicAuthVariant/HeaderSectionLoggedIn";
+import { useInArea } from "../../../Utility/utility";
+import { StyledUserDropdown } from "../BasicAuth/HeaderSectionLoggedIn";
 
 /**
  * MAIN COMPONENT
  **/
-export function OidcAuthCodeHeaderDropdown() {
-  di(useGetCurrentUser);
-  const { data: user } = useGetCurrentUser();
+export function OidcAuthCodeHeaderSection() {
   const { portalServerType } = useContext(AppContext);
-
-  const routerLocation = useLocation();
-  const inUsagePlansArea = useMemo(
-    () => routerLocation.pathname.includes("/usage-plans"),
-    [routerLocation.pathname]
-  );
+  const isLoggedIn = useIsLoggedIn();
+  const { data: user } = useGetCurrentUser();
 
   const [opened, setOpened] = useState(false);
+
+  const inUsagePlansArea = useInArea(["/usage-plans"]);
 
   // eslint-disable-next-line no-console
   // console.log(user);
 
-  const isLoggedIn = !!user?.email || !!user?.username || !!user?.name;
   return !isLoggedIn ? (
     <div className="userLoginArea loggedOut">
       <a href={oidcAuthCodeConfigCallbackPath}>

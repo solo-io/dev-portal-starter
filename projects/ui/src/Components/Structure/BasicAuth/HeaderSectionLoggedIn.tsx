@@ -79,8 +79,8 @@ const HeaderSectionLoggedIn = () => {
           onClick={() => setOpened(!opened)}
         >
           <div className="userHolder">
-            <Icon.UserProfile className="userCircle" />{" "}
-            {!!user ? user.username : " "}
+            <Icon.UserProfile className="userCircle" />
+            {!!user ? user.username : " NO USER " + JSON.stringify(user)}
             <Icon.DownArrow
               className={`dropdownArrow canRotate ${opened ? "rotate180" : ""}`}
             />

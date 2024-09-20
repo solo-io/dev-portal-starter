@@ -2,7 +2,8 @@
 // From https://stackoverflow.com/a/65996386
 // navigator.clipboard.writeText doesn't always work.
 
-import { DependencyList, useEffect } from "react";
+import { DependencyList, useEffect, useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import {
   ErrorMessageResponse,
   isErrorMessageResponse,
@@ -154,3 +155,15 @@ export function useEventListener<Elem extends Window | Document | HTMLElement>(
     };
   }, [element, skip, ...dependencies]);
 }
+
+export const useInArea = (paths: string[]) => {
+  const routerLocation = useLocation();
+  return useMemo(() => {
+    return paths.some((s) => {
+      return (
+        routerLocation.pathname.includes(s) ||
+        routerLocation.pathname.includes(getCustomPagePath(s))
+      );
+    });
+  }, [routerLocation.pathname, paths]);
+};
