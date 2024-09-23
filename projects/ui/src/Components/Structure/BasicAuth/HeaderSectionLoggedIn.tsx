@@ -78,7 +78,10 @@ const HeaderSectionLoggedIn = () => {
           className="userLoginArea loggedIn"
           onClick={() => setOpened(!opened)}
         >
-          <div className="userHolder">
+          {/*
+           * Note: The "userHolder" class is kept here for testing purposes.
+           */}
+          <div className="userHolder dropdownContainer">
             <Icon.UserProfile className="userCircle" />
             {!!user ? user.username : " NO USER " + JSON.stringify(user)}
             <Icon.DownArrow

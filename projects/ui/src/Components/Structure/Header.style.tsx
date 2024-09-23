@@ -118,7 +118,7 @@ export namespace HeaderStyles {
         padding: 0 12px;
         margin-right: -12px;
 
-        .userHolder {
+        .dropdownContainer {
           display: flex;
           align-items: center;
           margin-top: -4px;
