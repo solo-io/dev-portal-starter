@@ -162,6 +162,13 @@ export type ApiVersionExtended = ApiVersion & {
   apiProductName: string;
 };
 
+export type OauthCredential = {
+  id: string;
+  idpClientId: string;
+  idpClientSecret: string;
+  idpClientName: string;
+};
+
 //
 // Shared Types
 //

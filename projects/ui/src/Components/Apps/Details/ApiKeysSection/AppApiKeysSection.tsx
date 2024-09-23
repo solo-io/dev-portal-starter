@@ -26,7 +26,7 @@ import AddApiKeysSubSection from "./AddApiKeysSubSection";
 const AppApiKeysSection = ({ app }: { app: App }) => {
   di(useListAppsForTeam);
   const { isAdmin } = useContext(AuthContext);
-  const { isLoading, data: apiKeys } = useListApiKeysForApp(app.id);
+  const { data: apiKeys } = useListApiKeysForApp(app.id);
   const [showAddApiKeySubSection, setShowAddApiKeySubSection] = useState(false);
 
   const customPaginationData = useCustomPagination(
@@ -63,7 +63,7 @@ const AppApiKeysSection = ({ app }: { app: App }) => {
     });
   }, [paginatedData]);
 
-  if (isLoading) {
+  if (apiKeys === undefined) {
     return <Loading />;
   }
   return (
