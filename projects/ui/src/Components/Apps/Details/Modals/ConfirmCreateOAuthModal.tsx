@@ -2,6 +2,7 @@ import { Box, CloseButton, Flex } from "@mantine/core";
 import { FormEvent } from "react";
 import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
+import { OauthCredential } from "../../../../Apis/api-types";
 import { useCreateOAuthMutation } from "../../../../Apis/gg_hooks";
 import { FormModalStyles } from "../../../../Styles/shared/FormModalStyles";
 import { Button } from "../../../Common/Button";
@@ -10,20 +11,23 @@ const ConfirmCreateOAuthModal = ({
   appId,
   open,
   onClose,
+  onCreatedClient,
 }: {
   appId: string;
   open: boolean;
   onClose: () => void;
+  onCreatedClient: (newCredentials: OauthCredential) => void;
 }) => {
   di(useCreateOAuthMutation);
   const { trigger: createOAuth } = useCreateOAuthMutation(appId);
   const onConfirm = async (e?: FormEvent) => {
     e?.preventDefault();
-    await toast.promise(createOAuth(), {
+    const newlyCreatedCredentials = await toast.promise(createOAuth(), {
       error: (e) => "There was an error creating OAuth client. " + e,
       loading: "Creating the OAuth client...",
       success: "Created the OAuth client!",
     });
+    onCreatedClient(newlyCreatedCredentials);
     onClose();
   };
 

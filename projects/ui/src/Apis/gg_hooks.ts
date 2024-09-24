@@ -483,10 +483,10 @@ export function useDeleteApiKeyMutation(appId: string) {
 export function useCreateOAuthMutation(appId: string) {
   const { latestAccessToken } = useContext(AuthContext);
   const createOAuth = async () => {
-    return await fetchJSON(`/apps/${appId}/oauth-credentials`, {
+    return (await fetchJSON(`/apps/${appId}/oauth-credentials`, {
       method: "POST",
       headers: getLatestAuthHeaders(latestAccessToken),
-    });
+    })) as OauthCredential;
   };
   return useSWRMutation(`/apps/${appId}/oauth-credentials`, createOAuth);
 }
