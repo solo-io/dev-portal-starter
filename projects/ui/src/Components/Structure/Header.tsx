@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { ReactComponent as Logo } from "../../Assets/logo.svg";
 import { AppContext } from "../../Context/AppContext";
-import { AuthContext, useIsLoggedIn } from "../../Context/AuthContext";
+import { useIsAdmin, useIsLoggedIn } from "../../Context/AuthContext";
 import {
   appliedOidcAuthCodeConfig,
   logoImageURL,
@@ -16,7 +16,7 @@ import { OidcAuthCodeHeaderSection } from "./OidcAuthCodeHeader/OidcAuthCodeHead
 
 const Header = () => {
   const { pageContentIsWide, portalServerType } = useContext(AppContext);
-  const { isAdmin } = useContext(AuthContext);
+  const isAdmin = useIsAdmin();
   const isLoggedIn = useIsLoggedIn();
 
   const inAdminTeamsArea = useInArea(["/admin/teams"]);

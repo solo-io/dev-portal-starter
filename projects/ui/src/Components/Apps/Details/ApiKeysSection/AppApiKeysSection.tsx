@@ -1,12 +1,9 @@
 import { Box, Flex } from "@mantine/core";
-import { useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
 import { APIKey, App } from "../../../../Apis/api-types";
-import {
-  useListApiKeysForApp,
-  useListAppsForTeam,
-} from "../../../../Apis/gg_hooks";
-import { AuthContext } from "../../../../Context/AuthContext";
+import { useListApiKeysForApp } from "../../../../Apis/gg_hooks";
+import { useIsAdmin } from "../../../../Context/AuthContext";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
@@ -24,8 +21,8 @@ import ConfirmDeleteApiKeyModal from "../Modals/ConfirmDeleteApiKeyModal";
 import AddApiKeysSubSection from "./AddApiKeysSubSection";
 
 const AppApiKeysSection = ({ app }: { app: App }) => {
-  di(useListAppsForTeam);
-  const { isAdmin } = useContext(AuthContext);
+  di(useIsAdmin, useListApiKeysForApp);
+  const isAdmin = useIsAdmin();
   const { data: apiKeys } = useListApiKeysForApp(app.id);
   const [showAddApiKeySubSection, setShowAddApiKeySubSection] = useState(false);
 

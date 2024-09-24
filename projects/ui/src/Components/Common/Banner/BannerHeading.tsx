@@ -1,7 +1,8 @@
 import { Box } from "@mantine/core";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import Banner from "../../../Assets/banner@2x.webp";
 import { AppContext } from "../../../Context/AppContext";
+import { bannerImageURL } from "../../../user_variables.tmplr";
 import Breadcrumbs from "../Breadcrumbs";
 import { BannerStyles as Styles } from "./BannerHeading.style";
 
@@ -24,6 +25,16 @@ export function BannerHeading({
 }) {
   const { pageContentIsWide } = useContext(AppContext);
 
+  const bgImage = useMemo(() => {
+    if (!!bgImageURL) {
+      return bgImageURL;
+    }
+    if (!!bannerImageURL) {
+      return bannerImageURL;
+    }
+    return Banner;
+  }, [bgImageURL, bannerImageURL, Banner]);
+
   return (
     <>
       <Breadcrumbs items={breadcrumbItems ?? []} />
@@ -45,7 +56,7 @@ export function BannerHeading({
         </Styles.BannerContent>
 
         <Styles.BannerImageContainer pageContentIsWide={pageContentIsWide}>
-          <img src={!!bgImageURL ? bgImageURL : Banner} alt="background" />
+          <img src={bgImage} alt="background" />
         </Styles.BannerImageContainer>
       </Styles.BannerHeadingContentContainer>
     </>

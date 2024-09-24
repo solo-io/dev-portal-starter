@@ -24,7 +24,7 @@ export namespace HeaderStyles {
       .userLoginArea.loggedIn,
       .logoContainer,
       .siteNavigating a.navLink,
-      .userLoginArea .userHolder,
+      .userLoginArea .dropdownContainer,
       a,
       button.logout {
         cursor: pointer;

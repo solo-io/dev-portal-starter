@@ -15,7 +15,6 @@ interface AuthProviderProps {
   children?: any;
 }
 interface IAuthContext extends AuthProviderProps {
-  isAdmin: boolean;
   // The id_token is used for identifying the user in the logout request.
   idToken: string | undefined;
   // The access_token is used for user claims (like "email").
@@ -186,28 +185,9 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
     toast.success("Logged out!");
   };
 
-  const isAdmin = useMemo(() => {
-    if (!tokensResponse?.access_token) {
-      return false;
-    }
-    let accessTokenDecoded: ReturnType<typeof jwtDecode> | undefined;
-    let idTokenDecoded: ReturnType<typeof jwtDecode> | undefined;
-    try {
-      accessTokenDecoded = jwtDecode(tokensResponse.access_token);
-    } catch {}
-    try {
-      idTokenDecoded = jwtDecode(tokensResponse.id_token);
-    } catch {}
-    return (
-      accessTokenDecoded?.payload?.group === "admin" ||
-      idTokenDecoded?.payload?.group === "admin"
-    );
-  }, [tokensResponse]);
-
   return (
     <AuthContext.Provider
       value={{
-        isAdmin,
         latestAccessToken: tokensResponse?.access_token,
         idToken: tokensResponse?.id_token,
         tokensResponse,
@@ -235,4 +215,41 @@ export function useIsLoggedIn() {
   const isAccessTokenAuthLoggedIn = !!tokensResponse?.access_token;
   const isOidcAuthLoggedIn = useIsOidcAuthLoggedIn();
   return isAccessTokenAuthLoggedIn || isOidcAuthLoggedIn;
+}
+
+export function useIsAdmin() {
+  di(useGetCurrentUser);
+  const { tokensResponse } = useContext(AuthContext);
+  const { data: user } = useGetCurrentUser();
+
+  // Check if the isAdmin property is in the token.
+  const isAdminTokensResponse = useMemo(() => {
+    if (!tokensResponse?.access_token) {
+      return false;
+    }
+    let accessTokenDecoded: ReturnType<typeof jwtDecode> | undefined;
+    let idTokenDecoded: ReturnType<typeof jwtDecode> | undefined;
+    try {
+      accessTokenDecoded = jwtDecode(tokensResponse.access_token);
+    } catch {}
+    try {
+      idTokenDecoded = jwtDecode(tokensResponse.id_token);
+    } catch {}
+    return (
+      accessTokenDecoded?.payload?.group === "admin" ||
+      idTokenDecoded?.payload?.group === "admin"
+    );
+  }, [tokensResponse]);
+
+  // If there was no user, they can't be an admin.
+  if (user === undefined) {
+    return false;
+  }
+  // Use the portal server property if possible.
+  if (user?.isAdmin !== undefined) {
+    return user.isAdmin;
+  }
+  // Otherwise fall back to what is in the token.
+  // This is used for older portal server versions (before the isAdmin property was added to /me).
+  return !!isAdminTokensResponse;
 }

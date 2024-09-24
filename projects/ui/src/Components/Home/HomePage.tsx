@@ -1,7 +1,6 @@
 import { Box } from "@mantine/core";
-import { useContext } from "react";
 import { NavLink } from "react-router-dom";
-import { AuthContext } from "../../Context/AuthContext";
+import { useIsAdmin } from "../../Context/AuthContext";
 import { companyName, homeImageURL } from "../../user_variables.tmplr";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
@@ -17,7 +16,7 @@ import CardImage2 from "../../Assets/card-option-2@2x.webp";
 import CardImage3 from "../../Assets/card-option-3@2x.webp";
 
 export function HomePage() {
-  const { isAdmin } = useContext(AuthContext);
+  const isAdmin = useIsAdmin();
   return (
     <PageContainer>
       <div>

@@ -152,10 +152,10 @@ export const homeImageURL = templateString(
 /**
  * This is optional. Used on the API's ("/apis") page.
  */
-export const apisImageURL = templateString(
-  "{{ tmplr.apisImageURL }}",
-  insertedEnvironmentVariables?.VITE_APIS_IMAGE_URL,
-  import.meta.env.VITE_APIS_IMAGE_URL,
+export const bannerImageURL = templateString(
+  "{{ tmplr.bannerImageURL }}",
+  insertedEnvironmentVariables?.VITE_BANNER_IMAGE_URL,
+  import.meta.env.VITE_BANNER_IMAGE_URL,
   ""
 );
 
