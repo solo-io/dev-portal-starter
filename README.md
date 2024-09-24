@@ -135,7 +135,7 @@ You can add these environment variables to a `.env.local` file in the `projects/
   4. rebuilding the project.
 - `VITE_AUDIENCE` - This is an optional parameter if using Auth0 and need to send an audience parameter in your authorization requests. This should not be URL encoded, since it will be URL encoded when the request is sent.
 - `VITE_HOME_IMAGE_URL` - This is an optional parameter to set the image URL on the home page.
-- `VITE_APIS_IMAGE_URL` - This is an optional parameter to set the image URL on the apis page.
+- `VITE_BANNER_IMAGE_URL` - This is an optional parameter to set the banner image URL for the teams, apps, subscriptions, and API's pages.
 - `VITE_LOGO_IMAGE_URL` - This is an optional parameter to set the image URL for the logo in the upper left.
 - `VITE_CUSTOM_PAGES` - This is an optional value that describes Markdown or HTML custom pages that have been added to the `projects/ui/src/public` folder. In order to test this feature out out with the provided examples, set your `VITE_CUSTOM_PAGES` value to:
   ```

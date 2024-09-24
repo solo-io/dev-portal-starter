@@ -51,7 +51,7 @@ const CustomPagesNavSection = () => {
             onClick={() => setOpened(!opened)}
           >
             <div
-              className="userHolder"
+              className="dropdownContainer"
               style={
                 inAnyCustomPageArea
                   ? // TODO: The navbar uses classes: should refactor this into a style file.

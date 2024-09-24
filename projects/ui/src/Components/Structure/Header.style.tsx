@@ -24,7 +24,7 @@ export namespace HeaderStyles {
       .userLoginArea.loggedIn,
       .logoContainer,
       .siteNavigating a.navLink,
-      .userLoginArea .userHolder,
+      .userLoginArea .dropdownContainer,
       a,
       button.logout {
         cursor: pointer;
@@ -118,7 +118,7 @@ export namespace HeaderStyles {
         padding: 0 12px;
         margin-right: -12px;
 
-        .userHolder {
+        .dropdownContainer {
           display: flex;
           align-items: center;
           margin-top: -4px;

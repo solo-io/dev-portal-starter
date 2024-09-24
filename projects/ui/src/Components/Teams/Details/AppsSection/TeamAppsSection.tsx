@@ -1,10 +1,10 @@
 import { Box, Flex } from "@mantine/core";
-import { useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
 import { NavLink } from "react-router-dom";
 import { Team } from "../../../../Apis/api-types";
 import { useListAppsForTeam } from "../../../../Apis/gg_hooks";
-import { AuthContext } from "../../../../Context/AuthContext";
+import { useIsAdmin } from "../../../../Context/AuthContext";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
@@ -22,7 +22,7 @@ import AddTeamAppSubSection from "./AddTeamAppSubSection";
 
 const TeamAppsSection = ({ team }: { team: Team }) => {
   di(useListAppsForTeam);
-  const { isAdmin } = useContext(AuthContext);
+  const isAdmin = useIsAdmin();
   const { isLoading, data: apps } = useListAppsForTeam(team);
   const [showAddTeamAppSubSection, setShowAddTeamAppSubSection] =
     useState(false);

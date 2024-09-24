@@ -7,7 +7,7 @@ import { useCreateApiKeyMutation } from "../../../../Apis/gg_hooks";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
 import { Accordion } from "../../../Common/Accordion";
 import { Button } from "../../../Common/Button";
-import ViewCreatedApiKeyModal from "../Modals/ViewCreatedApiKeyModal";
+import ViewCreatedItemModal from "../Modals/ViewCreatedItemModal";
 
 const AddApiKeysSubSection = ({
   open,
@@ -79,8 +79,10 @@ const AddApiKeysSubSection = ({
           </DetailsPageStyles.AddItemForm>
         </Box>
       </Accordion>
-      <ViewCreatedApiKeyModal
-        apiKey={createdApiKey}
+      <ViewCreatedItemModal
+        createdObjectName="API Key"
+        itemToCopyName="API Key"
+        itemToCopyValue={createdApiKey}
         open={!!createdApiKey}
         onCloseModal={() => setCreatedApiKey("")}
       />

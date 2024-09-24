@@ -1,8 +1,7 @@
 import { Box, Flex } from "@mantine/core";
-import { useContext } from "react";
 import { Team } from "../../../Apis/api-types";
 import { Icon } from "../../../Assets/Icons";
-import { AuthContext } from "../../../Context/AuthContext";
+import { useIsAdmin } from "../../../Context/AuthContext";
 import { BannerHeading } from "../../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../../Common/Banner/BannerHeadingTitle";
 import { PageContainer } from "../../Common/PageContainer";
@@ -11,7 +10,7 @@ import EditTeamButtonWithModal from "./EditTeamButtonWithModal";
 import TeamUsersSection from "./UsersSection/TeamUsersSection";
 
 const TeamDetailsPageContent = ({ team }: { team: Team }) => {
-  const { isAdmin } = useContext(AuthContext);
+  const isAdmin = useIsAdmin();
   return (
     <PageContainer>
       <BannerHeading

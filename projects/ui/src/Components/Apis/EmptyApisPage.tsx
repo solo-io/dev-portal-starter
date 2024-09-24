@@ -1,7 +1,6 @@
 import { Code } from "@mantine/core";
 import { Icon } from "../../Assets/Icons";
 import { useIsLoggedIn } from "../../Context/AuthContext";
-import { apisImageURL } from "../../user_variables.tmplr";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 import { EmptyData } from "../Common/EmptyData";
@@ -12,7 +11,6 @@ export function EmptyApisPage() {
   return (
     <PageContainer>
       <BannerHeading
-        bgImageURL={apisImageURL}
         title={<BannerHeadingTitle text={"APIs"} logo={<Icon.CodeGear />} />}
         description={
           "Browse the list of APIs and documentation in this portal. From here you can get the information you need to make API calls."

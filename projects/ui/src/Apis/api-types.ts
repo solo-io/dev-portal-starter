@@ -162,6 +162,13 @@ export type ApiVersionExtended = ApiVersion & {
   apiProductName: string;
 };
 
+export type OauthCredential = {
+  id: string;
+  idpClientId: string;
+  idpClientSecret: string;
+  idpClientName: string;
+};
+
 //
 // Shared Types
 //
@@ -170,8 +177,8 @@ export type User = {
   name: string;
   email: string;
   username: string;
-  // TODO: Once auth is working, check if we can get admin info here and update the areas that use admin endpoints (e.g. subscriptions areas).
-  // admin: string;
+  // isAdmin may be undefined on older versions of the gg portal server.
+  isAdmin?: string;
 };
 
 /**

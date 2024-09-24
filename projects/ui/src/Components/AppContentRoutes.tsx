@@ -177,20 +177,17 @@ function AppContentRoutes() {
           </>
         )}
         {customPages.map((page) => (
-          <>
-            {getCustomPagePath(page)}
-            <Route
-              key={page.path}
-              path={getCustomPagePath(page)}
-              element={
-                <ErrorBoundary
-                  fallback={`There was an issue displaying the custom ${page.title} page.`}
-                >
-                  <CustomPageLanding />
-                </ErrorBoundary>
-              }
-            />
-          </>
+          <Route
+            key={page.path}
+            path={getCustomPagePath(page)}
+            element={
+              <ErrorBoundary
+                fallback={`There was an issue displaying the custom ${page.title} page.`}
+              >
+                <CustomPageLanding />
+              </ErrorBoundary>
+            }
+          />
         ))}
       </Routes>
 

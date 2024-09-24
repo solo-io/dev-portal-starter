@@ -10,6 +10,7 @@ import {
   ApiVersion,
   App,
   Member,
+  OauthCredential,
   Subscription,
   SubscriptionStatus,
   SubscriptionsListError,
@@ -28,7 +29,7 @@ export function useGetCurrentUser() {
   return useSwrWithAuth<User>("/me");
 }
 
-// region Apps + API Keys
+// region Apps + API Keys + OAuth
 export function useListAppsForTeam(team: Team) {
   return useSwrWithAuth<App[]>(`/teams/${team.id}/apps`);
 }
@@ -59,9 +60,11 @@ export function useGetAppDetails(id?: string) {
 export function useListApiKeysForApp(appId: string) {
   return useSwrWithAuth<ApiKey[]>(`/apps/${appId}/api-keys`);
 }
+export function useGetOauthCredentialsForApp(appId: string) {
+  return useSwrWithAuth<OauthCredential>(`/apps/${appId}/oauth-credentials`);
+}
 
 // region Teams
-const TEAMS_SWR_KEY = "teams";
 export function useListTeams() {
   return useSwrWithAuth<Team[]>(`/teams`);
 }
@@ -139,14 +142,12 @@ type CreateTeamParams = MutationWithArgs<{ name: string; description: string }>;
 
 export function useCreateTeamMutation() {
   const { latestAccessToken } = useContext(AuthContext);
-  const { mutate } = useSWRConfig();
   const createTeam = async (url: string, { arg }: CreateTeamParams) => {
     const res = await fetchJSON(url, {
       method: "POST",
       headers: getLatestAuthHeaders(latestAccessToken),
       body: JSON.stringify(arg),
     });
-    mutate(TEAMS_SWR_KEY);
     return res as Team;
   };
   return useSWRMutation(`/teams`, createTeam);
@@ -269,7 +270,6 @@ export function useUpdateTeamMutation() {
       headers: getLatestAuthHeaders(latestAccessToken),
       body: JSON.stringify({ name: teamName, description: teamDescription }),
     });
-    mutate(TEAMS_SWR_KEY);
     mutate(`/teams/${teamId}`);
   };
   return useSWRMutation("update-team", updateTeam);
@@ -416,13 +416,11 @@ type DeleteTeamParams = MutationWithArgs<{ teamId: string }>;
 
 export function useDeleteTeamMutation() {
   const { latestAccessToken } = useContext(AuthContext);
-  const { mutate } = useSWRConfig();
   const deleteTeam = async (_: string, { arg }: DeleteTeamParams) => {
     await fetchJSON(`/teams/${arg.teamId}`, {
       method: "DELETE",
       headers: getLatestAuthHeaders(latestAccessToken),
     });
-    mutate(TEAMS_SWR_KEY);
   };
   return useSWRMutation(`delete-team`, deleteTeam);
 }
@@ -434,13 +432,11 @@ type DeleteAppParams = MutationWithArgs<{ appId: string }>;
 
 export function useDeleteAppMutation() {
   const { latestAccessToken } = useContext(AuthContext);
-  const { mutate } = useSWRConfig();
   const deleteApp = async (_: string, { arg }: DeleteAppParams) => {
     await fetchJSON(`/apps/${arg.appId}`, {
       method: "DELETE",
       headers: getLatestAuthHeaders(latestAccessToken),
     });
-    mutate(TEAMS_SWR_KEY);
   };
   return useSWRMutation(`delete-team`, deleteApp);
 }
@@ -479,4 +475,34 @@ export function useDeleteApiKeyMutation(appId: string) {
     });
   };
   return useSWRMutation(`/apps/${appId}/api-keys`, deleteApiKey);
+}
+
+// -------------------------------- //
+// region Create OAuth Client
+
+export function useCreateOAuthMutation(appId: string) {
+  const { latestAccessToken } = useContext(AuthContext);
+  const createOAuth = async () => {
+    return (await fetchJSON(`/apps/${appId}/oauth-credentials`, {
+      method: "POST",
+      headers: getLatestAuthHeaders(latestAccessToken),
+    })) as OauthCredential;
+  };
+  return useSWRMutation(`/apps/${appId}/oauth-credentials`, createOAuth);
+}
+
+// -------------------------------- //
+// region Delete OAuth Client
+
+type DeleteOAuthParams = MutationWithArgs<{ credentialId: string }>;
+
+export function useDeleteOAuthMutation(appId: string) {
+  const { latestAccessToken } = useContext(AuthContext);
+  const deleteOAuth = async (_: string, { arg }: DeleteOAuthParams) => {
+    await fetchJSON(`/oauth-credentials/${arg.credentialId}`, {
+      method: "DELETE",
+      headers: getLatestAuthHeaders(latestAccessToken),
+    });
+  };
+  return useSWRMutation(`/apps/${appId}/oauth-credentials`, deleteOAuth);
 }

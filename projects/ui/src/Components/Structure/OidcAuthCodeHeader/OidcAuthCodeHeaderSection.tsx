@@ -40,7 +40,10 @@ export function OidcAuthCodeHeaderSection() {
           className="userLoginArea loggedIn"
           onClick={() => setOpened(!opened)}
         >
-          <div className="userHolder">
+          {/*
+           * Note: The "userHolder" class is kept here for testing purposes.
+           */}
+          <div className="userHolder dropdownContainer">
             <Icon.UserProfile className="userCircle" /> {user?.username}
             <Icon.DownArrow
               className={`dropdownArrow canRotate ${opened ? "rotate180" : ""}`}

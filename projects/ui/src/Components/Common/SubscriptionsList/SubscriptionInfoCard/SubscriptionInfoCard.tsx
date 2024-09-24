@@ -1,5 +1,5 @@
 import { Flex } from "@mantine/core";
-import { useContext, useMemo } from "react";
+import { useMemo } from "react";
 import { di } from "react-magnetic-di";
 import { Subscription } from "../../../../Apis/api-types";
 import {
@@ -8,7 +8,7 @@ import {
   useListTeams,
 } from "../../../../Apis/gg_hooks";
 import { Icon } from "../../../../Assets/Icons";
-import { AuthContext } from "../../../../Context/AuthContext";
+import { useIsAdmin } from "../../../../Context/AuthContext";
 import { CardStyles } from "../../../../Styles/shared/Card.style";
 import { FilterType } from "../../../../Utility/filter-utility";
 import {
@@ -37,8 +37,8 @@ const SubscriptionInfoCard = ({
   subscription: Subscription;
   filters?: FiltrationProp;
 }) => {
-  di(useListTeams, useListAppsForTeams);
-  const { isAdmin } = useContext(AuthContext);
+  di(useListTeams, useListAppsForTeams, useIsAdmin);
+  const isAdmin = useIsAdmin();
 
   //
   // Get Team and App for Subscription
