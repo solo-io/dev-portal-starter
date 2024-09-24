@@ -33,7 +33,7 @@ export function BannerHeading({
       return bannerImageURL;
     }
     return Banner;
-  }, [bgImageURL, bannerImageURL, Banner]);
+  }, [bgImageURL]);
 
   return (
     <>
