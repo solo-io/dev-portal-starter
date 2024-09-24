@@ -1,0 +1,9 @@
+changelog:
+  - type: NEW_FEATURE
+    issueLink: https://github.com/solo-io/solo-projects/issues/6886
+    description: >-
+      Adds the ability to create and delete oauth clients from the App details page.
+  - type: NEW_FEATURE
+    issueLink: https://github.com/solo-io/solo-projects/issues/6953
+    description: >-
+      Adds the ability to customize all banner images through the VITE_BANNER_IMAGE_URL environment variable.
