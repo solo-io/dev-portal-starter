@@ -478,7 +478,7 @@ export function useDeleteApiKeyMutation(appId: string) {
 }
 
 // -------------------------------- //
-// region Create OAuth Credentials
+// region Create OAuth Client
 
 export function useCreateOAuthMutation(appId: string) {
   const { latestAccessToken } = useContext(AuthContext);
@@ -492,7 +492,7 @@ export function useCreateOAuthMutation(appId: string) {
 }
 
 // -------------------------------- //
-// region Delete API Key
+// region Delete OAuth Client
 
 type DeleteOAuthParams = MutationWithArgs<{ credentialId: string }>;
 
