@@ -17,12 +17,12 @@ const UserChecker = () => {
         "logged in user is not found, this should not happen" &&
       !triedToCreateUser.current
     ) {
-      setTimeout(async () => {
+      (async () => {
         // We can then create the current user.
         await createUser();
         // and then refetch their user information.
         mutate();
-      }, 0);
+      })();
       triedToCreateUser.current = true;
     }
   }, [error, createUser, mutate]);
