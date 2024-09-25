@@ -506,3 +506,17 @@ export function useDeleteOAuthMutation(appId: string) {
   };
   return useSWRMutation(`/apps/${appId}/oauth-credentials`, deleteOAuth);
 }
+
+// -------------------------------- //
+// region Create User
+
+export function useCreateUserMutation() {
+  const { latestAccessToken } = useContext(AuthContext);
+  const createUser = async () => {
+    await fetchJSON(`/me`, {
+      method: "PUT",
+      headers: getLatestAuthHeaders(latestAccessToken),
+    });
+  };
+  return useSWRMutation(`create-user`, createUser);
+}

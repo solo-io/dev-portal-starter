@@ -44,7 +44,7 @@ export function OidcAuthCodeHeaderSection() {
            * Note: The "userHolder" class is kept here for testing purposes.
            */}
           <div className="userHolder dropdownContainer">
-            <Icon.UserProfile className="userCircle" /> {user?.username}
+            <Icon.UserProfile className="userCircle" /> {user?.username ?? ""}
             <Icon.DownArrow
               className={`dropdownArrow canRotate ${opened ? "rotate180" : ""}`}
             />

@@ -9,6 +9,7 @@ import {
   getTeamDetailsLink,
 } from "../../../../Utility/link-builders";
 import { SubscriptionInfoCardStyles } from "../../../Common/SubscriptionsList/SubscriptionInfoCard/SubscriptionInfoCard.style";
+import AppMetadataDisplay from "../../AppMetadata/AppMetadataDisplay";
 import { AppWithTeam } from "../AppsList";
 
 /**
@@ -35,6 +36,7 @@ export function AppSummaryGridCard({ app }: { app: AppWithTeam }) {
                 </UtilityStyles.NavLinkContainer>
               </Tooltip>
             </Flex>
+            <AppMetadataDisplay app={app} />
             <CardStyles.Description>{app.description}</CardStyles.Description>
           </Flex>
         </Box>
