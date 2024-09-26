@@ -20,6 +20,7 @@ const Header = () => {
   const isLoggedIn = useIsLoggedIn();
 
   const inAdminTeamsArea = useInArea(["/admin/teams"]);
+  const inAdminAppsArea = useInArea(["/admin/apps"]);
   const inAdminSubscriptionsArea = useInArea(["/admin/subscriptions"]);
   const inAPIsArea = useInArea(["/apis", "/api-details/"]);
   const inAppsArea = useInArea(["/apps", "/app-details/"]);
@@ -77,6 +78,12 @@ const Header = () => {
                       className={`navLink ${inAdminTeamsArea ? "active" : ""}`}
                     >
                       Teams
+                    </NavLink>
+                    <NavLink
+                      to={"/admin/apps"}
+                      className={`navLink ${inAdminAppsArea ? "active" : ""}`}
+                    >
+                      Apps
                     </NavLink>
                     <NavLink
                       to={"/admin/subscriptions"}

@@ -38,13 +38,21 @@ export namespace FormModalStyles {
     }
   `;
 
-  export const BodyContainerForm = styled.form`
-    padding: ${modalDefaultPadding};
-    padding-top: 0px;
-    flex-direction: column;
-    display: flex;
-    gap: 20px;
-  `;
+  export const BodyContainerForm = styled.form<{ padding?: string }>(
+    ({ padding = modalDefaultPadding }) => css`
+      ${!!padding
+        ? css`
+            padding: ${padding};
+          `
+        : css`
+            padding: ${modalDefaultPadding};
+            padding-top: 0px;
+          `}
+      flex-direction: column;
+      display: flex;
+      gap: 20px;
+    `
+  );
 
   export const Title = styled.div`
     font-size: 1.7rem;

@@ -106,7 +106,7 @@ export type App = {
   name: string;
   description: string;
   teamId: string;
-  metadata: AppMetadata;
+  metadata?: AppMetadata;
 };
 
 export type ApiKey = {
@@ -156,7 +156,7 @@ export type Subscription = {
   id: string;
   requestedAt: string;
   updatedAt: string;
-  metadata: SubscriptionMetadata;
+  metadata?: SubscriptionMetadata;
 };
 
 export type ApiVersionExtended = ApiVersion & {

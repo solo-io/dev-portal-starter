@@ -11,6 +11,7 @@ import {
   App,
   Member,
   OauthCredential,
+  RateLimit,
   Subscription,
   SubscriptionStatus,
   SubscriptionsListError,
@@ -519,4 +520,103 @@ export function useCreateUserMutation() {
     });
   };
   return useSWRMutation(`create-user`, createUser);
+}
+
+// -------------------------------- //
+// region (Admin) Create App Metadata
+
+type CreateUpdateAppMetadataParams = MutationWithArgs<{
+  appId: string;
+  customMetadata: Record<string, string>;
+  rateLimit: RateLimit;
+}>;
+
+export function useCreateAppMetadataMutation(appId: string) {
+  const { latestAccessToken } = useContext(AuthContext);
+  const { mutate } = useSWRConfig();
+  const createAppMetadata = async (
+    _: string,
+    { arg }: CreateUpdateAppMetadataParams
+  ) => {
+    await fetchJSON(`/apps/${appId}/metadata`, {
+      method: "POST",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify(arg),
+    });
+    mutate(TEAM_APPS_SWR_KEY);
+  };
+  return useSWRMutation(`/apps/${appId}`, createAppMetadata);
+}
+
+// -------------------------------- //
+// region (Admin) Update App Metadata
+
+export function useUpdateAppMetadataMutation(appId: string) {
+  const { latestAccessToken } = useContext(AuthContext);
+  const { mutate } = useSWRConfig();
+  const fetcher = async (_: string, { arg }: CreateUpdateAppMetadataParams) => {
+    await fetchJSON(`/apps/${appId}/metadata`, {
+      method: "PUT",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify(arg),
+    });
+    mutate(TEAM_APPS_SWR_KEY);
+  };
+  return useSWRMutation(`/apps/${appId}`, fetcher);
+}
+
+// -------------------------------- //
+// region (Admin) Create Subscription Metadata
+
+type CreateUpdateSubscriptionMetadataParams = MutationWithArgs<{
+  subscriptionId: string;
+  customMetadata: Record<string, string>;
+  rateLimit: RateLimit;
+}>;
+
+export function useCreateSubscriptionMetadataMutation(
+  subscription: Subscription
+) {
+  const { latestAccessToken } = useContext(AuthContext);
+  const { mutate } = useSWRConfig();
+  const fetcher = async (
+    _: string,
+    { arg }: CreateUpdateSubscriptionMetadataParams
+  ) => {
+    await fetchJSON(`/subscriptions/${subscription.id}/metadata`, {
+      method: "POST",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify(arg),
+    });
+    mutate(`/apps/${subscription.applicationId}/subscriptions`);
+    mutate(`/subscriptions?status=${SubscriptionStatus.APPROVED}`);
+    mutate(`/subscriptions?status=${SubscriptionStatus.PENDING}`);
+    mutate(APP_SUBS_SWR_KEY);
+  };
+  return useSWRMutation(`update-subscription-metadata`, fetcher);
+}
+
+// -------------------------------- //
+// region (Admin) Update Subscription Metadata
+
+export function useUpdateSubscriptionMetadataMutation(
+  subscription: Subscription
+) {
+  const { latestAccessToken } = useContext(AuthContext);
+  const { mutate } = useSWRConfig();
+  const fetcher = async (
+    _: string,
+    { arg }: CreateUpdateSubscriptionMetadataParams
+  ) => {
+    await fetchJSON(`/subscriptions/${subscription.id}/metadata`, {
+      method: "PUT",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify(arg),
+    });
+    mutate(`/apps/${subscription.applicationId}/subscriptions`);
+    mutate(`/subscriptions?status=${SubscriptionStatus.APPROVED}`);
+    mutate(`/subscriptions?status=${SubscriptionStatus.PENDING}`);
+    mutate(APP_SUBS_SWR_KEY);
+  };
+  return useSWRMutation(`update-subscription-metadata`, fetcher);
 }
