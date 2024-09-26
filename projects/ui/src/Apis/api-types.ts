@@ -100,9 +100,9 @@ export type App = {
   deletedAt: string;
   updatedAt: string;
   id: string;
-  idpClientId: string;
-  idpClientName: string;
-  idpClientSecret: string;
+  idpClientId?: string;
+  idpClientName?: string;
+  idpClientSecret?: string;
   name: string;
   description: string;
   teamId: string;

@@ -42,11 +42,10 @@ export function AppSummaryGridCard({ app }: { app: AppWithTeam }) {
             </Flex>
             <CardStyles.Description>{app.description}</CardStyles.Description>
             <MetadataDisplay
-              itemType="app"
-              itemId={app.id}
+              item={app}
               customMetadata={app.metadata?.customMetadata}
               rateLimitInfo={app.metadata?.rateLimit}
-              onIsManagingMetadataChange={(value) =>
+              onIsEditingMetadataChange={(value) =>
                 setIsManagingMetadata(value)
               }
             />

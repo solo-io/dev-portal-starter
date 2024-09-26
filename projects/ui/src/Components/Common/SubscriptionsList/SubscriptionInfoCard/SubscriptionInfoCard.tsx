@@ -183,11 +183,10 @@ const SubscriptionInfoCard = ({
           item={teamOfAppThatSubscribed}
         />
         <MetadataDisplay
-          itemType="subscription"
-          itemId={subscription.id}
+          item={subscription}
           customMetadata={subscription.metadata?.customMetadata}
           rateLimitInfo={subscription.metadata?.rateLimit}
-          onIsManagingMetadataChange={(value) => setIsManagingMetadata(value)}
+          onIsEditingMetadataChange={(value) => setIsManagingMetadata(value)}
         />
       </Styles.Content>
 
