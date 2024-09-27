@@ -100,12 +100,13 @@ export type App = {
   deletedAt: string;
   updatedAt: string;
   id: string;
-  idpClientId: string;
-  idpClientName: string;
-  idpClientSecret: string;
+  idpClientId?: string;
+  idpClientName?: string;
+  idpClientSecret?: string;
   name: string;
   description: string;
   teamId: string;
+  metadata?: AppMetadata;
 };
 
 export type ApiKey = {
@@ -155,6 +156,7 @@ export type Subscription = {
   id: string;
   requestedAt: string;
   updatedAt: string;
+  metadata?: SubscriptionMetadata;
 };
 
 export type ApiVersionExtended = ApiVersion & {
@@ -165,8 +167,31 @@ export type ApiVersionExtended = ApiVersion & {
 export type OauthCredential = {
   id: string;
   idpClientId: string;
-  idpClientSecret: string;
+  idpClientSecret?: string;
   idpClientName: string;
+};
+
+export type RateLimit = {
+  requestsPerUnit: string;
+  unit: string;
+};
+
+export type SubscriptionMetadata = {
+  createdAt?: string;
+  customMetadata: Record<string, string>;
+  deletedAt?: string;
+  id: string;
+  rateLimit: RateLimit;
+  updatedAt: string;
+};
+
+export type AppMetadata = {
+  createdAt?: string;
+  customMetadata: Record<string, string>;
+  deletedAt?: string;
+  id: string;
+  rateLimit: RateLimit;
+  updatedAt: string;
 };
 
 //

@@ -11,12 +11,17 @@ import {
 export namespace SubscriptionInfoCardStyles {
   export const Card = styled.div<{
     subscriptionState: SubscriptionState;
+    wide?: boolean;
   }>(
-    ({ theme, subscriptionState }) => css`
-      width: 428px;
-      ${mediaQueryWithScreenSize.mediumAndSmaller} {
-        width: 100%;
-      }
+    ({ theme, subscriptionState, wide }) => css`
+      ${!wide
+        ? css`
+            width: 428px;
+            ${mediaQueryWithScreenSize.mediumAndSmaller} {
+              width: 100%;
+            }
+          `
+        : ""}
       border: 1px solid ${subscriptionStateMap[subscriptionState].borderColor};
       border-radius: ${borderRadiusConstants.small};
       background-color: white;

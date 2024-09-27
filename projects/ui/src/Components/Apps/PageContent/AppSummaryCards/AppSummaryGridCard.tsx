@@ -1,9 +1,12 @@
 import { Box, Flex, Tooltip } from "@mantine/core";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Icon } from "../../../../Assets/Icons";
+import { useIsAdmin } from "../../../../Context/AuthContext";
 import { CardStyles } from "../../../../Styles/shared/Card.style";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
+import { MetadataDisplay } from "../../../../Utility/AdminUtility/MetadataDisplay";
 import {
   getAppDetailsLink,
   getTeamDetailsLink,
@@ -15,9 +18,11 @@ import { AppWithTeam } from "../AppsList";
  * MAIN COMPONENT
  **/
 export function AppSummaryGridCard({ app }: { app: AppWithTeam }) {
+  const isAdmin = useIsAdmin();
+  const [isWide, setIsWide] = useState(false);
+
   return (
-    // <GridCardStyles.GridCardWithLink whiteBg to={getAppDetailsLink(app)}>
-    <GridCardStyles.GridCard whiteBg>
+    <GridCardStyles.GridCard whiteBg wide={isWide}>
       <div className="content">
         <Box p={"20px"}>
           <Flex direction={"column"} align={"flex-start"} gap={"5px"}>
@@ -36,14 +41,22 @@ export function AppSummaryGridCard({ app }: { app: AppWithTeam }) {
               </Tooltip>
             </Flex>
             <CardStyles.Description>{app.description}</CardStyles.Description>
+            <MetadataDisplay
+              item={app}
+              customMetadata={app.metadata?.customMetadata}
+              rateLimitInfo={app.metadata?.rateLimit}
+              onIsWideChange={(value) => setIsWide(value)}
+            />
           </Flex>
         </Box>
       </div>
-      <SubscriptionInfoCardStyles.Footer>
-        <UtilityStyles.NavLinkContainer>
-          <NavLink to={getAppDetailsLink(app)}>DETAILS</NavLink>
-        </UtilityStyles.NavLinkContainer>
-      </SubscriptionInfoCardStyles.Footer>
+      {!isAdmin && (
+        <SubscriptionInfoCardStyles.Footer>
+          <UtilityStyles.NavLinkContainer>
+            <NavLink to={getAppDetailsLink(app)}>DETAILS</NavLink>
+          </UtilityStyles.NavLinkContainer>
+        </SubscriptionInfoCardStyles.Footer>
+      )}
     </GridCardStyles.GridCard>
   );
 }

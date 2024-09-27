@@ -167,3 +167,18 @@ export const useInArea = (paths: string[]) => {
     });
   }, [routerLocation.pathname, paths]);
 };
+
+export const shallowEquals = (
+  a: Record<string, any> | undefined,
+  b: Record<string, any> | undefined
+) => {
+  if (!a && !b) {
+    return true;
+  }
+  if (!a || !b || Object.keys(a).length !== Object.keys(b).length) {
+    return false;
+  }
+  // The number of entries should be the same between a and b here,
+  // so we can do the check once.
+  return Object.entries(a).every(([k, v]) => b[k] === v);
+};

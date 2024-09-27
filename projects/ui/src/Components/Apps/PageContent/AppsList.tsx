@@ -1,3 +1,4 @@
+import { Box } from "@mantine/core";
 import { useMemo } from "react";
 import { di } from "react-magnetic-di";
 import { App, Team } from "../../../Apis/api-types";
@@ -92,10 +93,12 @@ export function AppsList({
     return <EmptyData title="No Apps were found matching these filters." />;
   }
   return (
-    <AppsPageStyles.AppGridList>
-      {filteredAppsList.map((api) => (
-        <AppSummaryGridCard app={api} key={api.id} />
-      ))}
-    </AppsPageStyles.AppGridList>
+    <Box mb="30px">
+      <AppsPageStyles.AppGridList>
+        {filteredAppsList.map((api) => (
+          <AppSummaryGridCard app={api} key={api.id} />
+        ))}
+      </AppsPageStyles.AppGridList>
+    </Box>
   );
 }

@@ -9,6 +9,7 @@ import {
   oidcAuthCodeConfigLogoutPath,
 } from "../user_variables.tmplr";
 import { getCustomPagePath } from "../Utility/utility";
+import AdminAppsPage from "./AdminApps/AdminAppsPage";
 import AdminSubscriptionsPage from "./AdminSubscriptions/AdminSubscriptionsPage";
 import AdminTeamsPage from "./AdminTeams/AdminTeamsPage";
 import { ApiDetailsPage } from "./ApiDetails/ApiDetailsPage";
@@ -51,6 +52,9 @@ function AppContentRoutes() {
 
   return (
     <MainContentContainer>
+      {/* 
+      // region Shared
+      */}
       <Routes>
         <Route
           path={oidcAuthCodeConfigCallbackPath}
@@ -92,6 +96,9 @@ function AppContentRoutes() {
             </ErrorBoundary>
           }
         />
+        {/* 
+        // region GG
+        */}
         {portalServerType === "gloo-gateway" && isLoggedIn && (
           <>
             <Route
@@ -139,6 +146,14 @@ function AppContentRoutes() {
               }
             />
             <Route
+              path="/admin/apps"
+              element={
+                <ErrorBoundary fallback="There was an issue displaying the Admin Apps page">
+                  <AdminAppsPage />
+                </ErrorBoundary>
+              }
+            />
+            <Route
               path="/admin/teams"
               element={
                 <ErrorBoundary fallback="There was an issue displaying the Admin Subscriptions page">
@@ -150,7 +165,7 @@ function AppContentRoutes() {
         )}
         {/* 
 
-        Gloo Mesh Gateway Routes
+        // region GMG
         */}
         {portalServerType === "gloo-mesh-gateway" && (
           <>

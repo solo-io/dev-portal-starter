@@ -41,7 +41,6 @@ const AppApiKeysSection = ({ app }: { app: App }) => {
           <tr key={apiKey.id}>
             <td>{apiKey.name}</td>
             <td>{formatDateToMMDDYYYY(new Date(apiKey.createdAt))}</td>
-            {/* <td>{JSON.stringify(apiKey.metadata)}</td> */}
             <td>
               <UtilityStyles.CenteredCellContent>
                 <Button
