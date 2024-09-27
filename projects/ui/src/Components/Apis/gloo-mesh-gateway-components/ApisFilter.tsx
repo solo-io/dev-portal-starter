@@ -122,7 +122,9 @@ type ApisFiltrationProp = {
 };
 
 export function ApisFilter({ filters }: { filters: ApisFiltrationProp }) {
-  const [pairFilter, setPairFilter] = useState<KeyValuePair>({
+  const [pairFilter, setPairFilter] = useState<
+    KeyValuePair & { value: string }
+  >({
     pairKey: "",
     value: "",
   });

@@ -14,7 +14,9 @@ import GridListToggle from "../../../Common/GridListToggle";
 export function ApisFilter({ filters }: { filters: FiltrationProp }) {
   const { preferGridView, setPreferGridView } = useContext(AppContext);
 
-  const [pairFilter, setPairFilter] = useState<KeyValuePair>({
+  const [pairFilter, setPairFilter] = useState<
+    KeyValuePair & { value: string }
+  >({
     pairKey: "",
     value: "",
   });

@@ -36,7 +36,7 @@ const StyledDataPairPill = styled.div(
   `
 );
 
-export type KeyValuePair = { pairKey: string; value: React.ReactNode };
+export type KeyValuePair = { pairKey: string; value: React.ReactNode | string };
 
 export function DataPairPill({
   pairKey,
