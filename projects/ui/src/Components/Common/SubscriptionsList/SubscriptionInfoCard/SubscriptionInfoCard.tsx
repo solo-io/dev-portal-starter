@@ -40,7 +40,7 @@ const SubscriptionInfoCard = ({
 }) => {
   di(useListTeams, useListAppsForTeams, useIsAdmin);
   const isAdmin = useIsAdmin();
-  const [isManagingMetadata, setIsManagingMetadata] = useState(false);
+  const [isWide, setIsWide] = useState(false);
 
   //
   // Get Team and App for Subscription
@@ -152,10 +152,7 @@ const SubscriptionInfoCard = ({
     return null;
   }
   return (
-    <Styles.Card
-      subscriptionState={subscriptionState}
-      wide={isManagingMetadata}
-    >
+    <Styles.Card subscriptionState={subscriptionState} wide={isWide}>
       <Styles.Content>
         <Flex justify="space-between">
           <CardStyles.TitleMedium bold>
@@ -186,7 +183,7 @@ const SubscriptionInfoCard = ({
           item={subscription}
           customMetadata={subscription.metadata?.customMetadata}
           rateLimitInfo={subscription.metadata?.rateLimit}
-          onIsEditingMetadataChange={(value) => setIsManagingMetadata(value)}
+          onIsWideChange={(value) => setIsWide(value)}
         />
       </Styles.Content>
 

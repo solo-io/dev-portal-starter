@@ -17,6 +17,7 @@ import AppApiKeysSection from "./ApiKeysSection/AppApiKeysSection";
 import AppApiSubscriptionsSection from "./ApiSubscriptionsSection/AppApiSubscriptionsSection";
 import AppAuthenticationSection from "./AuthenticationSection/AppAuthenticationSection";
 import EditAppButtonWithModal from "./EditAppButtonWithModal";
+import AppMetadataSection from "./MetadataSection/AppMetadataSection";
 
 export const AppDetailsPageContent = ({ app }: { app: App }) => {
   di(useListSubscriptionsForApp, useListTeams);
@@ -77,6 +78,8 @@ export const AppDetailsPageContent = ({ app }: { app: App }) => {
       <Box px={"30px"}>
         <Flex gap={"30px"} direction={"column"}>
           <AppAuthenticationSection app={app} />
+
+          <AppMetadataSection app={app} />
 
           <AppApiKeysSection app={app} />
 

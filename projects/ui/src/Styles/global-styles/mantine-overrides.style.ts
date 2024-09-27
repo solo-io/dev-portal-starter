@@ -68,4 +68,9 @@ export const mantineGlobalStyles = css`
     background-color: ${colors.januaryGreyDark1};
     white-space: nowrap;
   }
+
+  input:disabled {
+    background-color: ${colors.januaryGrey} !important;
+    color: ${colors.defaultText} !important;
+  }
 `;

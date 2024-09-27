@@ -39,7 +39,7 @@ export namespace FormModalStyles {
   `;
 
   export const BodyContainerForm = styled.form<{ padding?: string }>(
-    ({ padding = modalDefaultPadding }) => css`
+    ({ padding }) => css`
       ${!!padding
         ? css`
             padding: ${padding};

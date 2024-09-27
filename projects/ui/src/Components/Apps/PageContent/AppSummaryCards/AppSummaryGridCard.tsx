@@ -19,10 +19,10 @@ import { AppWithTeam } from "../AppsList";
  **/
 export function AppSummaryGridCard({ app }: { app: AppWithTeam }) {
   const isAdmin = useIsAdmin();
-  const [isManagingMetadata, setIsManagingMetadata] = useState(false);
+  const [isWide, setIsWide] = useState(false);
 
   return (
-    <GridCardStyles.GridCard whiteBg wide={isManagingMetadata}>
+    <GridCardStyles.GridCard whiteBg wide={isWide}>
       <div className="content">
         <Box p={"20px"}>
           <Flex direction={"column"} align={"flex-start"} gap={"5px"}>
@@ -45,9 +45,7 @@ export function AppSummaryGridCard({ app }: { app: AppWithTeam }) {
               item={app}
               customMetadata={app.metadata?.customMetadata}
               rateLimitInfo={app.metadata?.rateLimit}
-              onIsEditingMetadataChange={(value) =>
-                setIsManagingMetadata(value)
-              }
+              onIsWideChange={(value) => setIsWide(value)}
             />
           </Flex>
         </Box>

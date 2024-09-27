@@ -167,3 +167,19 @@ export const useInArea = (paths: string[]) => {
     });
   }, [routerLocation.pathname, paths]);
 };
+
+export const shallowEquals = (
+  a: Record<string, any> | undefined,
+  b: Record<string, any> | undefined
+) => {
+  if (!a && !b) {
+    return true;
+  }
+  if (!a || !b) {
+    return false;
+  }
+  return (
+    Object.entries(a).every(([k, v]) => b[k] === v) &&
+    Object.entries(b).every(([k, v]) => a[k] === v)
+  );
+};

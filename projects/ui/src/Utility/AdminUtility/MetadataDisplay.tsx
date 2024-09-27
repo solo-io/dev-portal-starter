@@ -1,9 +1,8 @@
 import { Box } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { App, RateLimit, Subscription } from "../../Apis/api-types";
-import { Button } from "../../Components/Common/Button";
-import { useIsAdmin } from "../../Context/AuthContext";
-import { MetadataEditor } from "./MetadataEditor";
+import { CustomMetadataEditor } from "./CustomMetadataEditor";
+import { RateLimitEditor } from "./RateLimitEditor";
 
 export interface SharedMetadataProps {
   item: App | Subscription;
@@ -11,60 +10,48 @@ export interface SharedMetadataProps {
   rateLimitInfo: RateLimit | undefined;
 }
 
+/**
+ * The `MetadataDisplay` handles the viewing and editing of custom metadata and rate limit information.
+ */
 export const MetadataDisplay = ({
   customMetadata,
   rateLimitInfo,
-  onIsEditingMetadataChange,
+  onIsWideChange,
   ...props
 }: SharedMetadataProps & {
-  onIsEditingMetadataChange: (newIsEditingMetadata: boolean) => void;
+  onIsWideChange?: (newIsWide: boolean) => void;
 }) => {
-  const hasMetadataAndRateLimitInfo =
-    !!Object.keys(customMetadata ?? {}).length && !!rateLimitInfo;
-  const isAdmin = useIsAdmin();
-  const [isEditingMetadata, setIsEditingMetadata] = useState(false);
-  useEffect(() => {
-    onIsEditingMetadataChange(isEditingMetadata);
-  }, [isEditingMetadata]);
+  const [isEditingCustomMetadata, setIsEditingCustomMetadata] = useState(false);
+  const [isEditingRateLimit, setIsEditingRateLimit] = useState(false);
 
-  if (!hasMetadataAndRateLimitInfo && !isAdmin) {
-    return null;
-  }
+  useEffect(() => {
+    onIsWideChange?.(isEditingCustomMetadata || isEditingCustomMetadata);
+  }, [isEditingCustomMetadata, isEditingRateLimit]);
+
   return (
-    <Box mb="10px" sx={{ textAlign: "left" }}>
-      {/* // ) : (
-      //   <Box
-      //     sx={{
-      //       border: "1px solid " + colors.splashBlueDark10,
-      //       backgroundColor: colors.dropBlue,
-      //       borderRadius: borderRadiusConstants.small,
-      //     }}
-      //     p="10px 15px"
-      //     my="5px"
-      //   >
-      //     <Text size="md" weight={500}>
-      //       Metadata
-      //     </Text>
-      //     <Text size="sm">{JSON.stringify(customMetadata)}</Text>
-      //   </Box>
-      // )} */}
-      {isEditingMetadata ? (
-        <MetadataEditor
+    <Box sx={{ textAlign: "left" }}>
+      <Box mb={!!customMetadata || !!isEditingCustomMetadata ? "10px" : "0px"}>
+        <CustomMetadataEditor
+          isEditingCustomMetadata={isEditingCustomMetadata}
+          onIsEditingCustomMetadataChange={(value) =>
+            setIsEditingCustomMetadata(value)
+          }
           customMetadata={customMetadata}
           rateLimitInfo={rateLimitInfo}
-          onClose={() => setIsEditingMetadata(false)}
           {...props}
         />
-      ) : (
-        <Button
-          color="primary"
-          size="xs"
-          variant="outline"
-          onClick={() => setIsEditingMetadata(!isEditingMetadata)}
-        >
-          {!hasMetadataAndRateLimitInfo ? "Create" : "Edit"} Metadata
-        </Button>
-      )}
+      </Box>
+      <Box mb="10px">
+        <RateLimitEditor
+          isEditingRateLimit={isEditingRateLimit}
+          onIsEditingRateLimitChange={(newIsEditingRateLimit) =>
+            setIsEditingRateLimit(newIsEditingRateLimit)
+          }
+          customMetadata={customMetadata}
+          rateLimitInfo={rateLimitInfo}
+          {...props}
+        />
+      </Box>
     </Box>
   );
 };
