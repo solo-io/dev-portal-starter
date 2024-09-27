@@ -175,11 +175,10 @@ export const shallowEquals = (
   if (!a && !b) {
     return true;
   }
-  if (!a || !b) {
+  if (!a || !b || Object.keys(a).length !== Object.keys(b).length) {
     return false;
   }
-  return (
-    Object.entries(a).every(([k, v]) => b[k] === v) &&
-    Object.entries(b).every(([k, v]) => a[k] === v)
-  );
+  // The number of entries should be the same between a and b here,
+  // so we can do the check once.
+  return Object.entries(a).every(([k, v]) => b[k] === v);
 };

@@ -609,6 +609,8 @@ export function useCreateSubscriptionMetadataMutation() {
       headers: getLatestAuthHeaders(latestAccessToken),
       body: JSON.stringify(arg),
     });
+    // We use several queries to get subscriptions across different pages.
+    // Doing all the mutations here so we don't miss anything.
     mutate(`/apps/${arg.subscription.applicationId}/subscriptions`);
     mutate(`/subscriptions?status=${SubscriptionStatus.APPROVED}`);
     mutate(`/subscriptions?status=${SubscriptionStatus.PENDING}`);
@@ -639,6 +641,8 @@ export function useUpdateSubscriptionMetadataMutation() {
       headers: getLatestAuthHeaders(latestAccessToken),
       body: JSON.stringify(req),
     });
+    // We use several queries to get subscriptions across different pages.
+    // Doing all the mutations here so we don't miss anything.
     mutate(`/apps/${arg.subscription.applicationId}/subscriptions`);
     mutate(`/subscriptions?status=${SubscriptionStatus.APPROVED}`);
     mutate(`/subscriptions?status=${SubscriptionStatus.PENDING}`);
