@@ -1,5 +1,6 @@
 changelog:
   - type: FIX
+    issueLink: https://github.com/solo-io/solo-projects/issues/7038
     description: >-
       Update metadata endpoint to allow updating of metadata.
       Updated subscription modal to allow toggling of subscription status by admin.

@@ -523,9 +523,9 @@ export function useCreateUserMutation() {
 }
 
 // -------------------------------- //
-// region (Admin) Create App Metadata
+// region (Admin) Upsert App Metadata
 
-export type CreateUpdateAppMetadataParams = MutationWithArgs<{
+export type UpsertAppMetadataParams = MutationWithArgs<{
   appId: string;
   rateLimit?: RateLimit;
   customMetadata?: Record<string, string>;
@@ -534,10 +534,7 @@ export type CreateUpdateAppMetadataParams = MutationWithArgs<{
 export function useUpsertAppMetadataMutation() {
   const { latestAccessToken } = useContext(AuthContext);
   const { mutate } = useSWRConfig();
-  const fetcher = async (
-    _: string,
-    { arg }: CreateUpdateAppMetadataParams
-  ) => {
+  const fetcher = async (_: string, { arg }: UpsertAppMetadataParams) => {
     const req: Record<string, any> = { appId: arg.appId };
     if (arg.customMetadata !== undefined) {
       req.customMetadata = arg.customMetadata;
@@ -557,9 +554,9 @@ export function useUpsertAppMetadataMutation() {
 }
 
 // -------------------------------- //
-// region (Admin) Create Subscription Metadata
+// region (Admin) Upsert Subscription Metadata
 
-export type CreateUpdateSubscriptionMetadataParams = MutationWithArgs<{
+export type UpsertSubscriptionMetadataParams = MutationWithArgs<{
   subscription: Subscription;
   customMetadata?: Record<string, string>;
   rateLimit?: RateLimit;
@@ -570,7 +567,7 @@ export function useUpsertSubscriptionMetadataMutation() {
   const { mutate } = useSWRConfig();
   const fetcher = async (
     _: string,
-    { arg }: CreateUpdateSubscriptionMetadataParams
+    { arg }: UpsertSubscriptionMetadataParams
   ) => {
     const req: Record<string, any> = { subscriptionId: arg.subscription.id };
     if (arg.customMetadata !== undefined) {

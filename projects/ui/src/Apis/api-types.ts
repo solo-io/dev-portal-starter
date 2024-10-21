@@ -172,16 +172,20 @@ export type OauthCredential = {
 };
 
 // This list of units is used both for the type and for the dropdown in the UI.
-export const rateLimitUnits = [
+const rateLimitUnits = [
   "UNKNOWN",
   "SECOND",
   "MINUTE",
   "HOUR",
   "DAY",
   "MONTH",
-  "YEAR"
+  "YEAR",
 ] as const; // The 'as const' tells TypeScript to treat these as literal types
-export type RateLimitUnit = typeof rateLimitUnits[number];
+export const rateLimitUnitOptions = rateLimitUnits.map((unit) => ({
+  value: unit,
+  label: unit,
+}));
+export type RateLimitUnit = (typeof rateLimitUnits)[number];
 
 export type RateLimit = {
   requestsPerUnit: string;

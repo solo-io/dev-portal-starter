@@ -1,9 +1,10 @@
-import {Box, Flex, NumberInput, Select, Text} from "@mantine/core";
+import { Box, Flex, NumberInput, Select, Text } from "@mantine/core";
 import { FormEvent, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { RateLimitUnit, rateLimitUnitOptions } from "../../Apis/api-types";
 import {
-  CreateUpdateAppMetadataParams,
-  CreateUpdateSubscriptionMetadataParams,
+  UpsertAppMetadataParams,
+  UpsertSubscriptionMetadataParams,
   useUpsertAppMetadataMutation,
   useUpsertSubscriptionMetadataMutation,
 } from "../../Apis/gg_hooks";
@@ -11,7 +12,6 @@ import { Button } from "../../Components/Common/Button";
 import { useIsAdmin } from "../../Context/AuthContext";
 import { shallowEquals } from "../utility";
 import { SharedMetadataProps } from "./MetadataDisplay";
-import {RateLimitUnit, rateLimitUnits} from "../../Apis/api-types";
 
 export const RateLimitEditor = ({
   item,
@@ -61,7 +61,7 @@ export const RateLimitEditor = ({
     (async () => {
       if ("applicationId" in item) {
         // This is a Subscription
-        const payload: CreateUpdateSubscriptionMetadataParams["arg"] = {
+        const payload: UpsertSubscriptionMetadataParams["arg"] = {
           customMetadata: newCustomMetadata,
           rateLimit: newRateLimitInfo,
           subscription: item,
@@ -84,7 +84,7 @@ export const RateLimitEditor = ({
         }
       } else {
         // This is an App
-        const payload: CreateUpdateAppMetadataParams["arg"] = {
+        const payload: UpsertAppMetadataParams["arg"] = {
           customMetadata: newCustomMetadata,
           rateLimit: newRateLimitInfo,
           appId: item.id,
@@ -188,22 +188,18 @@ export const RateLimitEditor = ({
                 <label htmlFor="unit-input">Unit</label>
               </Text>
               <Select
-                  // size="xs"
-                  required
-                  disabled={!isEditingRateLimit}
-                  id="unit-input"
-                  data={
-                    rateLimitUnits.map((unit) => ({
-                        value: unit,
-                        label: unit,
-                    }))
+                required
+                disabled={!isEditingRateLimit}
+                id="unit-input"
+                data={rateLimitUnitOptions}
+                onChange={(value: RateLimitUnit | null) => {
+                  if (!!value) {
+                    setUnit(value);
                   }
-                  onChange={(value: RateLimitUnit | null) => {
-                    value && setUnit(value)
-                  }}
-                  value={unit}
-                  placeholder="Unit"
-                  autoComplete="off"
+                }}
+                value={unit}
+                placeholder="Unit"
+                autoComplete="off"
               />
             </Flex>
           </Flex>

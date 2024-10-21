@@ -2,8 +2,8 @@ import { Box, Flex, Input, Text } from "@mantine/core";
 import { FormEvent, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import {
-  CreateUpdateAppMetadataParams,
-  CreateUpdateSubscriptionMetadataParams,
+  UpsertAppMetadataParams,
+  UpsertSubscriptionMetadataParams,
   useUpsertAppMetadataMutation,
   useUpsertSubscriptionMetadataMutation,
 } from "../../Apis/gg_hooks";
@@ -58,7 +58,7 @@ export const CustomMetadataEditor = ({
     (async () => {
       if ("applicationId" in item) {
         // This is a Subscription
-        const payload: CreateUpdateSubscriptionMetadataParams["arg"] = {
+        const payload: UpsertSubscriptionMetadataParams["arg"] = {
           customMetadata: editedCustomMetadata,
           rateLimit: rateLimitInfo,
           subscription: item,
@@ -81,7 +81,7 @@ export const CustomMetadataEditor = ({
         }
       } else {
         // This is an App
-        const payload: CreateUpdateAppMetadataParams["arg"] = {
+        const payload: UpsertAppMetadataParams["arg"] = {
           customMetadata: editedCustomMetadata,
           rateLimit: rateLimitInfo,
           appId: item.id,
