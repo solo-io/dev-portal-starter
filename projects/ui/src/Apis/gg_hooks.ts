@@ -531,10 +531,10 @@ export type CreateUpdateAppMetadataParams = MutationWithArgs<{
   customMetadata?: Record<string, string>;
 }>;
 
-export function useCreateAppMetadataMutation() {
+export function useUpsertAppMetadataMutation() {
   const { latestAccessToken } = useContext(AuthContext);
   const { mutate } = useSWRConfig();
-  const createAppMetadata = async (
+  const fetcher = async (
     _: string,
     { arg }: CreateUpdateAppMetadataParams
   ) => {
@@ -553,32 +553,7 @@ export function useCreateAppMetadataMutation() {
     mutate(TEAM_APPS_SWR_KEY);
     mutate(`/apps/${arg.appId}`);
   };
-  return useSWRMutation(`create-app-metadata`, createAppMetadata);
-}
-
-// -------------------------------- //
-// region (Admin) Update App Metadata
-
-export function useUpdateAppMetadataMutation() {
-  const { latestAccessToken } = useContext(AuthContext);
-  const { mutate } = useSWRConfig();
-  const fetcher = async (_: string, { arg }: CreateUpdateAppMetadataParams) => {
-    const req: Record<string, any> = { appId: arg.appId };
-    if (arg.customMetadata !== undefined) {
-      req.customMetadata = arg.customMetadata;
-    }
-    if (arg.rateLimit !== undefined) {
-      req.rateLimit = arg.rateLimit;
-    }
-    await fetchJSON(`/apps/${arg.appId}/metadata`, {
-      method: "PUT",
-      headers: getLatestAuthHeaders(latestAccessToken),
-      body: JSON.stringify(req),
-    });
-    mutate(TEAM_APPS_SWR_KEY);
-    mutate(`/apps/${arg.appId}`);
-  };
-  return useSWRMutation("update-app-metadata", fetcher);
+  return useSWRMutation(`upsert-app-metadata`, fetcher);
 }
 
 // -------------------------------- //
@@ -590,7 +565,7 @@ export type CreateUpdateSubscriptionMetadataParams = MutationWithArgs<{
   rateLimit?: RateLimit;
 }>;
 
-export function useCreateSubscriptionMetadataMutation() {
+export function useUpsertSubscriptionMetadataMutation() {
   const { latestAccessToken } = useContext(AuthContext);
   const { mutate } = useSWRConfig();
   const fetcher = async (
@@ -616,37 +591,5 @@ export function useCreateSubscriptionMetadataMutation() {
     mutate(`/subscriptions?status=${SubscriptionStatus.PENDING}`);
     mutate(APP_SUBS_SWR_KEY);
   };
-  return useSWRMutation(`create-subscription-metadata`, fetcher);
-}
-
-// -------------------------------- //
-// region (Admin) Update Subscription Metadata
-
-export function useUpdateSubscriptionMetadataMutation() {
-  const { latestAccessToken } = useContext(AuthContext);
-  const { mutate } = useSWRConfig();
-  const fetcher = async (
-    _: string,
-    { arg }: CreateUpdateSubscriptionMetadataParams
-  ) => {
-    const req: Record<string, any> = { subscriptionId: arg.subscription.id };
-    if (arg.customMetadata !== undefined) {
-      req.customMetadata = arg.customMetadata;
-    }
-    if (arg.rateLimit !== undefined) {
-      req.rateLimit = arg.rateLimit;
-    }
-    await fetchJSON(`/subscriptions/${arg.subscription.id}/metadata`, {
-      method: "PUT",
-      headers: getLatestAuthHeaders(latestAccessToken),
-      body: JSON.stringify(req),
-    });
-    // We use several queries to get subscriptions across different pages.
-    // Doing all the mutations here so we don't miss anything.
-    mutate(`/apps/${arg.subscription.applicationId}/subscriptions`);
-    mutate(`/subscriptions?status=${SubscriptionStatus.APPROVED}`);
-    mutate(`/subscriptions?status=${SubscriptionStatus.PENDING}`);
-    mutate(APP_SUBS_SWR_KEY);
-  };
-  return useSWRMutation(`update-subscription-metadata`, fetcher);
+  return useSWRMutation(`upsert-subscription-metadata`, fetcher);
 }

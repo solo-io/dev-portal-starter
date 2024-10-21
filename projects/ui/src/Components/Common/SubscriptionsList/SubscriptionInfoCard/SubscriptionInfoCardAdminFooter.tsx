@@ -19,8 +19,6 @@ const SubscriptionInfoCardAdminFooter = ({
   const [showRejectSubModal, setShowRejectSubModal] = useState(false);
   const [showDeleteSubModal, setShowDeleteSubModal] = useState(false);
 
-  const canApproveRejectSubscription =
-    subscriptionState === SubscriptionState.PENDING;
   const canDeleteSubscription = subscriptionState !== SubscriptionState.DELETED;
 
   //
@@ -34,7 +32,7 @@ const SubscriptionInfoCardAdminFooter = ({
             <Button
               color="success"
               size="xs"
-              disabled={!canApproveRejectSubscription}
+              disabled={subscriptionState === SubscriptionState.APPROVED}
               onClick={() => setShowApproveSubModal(true)}
             >
               Approve
@@ -43,13 +41,13 @@ const SubscriptionInfoCardAdminFooter = ({
             <Button
               color="warning"
               size="xs"
-              disabled={!canApproveRejectSubscription}
+              disabled={subscriptionState === SubscriptionState.REJECTED}
               onClick={() => setShowRejectSubModal(true)}
             >
               Reject
             </Button>
 
-            <Button
+            <Button  // TODO: Verify with JM, but if admins can't join teams, then there's no need for the deletion button, because only team members can delete.
               color="danger"
               size="xs"
               disabled={!canDeleteSubscription}
