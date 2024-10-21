@@ -47,7 +47,7 @@ const SubscriptionInfoCardAdminFooter = ({
               Reject
             </Button>
 
-            <Button  // TODO: Verify with JM, but if admins can't join teams, then there's no need for the deletion button, because only team members can delete.
+            <Button
               color="danger"
               size="xs"
               disabled={!canDeleteSubscription}
