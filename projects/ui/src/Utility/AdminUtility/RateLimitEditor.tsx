@@ -1,13 +1,12 @@
-import { Box, Flex, Input, NumberInput, Text } from "@mantine/core";
+import { Box, Flex, NumberInput, Select, Text } from "@mantine/core";
 import { FormEvent, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { RateLimitUnit, rateLimitUnitOptions } from "../../Apis/api-types";
 import {
-  CreateUpdateAppMetadataParams,
-  CreateUpdateSubscriptionMetadataParams,
-  useCreateAppMetadataMutation,
-  useCreateSubscriptionMetadataMutation,
-  useUpdateAppMetadataMutation,
-  useUpdateSubscriptionMetadataMutation,
+  UpsertAppMetadataParams,
+  UpsertSubscriptionMetadataParams,
+  useUpsertAppMetadataMutation,
+  useUpsertSubscriptionMetadataMutation,
 } from "../../Apis/gg_hooks";
 import { Button } from "../../Components/Common/Button";
 import { useIsAdmin } from "../../Context/AuthContext";
@@ -45,12 +44,9 @@ export const RateLimitEditor = ({
   //
   //  region Saving Data
   //
-  const { trigger: createAppMetadata } = useCreateAppMetadataMutation();
-  const { trigger: updateAppMetadata } = useUpdateAppMetadataMutation();
-  const { trigger: createSubscriptionMetadata } =
-    useCreateSubscriptionMetadataMutation();
-  const { trigger: updateSubscriptionMetadata } =
-    useUpdateSubscriptionMetadataMutation();
+  const { trigger: upsertAppMetadata } = useUpsertAppMetadataMutation();
+  const { trigger: upsertSubscriptionMetadata } =
+    useUpsertSubscriptionMetadataMutation();
   const onSave = async (e: FormEvent) => {
     e.preventDefault();
     const newRateLimitInfo = {
@@ -65,21 +61,22 @@ export const RateLimitEditor = ({
     (async () => {
       if ("applicationId" in item) {
         // This is a Subscription
-        const payload: CreateUpdateSubscriptionMetadataParams["arg"] = {
+        const payload: UpsertSubscriptionMetadataParams["arg"] = {
           customMetadata: newCustomMetadata,
           rateLimit: newRateLimitInfo,
           subscription: item,
         };
+        // using the same upsert operation but in different contexts to better display the warning messages based on the context of the call
         if (!!item.metadata) {
           // Updating existing metadata
-          await toast.promise(updateSubscriptionMetadata(payload), {
+          await toast.promise(upsertSubscriptionMetadata(payload), {
             error: "There was an error updating the subscription metadata.",
             loading: "Updating the subscription metadata.",
             success: "Updated the subscription metadata!",
           });
         } else {
           // Creating metadata
-          await toast.promise(createSubscriptionMetadata(payload), {
+          await toast.promise(upsertSubscriptionMetadata(payload), {
             error: "There was an error creating the subscription metadata.",
             loading: "Creating the subscription metadata.",
             success: "Created the subscription metadata!",
@@ -87,21 +84,21 @@ export const RateLimitEditor = ({
         }
       } else {
         // This is an App
-        const payload: CreateUpdateAppMetadataParams["arg"] = {
+        const payload: UpsertAppMetadataParams["arg"] = {
           customMetadata: newCustomMetadata,
           rateLimit: newRateLimitInfo,
           appId: item.id,
         };
         if (!!item.metadata) {
           // Updating existing metadata
-          await toast.promise(updateAppMetadata(payload), {
+          await toast.promise(upsertAppMetadata(payload), {
             error: "There was an error updating the app metadata.",
             loading: "Updating the app metadata.",
             success: "Updated the app metadata!",
           });
         } else {
           // Creating metadata
-          await toast.promise(createAppMetadata(payload), {
+          await toast.promise(upsertAppMetadata(payload), {
             error: "There was an error updating the app metadata.",
             loading: "Creating the app metadata.",
             success: "Created the app metadata!",
@@ -190,14 +187,19 @@ export const RateLimitEditor = ({
               <Text size="md">
                 <label htmlFor="unit-input">Unit</label>
               </Text>
-              <Input
+              <Select
                 required
                 disabled={!isEditingRateLimit}
                 id="unit-input"
+                data={rateLimitUnitOptions}
+                onChange={(value: RateLimitUnit | null) => {
+                  if (!!value) {
+                    setUnit(value);
+                  }
+                }}
+                value={unit}
                 placeholder="Unit"
                 autoComplete="off"
-                value={unit}
-                onChange={(e) => setUnit(e.target.value)}
               />
             </Flex>
           </Flex>

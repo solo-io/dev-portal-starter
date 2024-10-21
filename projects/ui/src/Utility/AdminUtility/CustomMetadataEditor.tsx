@@ -2,12 +2,10 @@ import { Box, Flex, Input, Text } from "@mantine/core";
 import { FormEvent, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import {
-  CreateUpdateAppMetadataParams,
-  CreateUpdateSubscriptionMetadataParams,
-  useCreateAppMetadataMutation,
-  useCreateSubscriptionMetadataMutation,
-  useUpdateAppMetadataMutation,
-  useUpdateSubscriptionMetadataMutation,
+  UpsertAppMetadataParams,
+  UpsertSubscriptionMetadataParams,
+  useUpsertAppMetadataMutation,
+  useUpsertSubscriptionMetadataMutation,
 } from "../../Apis/gg_hooks";
 import { Icon } from "../../Assets/Icons";
 import { Button } from "../../Components/Common/Button";
@@ -49,12 +47,9 @@ export const CustomMetadataEditor = ({
   //
   //  region Saving Data
   //
-  const { trigger: createAppMetadata } = useCreateAppMetadataMutation();
-  const { trigger: updateAppMetadata } = useUpdateAppMetadataMutation();
-  const { trigger: createSubscriptionMetadata } =
-    useCreateSubscriptionMetadataMutation();
-  const { trigger: updateSubscriptionMetadata } =
-    useUpdateSubscriptionMetadataMutation();
+  const { trigger: upsertAppMetadata } = useUpsertAppMetadataMutation();
+  const { trigger: upsertSubscriptionMetadata } =
+    useUpsertSubscriptionMetadataMutation();
   const onSave = async () => {
     // Stop here if the object wasn't edited.
     if (shallowEquals(editedCustomMetadata, customMetadata)) {
@@ -63,21 +58,22 @@ export const CustomMetadataEditor = ({
     (async () => {
       if ("applicationId" in item) {
         // This is a Subscription
-        const payload: CreateUpdateSubscriptionMetadataParams["arg"] = {
+        const payload: UpsertSubscriptionMetadataParams["arg"] = {
           customMetadata: editedCustomMetadata,
           rateLimit: rateLimitInfo,
           subscription: item,
         };
+        // using the same upsert operation but in different contexts to better display the warning messages based on the context of the call
         if (!!item.metadata) {
           // Updating existing metadata
-          await toast.promise(updateSubscriptionMetadata(payload), {
+          await toast.promise(upsertSubscriptionMetadata(payload), {
             error: "There was an error updating the subscription metadata.",
             loading: "Updating the subscription metadata.",
             success: "Updated the subscription metadata!",
           });
         } else {
           // Creating metadata
-          await toast.promise(createSubscriptionMetadata(payload), {
+          await toast.promise(upsertSubscriptionMetadata(payload), {
             error: "There was an error creating the subscription metadata.",
             loading: "Creating the subscription metadata.",
             success: "Created the subscription metadata!",
@@ -85,21 +81,21 @@ export const CustomMetadataEditor = ({
         }
       } else {
         // This is an App
-        const payload: CreateUpdateAppMetadataParams["arg"] = {
+        const payload: UpsertAppMetadataParams["arg"] = {
           customMetadata: editedCustomMetadata,
           rateLimit: rateLimitInfo,
           appId: item.id,
         };
         if (!!item.metadata) {
           // Updating existing metadata
-          await toast.promise(updateAppMetadata(payload), {
+          await toast.promise(upsertAppMetadata(payload), {
             error: "There was an error updating the app metadata.",
             loading: "Updating the app metadata.",
             success: "Updated the app metadata!",
           });
         } else {
           // Creating metadata
-          await toast.promise(createAppMetadata(payload), {
+          await toast.promise(upsertAppMetadata(payload), {
             error: "There was an error updating the app metadata.",
             loading: "Creating the app metadata.",
             success: "Created the app metadata!",
