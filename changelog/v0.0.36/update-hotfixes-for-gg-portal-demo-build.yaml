@@ -1,0 +1,6 @@
+changelog:
+  - type: FIX
+    description: >-
+      Update metadata endpoint to allow updating of metadata.
+      Updated subscription modal to allow toggling of subscription status by admin.
+      Use a selection dropdown for rate limit units to not allow invalid values.
