@@ -1,0 +1,6 @@
+changelog:
+  - type: FIX
+    issueLink: https://github.com/solo-io/solo-projects/issues/7043
+    description: >-
+      Updates the rate limit UI element to show mixed values when there is a App which
+      has multiple subscriptions with different rate limits.
