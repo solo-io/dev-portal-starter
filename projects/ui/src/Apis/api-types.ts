@@ -2,6 +2,8 @@
 // Gloo Mesh Gateway Types
 //
 
+import { getEnumValues } from "../Utility/utility";
+
 type RateLimitPolicy = {
   unit: "UNKNOWN" | "SECOND" | "MINUTE" | "HOUR" | "DAY";
   requestsPerUnit: number;
@@ -171,8 +173,7 @@ export type OauthCredential = {
   idpClientName: string;
 };
 
-// This list of units is used both for the type and for the dropdown in the UI.
-const rateLimitUnits = [
+export enum RateLimitUnit {
   "UNKNOWN",
   "SECOND",
   "MINUTE",
@@ -180,16 +181,18 @@ const rateLimitUnits = [
   "DAY",
   "MONTH",
   "YEAR",
-] as const; // The 'as const' tells TypeScript to treat these as literal types
-export const rateLimitUnitOptions = rateLimitUnits.map((unit) => ({
-  value: unit,
-  label: unit,
-}));
-export type RateLimitUnit = (typeof rateLimitUnits)[number];
+}
+// This list of units is used both for the type and for the dropdown in the UI.
+export const rateLimitUnitOptions = getEnumValues(RateLimitUnit).map(
+  (unit) => ({
+    value: RateLimitUnit[unit],
+    label: RateLimitUnit[unit],
+  })
+);
 
 export type RateLimit = {
   requestsPerUnit: string;
-  unit: RateLimitUnit;
+  unit: string;
 };
 
 export type SubscriptionMetadata = {

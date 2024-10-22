@@ -13,23 +13,27 @@ import { useIsAdmin } from "../../Context/AuthContext";
 import { shallowEquals } from "../utility";
 import { SharedMetadataProps } from "./MetadataDisplay";
 
+export type RateLimitEditorProps = SharedMetadataProps & {
+  inAppDetailsPage: boolean;
+  isSubscription: boolean;
+  isEditingRateLimit: boolean;
+  onIsEditingRateLimitChange: (newIsEditinRateLimit: boolean) => void;
+};
+
 export const RateLimitEditor = ({
   item,
   isEditingRateLimit,
   customMetadata,
   rateLimitInfo,
   onIsEditingRateLimitChange,
-}: SharedMetadataProps & {
-  isEditingRateLimit: boolean;
-  onIsEditingRateLimitChange: (newIsEditinRateLimit: boolean) => void;
-}) => {
+}: RateLimitEditorProps) => {
   //
   //  region State
   //
   const initialRateLimitInfo = rateLimitInfo ?? {
     // This is the default if no rate limit is specified.
     requestsPerUnit: "0",
-    unit: "UNKNOWN",
+    unit: RateLimitUnit[RateLimitUnit.UNKNOWN],
   };
   let initialRPU = 0;
   try {
@@ -129,7 +133,7 @@ export const RateLimitEditor = ({
       {/* 
       // region Edit/Save Buttons 
       */}
-      {isAdmin ? (
+      {isAdmin && (
         <Flex gap="10px">
           <Button
             type="button"
@@ -152,11 +156,9 @@ export const RateLimitEditor = ({
             </Button>
           )}
         </Flex>
-      ) : (
-        <Text size="lg">Rate Limit</Text>
       )}
 
-      <Box sx={{ paddingTop: isAdmin ? "15px" : "5px", paddingBottom: "5px" }}>
+      <Box sx={{ paddingTop: isAdmin ? "12px" : "5px", paddingBottom: "5px" }}>
         {/* 
         // region Text Inputs 
         */}
@@ -169,6 +171,7 @@ export const RateLimitEditor = ({
               <NumberInput
                 required
                 type="number"
+                min={0}
                 disabled={!isEditingRateLimit}
                 ref={requestsPerUnitRef}
                 id="rpu-input"
@@ -192,7 +195,7 @@ export const RateLimitEditor = ({
                 disabled={!isEditingRateLimit}
                 id="unit-input"
                 data={rateLimitUnitOptions}
-                onChange={(value: RateLimitUnit | null) => {
+                onChange={(value: string | null) => {
                   if (!!value) {
                     setUnit(value);
                   }

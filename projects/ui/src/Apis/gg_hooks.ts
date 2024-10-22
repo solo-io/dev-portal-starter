@@ -56,7 +56,7 @@ export function useListFlatAppsForTeamsOmitErrors(teams: Team[]) {
   return { ...swrRes, data };
 }
 export function useGetAppDetails(id?: string) {
-  return useSwrWithAuth<App>(`/apps/${id}`);
+  return useSwrWithAuth<App>(`/apps/${id}`, id ?? null);
 }
 export function useListApiKeysForApp(appId: string) {
   return useSwrWithAuth<ApiKey[]>(`/apps/${appId}/api-keys`);
@@ -101,9 +101,11 @@ export function useListSubscriptionsForStatus(status: SubscriptionStatus) {
   }, [swrResponse]);
   return swrResponse;
 }
-export function useListSubscriptionsForApp(appId: string) {
+export function useListSubscriptionsForApp(appId: string | null) {
+  const endpoint = `/apps/${appId}/subscriptions`;
   const swrResponse = useSwrWithAuth<Subscription[] | SubscriptionsListError>(
-    `/apps/${appId}/subscriptions`
+    endpoint,
+    appId === null ? null : endpoint
   );
   useEffect(() => {
     if (isSubscriptionsListError(swrResponse.data)) {
