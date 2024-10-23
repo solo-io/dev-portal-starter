@@ -4,3 +4,7 @@ changelog:
     description: >-
       Updates the rate limit UI element to show mixed values when there is a App which
       has multiple subscriptions with different rate limits.
+  - type: FIX
+    issueLink: https://github.com/solo-io/solo-projects/issues/7066
+    description: >-
+      Fixes a bug where subscriptions incorrectly showed up as deleted.

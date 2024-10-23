@@ -10,6 +10,7 @@ import {
 } from "../../Apis/gg_hooks";
 import { Button } from "../../Components/Common/Button";
 import { useIsAdmin } from "../../Context/AuthContext";
+import { colors } from "../../Styles";
 import { shallowEquals } from "../utility";
 import { SharedMetadataProps } from "./MetadataDisplay";
 
@@ -35,6 +36,7 @@ export const RateLimitEditor = ({
     requestsPerUnit: "0",
     unit: RateLimitUnit[RateLimitUnit.UNKNOWN],
   };
+  const rateLimitExists = !!rateLimitInfo;
   let initialRPU = 0;
   try {
     initialRPU = Number.parseInt(initialRateLimitInfo.requestsPerUnit ?? "0");
@@ -158,56 +160,64 @@ export const RateLimitEditor = ({
         </Flex>
       )}
 
-      <Box sx={{ paddingTop: isAdmin ? "12px" : "5px", paddingBottom: "5px" }}>
-        {/* 
-        // region Text Inputs 
-        */}
-        <Flex gap="10px">
-          <Flex sx={{ flexBasis: "50%" }}>
-            <Flex direction="column" sx={{ flexGrow: 1 }}>
-              <Text size="md">
-                <label htmlFor="rpu-input">Requests Per Unit</label>
-              </Text>
-              <NumberInput
-                required
-                type="number"
-                min={0}
-                disabled={!isEditingRateLimit}
-                ref={requestsPerUnitRef}
-                id="rpu-input"
-                placeholder="Requests Per Unit"
-                autoComplete="off"
-                value={requestsPerUnit}
-                onChange={(value) => {
-                  setRequestsPerUnit(value === "" ? 0 : value);
-                }}
-              />
+      {!rateLimitExists && !isEditingRateLimit ? (
+        <Text size="sm" color={colors.septemberGrey}>
+          No Rate Limit was found.
+        </Text>
+      ) : (
+        <Box
+          sx={{ paddingTop: isAdmin ? "12px" : "5px", paddingBottom: "5px" }}
+        >
+          {/* 
+          // region Text Inputs 
+          */}
+          <Flex gap="10px">
+            <Flex sx={{ flexBasis: "50%" }}>
+              <Flex direction="column" sx={{ flexGrow: 1 }}>
+                <Text size="md">
+                  <label htmlFor="rpu-input">Requests Per Unit</label>
+                </Text>
+                <NumberInput
+                  required
+                  type="number"
+                  min={0}
+                  disabled={!isEditingRateLimit}
+                  ref={requestsPerUnitRef}
+                  id="rpu-input"
+                  placeholder="Requests Per Unit"
+                  autoComplete="off"
+                  value={requestsPerUnit}
+                  onChange={(value) => {
+                    setRequestsPerUnit(value === "" ? 0 : value);
+                  }}
+                />
+              </Flex>
             </Flex>
-          </Flex>
 
-          <Flex sx={{ flexBasis: "50%", flexGrow: 1 }}>
-            <Flex direction="column" sx={{ flexGrow: 1 }}>
-              <Text size="md">
-                <label htmlFor="unit-input">Unit</label>
-              </Text>
-              <Select
-                required
-                disabled={!isEditingRateLimit}
-                id="unit-input"
-                data={rateLimitUnitOptions}
-                onChange={(value: string | null) => {
-                  if (!!value) {
-                    setUnit(value);
-                  }
-                }}
-                value={unit}
-                placeholder="Unit"
-                autoComplete="off"
-              />
+            <Flex sx={{ flexBasis: "50%", flexGrow: 1 }}>
+              <Flex direction="column" sx={{ flexGrow: 1 }}>
+                <Text size="md">
+                  <label htmlFor="unit-input">Unit</label>
+                </Text>
+                <Select
+                  required
+                  disabled={!isEditingRateLimit}
+                  id="unit-input"
+                  data={rateLimitUnitOptions}
+                  onChange={(value: string | null) => {
+                    if (!!value) {
+                      setUnit(value);
+                    }
+                  }}
+                  value={unit}
+                  placeholder="Unit"
+                  autoComplete="off"
+                />
+              </Flex>
             </Flex>
           </Flex>
-        </Flex>
-      </Box>
+        </Box>
+      )}
     </form>
   );
 };

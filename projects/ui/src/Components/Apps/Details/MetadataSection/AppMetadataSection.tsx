@@ -3,7 +3,6 @@ import { App } from "../../../../Apis/api-types";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { MetadataDisplay } from "../../../../Utility/AdminUtility/MetadataDisplay";
-import { EmptyData } from "../../../Common/EmptyData";
 
 const AppMetadataSection = ({ app }: { app: App }) => {
   //
@@ -14,17 +13,17 @@ const AppMetadataSection = ({ app }: { app: App }) => {
       <DetailsPageStyles.Title>Metadata</DetailsPageStyles.Title>
       <GridCardStyles.GridCard whiteBg wide>
         <Box px={"20px"} py={"25px"}>
-          {!!app.metadata?.rateLimit ? (
-            <MetadataDisplay
-              item={app}
-              customMetadata={app.metadata?.customMetadata}
-              rateLimitInfo={app.metadata?.rateLimit}
-            />
-          ) : (
-            <Box pt="10px">
-              <EmptyData title="No App metadata was found." />
-            </Box>
-          )}
+          {/* {!!app.metadata?.rateLimit ? ( */}
+          <MetadataDisplay
+            item={app}
+            customMetadata={app.metadata?.customMetadata}
+            rateLimitInfo={app.metadata?.rateLimit}
+          />
+          {/* // ) : (
+          //   <Box pt="10px">
+          //     <EmptyData title="No App metadata was found." />
+          //   </Box>
+          // )} */}
         </Box>
       </GridCardStyles.GridCard>
     </DetailsPageStyles.Section>
