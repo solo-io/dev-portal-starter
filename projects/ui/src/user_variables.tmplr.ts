@@ -246,3 +246,24 @@ export const swaggerPrefillBasic = (() => {
       }
     : undefined;
 })();
+
+/**
+ * This is optional.
+ */
+export enum AppAuthMethod {
+  ALL,
+  OAUTH,
+  API_KEY,
+}
+export const defaultAppAuthMethod = templateString(
+  "{{ tmplr.defaultAppAuthMethod }}",
+  insertedEnvironmentVariables?.VITE_DEFAULT_APP_AUTH_METHOD,
+  import.meta.env.VITE_DEFAULT_APP_AUTH_METHOD,
+  "ALL"
+).toUpperCase() as keyof typeof AppAuthMethod;
+if (AppAuthMethod[defaultAppAuthMethod] === undefined) {
+  // eslint-disable-next-line no-console
+  console.error(
+    'The value for `VITE_DEFAULT_APP_AUTH_METHOD` must be: "OAUTH", "ALL", or "API_KEY".'
+  );
+}
