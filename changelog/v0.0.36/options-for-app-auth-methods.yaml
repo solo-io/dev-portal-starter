@@ -1,0 +1,6 @@
+changelog:
+  - type: FIX
+    issueLink: https://github.com/solo-io/solo-projects/issues/7059
+    description: >-
+      Adds an option to configure the UI to show the API Key, OAuth, or both
+      authorization sections on the App details page.

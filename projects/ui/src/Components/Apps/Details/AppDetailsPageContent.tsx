@@ -9,6 +9,10 @@ import {
 } from "../../../Apis/gg_hooks";
 import { Icon } from "../../../Assets/Icons";
 import { UtilityStyles } from "../../../Styles/shared/Utility.style";
+import {
+  AppAuthMethod,
+  defaultAppAuthMethod,
+} from "../../../user_variables.tmplr";
 import { getTeamDetailsLink } from "../../../Utility/link-builders";
 import { BannerHeading } from "../../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../../Common/Banner/BannerHeadingTitle";
@@ -77,11 +81,17 @@ export const AppDetailsPageContent = ({ app }: { app: App }) => {
       />
       <Box px={"30px"}>
         <Flex gap={"30px"} direction={"column"}>
-          <AppAuthenticationSection app={app} />
+          {(defaultAppAuthMethod === AppAuthMethod[AppAuthMethod.ALL] ||
+            defaultAppAuthMethod === AppAuthMethod[AppAuthMethod.OAUTH]) && (
+            <AppAuthenticationSection app={app} />
+          )}
 
           <AppMetadataSection app={app} />
 
-          <AppApiKeysSection app={app} />
+          {(defaultAppAuthMethod === AppAuthMethod[AppAuthMethod.ALL] ||
+            defaultAppAuthMethod === AppAuthMethod[AppAuthMethod.API_KEY]) && (
+            <AppApiKeysSection app={app} />
+          )}
 
           {isLoadingSubscriptions || subscriptions === undefined ? (
             <Loader />

@@ -151,6 +151,7 @@ You can add these environment variables to a `.env.local` file in the `projects/
   VITE_SWAGGER_PREFILL_OAUTH='{"clientId": "your-client-id","clientSecret": "your-client-secret-if-required","realm": "your-realms","appName": "your-app-name","scopeSeparator": " ","scopes": "openid profile","additionalQueryStringParams": {"test": "hello"},"useBasicAuthenticationWithAccessCodeGrant": true,"usePkceWithAuthorizationCodeGrant": true}'
   ```
 - `VITE_SWAGGER_PREFILL_BASIC` - Prefills the Swagger UI authorization configuration for a Basic authorization scheme. This can be set using the following format: `'["authDefinitionKey", "username", "password"]'`.
+- `VITE_DEFAULT_APP_AUTH` - This controls whether the OAuth and/or API Key sections are shown on the App details page. Can be set to `"OAUTH"`, `"API_KEY"`, or `"ALL"`. Defaults to `"ALL"`.
 
 #### Environment Variables for PKCE Authorization Flow
 
