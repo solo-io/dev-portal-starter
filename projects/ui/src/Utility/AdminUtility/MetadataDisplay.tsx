@@ -43,23 +43,15 @@ export const MetadataDisplay = ({
 
   return (
     <Box sx={{ textAlign: "left", width: "100%" }}>
-      <Box
-        mb={
-          showingRateLimit && (!!customMetadata || !!isEditingCustomMetadata)
-            ? "10px"
-            : "0px"
+      <CustomMetadataEditor
+        isEditingCustomMetadata={isEditingCustomMetadata}
+        onIsEditingCustomMetadataChange={(value) =>
+          setIsEditingCustomMetadata(value)
         }
-      >
-        <CustomMetadataEditor
-          isEditingCustomMetadata={isEditingCustomMetadata}
-          onIsEditingCustomMetadataChange={(value) =>
-            setIsEditingCustomMetadata(value)
-          }
-          customMetadata={customMetadata}
-          rateLimitInfo={rateLimitInfo}
-          {...props}
-        />
-      </Box>
+        customMetadata={customMetadata}
+        rateLimitInfo={rateLimitInfo}
+        {...props}
+      />
       {showingRateLimit && (
         <Box mb="10px">
           <RateLimitSection

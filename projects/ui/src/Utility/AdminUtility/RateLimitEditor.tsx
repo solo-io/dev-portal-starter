@@ -161,7 +161,7 @@ export const RateLimitEditor = ({
       )}
 
       {!rateLimitExists && !isEditingRateLimit ? (
-        <Text size="sm" color={colors.septemberGrey}>
+        <Text size="sm" mt="10px" color={colors.septemberGrey}>
           No Rate Limit was found.
         </Text>
       ) : (
