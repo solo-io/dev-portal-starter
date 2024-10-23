@@ -19,8 +19,6 @@ const SubscriptionInfoCardAdminFooter = ({
   const [showRejectSubModal, setShowRejectSubModal] = useState(false);
   const [showDeleteSubModal, setShowDeleteSubModal] = useState(false);
 
-  const canDeleteSubscription = subscriptionState !== SubscriptionState.DELETED;
-
   //
   // Render
   //
@@ -50,7 +48,6 @@ const SubscriptionInfoCardAdminFooter = ({
             <Button
               color="danger"
               size="xs"
-              disabled={!canDeleteSubscription}
               onClick={() => setShowDeleteSubModal(true)}
             >
               Delete

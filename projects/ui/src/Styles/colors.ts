@@ -80,7 +80,10 @@ const colorMap = {
   pumpkinOrangeLight10: Color(baseColors.pumpkinOrange).lighten(0.1).hex(),
   pumpkinOrangeLight20: Color(baseColors.pumpkinOrange).lighten(0.2).hex(),
 
+  lightYellowLight1: Color(baseColors.lightYellow).lighten(0.02).hex(),
   midYellowDark20: Color(baseColors.midYellow).darken(0.2).hex(),
+  darkYellowDark10: Color(baseColors.darkYellow).darken(0.1).hex(),
+  darkYellowDark20: Color(baseColors.darkYellow).darken(0.2).hex(),
 } as const;
 
 const semanticColorMap = {
