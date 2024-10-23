@@ -13,17 +13,11 @@ const AppMetadataSection = ({ app }: { app: App }) => {
       <DetailsPageStyles.Title>Metadata</DetailsPageStyles.Title>
       <GridCardStyles.GridCard whiteBg wide>
         <Box px={"20px"} py={"25px"}>
-          {/* {!!app.metadata?.rateLimit ? ( */}
           <MetadataDisplay
             item={app}
             customMetadata={app.metadata?.customMetadata}
             rateLimitInfo={app.metadata?.rateLimit}
           />
-          {/* // ) : (
-          //   <Box pt="10px">
-          //     <EmptyData title="No App metadata was found." />
-          //   </Box>
-          // )} */}
         </Box>
       </GridCardStyles.GridCard>
     </DetailsPageStyles.Section>
