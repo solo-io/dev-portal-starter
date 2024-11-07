@@ -36,6 +36,7 @@ const OidcAuthCodeHeaderVariant = () => {
           </NavLink>
           <NavLink
             to={"/apis"}
+            onClick={() => (window.location.href = "/apis")}
             className={`navLink ${inAPIsArea ? "active" : ""}`}
           >
             APIs
