@@ -137,6 +137,7 @@ You can add these environment variables to a `.env.local` file in the `projects/
 - `VITE_HOME_IMAGE_URL` - This is an optional parameter to set the image URL on the home page.
 - `VITE_APIS_IMAGE_URL` - This is an optional parameter to set the image URL on the apis page.
 - `VITE_LOGO_IMAGE_URL` - This is an optional parameter to set the image URL for the logo in the upper left.
+- `VITE_API_PAGE_RELOAD` - This is an optional parameter that ensures the API page reloads when navigating to it. This is useful when gating the API page behind an auth flow.
 
 #### Environment Variables for PKCE Authorization Flow
 

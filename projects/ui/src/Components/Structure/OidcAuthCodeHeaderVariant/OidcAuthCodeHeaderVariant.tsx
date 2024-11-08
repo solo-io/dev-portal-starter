@@ -5,6 +5,7 @@ import { AppContext } from "../../../Context/AppContext";
 import { ErrorBoundary } from "../../Common/ErrorBoundary";
 import { HeaderStyles } from "../Header.style";
 import { OidcAuthCodeHeaderDropdown } from "./OidcAuthCodeHeaderDropdown";
+import {apiPageReload} from "../../../user_variables.tmplr";
 
 /**
  * This is for when there is an
@@ -36,7 +37,7 @@ const OidcAuthCodeHeaderVariant = () => {
           </NavLink>
           <NavLink
             to={"/apis"}
-            onClick={() => (window.location.href = "/apis")}
+            onClick={apiPageReload === "true" ? () => (window.location.href = "/apis") : undefined}
             className={`navLink ${inAPIsArea ? "active" : ""}`}
           >
             APIs
