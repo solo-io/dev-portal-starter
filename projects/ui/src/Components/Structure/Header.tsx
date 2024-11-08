@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { ReactComponent as Logo } from "../../Assets/logo.svg";
 import { AppContext } from "../../Context/AppContext";
 import { AuthContext } from "../../Context/AuthContext";
-import { logoImageURL } from "../../user_variables.tmplr";
+import {apiPageReload, logoImageURL} from "../../user_variables.tmplr";
 import { ErrorBoundary } from "../Common/ErrorBoundary";
 import { HeaderStyles } from "./Header.style";
 import HeaderSectionLoggedIn from "./HeaderSectionLoggedIn";
@@ -89,6 +89,8 @@ export function Header() {
           */}
           <NavLink
             to={"/apis"}
+            // if apiPageReload is true use the onclick to reload the page
+            onClick={apiPageReload === "true" ? () => (window.location.href = "/apis") : undefined}
             className={`navLink ${inAPIsArea ? "active" : ""}`}
           >
             APIs

@@ -168,3 +168,11 @@ export const logoImageURL = templateString(
   import.meta.env.VITE_LOGO_IMAGE_URL,
   ""
 );
+
+export const apiPageReload = templateString(
+    "{{ tmplr.apiPageReload }}",
+    insertedEnvironmentVariables?.VITE_API_PAGE_RELOAD,
+    import.meta.env.VITE_API_PAGE_RELOAD,
+    "false"
+);
+
