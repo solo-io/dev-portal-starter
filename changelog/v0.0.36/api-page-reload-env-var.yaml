@@ -1,0 +1,5 @@
+changelog:
+  - type: NEW_FEATURE
+    description: >-
+      Adds a new env var for ensuring the API page reloads when navigating to it. This is necessary when using
+      auth with the portal frontend for gloo v1.17.x installations.
