@@ -15,6 +15,7 @@ import { HomePageCategoryCard } from "./HomePageCategoryCard";
 import CardImage1 from "../../Assets/card-option-1@2x.webp";
 import CardImage2 from "../../Assets/card-option-2@2x.webp";
 import CardImage3 from "../../Assets/card-option-3@2x.webp";
+import { onApisPageClick } from "../Structure/Header";
 
 export function HomePage() {
   const { isAdmin } = useContext(AuthContext);
@@ -27,8 +28,11 @@ export function HomePage() {
           description={`Welcome to the ${companyName} Developer Portal. Connect, partner, and build with us to create the next generation of digital experiences.`}
           additionalContent={
             !isAdmin && (
-              <NavLink to="/apis">
-                <Button style={{ width: "150px", marginTop: "10px" }}>
+              <NavLink to="/apis" onClick={onApisPageClick}>
+                <Button
+                  tabIndex={0}
+                  style={{ width: "150px", marginTop: "10px" }}
+                >
                   VIEW APIS
                 </Button>
               </NavLink>
