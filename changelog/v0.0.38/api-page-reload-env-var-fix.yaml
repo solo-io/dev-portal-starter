@@ -1,0 +1,4 @@
+changelog:
+  - type: FIX
+    description: >-
+      Fixes the API page reload behavior for the home page link.
