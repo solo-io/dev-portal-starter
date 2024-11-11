@@ -3,4 +3,3 @@ changelog:
     description: >-
       Fixes the API page reload behavior when navigating to it with `VITE_API_PAGE_RELOAD=true`,
       so that the React Router behavior is overridden in that case.
-    skipCI: true
