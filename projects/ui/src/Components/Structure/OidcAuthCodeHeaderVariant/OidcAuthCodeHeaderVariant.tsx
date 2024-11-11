@@ -2,8 +2,8 @@ import { useContext, useMemo } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { ReactComponent as Logo } from "../../../Assets/logo.svg";
 import { AppContext } from "../../../Context/AppContext";
-import { apiPageReload } from "../../../user_variables.tmplr";
 import { ErrorBoundary } from "../../Common/ErrorBoundary";
+import { onApisPageClick } from "../Header";
 import { HeaderStyles } from "../Header.style";
 import { OidcAuthCodeHeaderDropdown } from "./OidcAuthCodeHeaderDropdown";
 
@@ -37,16 +37,7 @@ const OidcAuthCodeHeaderVariant = () => {
           </NavLink>
           <NavLink
             to={"/apis"}
-            onClick={
-              apiPageReload === "true"
-                ? (e) => {
-                    // If we are using `apiPageReload=true`, we want to override the react router
-                    // behavior here, otherwise we get 2 `/apis` page history entries.
-                    e.preventDefault();
-                    window.location.href = "/apis";
-                  }
-                : undefined
-            }
+            onClick={onApisPageClick}
             className={`navLink ${inAPIsArea ? "active" : ""}`}
           >
             APIs
