@@ -3,9 +3,9 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { ReactComponent as Logo } from "../../../Assets/logo.svg";
 import { AppContext } from "../../../Context/AppContext";
 import { ErrorBoundary } from "../../Common/ErrorBoundary";
+import { onApisPageClick } from "../Header";
 import { HeaderStyles } from "../Header.style";
 import { OidcAuthCodeHeaderDropdown } from "./OidcAuthCodeHeaderDropdown";
-import {apiPageReload} from "../../../user_variables.tmplr";
 
 /**
  * This is for when there is an
@@ -37,7 +37,7 @@ const OidcAuthCodeHeaderVariant = () => {
           </NavLink>
           <NavLink
             to={"/apis"}
-            onClick={apiPageReload === "true" ? () => (window.location.href = "/apis") : undefined}
+            onClick={onApisPageClick}
             className={`navLink ${inAPIsArea ? "active" : ""}`}
           >
             APIs

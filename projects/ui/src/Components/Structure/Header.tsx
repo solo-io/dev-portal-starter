@@ -1,9 +1,9 @@
-import { useContext, useMemo } from "react";
+import { MouseEventHandler, useContext, useMemo } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { ReactComponent as Logo } from "../../Assets/logo.svg";
 import { AppContext } from "../../Context/AppContext";
 import { AuthContext } from "../../Context/AuthContext";
-import {apiPageReload, logoImageURL} from "../../user_variables.tmplr";
+import { apiPageReload, logoImageURL } from "../../user_variables.tmplr";
 import { ErrorBoundary } from "../Common/ErrorBoundary";
 import { HeaderStyles } from "./Header.style";
 import HeaderSectionLoggedIn from "./HeaderSectionLoggedIn";
@@ -16,6 +16,17 @@ if (!window.isSecureContext) {
       "so login will not work."
   );
 }
+
+// If apiPageReload is true use the onclick to reload the page
+export const onApisPageClick: MouseEventHandler<HTMLAnchorElement> | undefined =
+  apiPageReload === "true"
+    ? (e) => {
+        // If we are using `apiPageReload=true`, we want to override the react router
+        // behavior here, otherwise we get 2 `/apis` page history entries.
+        e.preventDefault();
+        window.location.href = "/apis";
+      }
+    : undefined;
 
 /**
  * MAIN COMPONENT
@@ -89,8 +100,7 @@ export function Header() {
           */}
           <NavLink
             to={"/apis"}
-            // if apiPageReload is true use the onclick to reload the page
-            onClick={apiPageReload === "true" ? () => (window.location.href = "/apis") : undefined}
+            onClick={onApisPageClick}
             className={`navLink ${inAPIsArea ? "active" : ""}`}
           >
             APIs
