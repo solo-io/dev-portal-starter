@@ -1,0 +1,5 @@
+changelog:
+  - type: FIX
+    description: >-
+      Fixes the API page reload behavior when navigating to it with `VITE_API_PAGE_RELOAD=true` for the `view API` button
+      on the home page.
