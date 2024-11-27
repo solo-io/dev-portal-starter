@@ -5,7 +5,7 @@ import { AppUtilsContextProvider } from "../Context/AppUtilsContext";
 import { defaultTheme, globalStyles } from "../Styles";
 import { mantineThemeOverride } from "../Styles/global-styles/mantine-theme";
 import PortalServerTypeChecker from "../Utility/PortalServerTypeChecker";
-import UserChecker from "../Utility/UserChecker.tsx";
+import UserChecker from "../Utility/UserChecker";
 import AppContent from "./AppContent";
 
 /**
