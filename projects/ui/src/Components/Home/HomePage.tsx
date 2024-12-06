@@ -6,6 +6,7 @@ import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 import { Button } from "../Common/Button";
 import { PageContainer } from "../Common/PageContainer";
+import { useOnApisPageClick } from "../Structure/Header";
 import { HomePageStyles } from "./HomePage.style";
 import { HomePageCategoryCard } from "./HomePageCategoryCard";
 
@@ -17,6 +18,8 @@ import CardImage3 from "../../Assets/card-option-3@2x.webp";
 
 export function HomePage() {
   const isAdmin = useIsAdmin();
+  const { onApisPageClick } = useOnApisPageClick();
+
   return (
     <PageContainer>
       <div>
@@ -26,8 +29,11 @@ export function HomePage() {
           description={`Welcome to the ${companyName} Developer Portal. Connect, partner, and build with us to create the next generation of digital experiences.`}
           additionalContent={
             !isAdmin && (
-              <NavLink to="/apis">
-                <Button style={{ width: "150px", marginTop: "10px" }}>
+              <NavLink to="/apis" onClick={onApisPageClick}>
+                <Button
+                  tabIndex={0}
+                  style={{ width: "150px", marginTop: "10px" }}
+                >
                   VIEW APIS
                 </Button>
               </NavLink>

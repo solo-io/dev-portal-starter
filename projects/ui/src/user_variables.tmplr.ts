@@ -267,3 +267,13 @@ if (AppAuthMethod[defaultAppAuthMethod] === undefined) {
     'The value for `VITE_DEFAULT_APP_AUTH` must be: "OAUTH", "ALL", or "API_KEY".'
   );
 }
+
+/**
+ * This is optional.
+ */
+export const apiPageReload = templateString(
+  "{{ tmplr.apiPageReload }}",
+  insertedEnvironmentVariables?.VITE_API_PAGE_RELOAD,
+  import.meta.env.VITE_API_PAGE_RELOAD,
+  "false"
+);

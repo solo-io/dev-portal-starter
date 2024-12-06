@@ -1,9 +1,10 @@
-import { useContext } from "react";
+import { MouseEventHandler, useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { ReactComponent as Logo } from "../../Assets/logo.svg";
 import { AppContext } from "../../Context/AppContext";
 import { useIsAdmin, useIsLoggedIn } from "../../Context/AuthContext";
 import {
+  apiPageReload,
   appliedOidcAuthCodeConfig,
   logoImageURL,
 } from "../../user_variables.tmplr";
@@ -14,6 +15,45 @@ import CustomPagesNavSection from "./CustomPagesNavSection";
 import { HeaderStyles } from "./Header.style";
 import { OidcAuthCodeHeaderSection } from "./OidcAuthCodeHeader/OidcAuthCodeHeaderSection";
 
+// This checks if we need to do a full page load when going to the /apis page,
+// which is sometimes necessary for getting external auth routing to work.
+export const useOnApisPageClick = () => {
+  const { portalServerType } = useContext(AppContext);
+  const isLoggedIn = useIsLoggedIn();
+
+  // In these cases, we can return `undefined` so that the app does normal react-router routing.
+  if (
+    // If using gloo-gateway and logged in, we should be able to use normal react-router routing.
+    // This is because the auth is already done.
+    (portalServerType === "gloo-gateway" && isLoggedIn) ||
+    apiPageReload !== "true"
+  ) {
+    return { onApisPageClick: undefined };
+  }
+
+  // Otherwise, we want to override the react-router behavior here with `e.preventDefault`.
+  // If we don't we get 2 `/apis` page history entries when doing a full page load.
+  const onClick: MouseEventHandler<HTMLAnchorElement> = (e) => {
+    e.preventDefault();
+    window.location.href = "/apis";
+  };
+  return { onApisPageClick: onClick };
+};
+
+const ApisPageNavLink = () => {
+  const { onApisPageClick } = useOnApisPageClick();
+  const inAPIsArea = useInArea(["/apis", "/api-details/"]);
+  return (
+    <NavLink
+      to={"/apis"}
+      onClick={onApisPageClick}
+      className={`navLink ${inAPIsArea ? "active" : ""}`}
+    >
+      APIs
+    </NavLink>
+  );
+};
+
 const Header = () => {
   const { pageContentIsWide, portalServerType } = useContext(AppContext);
   const isAdmin = useIsAdmin();
@@ -22,7 +62,6 @@ const Header = () => {
   const inAdminTeamsArea = useInArea(["/admin/teams"]);
   const inAdminAppsArea = useInArea(["/admin/apps"]);
   const inAdminSubscriptionsArea = useInArea(["/admin/subscriptions"]);
-  const inAPIsArea = useInArea(["/apis", "/api-details/"]);
   const inAppsArea = useInArea(["/apps", "/app-details/"]);
   const inTeamsArea = useInArea(["/teams", "/team-details/"]);
 
@@ -48,12 +87,7 @@ const Header = () => {
             // region [GMG]
             // This is the same view if logged in or logged out.
             //
-            <NavLink
-              to={"/apis"}
-              className={`navLink ${inAPIsArea ? "active" : ""}`}
-            >
-              APIs
-            </NavLink>
+            <ApisPageNavLink />
           ) : (
             (portalServerType === "gloo-gateway" ||
               portalServerType === "unknown") && (
@@ -62,12 +96,7 @@ const Header = () => {
                   //
                   // region [GG] Logged-out
                   //
-                  <NavLink
-                    to={"/apis"}
-                    className={`navLink ${inAPIsArea ? "active" : ""}`}
-                  >
-                    APIs
-                  </NavLink>
+                  <ApisPageNavLink />
                 ) : isAdmin ? (
                   //
                   // region [GG] Logged-in, admin
@@ -105,12 +134,7 @@ const Header = () => {
                     // so it would be strange for the admin not to have access to
                     // the Apps page in that case.
                     */}
-                    <NavLink
-                      to={"/apis"}
-                      className={`navLink ${inAPIsArea ? "active" : ""}`}
-                    >
-                      APIs
-                    </NavLink>
+                    <ApisPageNavLink />
                     <NavLink
                       to={"/teams"}
                       className={`navLink ${inTeamsArea ? "active" : ""}`}

@@ -44,6 +44,7 @@ export function Button(
   props: {
     color?: "primary" | "success" | "warning" | "danger" | "secondary";
     variant?: ButtonVariant;
+    tabIndex?: number;
     onClick?: MouseEventHandler<HTMLButtonElement>;
     /**
      * `isText` defaults to true, and can be set to false to render the contents directly under the button.
@@ -97,7 +98,7 @@ export function Button(
   // Render
   //
   return (
-    <MantineButton {...buttonProps}>
+    <MantineButton tabIndex={props.tabIndex} {...buttonProps}>
       {!!isText ? (
         <Text {...textProps}>{props.children}</Text>
       ) : (
