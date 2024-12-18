@@ -152,7 +152,7 @@ You can add these environment variables to a `.env.local` file in the `projects/
   ```
 - `VITE_SWAGGER_PREFILL_BASIC` - Prefills the Swagger UI authorization configuration for a Basic authorization scheme. This can be set using the following format: `'["authDefinitionKey", "username", "password"]'`.
 - `VITE_DEFAULT_APP_AUTH` - This controls whether the OAuth and/or API Key sections are shown on the App details page. Can be set to `"OAUTH"`, `"API_KEY"`, or `"ALL"`. Defaults to `"ALL"`.
-- `VITE_API_PAGE_RELOAD` - This is an optional parameter that ensures the API page reloads when navigating to it. This is useful when gating the API page behind an auth flow.
+- `VITE_API_PAGE_RELOAD` - This is an optional parameter that ensures the API page reloads when navigating to it when set to `"true"`. This is useful when gating the API page behind an auth flow.
 
 #### Environment Variables for PKCE Authorization Flow
 
