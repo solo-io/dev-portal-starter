@@ -1,44 +1,62 @@
-import { Box } from "@mantine/core";
-import { useMemo } from "react";
+import { Box, Flex, Tooltip } from "@mantine/core";
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { Icon } from "../../../../Assets/Icons";
+import { useIsAdmin } from "../../../../Context/AuthContext";
 import { CardStyles } from "../../../../Styles/shared/Card.style";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
-import { getAppDetailsLink } from "../../../../Utility/link-builders";
+import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
+import { MetadataDisplay } from "../../../../Utility/AdminUtility/MetadataDisplay";
+import {
+  getAppDetailsLink,
+  getTeamDetailsLink,
+} from "../../../../Utility/link-builders";
+import { SubscriptionInfoCardStyles } from "../../../Common/SubscriptionsList/SubscriptionInfoCard/SubscriptionInfoCard.style";
 import { AppWithTeam } from "../AppsList";
 
 /**
  * MAIN COMPONENT
  **/
 export function AppSummaryGridCard({ app }: { app: AppWithTeam }) {
-  // In the future banner images may come through API data.
-  //   Even when that is the case, a default image may be desired
-  //   for when no image is available.
-  // Further, you may have some clever trick for setting one of
-  //   many default images.
-  const defaultCardImage = useMemo(
-    () => {
-      return "https://img.huffingtonpost.com/asset/57f2730f170000f70aac9059.jpeg?ops=scalefit_960_noupscale";
-    },
-    // Currently we don't need to change images unless the api itself has changed.
-    //   Depending on the function within the memo, this may not always be the case.
-    [app.id]
-  );
+  const isAdmin = useIsAdmin();
+  const [isWide, setIsWide] = useState(false);
 
   return (
-    <GridCardStyles.GridCardWithLink to={getAppDetailsLink(app)}>
-      <GridCardStyles.ApiImageHolder>
-        <img src={defaultCardImage} alt="placeholder" />
-      </GridCardStyles.ApiImageHolder>
-      <Box px={"20px"}>
-        <CardStyles.TitleLarge>{app.name}</CardStyles.TitleLarge>
-        <CardStyles.Description>{app.description}</CardStyles.Description>
-      </Box>
-      <GridCardStyles.Footer>
-        <CardStyles.MetaInfo>
-          <Icon.TeamsIcon />
-          <CardStyles.SecondaryInfo>{app.team.name}</CardStyles.SecondaryInfo>
-        </CardStyles.MetaInfo>
-      </GridCardStyles.Footer>
-    </GridCardStyles.GridCardWithLink>
+    <GridCardStyles.GridCard whiteBg wide={isWide}>
+      <div className="content">
+        <Box p={"20px"}>
+          <Flex direction={"column"} align={"flex-start"} gap={"5px"}>
+            <CardStyles.TitleSmall bold>{app.name}</CardStyles.TitleSmall>
+            <Flex align={"center"} justify={"flex-start"} gap={"8px"}>
+              <Tooltip label="Team" position="right">
+                <UtilityStyles.NavLinkContainer
+                  withArrow={false}
+                  flexCenter={true}
+                >
+                  <NavLink to={getTeamDetailsLink(app.team)}>
+                    <Icon.TeamsIcon width={20} />
+                    {app.team.name}
+                  </NavLink>
+                </UtilityStyles.NavLinkContainer>
+              </Tooltip>
+            </Flex>
+            <CardStyles.Description>{app.description}</CardStyles.Description>
+            <MetadataDisplay
+              item={app}
+              customMetadata={app.metadata?.customMetadata}
+              rateLimitInfo={app.metadata?.rateLimit}
+              onIsWideChange={(value) => setIsWide(value)}
+            />
+          </Flex>
+        </Box>
+      </div>
+      {!isAdmin && (
+        <SubscriptionInfoCardStyles.Footer>
+          <UtilityStyles.NavLinkContainer>
+            <NavLink to={getAppDetailsLink(app)}>DETAILS</NavLink>
+          </UtilityStyles.NavLinkContainer>
+        </SubscriptionInfoCardStyles.Footer>
+      )}
+    </GridCardStyles.GridCard>
   );
 }

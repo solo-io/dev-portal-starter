@@ -35,7 +35,7 @@ const SubscriptionsList = ({
     return null;
   }
   if (subscriptions.length === 0) {
-    return <EmptyData topic="API subscriptions" />;
+    return <EmptyData title="No Subscriptions were found." />;
   }
   return (
     <Box pb={"60px"}>

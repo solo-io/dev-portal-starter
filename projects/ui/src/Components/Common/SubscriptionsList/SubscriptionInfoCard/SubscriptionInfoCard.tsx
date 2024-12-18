@@ -1,5 +1,5 @@
 import { Flex } from "@mantine/core";
-import { useContext, useMemo } from "react";
+import { useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
 import { Subscription } from "../../../../Apis/api-types";
 import {
@@ -8,8 +8,9 @@ import {
   useListTeams,
 } from "../../../../Apis/gg_hooks";
 import { Icon } from "../../../../Assets/Icons";
-import { AuthContext } from "../../../../Context/AuthContext";
+import { useIsAdmin } from "../../../../Context/AuthContext";
 import { CardStyles } from "../../../../Styles/shared/Card.style";
+import { MetadataDisplay } from "../../../../Utility/AdminUtility/MetadataDisplay";
 import { FilterType } from "../../../../Utility/filter-utility";
 import {
   getAppDetailsLink,
@@ -37,8 +38,9 @@ const SubscriptionInfoCard = ({
   subscription: Subscription;
   filters?: FiltrationProp;
 }) => {
-  di(useListTeams, useListAppsForTeams);
-  const { isAdmin } = useContext(AuthContext);
+  di(useListTeams, useListAppsForTeams, useIsAdmin);
+  const isAdmin = useIsAdmin();
+  const [isWide, setIsWide] = useState(false);
 
   //
   // Get Team and App for Subscription
@@ -150,7 +152,7 @@ const SubscriptionInfoCard = ({
     return null;
   }
   return (
-    <Styles.Card subscriptionState={subscriptionState}>
+    <Styles.Card subscriptionState={subscriptionState} wide={isWide}>
       <Styles.Content>
         <Flex justify="space-between">
           <CardStyles.TitleMedium bold>
@@ -176,6 +178,12 @@ const SubscriptionInfoCard = ({
           }
           ItemIcon={Icon.TeamsIcon}
           item={teamOfAppThatSubscribed}
+        />
+        <MetadataDisplay
+          item={subscription}
+          customMetadata={subscription.metadata?.customMetadata}
+          rateLimitInfo={subscription.metadata?.rateLimit}
+          onIsWideChange={(value) => setIsWide(value)}
         />
       </Styles.Content>
 

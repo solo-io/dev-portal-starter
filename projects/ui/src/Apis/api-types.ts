@@ -2,6 +2,8 @@
 // Gloo Mesh Gateway Types
 //
 
+import { getEnumValues } from "../Utility/utility";
+
 type RateLimitPolicy = {
   unit: "UNKNOWN" | "SECOND" | "MINUTE" | "HOUR" | "DAY";
   requestsPerUnit: number;
@@ -100,12 +102,23 @@ export type App = {
   deletedAt: string;
   updatedAt: string;
   id: string;
-  idpClientId: string;
-  idpClientName: string;
-  idpClientSecret: string;
+  idpClientId?: string;
+  idpClientName?: string;
+  idpClientSecret?: string;
   name: string;
   description: string;
   teamId: string;
+  metadata?: AppMetadata;
+};
+
+export type ApiKey = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+  apiKey: string;
+  name: string;
+  metadata: Record<string, string>;
 };
 
 export type Team = {
@@ -145,11 +158,59 @@ export type Subscription = {
   id: string;
   requestedAt: string;
   updatedAt: string;
+  metadata?: SubscriptionMetadata;
 };
 
 export type ApiVersionExtended = ApiVersion & {
   apiProductDescription: string;
   apiProductName: string;
+};
+
+export type OauthCredential = {
+  id: string;
+  idpClientId: string;
+  idpClientSecret?: string;
+  idpClientName: string;
+};
+
+export enum RateLimitUnit {
+  "UNKNOWN",
+  "SECOND",
+  "MINUTE",
+  "HOUR",
+  "DAY",
+  "MONTH",
+  "YEAR",
+}
+// This list of units is used both for the type and for the dropdown in the UI.
+export const rateLimitUnitOptions = getEnumValues(RateLimitUnit).map(
+  (unit) => ({
+    value: RateLimitUnit[unit],
+    label: RateLimitUnit[unit],
+  })
+);
+
+export type RateLimit = {
+  requestsPerUnit: string;
+  unit: string;
+};
+
+export type SubscriptionMetadata = {
+  createdAt?: string;
+  customMetadata: Record<string, string>;
+  deletedAt?: string;
+  id: string;
+  rateLimit: RateLimit;
+  updatedAt: string;
+};
+
+export type AppMetadata = {
+  createdAt?: string;
+  customMetadata: Record<string, string>;
+  deletedAt?: string;
+  id: string;
+  rateLimit: RateLimit;
+  updatedAt: string;
 };
 
 //
@@ -160,8 +221,8 @@ export type User = {
   name: string;
   email: string;
   username: string;
-  // TODO: Once auth is working, check if we can get admin info here and update the areas that use admin endpoints (e.g. subscriptions areas).
-  // admin: string;
+  // isAdmin may be undefined on older versions of the gg portal server.
+  isAdmin?: string;
 };
 
 /**

@@ -1,15 +1,14 @@
-import { useContext, useMemo } from "react";
+import { Box } from "@mantine/core";
+import { useMemo } from "react";
 import { di } from "react-magnetic-di";
 import { App, Team } from "../../../Apis/api-types";
 import { useListAppsForTeams } from "../../../Apis/gg_hooks";
-import { AppContext } from "../../../Context/AppContext";
 import { FilterPair, FilterType } from "../../../Utility/filter-utility";
 import { omitErrorMessageResponse } from "../../../Utility/utility";
 import { EmptyData } from "../../Common/EmptyData";
 import { Loading } from "../../Common/Loading";
 import { AppsPageStyles } from "../AppsPage.style";
 import { AppSummaryGridCard } from "./AppSummaryCards/AppSummaryGridCard";
-import { AppSummaryListCard } from "./AppSummaryCards/AppSummaryListCard";
 
 export type AppWithTeam = App & { team: Team };
 
@@ -23,7 +22,6 @@ export function AppsList({
   nameFilter: string;
 }) {
   di(useListAppsForTeams);
-  const { preferGridView } = useContext(AppContext);
   // This is the App[][] of apps per team.
   const { isLoading, data: appsListPerTeam } = useListAppsForTeams(teams);
   // This is the flattened AppWithTeam[] that includes team information.
@@ -88,23 +86,19 @@ export function AppsList({
   if (isLoading) {
     return <Loading message="Getting list of apps..." />;
   }
-  if (!filteredAppsList.length) {
-    return <EmptyData topic="app" />;
+  if (!appsList?.length) {
+    return <EmptyData title="No Apps were found." />;
   }
-  if (preferGridView) {
-    return (
+  if (!filteredAppsList.length) {
+    return <EmptyData title="No Apps were found matching these filters." />;
+  }
+  return (
+    <Box mb="30px">
       <AppsPageStyles.AppGridList>
         {filteredAppsList.map((api) => (
           <AppSummaryGridCard app={api} key={api.id} />
         ))}
       </AppsPageStyles.AppGridList>
-    );
-  }
-  return (
-    <div>
-      {filteredAppsList.map((app) => (
-        <AppSummaryListCard app={app} key={app.id} />
-      ))}
-    </div>
+    </Box>
   );
 }

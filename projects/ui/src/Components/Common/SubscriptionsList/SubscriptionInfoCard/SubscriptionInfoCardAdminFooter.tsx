@@ -19,10 +19,6 @@ const SubscriptionInfoCardAdminFooter = ({
   const [showRejectSubModal, setShowRejectSubModal] = useState(false);
   const [showDeleteSubModal, setShowDeleteSubModal] = useState(false);
 
-  const canApproveRejectSubscription =
-    subscriptionState === SubscriptionState.PENDING;
-  const canDeleteSubscription = subscriptionState !== SubscriptionState.DELETED;
-
   //
   // Render
   //
@@ -34,7 +30,7 @@ const SubscriptionInfoCardAdminFooter = ({
             <Button
               color="success"
               size="xs"
-              disabled={!canApproveRejectSubscription}
+              disabled={subscriptionState === SubscriptionState.APPROVED}
               onClick={() => setShowApproveSubModal(true)}
             >
               Approve
@@ -43,7 +39,7 @@ const SubscriptionInfoCardAdminFooter = ({
             <Button
               color="warning"
               size="xs"
-              disabled={!canApproveRejectSubscription}
+              disabled={subscriptionState === SubscriptionState.REJECTED}
               onClick={() => setShowRejectSubModal(true)}
             >
               Reject
@@ -52,7 +48,6 @@ const SubscriptionInfoCardAdminFooter = ({
             <Button
               color="danger"
               size="xs"
-              disabled={!canDeleteSubscription}
               onClick={() => setShowDeleteSubModal(true)}
             >
               Delete

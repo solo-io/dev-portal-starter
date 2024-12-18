@@ -20,13 +20,22 @@ export namespace UtilityStyles {
     justify-content: center;
   `;
 
-  export const NavLinkContainer = styled.div(
-    ({ theme }) => css`
+  export const NavLinkContainer = styled.div<{
+    withArrow?: boolean;
+    flexCenter?: boolean;
+  }>(
+    ({ theme, withArrow = true, flexCenter = false }) => css`
       font-size: 0.95rem;
       a {
         position: relative;
         font-weight: 500;
         padding-right: 5px;
+        ${flexCenter &&
+        css`
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        `}
         :hover {
           color: ${theme.seaBlue};
           text-decoration: underline;
@@ -34,16 +43,19 @@ export namespace UtilityStyles {
         :active {
           color: ${theme.oceanBlue};
         }
-        :after {
-          content: "";
-          border-top: 2px solid;
-          border-right: 2px solid;
-          border-color: currentColor;
-          width: 10px;
-          height: 10px;
-          display: inline-block;
-          transform: translateX(2px) rotate(45deg);
-        }
+        ${!!withArrow &&
+        css`
+          :after {
+            content: "";
+            border-top: 2px solid;
+            border-right: 2px solid;
+            border-color: currentColor;
+            width: 10px;
+            height: 10px;
+            display: inline-block;
+            transform: translateX(2px) rotate(45deg);
+          }
+        `}
       }
     `
   );

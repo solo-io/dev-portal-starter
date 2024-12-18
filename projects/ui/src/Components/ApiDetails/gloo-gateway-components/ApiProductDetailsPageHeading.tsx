@@ -1,4 +1,5 @@
 import { Box, Flex, Select } from "@mantine/core";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import {
   ApiProductSummary,
@@ -6,12 +7,14 @@ import {
   ApiVersionSchema,
 } from "../../../Apis/api-types";
 import { Icon } from "../../../Assets/Icons";
+import { useIsLoggedIn } from "../../../Context/AuthContext";
 import { FormModalStyles } from "../../../Styles/shared/FormModalStyles";
 import { useGetImageURL } from "../../../Utility/custom-image-utility";
 import {
   downloadFile,
   filterMetadataToDisplay,
 } from "../../../Utility/utility";
+import NewSubscriptionModal from "../../Apps/Details/Modals/NewSubscriptionModal";
 import { BannerHeading } from "../../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../../Common/Banner/BannerHeadingTitle";
 import { Button } from "../../Common/Button";
@@ -31,8 +34,8 @@ const ApiProductDetailsPageHeading = ({
   onSelectedApiVersionChange: (newVersionId: string | null) => void;
   apiVersionSpec: ApiVersionSchema | undefined;
 }) => {
-  // const { isLoggedIn } = useContext(AuthContext);
-  // const [showSubscribeModal, setShowSubscribeModal] = useState(false);
+  const isLoggedIn = useIsLoggedIn();
+  const [showSubscribeModal, setShowSubscribeModal] = useState(false);
 
   const downloadApiSpec = () => {
     if (!selectedApiVersion?.apiSpec) {
@@ -102,14 +105,12 @@ const ApiProductDetailsPageHeading = ({
                   />
                 </FormModalStyles.InputContainer>
               )}
-              {/* 
-              // Note: Removing sections for GGv2 demo.
 
               {isLoggedIn && (
                 <Button onClick={() => setShowSubscribeModal(true)}>
                   SUBSCRIBE
                 </Button>
-              )} */}
+              )}
               <Button
                 disabled={!selectedApiVersion.apiSpec}
                 onClick={downloadApiSpec}
@@ -132,13 +133,11 @@ const ApiProductDetailsPageHeading = ({
                 </DataPairPillList>
               </Box>
             )}
-            {/*
-            // Note: Removing sections for GGv2 demo.
             <NewSubscriptionModal
               opened={showSubscribeModal}
               onClose={() => setShowSubscribeModal(false)}
               apiProduct={apiProduct}
-            /> */}
+            />
           </Styles.ApiDetailsHeaderAddition>
         ) : undefined
       }

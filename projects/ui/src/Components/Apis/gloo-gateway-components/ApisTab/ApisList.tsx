@@ -78,8 +78,13 @@ export function ApisList({
   if (apiProductsList === undefined) {
     return <Loading message="Getting list of apis..." />;
   }
+  if (!apiProductsList.length) {
+    return <EmptyData title="No API Products were found." />;
+  }
   if (!filteredApiProductsList.length) {
-    return <EmptyData topic="API" />;
+    return (
+      <EmptyData title="No API Products were found matching these filters." />
+    );
   }
   if (preferGridView) {
     return (

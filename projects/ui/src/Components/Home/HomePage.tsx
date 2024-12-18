@@ -1,12 +1,12 @@
 import { Box } from "@mantine/core";
-import { useContext } from "react";
 import { NavLink } from "react-router-dom";
-import { AuthContext } from "../../Context/AuthContext";
+import { useIsAdmin } from "../../Context/AuthContext";
 import { companyName, homeImageURL } from "../../user_variables.tmplr";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 import { Button } from "../Common/Button";
 import { PageContainer } from "../Common/PageContainer";
+import { useOnApisPageClick } from "../Structure/Header";
 import { HomePageStyles } from "./HomePage.style";
 import { HomePageCategoryCard } from "./HomePageCategoryCard";
 
@@ -15,10 +15,11 @@ import { HomePageCategoryCard } from "./HomePageCategoryCard";
 import CardImage1 from "../../Assets/card-option-1@2x.webp";
 import CardImage2 from "../../Assets/card-option-2@2x.webp";
 import CardImage3 from "../../Assets/card-option-3@2x.webp";
-import { onApisPageClick } from "../Structure/Header";
 
 export function HomePage() {
-  const { isAdmin } = useContext(AuthContext);
+  const isAdmin = useIsAdmin();
+  const { onApisPageClick } = useOnApisPageClick();
+
   return (
     <PageContainer>
       <div>

@@ -2,9 +2,11 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { ContentWidthNav } from "../../Styles/ContentWidthHelpers";
 
+export const headerHeightPx = 90;
+
 export namespace HeaderStyles {
   export const StyledLogoImg = styled.img`
-    height: 90px;
+    height: ${headerHeightPx}px;
     padding: 5px 0px;
   `;
 
@@ -12,8 +14,9 @@ export namespace HeaderStyles {
     ({ theme }) => css`
       grid-area: header;
       width: 100%;
-      height: 90px;
+      height: ${headerHeightPx}px;
       background: white;
+      border-bottom: 1px solid ${theme.marchGrey};
       box-shadow: #253e580b 0px 2px 8px;
 
       // These are the hover/active styles for the links in the main top bar,
@@ -21,7 +24,7 @@ export namespace HeaderStyles {
       .userLoginArea.loggedIn,
       .logoContainer,
       .siteNavigating a.navLink,
-      .userLoginArea .userHolder,
+      .userLoginArea .dropdownContainer,
       a,
       button.logout {
         cursor: pointer;
@@ -115,9 +118,10 @@ export namespace HeaderStyles {
         padding: 0 12px;
         margin-right: -12px;
 
-        .userHolder {
+        .dropdownContainer {
           display: flex;
           align-items: center;
+          margin-top: -4px;
 
           svg.userCircle {
             width: 40px;

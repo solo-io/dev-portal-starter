@@ -1,7 +1,7 @@
 import { Box } from "@mantine/core";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Icon } from "../../Assets/Icons";
-import { AuthContext } from "../../Context/AuthContext";
+import { useIsAdmin } from "../../Context/AuthContext";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 import { Button } from "../Common/Button";
@@ -10,7 +10,7 @@ import CreateNewTeamModal from "./Modals/CreateNewTeamModal";
 import { TeamsList } from "./TeamsList/TeamsList";
 
 export function TeamsPage() {
-  const { isAdmin } = useContext(AuthContext);
+  const isAdmin = useIsAdmin();
   const [modalOpen, setModalOpen] = useState(false);
 
   return (

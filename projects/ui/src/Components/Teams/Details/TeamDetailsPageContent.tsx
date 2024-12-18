@@ -1,7 +1,6 @@
 import { Box, Flex } from "@mantine/core";
-import { useContext } from "react";
 import { Team } from "../../../Apis/api-types";
-import { AuthContext } from "../../../Context/AuthContext";
+import { Icon } from "../../../Assets/Icons";
 import { BannerHeading } from "../../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../../Common/Banner/BannerHeadingTitle";
 import { PageContainer } from "../../Common/PageContainer";
@@ -10,13 +9,13 @@ import EditTeamButtonWithModal from "./EditTeamButtonWithModal";
 import TeamUsersSection from "./UsersSection/TeamUsersSection";
 
 const TeamDetailsPageContent = ({ team }: { team: Team }) => {
-  const { isAdmin } = useContext(AuthContext);
   return (
     <PageContainer>
       <BannerHeading
         title={
           <BannerHeadingTitle
             text={team.name}
+            logo={<Icon.TeamsIcon />}
             stylingTweaks={{
               fontSize: "32px",
               lineHeight: "36px",
@@ -34,7 +33,7 @@ const TeamDetailsPageContent = ({ team }: { team: Team }) => {
       <Box px={"30px"} pb={"30px"}>
         <Flex gap={"30px"} direction={"column"}>
           <TeamUsersSection team={team} />
-          {!isAdmin && <TeamAppsSection team={team} />}
+          <TeamAppsSection team={team} />
         </Flex>
       </Box>
     </PageContainer>

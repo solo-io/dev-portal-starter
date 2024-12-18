@@ -2,10 +2,13 @@
 // From https://stackoverflow.com/a/65996386
 // navigator.clipboard.writeText doesn't always work.
 
+import { DependencyList, useEffect, useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import {
   ErrorMessageResponse,
   isErrorMessageResponse,
 } from "../Apis/api-types";
+import { CustomPage } from "../user_variables.tmplr";
 
 //
 export async function copyToClipboard(textToCopy: string) {
@@ -121,5 +124,61 @@ export const customLog = (...args: Parameters<typeof console.log>) => {
 
 export const filterMetadataToDisplay = ([pairKey]: [
   key: string,
-  value: string
+  value: string,
 ]) => pairKey !== "imageURL";
+
+const customPagePrefix = "/pages/";
+
+export const getCustomPagePath = (page: CustomPage | string) => {
+  const pagePath = typeof page === "string" ? page : page.path;
+  return (
+    customPagePrefix +
+    encodeURIComponent(pagePath.replace(/^\//g, "").replaceAll(/\./g, "_"))
+  );
+};
+
+// Actual hook for above function definitions
+export function useEventListener<Elem extends Window | Document | HTMLElement>(
+  element: Elem,
+  eventName: string,
+  listener: EventListenerOrEventListenerObject,
+  dependencies: DependencyList = [],
+  skip = false
+) {
+  useEffect(() => {
+    // If element doesn't currently exist or hook isn't active then don't add a listener
+    if (!element || !element.addEventListener || skip) return;
+
+    element.addEventListener(eventName, listener);
+    return () => {
+      element.removeEventListener(eventName, listener);
+    };
+  }, [element, skip, ...dependencies]);
+}
+
+export const useInArea = (paths: string[]) => {
+  const routerLocation = useLocation();
+  return useMemo(() => {
+    return paths.some((s) => {
+      return (
+        routerLocation.pathname.includes(s) ||
+        routerLocation.pathname.includes(getCustomPagePath(s))
+      );
+    });
+  }, [routerLocation.pathname, paths]);
+};
+
+export const shallowEquals = (
+  a: Record<string, any> | undefined,
+  b: Record<string, any> | undefined
+) => {
+  if (!a && !b) {
+    return true;
+  }
+  if (!a || !b || Object.keys(a).length !== Object.keys(b).length) {
+    return false;
+  }
+  // The number of entries should be the same between a and b here,
+  // so we can do the check once.
+  return Object.entries(a).every(([k, v]) => b[k] === v);
+};

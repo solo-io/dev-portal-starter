@@ -46,7 +46,7 @@ export function APIUsagePlansList() {
           </ErrorBoundary>
         ))
       ) : (
-        <EmptyData topic="API" />
+        <EmptyData title="No API Products were found." />
       )}
     </>
   );

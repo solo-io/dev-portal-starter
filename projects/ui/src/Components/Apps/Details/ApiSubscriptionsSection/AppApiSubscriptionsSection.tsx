@@ -35,7 +35,7 @@ const AppApiSubscriptionsSection = ({
   }, [subscriptions, app]);
 
   return (
-    <DetailsPageStyles.Section>
+    <DetailsPageStyles.Section mb="60px">
       <Flex justify={"space-between"}>
         <DetailsPageStyles.Title>API Subscriptions</DetailsPageStyles.Title>
         <AddSubscriptionButton
@@ -43,8 +43,8 @@ const AppApiSubscriptionsSection = ({
         />
       </Flex>
       {subscriptions.length === 0 && (
-        <Box pt="30px">
-          <EmptyData topic={"API Subscription"} />
+        <Box pt="10px">
+          <EmptyData title="No API Subscriptions were found." />
         </Box>
       )}
       <Box pt={"5px"}>

@@ -38,10 +38,12 @@ const colorMap: {
   },
 };
 
+export type ButtonVariant = "outline" | "subtle" | "light" | "filled";
+
 export function Button(
   props: {
     color?: "primary" | "success" | "warning" | "danger" | "secondary";
-    variant?: "outline" | "subtle" | "light" | "filled";
+    variant?: ButtonVariant;
     tabIndex?: number;
     onClick?: MouseEventHandler<HTMLButtonElement>;
     /**

@@ -4,12 +4,14 @@ import { useContext } from "react";
 import { AppContext } from "../../Context/AppContext";
 import { ContentWidthDiv } from "../../Styles/ContentWidthHelpers";
 
+export const footerHeightPx = 40;
+
 const FooterContainer = styled.footer(
   ({ theme }) => css`
     margin-bottom: 40px;
     grid-area: footer;
     width: 100%;
-    height: 40px;
+    height: ${footerHeightPx}px;
     background: ${theme.marchGrey};
     color: ${theme.augustGrey};
     display: block;

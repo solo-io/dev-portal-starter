@@ -1,6 +1,6 @@
 import { Icon } from "../../Assets/Icons";
 import { UtilityStyles } from "../../Styles/shared/Utility.style";
-import { Button } from "./Button";
+import { Button, ButtonVariant } from "./Button";
 
 /**
  * Shared between details pages.
@@ -9,13 +9,15 @@ const ToggleAddButton = ({
   topicUpperCase,
   isAdding,
   toggleAdding,
+  variant = "subtle",
 }: {
+  variant?: ButtonVariant;
   topicUpperCase: string;
   isAdding: boolean;
   toggleAdding: () => void;
 }) => {
   return (
-    <Button variant="subtle" onClick={toggleAdding}>
+    <Button variant={variant} onClick={toggleAdding}>
       <UtilityStyles.ButtonContentsWithIcon>
         {isAdding ? (
           <>

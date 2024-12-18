@@ -1,20 +1,14 @@
-import { Box } from "@mantine/core";
-import {
-  ApiProductSummary,
-  ApiVersion,
-  ApiVersionSchema,
-} from "../../../../Apis/api-types";
+import { Box, Code } from "@mantine/core";
+import { ApiVersion, ApiVersionSchema } from "../../../../Apis/api-types";
 import { EmptyData } from "../../../Common/EmptyData";
 import { ErrorBoundary } from "../../../Common/ErrorBoundary";
 import { ApiSchemaDisplay } from "./ApiSchemaDisplay";
 
 const SchemaTabContent = ({
-  apiProduct,
   selectedApiVersion,
   apiProductVersions,
   apiVersionSpec,
 }: {
-  apiProduct: ApiProductSummary;
   selectedApiVersion: ApiVersion;
   apiProductVersions: ApiVersion[];
   apiVersionSpec: ApiVersionSchema | undefined;
@@ -22,9 +16,10 @@ const SchemaTabContent = ({
   if (!apiProductVersions.length) {
     return (
       <Box m="60px">
-        <EmptyData
-          topicMessageOverride={`The API Product, "${apiProduct.name}", has no API Version data.`}
-        />
+        <EmptyData title={`No API versions found.`}>
+          Add a version to the <Code>spec.versions</Code> field of this{" "}
+          <Code>ApiProduct</Code> for data to appear.
+        </EmptyData>
       </Box>
     );
   }
@@ -36,9 +31,13 @@ const SchemaTabContent = ({
     // There is a selected API version, but no schema.
     return (
       <Box m="60px">
-        <EmptyData
-          topicMessageOverride={`No schema was returned for the API Version: "${selectedApiVersion.name}".`}
-        />
+        <EmptyData title={`No schema found.`}>
+          The schema was not returned for this <Code>ApiProduct</Code> version.
+          <br />
+          Verify that your OpenApi spec was generated correctly in the
+          corresponding <Code>ApiDoc</Code> resource for this{" "}
+          <Code>Service</Code>.
+        </EmptyData>
       </Box>
     );
   }

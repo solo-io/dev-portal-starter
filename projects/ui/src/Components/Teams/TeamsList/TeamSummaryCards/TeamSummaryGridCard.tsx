@@ -57,7 +57,7 @@ export function TeamSummaryGridCard({ team }: { team: Team }) {
       </div>
       <SubscriptionInfoCardStyles.Footer>
         <UtilityStyles.NavLinkContainer>
-          <NavLink to={getTeamDetailsLink(team)}>MANAGE</NavLink>
+          <NavLink to={getTeamDetailsLink(team)}>DETAILS</NavLink>
         </UtilityStyles.NavLinkContainer>
       </SubscriptionInfoCardStyles.Footer>
     </GridCardStyles.GridCard>

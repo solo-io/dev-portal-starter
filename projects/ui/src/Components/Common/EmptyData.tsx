@@ -1,28 +1,46 @@
-import { Flex, Text } from "@mantine/core";
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
+import { Box } from "@mantine/core";
+import { borderRadiusConstants } from "../../Styles/constants";
 
-type EmptyDataProps =
-  | {
-      topic: string;
-      message?: string;
-    }
-  | {
-      topicMessageOverride: string;
-    };
-export function EmptyData(props: EmptyDataProps) {
+const StyledEmptyContentOuter = styled.div(
+  ({ theme }) => css`
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    line-height: 2rem;
+    background-color: white;
+    box-shadow: 1px 1px 5px ${theme.splashBlue};
+    border: 1px solid ${theme.splashBlue};
+    border-radius: ${borderRadiusConstants.small};
+    margin-bottom: 30px;
+    padding: 30px;
+  `
+);
+
+export const EmptyData = (props: {
+  children?: React.ReactNode;
+  title?: React.ReactNode;
+}) => {
   return (
-    <Flex justify={"center"}>
-      <Text color="gray.6" italic>
-        {"topicMessageOverride" in props ? (
-          <>{props.topicMessageOverride}</>
-        ) : (
-          <>No {props.topic} results were found</>
+    <StyledEmptyContentOuter>
+      <Box sx={{ maxWidth: "800px" }}>
+        {props.title && (
+          <Box
+            sx={{
+              fontWeight: 400,
+              fontSize: "1.2rem",
+            }}
+          >
+            {props.title}
+          </Box>
         )}
-      </Text>
-      {"message" in props && !!props.message && (
-        <Text color="gray.6" italic>
-          {props.message}
-        </Text>
-      )}
-    </Flex>
+        {!!props.children && (
+          <Box sx={{ fontSize: "1rem", marginTop: "10px" }}>
+            {props.children}
+          </Box>
+        )}
+      </Box>
+    </StyledEmptyContentOuter>
   );
-}
+};

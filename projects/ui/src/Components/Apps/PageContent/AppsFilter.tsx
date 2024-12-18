@@ -1,15 +1,13 @@
 import { Select, TextInput } from "@mantine/core";
-import { useContext, useMemo } from "react";
+import { useMemo } from "react";
 import { Team } from "../../../Apis/api-types";
 import { Icon } from "../../../Assets/Icons";
-import { AppContext } from "../../../Context/AppContext";
 import { FilterStyles as Styles } from "../../../Styles/shared/Filters.style";
 import { FilterType } from "../../../Utility/filter-utility";
 import {
   AppliedFiltersSection,
   FiltrationProp,
 } from "../../Common/Filters/AppliedFiltersSection";
-import GridListToggle from "../../Common/GridListToggle";
 
 export function AppsFilter({
   filters,
@@ -18,8 +16,6 @@ export function AppsFilter({
   filters: FiltrationProp;
   teams: Team[];
 }) {
-  const { preferGridView, setPreferGridView } = useContext(AppContext);
-
   const addNameFilter = (evt: { target: { value: string } }) => {
     const displayName = evt.target.value;
     // Check for duplicate filters.
@@ -98,11 +94,6 @@ export function AppsFilter({
             placeholder="Team"
           />
         </div>
-
-        <GridListToggle
-          onChange={(newIsList) => setPreferGridView(!newIsList)}
-          isList={!preferGridView}
-        />
       </div>
 
       <AppliedFiltersSection filters={filters} />

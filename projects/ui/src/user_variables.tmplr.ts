@@ -152,10 +152,10 @@ export const homeImageURL = templateString(
 /**
  * This is optional. Used on the API's ("/apis") page.
  */
-export const apisImageURL = templateString(
-  "{{ tmplr.apisImageURL }}",
-  insertedEnvironmentVariables?.VITE_APIS_IMAGE_URL,
-  import.meta.env.VITE_APIS_IMAGE_URL,
+export const bannerImageURL = templateString(
+  "{{ tmplr.bannerImageURL }}",
+  insertedEnvironmentVariables?.VITE_BANNER_IMAGE_URL,
+  import.meta.env.VITE_BANNER_IMAGE_URL,
   ""
 );
 
@@ -169,10 +169,111 @@ export const logoImageURL = templateString(
   ""
 );
 
-export const apiPageReload = templateString(
-    "{{ tmplr.apiPageReload }}",
-    insertedEnvironmentVariables?.VITE_API_PAGE_RELOAD,
-    import.meta.env.VITE_API_PAGE_RELOAD,
-    "false"
-);
+export type CustomPage = {
+  title: string;
+  path: string;
+};
+/**
+ * This is an optional, JSON serialized array of objects.
+ * Each object has a "title" and "path" that corresponds to a ".html" or ".md" file in the `projects/ui/src/public` folder.
+ * The name is the text that is displayed in the navbar header link.
+ * For example:
+ * '[{"title":"Custom Page","path":"/custom-page.md"}, {"title":"Another Page","path":"/some-path/another-page.html"}]'
+ */
+export const customPages = JSON.parse(
+  templateString(
+    "{{ tmplr.customPages }}",
+    insertedEnvironmentVariables?.VITE_CUSTOM_PAGES,
+    import.meta.env.VITE_CUSTOM_PAGES,
+    "[]"
+  )
+) as Array<CustomPage>;
+// TODO: Check the paths and if any overlap with the dev-portal-starter.
+// console.log("Loaded custom pages", customPages);
 
+/**
+ * This is optional. Check the README for usage.
+ */
+export const swaggerPrefillApiKey = (() => {
+  const parsed = JSON.parse(
+    templateString(
+      "{{ tmplr.swaggerPrefillApiKey }}",
+      insertedEnvironmentVariables?.VITE_SWAGGER_PREFILL_API_KEY,
+      import.meta.env.VITE_SWAGGER_PREFILL_API_KEY,
+      "[]"
+    )
+  ) as [string, string] | [];
+  return parsed.length === 2
+    ? {
+        authDefinitionKey: parsed[0],
+        apiKeyValue: parsed[1],
+      }
+    : undefined;
+})();
+
+/**
+ * This is optional. Check the README for usage.
+ */
+export const swaggerPrefillOauth = (() => {
+  const parsed = JSON.parse(
+    templateString(
+      "{{ tmplr.swaggerPrefillOauth }}",
+      insertedEnvironmentVariables?.VITE_SWAGGER_PREFILL_OAUTH,
+      import.meta.env.VITE_SWAGGER_PREFILL_OAUTH,
+      "{}"
+    )
+  );
+  return Object.keys(parsed).length > 0 ? parsed : undefined;
+})();
+
+/**
+ * This is optional. Check the README for usage.
+ */
+export const swaggerPrefillBasic = (() => {
+  const parsed = JSON.parse(
+    templateString(
+      "{{ tmplr.swaggerPrefillBasic }}",
+      insertedEnvironmentVariables?.VITE_SWAGGER_PREFILL_BASIC,
+      import.meta.env.VITE_SWAGGER_PREFILL_BASIC,
+      "[]"
+    )
+  ) as [string, string, string] | [];
+  return parsed.length === 3
+    ? {
+        authDefinitionKey: parsed[0],
+        username: parsed[1],
+        password: parsed[2],
+      }
+    : undefined;
+})();
+
+/**
+ * This is optional.
+ */
+export enum AppAuthMethod {
+  ALL,
+  OAUTH,
+  API_KEY,
+}
+export const defaultAppAuthMethod = templateString(
+  "{{ tmplr.defaultAppAuthMethod }}",
+  insertedEnvironmentVariables?.VITE_DEFAULT_APP_AUTH,
+  import.meta.env.VITE_DEFAULT_APP_AUTH,
+  "ALL"
+).toUpperCase() as keyof typeof AppAuthMethod;
+if (AppAuthMethod[defaultAppAuthMethod] === undefined) {
+  // eslint-disable-next-line no-console
+  console.error(
+    'The value for `VITE_DEFAULT_APP_AUTH` must be: "OAUTH", "ALL", or "API_KEY".'
+  );
+}
+
+/**
+ * This is optional.
+ */
+export const apiPageReload = templateString(
+  "{{ tmplr.apiPageReload }}",
+  insertedEnvironmentVariables?.VITE_API_PAGE_RELOAD,
+  import.meta.env.VITE_API_PAGE_RELOAD,
+  "false"
+);

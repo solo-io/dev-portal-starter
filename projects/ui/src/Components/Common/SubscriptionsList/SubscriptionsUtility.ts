@@ -3,9 +3,8 @@ import { colors } from "../../../Styles";
 
 export enum SubscriptionState {
   PENDING,
-  ACCEPTED,
+  APPROVED,
   REJECTED,
-  DELETED,
 }
 export const subscriptionStateMap = {
   [SubscriptionState.PENDING]: {
@@ -14,9 +13,9 @@ export const subscriptionStateMap = {
     accentColor: colors.seaBlue,
     borderColor: colors.splashBlue,
   },
-  [SubscriptionState.ACCEPTED]: {
-    subscriptionState: SubscriptionState.ACCEPTED,
-    label: "ACCEPTED",
+  [SubscriptionState.APPROVED]: {
+    subscriptionState: SubscriptionState.APPROVED,
+    label: "APPROVED",
     accentColor: colors.midGreen,
     borderColor: colors.splashBlue,
   },
@@ -26,27 +25,15 @@ export const subscriptionStateMap = {
     accentColor: colors.darkRed,
     borderColor: colors.lightMidRed,
   },
-  [SubscriptionState.DELETED]: {
-    subscriptionState: SubscriptionState.DELETED,
-    label: "DELETED",
-    accentColor: colors.aprilGrey,
-    borderColor: colors.aprilGrey,
-  },
-};
-
-const dateHasValue = (dateString: string | undefined) => {
-  return !!dateString && new Date(dateString).getFullYear() !== 0;
 };
 
 export const GetSubscriptionState = (subscription: Subscription) => {
   if (!!subscription.approved) {
-    return SubscriptionState.ACCEPTED;
-  }
-  if (dateHasValue(subscription.deletedAt)) {
-    return SubscriptionState.DELETED;
+    return SubscriptionState.APPROVED;
   }
   if (!!subscription.rejected) {
     return SubscriptionState.REJECTED;
   }
+  // Deleted subscriptions aren't returned from the API.
   return SubscriptionState.PENDING;
 };

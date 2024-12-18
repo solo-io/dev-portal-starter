@@ -40,41 +40,36 @@ const TeamUsersSection = ({ team }: { team: Team }) => {
     useState<Member>();
 
   const rows = useMemo(() => {
-    return paginatedData?.map(
-      (member) =>
-        (
-          <tr key={member.id}>
-            <td>{member.email}</td>
-            <td>{member.username}</td>
-            <td>{member.name}</td>
-            <td>{formatDateToMMDDYYYY(new Date(member.createdAt))}</td>
-            <td>{formatDateToMMDDYYYY(new Date(member.updatedAt))}</td>
-            <td>
-              <UtilityStyles.CenteredCellContent>
-                <Box sx={{ position: "absolute" }}>
-                  {member.synced ? (
-                    <Icon.SmallGreenCheck />
-                  ) : (
-                    <Icon.SmallRedX />
-                  )}
-                </Box>
-              </UtilityStyles.CenteredCellContent>
-            </td>
-            <td>
-              <UtilityStyles.CenteredCellContent>
-                <Button
-                  size="xs"
-                  variant="light"
-                  color="danger"
-                  disabled={!!member.deletedAt || user?.email === member.email}
-                  onClick={() => setConfirmRemoveTeamMember(member)}
-                >
-                  REMOVE
-                </Button>
-              </UtilityStyles.CenteredCellContent>
-            </td>
-          </tr>
-        ) ?? []
+    return (
+      paginatedData?.map((member) => (
+        <tr key={member.id}>
+          <td>{member.email}</td>
+          <td>{member.username}</td>
+          <td>{member.name}</td>
+          <td>{formatDateToMMDDYYYY(new Date(member.createdAt))}</td>
+          <td>{formatDateToMMDDYYYY(new Date(member.updatedAt))}</td>
+          <td>
+            <UtilityStyles.CenteredCellContent>
+              <Box sx={{ position: "absolute" }}>
+                {member.synced ? <Icon.SmallGreenCheck /> : <Icon.SmallRedX />}
+              </Box>
+            </UtilityStyles.CenteredCellContent>
+          </td>
+          <td>
+            <UtilityStyles.CenteredCellContent>
+              <Button
+                size="xs"
+                variant="light"
+                color="danger"
+                disabled={!!member.deletedAt || user?.email === member.email}
+                onClick={() => setConfirmRemoveTeamMember(member)}
+              >
+                REMOVE
+              </Button>
+            </UtilityStyles.CenteredCellContent>
+          </td>
+        </tr>
+      )) ?? []
     );
   }, [paginatedData]);
 
@@ -100,7 +95,8 @@ const TeamUsersSection = ({ team }: { team: Team }) => {
       />
       {!members?.length ? (
         <Box mb={"-30px"}>
-          <EmptyData topic="Members" />
+          {/* We never should get here, since the user must be a member. */}
+          <EmptyData title="No were found in this Team." />
         </Box>
       ) : (
         <Box pt={"5px"}>

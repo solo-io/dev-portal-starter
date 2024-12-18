@@ -1,0 +1,30 @@
+changelog:
+  - type: NEW_FEATURE
+    issueLink: https://github.com/solo-io/solo-projects/issues/6808
+    description: >-
+      Adds the Teams page in to the GG version of the UI.
+  - type: NEW_FEATURE
+    issueLink: https://github.com/solo-io/solo-projects/issues/6809
+    description: >-
+      Adds the Team Details page in to the GG version of the UI.
+  - type: NEW_FEATURE
+    issueLink: https://github.com/solo-io/solo-projects/issues/6810
+    description: >-
+      Adds the Apps page in to the GG version of the UI.
+  - type: NEW_FEATURE
+    issueLink: https://github.com/solo-io/solo-projects/issues/6811
+    description: >-
+      Adds the App Details page in to the GG version of the UI.
+  - type: NEW_FEATURE
+    issueLink: https://github.com/solo-io/solo-projects/issues/6812
+    description: >-
+      Adds the Admin Subscriptions page in to the GG version of the UI.
+  - type: NEW_FEATURE
+    issueLink: https://github.com/solo-io/solo-projects/issues/6813
+    description: >-
+      Adds the Admin Teams page in to the GG version of the UI.
+  - type: NEW_FEATURE
+    issueLink: https://github.com/solo-io/solo-projects/issues/6814
+    description: >-
+      Adds in an edit button + modal to the Apps + Teams Details pages 
+      (for both admins + non-admins) on the GG version of the UI.

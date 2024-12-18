@@ -23,7 +23,7 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
 2. Build your image.
 
    ```sh
-   docker build -t "your-image-name"
+   docker build -t "your-image-name" .
    ```
 
 3. Push your image:
@@ -135,9 +135,24 @@ You can add these environment variables to a `.env.local` file in the `projects/
   4. rebuilding the project.
 - `VITE_AUDIENCE` - This is an optional parameter if using Auth0 and need to send an audience parameter in your authorization requests. This should not be URL encoded, since it will be URL encoded when the request is sent.
 - `VITE_HOME_IMAGE_URL` - This is an optional parameter to set the image URL on the home page.
-- `VITE_APIS_IMAGE_URL` - This is an optional parameter to set the image URL on the apis page.
+- `VITE_BANNER_IMAGE_URL` - This is an optional parameter to set the banner image URL for the teams, apps, subscriptions, and API's pages.
 - `VITE_LOGO_IMAGE_URL` - This is an optional parameter to set the image URL for the logo in the upper left.
-- `VITE_API_PAGE_RELOAD` - This is an optional parameter that ensures the API page reloads when navigating to it. This is useful when gating the API page behind an auth flow.
+- `VITE_CUSTOM_PAGES` - This is an optional value that describes Markdown or HTML custom pages that have been added to the `projects/ui/src/public` folder. In order to test this feature out out with the provided examples, set your `VITE_CUSTOM_PAGES` value to:
+  ```
+  '[{"title": "Markdown Example", "path": "/pages/markdown-example.md"}, {"title": "HTML Example", "path": "/pages/html-example.html"}]'
+  ```
+  When the website is opened, there should be two new pages in the top navigation bar.
+  ![custom pages example](readme_assets/custom-pages-navbar.png)
+  The custom page's `path` property must be publicly accessible and end with `.md` or `.html`.
+- `VITE_SWAGGER_PREFILL_API_KEY` - Prefills the Swagger UI authorization configuration for an API key or Bearer authorization scheme with the specified values. This can be set using the following format: `'["authDefinitionKey", "apiKeyValue"]'`, where "authDefinitionKey" is the key name of the security scheme to use from the API definition. In case of OpenAPI 3.0 Bearer scheme, `apiKeyValue` must contain just the token itself without the Bearer prefix. To use the logged in user's authorization token for the `apiKeyValue`, you may use the following syntax: `'["authDefinitionKey", "{{USER_TOKEN}}"]'`.
+- `VITE_SWAGGER_PREFILL_OAUTH` - Prefills the Swagger UI authorization configuration for an OAuth server. This variable should be set to a serialized JSON object that is the OAuth2 configuration. See the [Swagger UI OAuth2 documentation](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/oauth2.md) for more information.
+  - Converting the example object from the Swagger UI documentation to a string would result in the following:
+  ```
+  VITE_SWAGGER_PREFILL_OAUTH='{"clientId": "your-client-id","clientSecret": "your-client-secret-if-required","realm": "your-realms","appName": "your-app-name","scopeSeparator": " ","scopes": "openid profile","additionalQueryStringParams": {"test": "hello"},"useBasicAuthenticationWithAccessCodeGrant": true,"usePkceWithAuthorizationCodeGrant": true}'
+  ```
+- `VITE_SWAGGER_PREFILL_BASIC` - Prefills the Swagger UI authorization configuration for a Basic authorization scheme. This can be set using the following format: `'["authDefinitionKey", "username", "password"]'`.
+- `VITE_DEFAULT_APP_AUTH` - This controls whether the OAuth and/or API Key sections are shown on the App details page. Can be set to `"OAUTH"`, `"API_KEY"`, or `"ALL"`. Defaults to `"ALL"`.
+- `VITE_API_PAGE_RELOAD` - This is an optional parameter that ensures the API page reloads when navigating to it when set to `"true"`. This is useful when gating the API page behind an auth flow.
 
 #### Environment Variables for PKCE Authorization Flow
 

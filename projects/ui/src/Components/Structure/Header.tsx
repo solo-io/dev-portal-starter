@@ -1,74 +1,69 @@
-import { MouseEventHandler, useContext, useMemo } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { MouseEventHandler, useContext } from "react";
+import { Link, NavLink } from "react-router-dom";
 import { ReactComponent as Logo } from "../../Assets/logo.svg";
 import { AppContext } from "../../Context/AppContext";
-import { AuthContext } from "../../Context/AuthContext";
-import { apiPageReload, logoImageURL } from "../../user_variables.tmplr";
+import { useIsAdmin, useIsLoggedIn } from "../../Context/AuthContext";
+import {
+  apiPageReload,
+  appliedOidcAuthCodeConfig,
+  logoImageURL,
+} from "../../user_variables.tmplr";
+import { useInArea } from "../../Utility/utility";
 import { ErrorBoundary } from "../Common/ErrorBoundary";
+import { BasicAuthHeaderSection } from "./BasicAuth/BasicAuthHeaderSection";
+import CustomPagesNavSection from "./CustomPagesNavSection";
 import { HeaderStyles } from "./Header.style";
-import HeaderSectionLoggedIn from "./HeaderSectionLoggedIn";
-import HeaderSectionLoggedOut from "./HeaderSectionLoggedOut";
+import { OidcAuthCodeHeaderSection } from "./OidcAuthCodeHeader/OidcAuthCodeHeaderSection";
 
-if (!window.isSecureContext) {
-  // eslint-disable-next-line no-console
-  console.error(
-    "This page is not being delivered in a secure context (see https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts), " +
-      "so login will not work."
-  );
-}
+// This checks if we need to do a full page load when going to the /apis page,
+// which is sometimes necessary for getting external auth routing to work.
+export const useOnApisPageClick = () => {
+  const { portalServerType } = useContext(AppContext);
+  const isLoggedIn = useIsLoggedIn();
 
-// If apiPageReload is true use the onclick to reload the page
-export const onApisPageClick: MouseEventHandler<HTMLAnchorElement> | undefined =
-  apiPageReload === "true"
-    ? (e) => {
-        // If we are using `apiPageReload=true`, we want to override the react router
-        // behavior here, otherwise we get 2 `/apis` page history entries.
-        e.preventDefault();
-        window.location.href = "/apis";
-      }
-    : undefined;
+  // In these cases, we can return `undefined` so that the app does normal react-router routing.
+  if (
+    // If using gloo-gateway and logged in, we should be able to use normal react-router routing.
+    // This is because the auth is already done.
+    (portalServerType === "gloo-gateway" && isLoggedIn) ||
+    apiPageReload !== "true"
+  ) {
+    return { onApisPageClick: undefined };
+  }
 
-/**
- * MAIN COMPONENT
- **/
-export function Header() {
-  const routerLocation = useLocation();
-  const { isLoggedIn } = useContext(AuthContext);
-
-  const inArea = (paths: string[]) => {
-    return paths.some((s) => routerLocation.pathname.includes(s));
+  // Otherwise, we want to override the react-router behavior here with `e.preventDefault`.
+  // If we don't we get 2 `/apis` page history entries when doing a full page load.
+  const onClick: MouseEventHandler<HTMLAnchorElement> = (e) => {
+    e.preventDefault();
+    window.location.href = "/apis";
   };
+  return { onApisPageClick: onClick };
+};
 
-  // Note: Removing sections for GGv2 demo.
-
-  // const inAdminTeamsArea = useMemo(
-  //   () => inArea(["/admin/teams"]),
-  //   [routerLocation.pathname]
-  // );
-
-  // const inAdminSubscriptionsArea = useMemo(
-  //   () => inArea(["/admin/subscriptions"]),
-  //   [routerLocation.pathname]
-  // );
-
-  const inAPIsArea = useMemo(
-    () => inArea(["/apis", "/api-details/"]),
-    [routerLocation.pathname]
+const ApisPageNavLink = () => {
+  const { onApisPageClick } = useOnApisPageClick();
+  const inAPIsArea = useInArea(["/apis", "/api-details/"]);
+  return (
+    <NavLink
+      to={"/apis"}
+      onClick={onApisPageClick}
+      className={`navLink ${inAPIsArea ? "active" : ""}`}
+    >
+      APIs
+    </NavLink>
   );
+};
 
-  // Note: Removing sections for GGv2 demo.
+const Header = () => {
+  const { pageContentIsWide, portalServerType } = useContext(AppContext);
+  const isAdmin = useIsAdmin();
+  const isLoggedIn = useIsLoggedIn();
 
-  // const inAppsArea = useMemo(
-  //   () => inArea(["/apps", "/app-details/"]),
-  //   [routerLocation.pathname]
-  // );
-
-  // const inTeamsArea = useMemo(
-  //   () => inArea(["/teams", "/team-details/"]),
-  //   [routerLocation.pathname]
-  // );
-
-  const { pageContentIsWide } = useContext(AppContext);
+  const inAdminTeamsArea = useInArea(["/admin/teams"]);
+  const inAdminAppsArea = useInArea(["/admin/apps"]);
+  const inAdminSubscriptionsArea = useInArea(["/admin/subscriptions"]);
+  const inAppsArea = useInArea(["/apps", "/app-details/"]);
+  const inTeamsArea = useInArea(["/teams", "/team-details/"]);
 
   return (
     <HeaderStyles.StyledTopNavHeader aria-label="Site top level menus">
@@ -87,82 +82,97 @@ export function Header() {
             Home
           </NavLink>
 
-          {/*
-          // Note: Removing sections for GGv2 demo.
-
-          {!isAdmin && (
-            // If we allow admins to access the APIs page, things get a bit
-            // more confusing, since we will have to consider the behavior
-            // of the API details pages and pending subscriptions tabs.
-            // For example, a user can create an App from the API details page,
-            // so it would be strange for the admin not to have access to
-            // the Apps page in that case.
-          */}
-          <NavLink
-            to={"/apis"}
-            onClick={onApisPageClick}
-            className={`navLink ${inAPIsArea ? "active" : ""}`}
-          >
-            APIs
-          </NavLink>
-          {/* )} */}
-
-          {/* 
-
-          // Note: Removing sections for GGv2 demo.
-
-          {isLoggedIn &&
-            (isAdmin ? (
-              //
-              // Logged-in, admin view
-              //
+          {portalServerType === "gloo-mesh-gateway" ? (
+            //
+            // region [GMG]
+            // This is the same view if logged in or logged out.
+            //
+            <ApisPageNavLink />
+          ) : (
+            (portalServerType === "gloo-gateway" ||
+              portalServerType === "unknown") && (
               <>
-                <NavLink
-                  to={"/admin/teams"}
-                  className={`navLink ${inAdminTeamsArea ? "active" : ""}`}
-                >
-                  Teams
-                </NavLink>
-                <NavLink
-                  to={"/admin/subscriptions"}
-                  className={`navLink ${
-                    inAdminSubscriptionsArea ? "active" : ""
-                  }`}
-                >
-                  Subscriptions
-                </NavLink>
+                {!isLoggedIn ? (
+                  //
+                  // region [GG] Logged-out
+                  //
+                  <ApisPageNavLink />
+                ) : isAdmin ? (
+                  //
+                  // region [GG] Logged-in, admin
+                  //
+                  <>
+                    <NavLink
+                      to={"/admin/teams"}
+                      className={`navLink ${inAdminTeamsArea ? "active" : ""}`}
+                    >
+                      Teams
+                    </NavLink>
+                    <NavLink
+                      to={"/admin/apps"}
+                      className={`navLink ${inAdminAppsArea ? "active" : ""}`}
+                    >
+                      Apps
+                    </NavLink>
+                    <NavLink
+                      to={"/admin/subscriptions"}
+                      className={`navLink ${inAdminSubscriptionsArea ? "active" : ""}`}
+                    >
+                      Subscriptions
+                    </NavLink>
+                  </>
+                ) : (
+                  //
+                  // region [GG] Logged-in, non-admin
+                  //
+                  <>
+                    {/*
+                    // If we allow admins to access the APIs page, things get a bit
+                    // more confusing, since we will have to consider the behavior
+                    // of the API details pages and pending subscriptions tabs.
+                    // For example, a user can create an App from the API details page,
+                    // so it would be strange for the admin not to have access to
+                    // the Apps page in that case.
+                    */}
+                    <ApisPageNavLink />
+                    <NavLink
+                      to={"/teams"}
+                      className={`navLink ${inTeamsArea ? "active" : ""}`}
+                    >
+                      Teams
+                    </NavLink>
+                    <NavLink
+                      to={"/apps"}
+                      className={`navLink ${inAppsArea ? "active" : ""}`}
+                    >
+                      Apps
+                    </NavLink>
+                  </>
+                )}
+                {/*
+                // region [GG] Custom Pages
+                */}
+                <CustomPagesNavSection />
               </>
-            ) : (
-              //
-              // Logged-in, non-admin view
-              //
-              <>
-                <NavLink
-                  to={"/teams"}
-                  className={`navLink ${inTeamsArea ? "active" : ""}`}
-                >
-                  Teams
-                </NavLink>
-                <NavLink
-                  to={"/apps"}
-                  className={`navLink ${inAppsArea ? "active" : ""}`}
-                >
-                  Apps
-                </NavLink>
-              </>
-            ))}
-            */}
+            )
+          )}
 
           <div className="divider" />
+
+          {/*
+          // region Auth Dropdown
+          */}
           <ErrorBoundary fallback="Access issues" class="horizontalError">
-            {isLoggedIn ? (
-              <HeaderSectionLoggedIn />
+            {!!appliedOidcAuthCodeConfig ? (
+              <OidcAuthCodeHeaderSection />
             ) : (
-              <HeaderSectionLoggedOut />
+              <BasicAuthHeaderSection />
             )}
           </ErrorBoundary>
         </div>
       </HeaderStyles.StyledTopNavContent>
     </HeaderStyles.StyledTopNavHeader>
   );
-}
+};
+
+export default Header;

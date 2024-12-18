@@ -1,8 +1,10 @@
-import { createContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
+import { di } from "react-magnetic-di";
 import { useNavigate } from "react-router-dom";
 import { mutate } from "swr";
 import { AccessTokensResponse } from "../Apis/api-types";
+import { useGetCurrentUser } from "../Apis/gg_hooks";
 import { doAccessTokenRequest } from "../Utility/accessTokenRequest";
 import { jwtDecode, parseJwt } from "../Utility/utility";
 
@@ -13,12 +15,10 @@ interface AuthProviderProps {
   children?: any;
 }
 interface IAuthContext extends AuthProviderProps {
-  isAdmin: boolean;
   // The id_token is used for identifying the user in the logout request.
   idToken: string | undefined;
   // The access_token is used for user claims (like "email").
   latestAccessToken: string | undefined;
-  isLoggedIn: boolean;
   tokensResponse: AccessTokensResponse | undefined;
   onLogin: (newTokensResponse: AccessTokensResponse) => void;
   onLogout: () => void;
@@ -185,7 +185,45 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
     toast.success("Logged out!");
   };
 
-  const isAdmin = useMemo(() => {
+  return (
+    <AuthContext.Provider
+      value={{
+        latestAccessToken: tokensResponse?.access_token,
+        idToken: tokensResponse?.id_token,
+        tokensResponse,
+        onLogin,
+        onLogout,
+      }}
+    >
+      {props.children}
+    </AuthContext.Provider>
+  );
+};
+
+function useIsOidcAuthLoggedIn() {
+  di(useGetCurrentUser);
+  const { data: user } = useGetCurrentUser();
+  const isOidcAuthLoggedIn = !!user?.email || !!user?.username || !!user?.name;
+  return isOidcAuthLoggedIn;
+}
+
+/**
+ * Since we support different authorization types, this is the way to tell if someone is logged in.
+ */
+export function useIsLoggedIn() {
+  const { tokensResponse } = useContext(AuthContext);
+  const isAccessTokenAuthLoggedIn = !!tokensResponse?.access_token;
+  const isOidcAuthLoggedIn = useIsOidcAuthLoggedIn();
+  return isAccessTokenAuthLoggedIn || isOidcAuthLoggedIn;
+}
+
+export function useIsAdmin() {
+  di(useGetCurrentUser);
+  const { tokensResponse } = useContext(AuthContext);
+  const { data: user } = useGetCurrentUser();
+
+  // Check if the isAdmin property is in the token.
+  const isAdminTokensResponse = useMemo(() => {
     if (!tokensResponse?.access_token) {
       return false;
     }
@@ -203,19 +241,15 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
     );
   }, [tokensResponse]);
 
-  return (
-    <AuthContext.Provider
-      value={{
-        isAdmin,
-        isLoggedIn: !!tokensResponse?.access_token,
-        latestAccessToken: tokensResponse?.access_token,
-        idToken: tokensResponse?.id_token,
-        tokensResponse,
-        onLogin,
-        onLogout,
-      }}
-    >
-      {props.children}
-    </AuthContext.Provider>
-  );
-};
+  // If there was no user, they can't be an admin.
+  if (user === undefined) {
+    return false;
+  }
+  // Use the portal server property if possible.
+  if (user?.isAdmin !== undefined) {
+    return user.isAdmin;
+  }
+  // Otherwise fall back to what is in the token.
+  // This is used for older portal server versions (before the isAdmin property was added to /me).
+  return !!isAdminTokensResponse;
+}

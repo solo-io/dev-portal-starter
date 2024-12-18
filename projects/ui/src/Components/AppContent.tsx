@@ -2,10 +2,8 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { useContext } from "react";
 import { AppContext } from "../Context/AppContext";
-import { appliedOidcAuthCodeConfig } from "../user_variables.tmplr";
 import AppContentRoutes from "./AppContentRoutes";
-import { Header } from "./Structure/Header";
-import OidcAuthCodeHeaderVariant from "./Structure/OidcAuthCodeHeaderVariant/OidcAuthCodeHeaderVariant";
+import Header from "./Structure/Header";
 
 export const StyledAppContainer = styled.div(
   ({ theme }) => css`
@@ -32,7 +30,7 @@ function AppContent() {
    */
   return (
     <StyledAppContainer data-theme={isDarkMode ? "dark" : "light"}>
-      {!!appliedOidcAuthCodeConfig ? <OidcAuthCodeHeaderVariant /> : <Header />}
+      <Header />
       <AppContentRoutes />
     </StyledAppContainer>
   );

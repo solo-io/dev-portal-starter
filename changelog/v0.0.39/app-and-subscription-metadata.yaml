@@ -1,0 +1,11 @@
+changelog:
+  - type: NEW_FEATURE
+    issueLink: https://github.com/solo-io/solo-projects/issues/6952
+    description: >-
+      Adds metadata CRUD operations for apps and subscriptions,
+      based on admin/non-admin role.
+  - type: FIX
+    issueLink: https://github.com/solo-io/solo-projects/issues/6958
+    description: >-
+      Adds a request to create the logged in user if they are not found
+      in the portal server DB.

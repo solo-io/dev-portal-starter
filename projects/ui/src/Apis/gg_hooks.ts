@@ -4,11 +4,14 @@ import useSWRMutation from "swr/mutation";
 import { AuthContext } from "../Context/AuthContext";
 import { omitErrorMessageResponse } from "../Utility/utility";
 import {
+  ApiKey,
   ApiProductDetails,
   ApiProductSummary,
   ApiVersion,
   App,
   Member,
+  OauthCredential,
+  RateLimit,
   Subscription,
   SubscriptionStatus,
   SubscriptionsListError,
@@ -19,15 +22,15 @@ import {
 import { fetchJSON, useMultiSwrWithAuth, useSwrWithAuth } from "./utility";
 
 //
-// Queries
+// region Queries
 //
 
-// User
+// region User
 export function useGetCurrentUser() {
   return useSwrWithAuth<User>("/me");
 }
 
-// Apps
+// region Apps + API Keys + OAuth
 export function useListAppsForTeam(team: Team) {
   return useSwrWithAuth<App[]>(`/teams/${team.id}/apps`);
 }
@@ -53,11 +56,16 @@ export function useListFlatAppsForTeamsOmitErrors(teams: Team[]) {
   return { ...swrRes, data };
 }
 export function useGetAppDetails(id?: string) {
-  return useSwrWithAuth<App>(`/apps/${id}`);
+  return useSwrWithAuth<App>(`/apps/${id}`, id ?? null);
+}
+export function useListApiKeysForApp(appId: string) {
+  return useSwrWithAuth<ApiKey[]>(`/apps/${appId}/api-keys`);
+}
+export function useGetOauthCredentialsForApp(appId: string) {
+  return useSwrWithAuth<OauthCredential>(`/apps/${appId}/oauth-credentials`);
 }
 
-// Teams
-const TEAMS_SWR_KEY = "teams";
+// region Teams
 export function useListTeams() {
   return useSwrWithAuth<Team[]>(`/teams`);
 }
@@ -68,7 +76,7 @@ export function useGetTeamDetails(id?: string) {
   return useSwrWithAuth<Team>(`/teams/${id}`);
 }
 
-// Api Products
+// region API Products
 export function useListApiProducts() {
   return useSwrWithAuth<ApiProductSummary[]>("/api-products");
 }
@@ -79,7 +87,7 @@ export function useGetApiProductVersions(id?: string) {
   return useSwrWithAuth<ApiVersion[]>(`/api-products/${id}/versions`);
 }
 
-// Subscriptions
+// region Subscriptions
 // this is an admin endpoint
 export function useListSubscriptionsForStatus(status: SubscriptionStatus) {
   const swrResponse = useSwrWithAuth<Subscription[] | SubscriptionsListError>(
@@ -93,9 +101,11 @@ export function useListSubscriptionsForStatus(status: SubscriptionStatus) {
   }, [swrResponse]);
   return swrResponse;
 }
-export function useListSubscriptionsForApp(appId: string) {
+export function useListSubscriptionsForApp(appId: string | null) {
+  const endpoint = `/apps/${appId}/subscriptions`;
   const swrResponse = useSwrWithAuth<Subscription[] | SubscriptionsListError>(
-    `/apps/${appId}/subscriptions`
+    endpoint,
+    appId === null ? null : endpoint
   );
   useEffect(() => {
     if (isSubscriptionsListError(swrResponse.data)) {
@@ -115,7 +125,7 @@ export function useListSubscriptionsForApps(apps: App[]) {
 }
 
 //
-// Mutations
+// region Mutations
 //
 
 const getLatestAuthHeaders = (latestAccessToken: string | undefined) => {
@@ -129,27 +139,25 @@ const getLatestAuthHeaders = (latestAccessToken: string | undefined) => {
 type MutationWithArgs<T> = { arg: T };
 
 // ------------------------ //
-// Create Team
+// region Create Team
 
 type CreateTeamParams = MutationWithArgs<{ name: string; description: string }>;
 
 export function useCreateTeamMutation() {
   const { latestAccessToken } = useContext(AuthContext);
-  const { mutate } = useSWRConfig();
   const createTeam = async (url: string, { arg }: CreateTeamParams) => {
     const res = await fetchJSON(url, {
       method: "POST",
       headers: getLatestAuthHeaders(latestAccessToken),
       body: JSON.stringify(arg),
     });
-    mutate(TEAMS_SWR_KEY);
     return res as Team;
   };
   return useSWRMutation(`/teams`, createTeam);
 }
 
 // ------------------------ //
-// Create Team Member
+// region Create Team Member
 
 type AddTeamMemberParams = MutationWithArgs<{ email: string; teamId: string }>;
 
@@ -169,7 +177,7 @@ export function useAddTeamMemberMutation() {
 }
 
 // ------------------------ //
-// Remove Team Member
+// region Remove Team Member
 
 type AdminRemoveTeamMemberParams = MutationWithArgs<{
   teamId: string;
@@ -194,7 +202,7 @@ export function useRemoveTeamMemberMutation() {
 }
 
 // ------------------------ //
-// Create App
+// region Create App
 
 type CreateAppParams = MutationWithArgs<{ name: string; description: string }>;
 
@@ -220,7 +228,7 @@ export function useCreateAppMutation(teamId: string | undefined) {
 }
 
 // ------------------------ //
-// Update App
+// region Update App
 
 type UpdateAppParams = MutationWithArgs<{
   appId: string;
@@ -247,7 +255,7 @@ export function useUpdateAppMutation() {
 }
 
 // ------------------------ //
-// Update Team
+// region Update Team
 
 type UpdateTeamParams = MutationWithArgs<{
   teamId: string;
@@ -265,14 +273,13 @@ export function useUpdateTeamMutation() {
       headers: getLatestAuthHeaders(latestAccessToken),
       body: JSON.stringify({ name: teamName, description: teamDescription }),
     });
-    mutate(TEAMS_SWR_KEY);
     mutate(`/teams/${teamId}`);
   };
   return useSWRMutation("update-team", updateTeam);
 }
 
 // ------------------------ //
-// Create App and Subscription
+// region Create App and Subscription
 
 type CreateAppAndSubscriptionParams = MutationWithArgs<{
   appName: string;
@@ -315,7 +322,7 @@ export function useCreateAppAndSubscriptionMutation() {
 }
 
 // ------------------------ //
-// Create Subscription
+// region Create Subscription
 
 type CreateSubscriptionParams = MutationWithArgs<{
   apiProductId: string;
@@ -344,7 +351,7 @@ export function useCreateSubscriptionMutation(appId: string) {
 }
 
 // -------------------------------- //
-// (Admin) Approve/Reject Subscription
+// region (Admin) Approve/Reject Subscription
 
 type UpdateSubscriptionParams = MutationWithArgs<{
   subscription: Subscription;
@@ -387,7 +394,7 @@ export function useAdminRejectSubscriptionMutation() {
 }
 
 // -------------------------------- //
-// Delete Subscription
+// region Delete Subscription
 
 export function useDeleteSubscriptionMutation() {
   const { latestAccessToken } = useContext(AuthContext);
@@ -406,37 +413,182 @@ export function useDeleteSubscriptionMutation() {
 }
 
 // -------------------------------- //
-// Delete Team
+// region Delete Team
 
 type DeleteTeamParams = MutationWithArgs<{ teamId: string }>;
 
 export function useDeleteTeamMutation() {
   const { latestAccessToken } = useContext(AuthContext);
-  const { mutate } = useSWRConfig();
   const deleteTeam = async (_: string, { arg }: DeleteTeamParams) => {
     await fetchJSON(`/teams/${arg.teamId}`, {
       method: "DELETE",
       headers: getLatestAuthHeaders(latestAccessToken),
     });
-    mutate(TEAMS_SWR_KEY);
   };
   return useSWRMutation(`delete-team`, deleteTeam);
 }
 
 // -------------------------------- //
-// Delete App
+// region Delete App
 
 type DeleteAppParams = MutationWithArgs<{ appId: string }>;
 
 export function useDeleteAppMutation() {
   const { latestAccessToken } = useContext(AuthContext);
-  const { mutate } = useSWRConfig();
   const deleteApp = async (_: string, { arg }: DeleteAppParams) => {
     await fetchJSON(`/apps/${arg.appId}`, {
       method: "DELETE",
       headers: getLatestAuthHeaders(latestAccessToken),
     });
-    mutate(TEAMS_SWR_KEY);
   };
   return useSWRMutation(`delete-team`, deleteApp);
+}
+
+// -------------------------------- //
+// region Create API Key
+
+type CreateApiKeyParams = MutationWithArgs<{ apiKeyName: string }>;
+
+export function useCreateApiKeyMutation(appId: string) {
+  const { latestAccessToken } = useContext(AuthContext);
+  const createApiKey = async (_: string, { arg }: CreateApiKeyParams) => {
+    return await fetchJSON(`/apps/${appId}/api-keys`, {
+      method: "POST",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify(arg),
+    });
+  };
+  return useSWRMutation<ApiKey, any, string, CreateApiKeyParams["arg"]>(
+    `/apps/${appId}/api-keys`,
+    createApiKey
+  );
+}
+
+// -------------------------------- //
+// region Delete API Key
+
+type DeleteApiKeyParams = MutationWithArgs<{ apiKeyId: string }>;
+
+export function useDeleteApiKeyMutation(appId: string) {
+  const { latestAccessToken } = useContext(AuthContext);
+  const deleteApiKey = async (_: string, { arg }: DeleteApiKeyParams) => {
+    await fetchJSON(`/api-keys/${arg.apiKeyId}`, {
+      method: "DELETE",
+      headers: getLatestAuthHeaders(latestAccessToken),
+    });
+  };
+  return useSWRMutation(`/apps/${appId}/api-keys`, deleteApiKey);
+}
+
+// -------------------------------- //
+// region Create OAuth Client
+
+export function useCreateOAuthMutation(appId: string) {
+  const { latestAccessToken } = useContext(AuthContext);
+  const createOAuth = async () => {
+    return (await fetchJSON(`/apps/${appId}/oauth-credentials`, {
+      method: "POST",
+      headers: getLatestAuthHeaders(latestAccessToken),
+    })) as OauthCredential;
+  };
+  return useSWRMutation(`/apps/${appId}/oauth-credentials`, createOAuth);
+}
+
+// -------------------------------- //
+// region Delete OAuth Client
+
+type DeleteOAuthParams = MutationWithArgs<{ credentialId: string }>;
+
+export function useDeleteOAuthMutation(appId: string) {
+  const { latestAccessToken } = useContext(AuthContext);
+  const deleteOAuth = async (_: string, { arg }: DeleteOAuthParams) => {
+    await fetchJSON(`/oauth-credentials/${arg.credentialId}`, {
+      method: "DELETE",
+      headers: getLatestAuthHeaders(latestAccessToken),
+    });
+  };
+  return useSWRMutation(`/apps/${appId}/oauth-credentials`, deleteOAuth);
+}
+
+// -------------------------------- //
+// region Create User
+
+export function useCreateUserMutation() {
+  const { latestAccessToken } = useContext(AuthContext);
+  const createUser = async () => {
+    await fetchJSON(`/me`, {
+      method: "PUT",
+      headers: getLatestAuthHeaders(latestAccessToken),
+    });
+  };
+  return useSWRMutation(`create-user`, createUser);
+}
+
+// -------------------------------- //
+// region (Admin) Upsert App Metadata
+
+export type UpsertAppMetadataParams = MutationWithArgs<{
+  appId: string;
+  rateLimit?: RateLimit;
+  customMetadata?: Record<string, string>;
+}>;
+
+export function useUpsertAppMetadataMutation() {
+  const { latestAccessToken } = useContext(AuthContext);
+  const { mutate } = useSWRConfig();
+  const fetcher = async (_: string, { arg }: UpsertAppMetadataParams) => {
+    const req: Record<string, any> = { appId: arg.appId };
+    if (arg.customMetadata !== undefined) {
+      req.customMetadata = arg.customMetadata;
+    }
+    if (arg.rateLimit !== undefined) {
+      req.rateLimit = arg.rateLimit;
+    }
+    await fetchJSON(`/apps/${arg.appId}/metadata`, {
+      method: "POST",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify(req),
+    });
+    mutate(TEAM_APPS_SWR_KEY);
+    mutate(`/apps/${arg.appId}`);
+  };
+  return useSWRMutation(`upsert-app-metadata`, fetcher);
+}
+
+// -------------------------------- //
+// region (Admin) Upsert Subscription Metadata
+
+export type UpsertSubscriptionMetadataParams = MutationWithArgs<{
+  subscription: Subscription;
+  customMetadata?: Record<string, string>;
+  rateLimit?: RateLimit;
+}>;
+
+export function useUpsertSubscriptionMetadataMutation() {
+  const { latestAccessToken } = useContext(AuthContext);
+  const { mutate } = useSWRConfig();
+  const fetcher = async (
+    _: string,
+    { arg }: UpsertSubscriptionMetadataParams
+  ) => {
+    const req: Record<string, any> = { subscriptionId: arg.subscription.id };
+    if (arg.customMetadata !== undefined) {
+      req.customMetadata = arg.customMetadata;
+    }
+    if (arg.rateLimit !== undefined) {
+      req.rateLimit = arg.rateLimit;
+    }
+    await fetchJSON(`/subscriptions/${arg.subscription.id}/metadata`, {
+      method: "POST",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify(arg),
+    });
+    // We use several queries to get subscriptions across different pages.
+    // Doing all the mutations here so we don't miss anything.
+    mutate(`/apps/${arg.subscription.applicationId}/subscriptions`);
+    mutate(`/subscriptions?status=${SubscriptionStatus.APPROVED}`);
+    mutate(`/subscriptions?status=${SubscriptionStatus.PENDING}`);
+    mutate(APP_SUBS_SWR_KEY);
+  };
+  return useSWRMutation(`upsert-subscription-metadata`, fetcher);
 }

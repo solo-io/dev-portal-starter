@@ -9,11 +9,11 @@
 #############################
 
 # Install dependencies.
-yarn --cwd ./projects/ui
-yarn --cwd ./projects/server
+yarn --cwd ./projects/ui || exit 1
+yarn --cwd ./projects/server || exit 1
 
 # Build the UI.
-yarn --cwd ./projects/ui build
+yarn --cwd ./projects/ui build || exit 1
 
 # Cleanup old server files if they exist.
 rm -rf ./projects/server/public/dist || true

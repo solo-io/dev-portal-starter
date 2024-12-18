@@ -69,7 +69,7 @@ export async function fetchJSON(...args: Parameters<typeof fetch>) {
  */
 export const useSwrWithAuth = <T>(
   path: string,
-  swrKey?: string,
+  swrKey?: string | null,
   config?: Parameters<typeof useSWR<T>>[2]
 ) => {
   const { latestAccessToken } = useContext(AuthContext);
