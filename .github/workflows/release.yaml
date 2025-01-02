@@ -65,15 +65,10 @@ jobs:
         run: |
           gcloud auth configure-docker --quiet
 
-      # This is what we use in GME (under "make docker-setup-multiarch-buildkit")
-      - name: Docker Buildkit Setup (for multi arch)
-        run: |
-          docker buildx rm mybuilder || true
-          docker buildx create --use --name mybuilder --driver-opt "image=moby/buildkit:v0.10.6"
-          # Registers QEMU emulators for multiple architectures.
-          docker run --rm --privileged multiarch/qemu-user-static:register --reset
-          # Runs the multiarch/qemu-user-static image to initialize QEMU.
-          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          platforms: linux/amd64,linux/arm64
 
       - name: Build and push Docker image
         run: |
