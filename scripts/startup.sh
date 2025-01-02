@@ -8,6 +8,9 @@
 # 1. Build steps            #
 #############################
 
+# Configure timeout (this is needed for QEMU emulation when doing multi-arch builds, since those are slower)
+yarn config set network-timeout 600000 -g
+
 # Install dependencies.
 yarn --cwd ./projects/ui || exit 1
 yarn --cwd ./projects/server || exit 1
