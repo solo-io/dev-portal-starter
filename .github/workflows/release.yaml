@@ -68,12 +68,16 @@ jobs:
       # This is what we use in GME (under "make docker-setup-multiarch-buildkit")
       - name: Docker Buildkit Setup (for multi arch)
         run: |
-          docker buildx create --use --driver-opt "image=moby/buildkit:v0.10.6"
+          docker buildx rm mybuilder || true
+          docker buildx create --use --name mybuilder --driver-opt "image=moby/buildkit:v0.10.6"
+          # Registers QEMU emulators for multiple architectures.
           docker run --rm --privileged multiarch/qemu-user-static:register --reset
+          # Runs the multiarch/qemu-user-static image to initialize QEMU.
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
       - name: Build and push Docker image
         run: |
-          DOCKER_BUILDKIT=1 docker buildx build --platform linux/amd64,linux/arm64 --tag gcr.io/solo-public/docs/portal-frontend:${RELEASE_TAG} --tag gcr.io/solo-public/docs/portal-frontend:latest .
-          docker push gcr.io/solo-public/docs/portal-frontend:${RELEASE_TAG}
-          docker push gcr.io/solo-public/docs/portal-frontend:latest
+          docker buildx build --push --platform linux/amd64,linux/arm64 \
+          --progress=plain
+          --tag gcr.io/solo-public/docs/portal-frontend:${RELEASE_TAG} \
+          --tag gcr.io/solo-public/docs/portal-frontend:latest .
