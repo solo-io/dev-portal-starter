@@ -1,0 +1,5 @@
+changelog:
+  - type: FIX
+    issueLink: https://github.com/solo-io/dev-portal-starter/issues/123
+    description: >-
+      Upgrades Node to 22.
