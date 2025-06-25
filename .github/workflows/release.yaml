@@ -7,7 +7,7 @@ on:
 
 jobs:
   branchAndPublishImage:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     env:
       RELEASE_TAG: ${{ github.event.release.tag_name }}
@@ -54,12 +54,17 @@ jobs:
           git commit -m "Update package.json version information for $RELEASE_TAG" || true
           git push origin $RELEASE_BRANCH
 
-      - name: Set up Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0.2.1
+      - name: Gcloud Auth
+        uses: google-github-actions/auth@v2
         with:
+          credentials_json: ${{ secrets.GC_PUBLIC_GCR_SA_KEY }}
           project_id: solo-public
-          service_account_key: ${{ secrets.GC_PUBLIC_GCR_SA_KEY }}
-          export_default_credentials: true
+          create_credentials_file: true
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+            version: 416.0.0
 
       - name: Configure Docker to use GCR
         run: |

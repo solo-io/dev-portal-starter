@@ -4,6 +4,7 @@
 
 VERSION := 0.0.1
 UI_ROOT_DIR := projects/ui
+SERVER_ROOT_DIR := projects/ui
 
 UI_ARGS=VITE_UI_VERSION=$(VERSION)
 #
@@ -159,7 +160,13 @@ clean:
 	rm -rf $(UI_ROOT_DIR)/node_modules
 
 .PHONY: install-tools
-install-tools: update-ui-deps
+install-tools: 
+	$(MAKE) update-ui-deps
+	$(MAKE) update-server-deps
+
+.PHONY: update-server-deps
+update-server-deps:
+	yarn --cwd=$(SERVER_ROOT_DIR) install
 
 .PHONY: update-ui-deps
 update-ui-deps:
