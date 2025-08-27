@@ -70,6 +70,7 @@
     "vite-plugin-svgr": "^2.4.0"
   },
   "resolutions": {
+    "sha.js": "^2.4.12",
     "cookie": "^0.7.0",
     "brace-expansion": "^2.0.2",
     "form-data": "^4.0.4",
