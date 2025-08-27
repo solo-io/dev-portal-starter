@@ -1,7 +1,7 @@
 {
   "name": "dev-portal-starter",
   "private": true,
-  "version": "0.0.13",
+  "version": "0.1.4",
   "type": "module",
   "scripts": {
     "start": "vite --port=4000",
