@@ -4,7 +4,7 @@
 #             #
 ###############
 
-FROM node:18.17.0 AS build_stage
+FROM node:18.20.8 AS build_stage
 
 # Install global dependencies.
 RUN apt-get update && apt-get install -y build-essential
@@ -30,7 +30,7 @@ RUN START_SERVER=false sh ./scripts/startup.sh
 #             #
 ###############
 
-FROM node:18.17.0 AS serve_stage
+FROM node:18.20.8 AS serve_stage
 
 ENV VITE_PORTAL_SERVER_URL=$VITE_PORTAL_SERVER_URL \
     VITE_CLIENT_ID=$VITE_CLIENT_ID \
