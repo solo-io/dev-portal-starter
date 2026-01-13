@@ -33,7 +33,7 @@
     "react-loader-spinner": "^5.3.4",
     "react-magnetic-di": "^2.2.13",
     "react-markdown": "^9.0.1",
-    "react-router-dom": "^6.4.5",
+    "react-router-dom": "^6.30.2",
     "redoc": "^2.4.0",
     "remark-gfm": "^4.0.0",
     "storybook": "^8.2.3",
