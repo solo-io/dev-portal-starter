@@ -7,10 +7,13 @@ declare module "*.svg" {
   export default src;
 }
 
+// This is the type needed for vite-plugin-svgr
+// https://www.npmjs.com/package/vite-plugin-svgr#usage
 declare module "*.svg?react" {
-  import React = require("react");
-  const ReactComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
-  export default ReactComponent;
+  import * as React from "react";
+  export const ReactComponent: React.FunctionComponent<
+    React.SVGProps<SVGSVGElement> & { title?: string }
+  >;
 }
 
 /**
