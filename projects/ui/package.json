@@ -60,15 +60,15 @@
     "@types/swagger-ui-dist": "^3.30.4",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
     "@typescript-eslint/parser": "^5.57.1",
-    "@vitejs/plugin-react": "^3.0.0",
+    "@vitejs/plugin-react": "^4.0.0",
     "eslint": "^8.34.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-storybook": "^0.8.0",
     "lint-staged": "^13.1.2",
     "typescript": "5.0.4",
-    "vite": "^4.5.3",
+    "vite": "^5.4.21",
     "vite-plugin-eslint": "^1.8.1",
-    "vite-plugin-svgr": "^2.4.0"
+    "vite-plugin-svgr": "^4.0.0"
   },
   "resolutions": {
     "sha.js": "^2.4.12",
