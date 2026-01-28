@@ -7,6 +7,12 @@ declare module "*.svg" {
   export default src;
 }
 
+declare module "*.svg?react" {
+  import React = require("react");
+  const ReactComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+  export default ReactComponent;
+}
+
 /**
  * This is a global variable that /projects/server/app.js inserts
  * into the UI build when serving it. It is used so that the
