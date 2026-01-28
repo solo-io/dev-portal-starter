@@ -71,6 +71,7 @@
     "vite-plugin-svgr": "^4.3.0"
   },
   "resolutions": {
+    "micromatch": "^4.0.8",
     "sha.js": "^2.4.12",
     "cookie": "^0.7.0",
     "brace-expansion": "^2.0.2",
