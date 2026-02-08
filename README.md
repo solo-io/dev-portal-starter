@@ -59,7 +59,7 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
 
 **Prerequisites for Local Development**:
 
-1. Install [Node v16.14.2](https://nodejs.org/en/blog/release/v16.14.2) and [yarn](https://yarnpkg.com/)
+1. Install the Node version in the .nvmrc file, and [yarn](https://yarnpkg.com/)
 
 2. Create a `.env.local` file in the `projects/ui` folder. Replace environment variable values to match your Gloo Platform Portal and oauth provider's installation. This file is ignored by git.
 
