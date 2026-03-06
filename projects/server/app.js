@@ -3,6 +3,7 @@ var path = require("path");
 
 // Express and view engine setup
 var app = express();
+app.disable("x-powered-by");
 app.set("views", path.join(__dirname, "public", "dist"));
 app.set("view engine", "ejs");
 
@@ -11,9 +12,9 @@ var variablesInit = `
 const insertedEnvironmentVariables = ${JSON.stringify(
   Object.fromEntries(
     Object.entries(process.env).filter(([key, _value]) =>
-      key.startsWith("VITE_")
-    )
-  )
+      key.startsWith("VITE_"),
+    ),
+  ),
 )};
 `;
 
