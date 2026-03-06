@@ -30,7 +30,7 @@ RUN START_SERVER=false sh ./scripts/startup.sh
 #             #
 ###############
 
-FROM node:18.20.8 AS serve_stage
+FROM node:22.16.0 AS serve_stage
 
 ENV VITE_PORTAL_SERVER_URL=$VITE_PORTAL_SERVER_URL \
     VITE_CLIENT_ID=$VITE_CLIENT_ID \
