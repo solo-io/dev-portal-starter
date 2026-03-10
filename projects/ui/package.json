@@ -87,7 +87,7 @@
     "react-inspector": "^6.0.1",
     "react-copy-to-clipboard": "^5.1.0",
     "undici": "^5.28.4",
-    "tar": "^6.2.1",
+    "tar": "^7.5.10",
     "follow-redirects": "^1.15.6",
     "braces": "^3.0.3",
     "ws": "^8.17.1",
