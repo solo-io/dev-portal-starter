@@ -39,7 +39,7 @@
     "storybook": "^8.6.17",
     "styled-components": "^5.3.6",
     "swagger-ui": "^5.30.2",
-    "swr": "^2.3.8",
+    "swr": "^2.4.0",
     "yaml": "^2.2.2"
   },
   "devDependencies": {
