@@ -86,7 +86,6 @@
     "express": "^4.19.2",
     "react-inspector": "^6.0.1",
     "react-copy-to-clipboard": "^5.1.0",
-    "undici": "^6.23.0",
     "tar": "^7.5.10",
     "follow-redirects": "^1.15.6",
     "braces": "^3.0.3",
@@ -97,7 +96,7 @@
     "lodash": "^4.17.23",
     "minimatch": "^3.1.4",
     "immutable": "^4.3.8",
-    "fast-xml-parser": "^4.5.4",
+    "fast-xml-parser": ">=5.5.7",
     "ajv": "^6.14.0",
     "qs": "^6.14.2"
   },
