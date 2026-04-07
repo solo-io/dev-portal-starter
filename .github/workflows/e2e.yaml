@@ -1,0 +1,60 @@
+name: E2E Tests
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: true
+
+env:
+  CI: true
+
+jobs:
+  e2e:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: e2e
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install UI dependencies
+        working-directory: projects/ui
+        run: yarn install --immutable
+
+      - name: Install mock API dependencies
+        working-directory: mock-portal-api
+        run: yarn install --immutable
+
+      - name: Install e2e dependencies
+        run: yarn install --immutable
+
+      - name: Install Playwright browsers
+        run: yarn playwright install --with-deps chromium
+
+      - name: Run e2e tests
+        run: yarn test
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: playwright-report
+          path: e2e/playwright-report/
+          retention-days: 30
+
+      - name: Upload test results and screenshots
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: test-results
+          path: e2e/test-results/
+          retention-days: 30

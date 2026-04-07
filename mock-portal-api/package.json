@@ -1,0 +1,13 @@
+{
+  "name": "mock-portal-api",
+  "version": "1.0.0",
+  "description": "Mock Gloo Platform Portal API server for local development",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
