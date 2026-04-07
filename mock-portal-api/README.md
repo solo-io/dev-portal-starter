@@ -1,6 +1,6 @@
 # Mock Portal API
 
-A lightweight mock server that implements the Gloo Platform Portal API endpoints consumed by `platform-portal-backstage-plugin-backend`.
+A lightweight mock server that implements the Gloo Platform Portal API endpoints for local development and e2e testing.
 
 ## Quick Start
 
@@ -23,17 +23,18 @@ The server starts on `http://localhost:31080` (the plugin's default `portalServe
 | GET | `/v1/api-products/:id/versions` | Get versions for an API product |
 | GET | `/health` | Health check |
 
-## Backstage Config
+## UI Config
 
-Point the plugin at this mock server in your `app-config.local.yaml`:
+Point the UI at this mock server by setting the environment variable:
 
-```yaml
-glooPlatformPortal:
-  backend:
-    portalServerUrl: http://localhost:31080/v1
-    tokenEndpoint: http://localhost:31080/auth/realms/master/protocol/openid-connect/token
-    clientId: backstage
-    clientSecret: mock-secret
+```bash
+VITE_PORTAL_SERVER_URL=http://localhost:31080/v1
+```
+
+Or via the Makefile:
+
+```bash
+PORTAL_SERVER_URL=http://localhost:31080/v1 make run-ui
 ```
 
 ## Customizing Mock Data

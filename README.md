@@ -179,6 +179,38 @@ In your Keycloak administration console, make sure that "Direct Access Grants" i
 
 When making a new release, use the GitHub UI, and name your release in the format: v1.2.3. When the release is published, a new branch will be made (v1.2.x), and a build of that version will be tagged and published to gcr.io/solo-public/docs/portal-frontend:v1.2.3 (replacing v1.2.3 with your tag name).
 
+## E2E Testing
+
+End-to-end tests use [Playwright](https://playwright.dev/) and a mock Portal API server.
+
+### Running E2E Tests Locally
+
+1. Install dependencies:
+
+   ```shell
+   yarn --cwd projects/ui install
+   yarn --cwd mock-portal-api install
+   yarn --cwd e2e install
+   ```
+
+2. Install Playwright browsers:
+
+   ```shell
+   yarn --cwd e2e playwright install --with-deps chromium
+   ```
+
+3. Run the tests:
+
+   ```shell
+   yarn --cwd e2e test
+   ```
+
+This will automatically start the mock Portal API server and the Vite UI dev server, run the Playwright tests, then tear everything down.
+
+The mock API serves sample data for 3 API products (Tracks API, Petstore API, Orders API) on `http://localhost:31080`. See `mock-portal-api/` for details on customizing the mock data.
+
+Test results and failure screenshots are saved to `e2e/test-results/`.
+
 ## Screenshots
 
 ![homepage](readme_assets/homepage.png "The home page with the default images.")
