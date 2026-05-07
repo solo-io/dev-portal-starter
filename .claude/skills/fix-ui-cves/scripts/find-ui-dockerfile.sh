@@ -4,7 +4,7 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || (cd "$SCRIPT_DIR/../../../.." && pwd))"
 
 # Find all Dockerfiles outside node_modules and .git.
 mapfile -t DOCKERFILES < <(find "$REPO_ROOT" \( -name "Dockerfile" -o -name "Dockerfile.*" -o -name "*.Dockerfile" \) \
