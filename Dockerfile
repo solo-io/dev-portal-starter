@@ -4,7 +4,7 @@
 #             #
 ###############
 
-FROM node:22.16.0 AS build_stage
+FROM node:22.22.2 AS build_stage
 
 # Install global dependencies.
 RUN apt-get update && apt-get install -y build-essential
@@ -31,6 +31,9 @@ RUN START_SERVER=false sh ./scripts/startup.sh
 ###############
 
 FROM node:22.22.2-bookworm-slim AS serve_stage
+
+# Update npm to pull in patched bundled deps (picomatch, brace-expansion, ip-address CVEs).
+RUN npm install -g npm@latest && npm cache clean --force
 
 ENV VITE_PORTAL_SERVER_URL=$VITE_PORTAL_SERVER_URL \
     VITE_CLIENT_ID=$VITE_CLIENT_ID \
