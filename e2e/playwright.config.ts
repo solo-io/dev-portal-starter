@@ -14,5 +14,6 @@ export default defineConfig({
     baseURL: `http://localhost:${process.env.E2E_UI_PORT || '4173'}`,
     screenshot: 'only-on-failure',
     trace: 'on-first-retry',
+    video: 'on',
   },
 });
