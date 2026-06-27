@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
   AuthContext,
@@ -7,98 +7,14 @@ import {
   useIsLoggedIn,
 } from "../../../Context/AuthContext";
 import { doAccessTokenRequest } from "../../../Utility/accessTokenRequest";
-import {
-  audience,
-  authEndpoint,
-  clientId,
-} from "../../../user_variables.tmplr";
+import { redirectToPkceLogin } from "../../../Utility/loginRedirect";
 import { Button } from "../../Common/Button";
 
-//
-// From https://stackoverflow.com/a/63336562
-//
-// GENERATING CODE VERIFIER
-function dec2hex(dec: number) {
-  return ("0" + dec.toString(16)).substr(-2);
-}
-
-function generateCodeVerifier() {
-  const array = new Uint32Array(56 / 2);
-  window.crypto.getRandomValues(array);
-  return Array.from(array, dec2hex).join("");
-}
-
-function sha256(plain: string) {
-  // returns promise ArrayBuffer
-  const encoder = new TextEncoder();
-  const data = encoder.encode(plain);
-  return window.crypto.subtle.digest("SHA-256", data);
-}
-
-function base64urlencode(a: ArrayBuffer) {
-  let str = "";
-  const bytes = new Uint8Array(a);
-  const len = bytes.byteLength;
-  for (let i = 0; i < len; i++) {
-    str += String.fromCharCode(bytes[i]);
-  }
-  return window
-    .btoa(str)
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
-}
-
-// GENERATING CODE CHALLENGE
-async function generateCodeChallengeFromVerifier(v: string) {
-  const hashed = await sha256(v);
-  const base64encoded = base64urlencode(hashed);
-  return base64encoded;
-}
-
 const AuthFlowStarter = () => {
-  //
-  // The page that handles the response from the authorization server
-  // will need to read this value and compare it to the original one
-  // that was sent with an initial request. The two values must match.
-  //
-  const stateValue = useMemo(() => {
-    const newStateValue = window.crypto.randomUUID();
-    localStorage.setItem(LOCAL_STORAGE_AUTH_STATE, newStateValue);
-    return newStateValue;
-  }, []);
-
-  const verifier = useMemo(() => {
-    const newVerifier = generateCodeVerifier();
-    localStorage.setItem(LOCAL_STORAGE_AUTH_VERIFIER, newVerifier);
-    return newVerifier;
-  }, []);
-  const [codeChallenge, setCodeChallenge] = useState<string>();
+  // Redirect to the IdP's authorization endpoint when this is mounted.
   useEffect(() => {
-    (async () => {
-      const newCodeChallenge =
-        await generateCodeChallengeFromVerifier(verifier);
-      setCodeChallenge(newCodeChallenge);
-    })();
-  }, [setCodeChallenge]);
-
-  //
-  // Navigate when this is opened.
-  //
-  useEffect(() => {
-    if (!stateValue || !codeChallenge) {
-      return;
-    }
-
-    let url = `${authEndpoint}?client_id=${clientId}&scope=openid email profile&response_type=code&state=${stateValue}&code_challenge=${codeChallenge}&code_challenge_method=S256&redirect_uri=${
-      window.location.origin + window.location.pathname
-    }`;
-    if (!!audience) {
-      url += `&audience=${encodeURI(audience)}`;
-    }
-
-    window.location.href = url;
-  }, [stateValue, codeChallenge]);
+    redirectToPkceLogin();
+  }, []);
 
   return null;
 };

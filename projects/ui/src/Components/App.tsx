@@ -5,7 +5,9 @@ import { AppUtilsContextProvider } from "../Context/AppUtilsContext";
 import { defaultTheme, globalStyles } from "../Styles";
 import { mantineThemeOverride } from "../Styles/global-styles/mantine-theme";
 import PortalServerTypeChecker from "../Utility/PortalServerTypeChecker";
+import SessionExpiryHandler from "../Utility/SessionExpiryHandler";
 import UserChecker from "../Utility/UserChecker";
+import { SessionExpiredModal } from "./Common/SessionExpiredModal/SessionExpiredModal";
 import AppContent from "./AppContent";
 
 /**
@@ -21,12 +23,14 @@ export function App() {
         <AppContextProvider>
           <PortalServerTypeChecker />
           <UserChecker />
+          <SessionExpiryHandler />
 
           <MantineProvider
             withGlobalStyles
             withNormalizeCSS
             theme={mantineThemeOverride}
           >
+            <SessionExpiredModal />
             <AppContent />
           </MantineProvider>
         </AppContextProvider>

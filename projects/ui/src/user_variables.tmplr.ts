@@ -277,3 +277,18 @@ export const apiPageReload = templateString(
   import.meta.env.VITE_API_PAGE_RELOAD,
   "false"
 );
+
+/**
+ * How the portal reacts when it detects that the user's session has expired
+ * (e.g. the gateway redirected a background data request to a login page, or
+ * returned a 401). In all cases the stale auth state is cleared.
+ * - "anonymous" (default): silently fall back to the public/anonymous view.
+ * - "prompt-login": show a modal prompting the user to sign in again.
+ */
+export type SessionExpiredBehavior = "anonymous" | "prompt-login";
+export const sessionExpiredBehavior = templateString(
+  "{{ tmplr.sessionExpiredBehavior }}",
+  insertedEnvironmentVariables?.VITE_SESSION_EXPIRED_BEHAVIOR,
+  import.meta.env.VITE_SESSION_EXPIRED_BEHAVIOR,
+  "anonymous"
+).toLowerCase() as SessionExpiredBehavior;

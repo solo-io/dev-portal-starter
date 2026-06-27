@@ -2,6 +2,7 @@ import { useContext } from "react";
 import useSWR from "swr";
 import { AuthContext } from "../Context/AuthContext";
 import { ErrorMessageResponse } from "./api-types";
+import { SessionExpiredError, notifySessionExpired } from "./sessionExpiry";
 
 let _portalServerURL = insertedEnvironmentVariables?.VITE_PORTAL_SERVER_URL;
 if (_portalServerURL === undefined) {
@@ -25,6 +26,13 @@ async function doFetch(...args: Parameters<typeof fetch>) {
     url,
     {
       ...args[1],
+      // Don't let the browser silently follow a gateway's redirect to a login
+      // page. With "manual", a redirected request comes back as an opaque
+      // redirect (type "opaqueredirect", status 0) that we can detect, instead
+      // of the browser following it and resolving to login-page HTML (or
+      // failing CORS when the IdP is a different origin). See
+      // `isSessionExpiredResponse`.
+      redirect: "manual",
       headers: {
         ...args[1]?.headers,
         "Content-Type": "application/json",
@@ -35,12 +43,51 @@ async function doFetch(...args: Parameters<typeof fetch>) {
 }
 
 /**
+ * Detects whether a response indicates the user's (server-side) session is
+ * gone — i.e. the gateway redirected the request to a login page, or rejected
+ * it as unauthorized. This is kept intentionally conservative (auth-shaped
+ * signals only): a generic network failure rejects `fetch` with a `TypeError`
+ * and never reaches here, so a transient blip won't be treated as an expiry.
+ */
+export function isSessionExpiredResponse(res: Response | undefined) {
+  if (!res) {
+    return false;
+  }
+  // A redirect we asked the browser not to follow (see the "manual" redirect
+  // mode in `doFetch`). This is the primary signal for a gateway 302 -> login
+  // page, and works regardless of whether the login page is cross-origin.
+  if (res.type === "opaqueredirect" || res.redirected) {
+    return true;
+  }
+  // The server explicitly rejected the request as unauthorized.
+  if (res.status === 401) {
+    return true;
+  }
+  // A login page returned directly as HTML where we expected JSON. (Note: the
+  // portal API base URL may legitimately be a different origin, so we do NOT
+  // treat a cross-origin response URL on its own as an expiry — that signal is
+  // already covered by the opaque redirect above.)
+  const contentType = res.headers.get("content-type") ?? "";
+  if (res.ok && contentType.includes("text/html")) {
+    return true;
+  }
+  return false;
+}
+
+/**
  * This fetches and tries to parse the response into JSON.
  * It returns successfully if the response is in the 200-299 status code range
  * (even if there is no JSON in the response body).
  */
 export async function fetchJSON(...args: Parameters<typeof fetch>) {
   const res = await doFetch(...args);
+  // If the session has expired, the gateway redirects the request to a login
+  // page (or rejects it as unauthorized). Surface this as a distinct error and
+  // notify subscribers (AuthContext) rather than returning unusable login HTML.
+  if (isSessionExpiredResponse(res)) {
+    notifySessionExpired();
+    throw new SessionExpiredError();
+  }
   let errMessage = "";
   let resJSON: any;
   try {

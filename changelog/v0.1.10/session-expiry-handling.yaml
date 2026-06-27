@@ -1,0 +1,11 @@
+changelog:
+  - type: NEW_FEATURE
+    description: >-
+      Adds detection and handling for expired sessions. When the gateway answers
+      a background data request (or the boot-time identity request) with a
+      redirect to a login page or a 401, the portal now clears the stale auth
+      state and resolves to a consistent view instead of leaving broken authed
+      UI on screen. A new optional env var, VITE_SESSION_EXPIRED_BEHAVIOR,
+      controls the response: "anonymous" (the default) silently falls back to
+      the public view, and "prompt-login" shows a modal prompting the user to
+      sign in again.

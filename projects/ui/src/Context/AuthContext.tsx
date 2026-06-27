@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { mutate } from "swr";
 import { AccessTokensResponse } from "../Apis/api-types";
 import { useGetCurrentUser } from "../Apis/gg_hooks";
+import { sessionExpiredBehavior } from "../user_variables.tmplr";
 import { doAccessTokenRequest } from "../Utility/accessTokenRequest";
 import { jwtDecode, parseJwt } from "../Utility/utility";
 
@@ -22,6 +23,12 @@ interface IAuthContext extends AuthProviderProps {
   tokensResponse: AccessTokensResponse | undefined;
   onLogin: (newTokensResponse: AccessTokensResponse) => void;
   onLogout: () => void;
+  // True when an expired session was detected and the deployment is configured
+  // to prompt the user to sign in again (see `sessionExpiredBehavior`).
+  sessionExpired: boolean;
+  // Clears stale auth state and applies the configured `sessionExpiredBehavior`.
+  onSessionExpired: () => void;
+  dismissSessionExpiredPrompt: () => void;
 }
 
 const LOCAL_STORAGE_TOKENS_KEY = "gloo-platform-portal-tokens";
@@ -185,6 +192,33 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
     toast.success("Logged out!");
   };
 
+  //
+  // Session expiry
+  //
+  const [sessionExpired, setSessionExpired] = useState(false);
+
+  /**
+   * Reacts to a detected expired session (see `notifySessionExpired`).
+   * Clears any locally-stored session (PKCE) and evicts the cached `/me`
+   * response so `useIsLoggedIn` re-derives to anonymous instead of leaving
+   * broken authed UI on screen. Then applies the configured behavior.
+   */
+  const onSessionExpired = () => {
+    setTokensResponse(undefined);
+    // For OIDC-auth-code (BFF) deployments there are no local tokens, so the
+    // line above is a no-op; clear the swr cache directly to drop the stale
+    // `/me` response (and any other authed data) and revalidate.
+    mutate(() => true, undefined, { revalidate: true });
+    if (sessionExpiredBehavior === "prompt-login") {
+      setSessionExpired(true);
+    } else {
+      // Stable id so a burst of failing requests doesn't stack toasts.
+      toast("Your session has expired.", { id: "session-expired" });
+    }
+  };
+
+  const dismissSessionExpiredPrompt = () => setSessionExpired(false);
+
   return (
     <AuthContext.Provider
       value={{
@@ -193,6 +227,9 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
         tokensResponse,
         onLogin,
         onLogout,
+        sessionExpired,
+        onSessionExpired,
+        dismissSessionExpiredPrompt,
       }}
     >
       {props.children}
