@@ -32,8 +32,11 @@ RUN START_SERVER=false sh ./scripts/startup.sh
 
 FROM node:22.22.2-bookworm-slim AS serve_stage
 
-# Update npm to pull in patched bundled deps (picomatch, brace-expansion, ip-address CVEs).
-RUN npm install -g npm@latest && npm cache clean --force
+# Remove npm/npx from the runtime image. The server is started with `node ./bin/www`,
+# so npm is never invoked at runtime; deleting it eliminates its bundled-dependency CVEs
+# (picomatch, brace-expansion, ip-address) entirely.
+# See docs/runtime-npm-removal.md for the full rationale.
+RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
 
 ENV VITE_PORTAL_SERVER_URL=$VITE_PORTAL_SERVER_URL \
     VITE_CLIENT_ID=$VITE_CLIENT_ID \

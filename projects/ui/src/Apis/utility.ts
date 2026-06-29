@@ -2,7 +2,11 @@ import { useContext } from "react";
 import useSWR from "swr";
 import { AuthContext } from "../Context/AuthContext";
 import { ErrorMessageResponse } from "./api-types";
-import { SessionExpiredError, notifySessionExpired } from "./sessionExpiry";
+import {
+  SessionExpiredError,
+  isAnonymousFallbackEnabled,
+  notifySessionExpired,
+} from "./sessionExpiry";
 
 let _portalServerURL = insertedEnvironmentVariables?.VITE_PORTAL_SERVER_URL;
 if (_portalServerURL === undefined) {
@@ -33,6 +37,11 @@ async function doFetch(...args: Parameters<typeof fetch>) {
       // failing CORS when the IdP is a different origin). See
       // `isSessionExpiredResponse`.
       redirect: "manual",
+      // After falling back to anonymous browsing, omit the dead session cookie
+      // so the gateway serves public content instead of redirecting to login.
+      ...(isAnonymousFallbackEnabled()
+        ? { credentials: "omit" as RequestCredentials }
+        : {}),
       headers: {
         ...args[1]?.headers,
         "Content-Type": "application/json",

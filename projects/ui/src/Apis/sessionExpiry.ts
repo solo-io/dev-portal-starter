@@ -20,6 +20,22 @@ export class SessionExpiredError extends Error {
   }
 }
 
+/**
+ * Once a session is known to be dead and the deployment falls back to anonymous
+ * browsing, requests are re-issued without the (now invalid) session cookie so
+ * the gateway treats them as anonymous and returns public content, instead of
+ * redirecting them to login. The stale cookie itself can't be removed from here
+ * if it is httpOnly, but omitting credentials has the same effect on the
+ * request. This stays on until the next full page load (e.g. after sign-in).
+ */
+let anonymousFallback = false;
+export function enableAnonymousFallback() {
+  anonymousFallback = true;
+}
+export function isAnonymousFallbackEnabled() {
+  return anonymousFallback;
+}
+
 type Listener = () => void;
 const listeners = new Set<Listener>();
 
@@ -27,6 +43,10 @@ const listeners = new Set<Listener>();
 // Debounce so subscribers only react a single time per burst.
 const NOTIFY_DEBOUNCE_MS = 500;
 let lastNotified = 0;
+// If a notification fires before any subscriber has attached (e.g. the first
+// request resolves before the handler's effect runs), latch it and deliver to
+// the next subscriber, so the event is never lost.
+let pendingNotification = false;
 
 /** Notifies subscribers that a request indicated the session has expired. */
 export function notifySessionExpired() {
@@ -35,6 +55,10 @@ export function notifySessionExpired() {
     return;
   }
   lastNotified = now;
+  if (listeners.size === 0) {
+    pendingNotification = true;
+    return;
+  }
   listeners.forEach((listener) => listener());
 }
 
@@ -44,6 +68,10 @@ export function notifySessionExpired() {
  */
 export function subscribeSessionExpired(listener: Listener) {
   listeners.add(listener);
+  if (pendingNotification) {
+    pendingNotification = false;
+    listener();
+  }
   return () => {
     listeners.delete(listener);
   };

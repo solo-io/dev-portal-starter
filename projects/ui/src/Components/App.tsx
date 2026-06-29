@@ -7,7 +7,6 @@ import { mantineThemeOverride } from "../Styles/global-styles/mantine-theme";
 import PortalServerTypeChecker from "../Utility/PortalServerTypeChecker";
 import SessionExpiryHandler from "../Utility/SessionExpiryHandler";
 import UserChecker from "../Utility/UserChecker";
-import { SessionExpiredModal } from "./Common/SessionExpiredModal/SessionExpiredModal";
 import AppContent from "./AppContent";
 
 /**
@@ -30,7 +29,6 @@ export function App() {
             withNormalizeCSS
             theme={mantineThemeOverride}
           >
-            <SessionExpiredModal />
             <AppContent />
           </MantineProvider>
         </AppContextProvider>
