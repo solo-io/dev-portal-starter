@@ -9,6 +9,7 @@ import {
   oidcAuthCodeConfigCallbackPath,
   oidcAuthCodeConfigLogoutPath,
 } from "../../../user_variables.tmplr";
+import { capturePostLoginLocation } from "../../../Utility/postLoginRedirect";
 import { useInArea } from "../../../Utility/utility";
 import { StyledUserDropdown } from "../BasicAuth/HeaderSectionLoggedIn";
 
@@ -29,7 +30,10 @@ export function OidcAuthCodeHeaderSection() {
 
   return !isLoggedIn ? (
     <div className="userLoginArea loggedOut">
-      <a href={oidcAuthCodeConfigCallbackPath}>
+      <a
+        href={oidcAuthCodeConfigCallbackPath}
+        onClick={() => capturePostLoginLocation()}
+      >
         <div className="styledButton">LOGIN</div>
       </a>
     </div>

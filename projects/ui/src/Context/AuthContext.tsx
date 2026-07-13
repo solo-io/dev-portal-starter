@@ -6,6 +6,7 @@ import { mutate } from "swr";
 import { AccessTokensResponse } from "../Apis/api-types";
 import { useGetCurrentUser } from "../Apis/gg_hooks";
 import { doAccessTokenRequest } from "../Utility/accessTokenRequest";
+import { consumePostLoginLocation } from "../Utility/postLoginRedirect";
 import { jwtDecode, parseJwt } from "../Utility/utility";
 
 //
@@ -191,7 +192,10 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
   /**  Saves access tokens on login. */
   const onLogin = (newTokensResponse: AccessTokensResponse) => {
     setTokensResponse(newTokensResponse);
-    navigate("/");
+    // Return to the route the user started login from (PKCE lands back here with
+    // the auth code), falling back to home. `replace` drops the `?code=` URL
+    // from history. See postLoginRedirect.
+    navigate(consumePostLoginLocation() ?? "/", { replace: true });
   };
 
   /**  Removes access tokens on logout and clears swr cache. */

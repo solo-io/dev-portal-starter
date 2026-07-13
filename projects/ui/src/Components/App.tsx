@@ -5,6 +5,7 @@ import { AppUtilsContextProvider } from "../Context/AppUtilsContext";
 import { defaultTheme, globalStyles } from "../Styles";
 import { mantineThemeOverride } from "../Styles/global-styles/mantine-theme";
 import PortalServerTypeChecker from "../Utility/PortalServerTypeChecker";
+import PostLoginRedirectHandler from "../Utility/PostLoginRedirectHandler";
 import SessionExpiryHandler from "../Utility/SessionExpiryHandler";
 import UserChecker from "../Utility/UserChecker";
 import AppContent from "./AppContent";
@@ -23,6 +24,7 @@ export function App() {
           <PortalServerTypeChecker />
           <UserChecker />
           <SessionExpiryHandler />
+          <PostLoginRedirectHandler />
 
           <MantineProvider
             withGlobalStyles

@@ -19,6 +19,7 @@ import {
   clientId,
   oidcAuthCodeConfigCallbackPath,
 } from "../user_variables.tmplr";
+import { capturePostLoginLocation } from "./postLoginRedirect";
 
 // From https://stackoverflow.com/a/63336562
 function dec2hex(dec: number) {
@@ -58,6 +59,8 @@ async function generateCodeChallengeFromVerifier(v: string) {
 
 /** Starts the PKCE authorization-code flow by redirecting to the IdP. */
 export async function redirectToPkceLogin() {
+  // Remember where to return after the IdP round trip (see postLoginRedirect).
+  capturePostLoginLocation();
   const stateValue = window.crypto.randomUUID();
   localStorage.setItem(LOCAL_STORAGE_AUTH_STATE, stateValue);
   const verifier = generateCodeVerifier();
@@ -75,6 +78,9 @@ export async function redirectToPkceLogin() {
 /** Starts sign-in using whichever auth flow this deployment is configured for. */
 export async function startLogin() {
   if (!!appliedOidcAuthCodeConfig) {
+    // Remember where to return; the gateway lands us back on "/" after auth, and
+    // `PostLoginRedirectHandler` restores this on boot.
+    capturePostLoginLocation();
     window.location.href = oidcAuthCodeConfigCallbackPath;
     return;
   }
