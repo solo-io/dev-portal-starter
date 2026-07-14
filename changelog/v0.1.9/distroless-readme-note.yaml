@@ -1,0 +1,4 @@
+changelog:
+  - type: NON_USER_FACING
+    description: >
+      Documents the opt-in Dockerfile.distroless build in the README.
