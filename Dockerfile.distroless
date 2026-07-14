@@ -1,0 +1,47 @@
+###############
+#             #
+# Build Stage #
+#             #
+###############
+#
+# Identical to the default Dockerfile's build stage. Keep the two in sync.
+
+FROM node:22.22.2 AS build_stage
+
+# Install global dependencies.
+RUN apt-get update && apt-get install -y build-essential
+
+# Copy all project files.
+WORKDIR /app
+COPY ./projects projects
+COPY ./scripts scripts
+
+# Run the startup script, without starting the server (installs deps, builds
+# the UI, moves the build into the server project, injects the EJS env view).
+RUN START_SERVER=false sh ./scripts/startup.sh
+
+###############
+#             #
+# Serve Stage #
+#             #
+###############
+#
+# Opt-in minimal serve base. Google distroless Node 22 has no shell and no
+# package manager, which shrinks the OS package surface to near-zero
+# HIGH/CRITICAL CVEs. Because there is no npm here, this variant also omits the
+# `npm install -g npm@latest` self-update step used by the default slim base
+# (the runtime deps are already pinned via projects/ui/package.json resolutions).
+
+FROM gcr.io/distroless/nodejs22-debian12:nonroot AS serve_stage
+
+# Copy the server files (this includes the built UI).
+WORKDIR /app
+COPY --from=build_stage /app/projects/server .
+
+EXPOSE 4000
+
+# The distroless image's entrypoint is already `node`, so we exec the server
+# directly. The server reads its VITE_* configuration from process.env at
+# runtime (injected by your deployment), so no shell-form env re-export is
+# needed here; behavior matches the default Dockerfile's shell-form ENTRYPOINT.
+CMD ["/app/bin/www"]
