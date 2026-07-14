@@ -1,0 +1,6 @@
+changelog:
+  - type: NON_USER_FACING
+    description: >
+      Adds an opt-in Dockerfile.distroless that builds the serve stage on a
+      minimal Google distroless Node base, for CVE-gated image pipelines. The
+      default Dockerfile is unchanged.
