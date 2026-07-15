@@ -1,0 +1,17 @@
+changelog:
+  - type: NON_USER_FACING
+    description: >
+      Switches the default Dockerfile serve stage to a minimal Google distroless
+      Node base. This shrinks the OS package CVE surface to near-zero
+      HIGH/CRITICAL and removes npm from the runtime image.
+  - type: NON_USER_FACING
+    description: >
+      Documents in the README that the default image serve stage is built on a
+      distroless Node base, including the no-shell trade-off and a Chainguard
+      option for a zero-CVE base.
+  - type: NON_USER_FACING
+    description: >
+      The e2e test now builds and runs the production Docker image and drives it
+      (catalog, then the Redoc and Swagger OpenAPI views) instead of the Vite dev
+      server. Also adds the required openapi field to the mock specs so the
+      OpenAPI renderers load.
