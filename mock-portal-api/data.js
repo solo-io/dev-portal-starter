@@ -3,6 +3,7 @@
 // -------------------------------------------------------
 
 const openApiSpec = {
+  openapi: "3.0.0",
   info: { title: "Tracks REST API", version: "1.0.0" },
   servers: [{ url: "http://localhost:8080" }],
   paths: {
@@ -52,6 +53,7 @@ const openApiSpec = {
 };
 
 const ordersSpec = {
+  openapi: "3.0.0",
   info: { title: "Orders API", version: "1.0.0" },
   servers: [{ url: "http://localhost:31080" }],
   paths: {
@@ -99,6 +101,7 @@ const ordersSpec = {
 };
 
 const petStoreSpec = {
+  openapi: "3.0.0",
   info: { title: "Petstore API", version: "2.0.0" },
   servers: [{ url: "http://localhost:31080" }],
   paths: {

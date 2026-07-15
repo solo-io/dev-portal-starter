@@ -26,10 +26,8 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
 
-      - name: Install UI dependencies
-        working-directory: projects/ui
-        run: yarn install --immutable
-
+      # The UI is built inside the Docker image (see e2e/setup.ts), so the UI
+      # deps do not need to be installed on the host runner.
       - name: Install mock API dependencies
         working-directory: mock-portal-api
         run: yarn install --immutable

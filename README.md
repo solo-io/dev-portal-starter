@@ -55,6 +55,12 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
 
   - If running this app in the mesh with an `ExtAuthPolicy` that has an "oidcAuthorizationCode" config, you will need to update the image name and environment variables in your portal frontend deployment. See the [Environment Variables if using an oidcAuthorizationCode ExtAuthPolicy](#environment-variables-if-using-an-oidcauthorizationcode-extauthpolicy) of this Readme for more details.
 
+### About the container image
+
+The `Dockerfile` builds the serve stage on a [Google distroless](https://github.com/GoogleContainerTools/distroless) Node base. This keeps the OS package surface small (near-zero HIGH/CRITICAL OS CVEs), which matters for CVE-gated image pipelines — registries that reject images with HIGH/CRITICAL findings. The image is functionally identical to a slim-based build; the trade-off is that the running container has no shell, so you cannot `docker exec` into it with a shell to debug.
+
+If you need an even smaller CVE surface, a Chainguard `cgr.dev/chainguard/node` serve base reaches zero OS CVEs; note that pinning a Chainguard tag requires a Chainguard subscription.
+
 ## UI Development
 
 **Prerequisites for Local Development**:
