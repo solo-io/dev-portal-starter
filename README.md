@@ -61,6 +61,12 @@ The portal is decoupled: the Solo-supported backend (`portal-web-server`, plus t
 
   - If you intend to run this app in the mesh behind an `oidcAuthorizationCode` config, you will need to update the image name and environment variables in your portal frontend deployment. See [Environment Variables if using an "oidcAuthorizationCode" AuthConfig](#environment-variables-if-using-an-oidcauthorizationcode-authconfig) below, and the [Secure login guide](https://docs.solo.io/kgateway/2.2.x/portal/frontend-setup/login/) for how the gateway wires it.
 
+### About the container image
+
+The `Dockerfile` builds the serve stage on a [Google distroless](https://github.com/GoogleContainerTools/distroless) Node base. This keeps the OS package surface small (near-zero HIGH/CRITICAL OS CVEs), which matters for CVE-gated image pipelines — registries that reject images with HIGH/CRITICAL findings. The image is functionally identical to a slim-based build; the trade-off is that the running container has no shell, so you cannot `docker exec` into it with a shell to debug.
+
+If you need an even smaller CVE surface, a Chainguard `cgr.dev/chainguard/node` serve base reaches zero OS CVEs; note that pinning a Chainguard tag requires a Chainguard subscription.
+
 ## UI Development
 
 **Prerequisites for Local Development**:

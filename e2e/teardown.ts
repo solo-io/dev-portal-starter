@@ -1,3 +1,4 @@
+import { execSync } from 'child_process';
 import { readFileSync, unlinkSync, existsSync } from 'fs';
 import * as path from 'path';
 
@@ -15,21 +16,22 @@ function killProcessTree(pid: number) {
 export default async function globalTeardown() {
   console.log('\n=== E2E Teardown: Stopping services ===\n');
 
-  // Kill spawned processes
   if (existsSync(PID_FILE)) {
     try {
-      const pids = JSON.parse(readFileSync(PID_FILE, 'utf-8'));
-      if (pids.mockApi) {
-        console.log(`Stopping Mock API (PID ${pids.mockApi})...`);
-        killProcessTree(pids.mockApi);
+      const state = JSON.parse(readFileSync(PID_FILE, 'utf-8'));
+      if (state.container) {
+        console.log(`Removing container ${state.container}...`);
+        execSync(`docker rm -f ${state.container} 2>/dev/null || true`, {
+          stdio: 'ignore',
+        });
       }
-      if (pids.ui) {
-        console.log(`Stopping UI dev server (PID ${pids.ui})...`);
-        killProcessTree(pids.ui);
+      if (state.mockApi) {
+        console.log(`Stopping Mock API (PID ${state.mockApi})...`);
+        killProcessTree(state.mockApi);
       }
       unlinkSync(PID_FILE);
     } catch (e) {
-      console.warn('Warning cleaning up PIDs:', e);
+      console.warn('Warning cleaning up:', e);
     }
   }
 
