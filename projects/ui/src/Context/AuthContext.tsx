@@ -27,9 +27,12 @@ interface IAuthContext extends AuthProviderProps {
   // response) so `useIsLoggedIn` re-derives to anonymous. Used when an expired
   // session is detected (see `SessionExpiryHandler`).
   clearSession: () => void;
+  // Attempts a silent access-token refresh using the locally stored
+  // refresh_token (PKCE deployments only). Resolves true on success.
+  tryRefreshTokens: () => Promise<boolean>;
 }
 
-const LOCAL_STORAGE_TOKENS_KEY = "gloo-platform-portal-tokens";
+export const LOCAL_STORAGE_TOKENS_KEY = "gloo-platform-portal-tokens";
 export const LOCAL_STORAGE_AUTH_VERIFIER = "gloo-platform-portal-auth-verifier";
 export const LOCAL_STORAGE_AUTH_STATE = "gloo-platform-portal-auth-state";
 
@@ -189,6 +192,37 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
     mutate(() => true, undefined, { revalidate: true });
   };
 
+  /**
+   * Attempts a silent token refresh (PKCE deployments only — requires a
+   * locally stored refresh_token; in OIDC-auth-code/BFF deployments there are
+   * no local tokens and this resolves false immediately). Used when a request
+   * is rejected as unauthorized: the access token may simply have lapsed (e.g.
+   * the tab slept past the refresh timer) while the refresh token is still
+   * valid, which shouldn't end the session.
+   */
+  const tryRefreshTokens = async () => {
+    const refreshToken = tokensResponse?.refresh_token;
+    if (!refreshToken) {
+      return false;
+    }
+    try {
+      const res = await doAccessTokenRequest(
+        { refresh_token: refreshToken },
+        "refresh_token"
+      );
+      if (!res?.access_token) {
+        return false;
+      }
+      setTokensResponse(res);
+      // Re-run the queries that failed with the lapsed token, keeping any
+      // cached data in place while they revalidate.
+      mutate(() => true);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
   /**  Saves access tokens on login. */
   const onLogin = (newTokensResponse: AccessTokensResponse) => {
     setTokensResponse(newTokensResponse);
@@ -213,6 +247,7 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
         onLogin,
         onLogout,
         clearSession,
+        tryRefreshTokens,
       }}
     >
       {props.children}
@@ -220,11 +255,16 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
   );
 };
 
-function useIsOidcAuthLoggedIn() {
+/**
+ * True when the current identity request (`/me`) has succeeded — i.e. the
+ * session is verified end-to-end against the gateway, not just present
+ * client-side (contrast with `useIsLoggedIn`, which is also true on mere
+ * token presence before any request has been validated).
+ */
+export function useIsSessionVerified() {
   di(useGetCurrentUser);
   const { data: user } = useGetCurrentUser();
-  const isOidcAuthLoggedIn = !!user?.email || !!user?.username || !!user?.name;
-  return isOidcAuthLoggedIn;
+  return !!user?.email || !!user?.username || !!user?.name;
 }
 
 /**
@@ -233,7 +273,7 @@ function useIsOidcAuthLoggedIn() {
 export function useIsLoggedIn() {
   const { tokensResponse } = useContext(AuthContext);
   const isAccessTokenAuthLoggedIn = !!tokensResponse?.access_token;
-  const isOidcAuthLoggedIn = useIsOidcAuthLoggedIn();
+  const isOidcAuthLoggedIn = useIsSessionVerified();
   return isAccessTokenAuthLoggedIn || isOidcAuthLoggedIn;
 }
 

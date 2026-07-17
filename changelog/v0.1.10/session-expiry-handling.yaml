@@ -8,7 +8,11 @@ changelog:
       VITE_SESSION_EXPIRED_BEHAVIOR, controls the response: "anonymous" (the
       default) re-issues requests without the dead session cookie so public
       content is shown, and "prompt-login" redirects the user to the identity
-      provider to sign in again. Signing in now returns the user to the page
+      provider to sign in again (with a loop guard that falls back to anonymous
+      browsing if the re-login round trip does not produce a working session).
+      In PKCE deployments, a lapsed access token is first retried with a silent
+      token refresh, so a sleeping tab no longer gets logged out while its
+      refresh token is still valid. Signing in now returns the user to the page
       they were on beforehand (for both the LOGIN button and the prompt-login
       redirect, in both the PKCE and OIDC-auth-code flows), rather than always
       landing on the home page.

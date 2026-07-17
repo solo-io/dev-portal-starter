@@ -1,9 +1,10 @@
 import { useContext } from "react";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { AuthContext } from "../Context/AuthContext";
 import { ErrorMessageResponse } from "./api-types";
 import {
   SessionExpiredError,
+  SessionExpiryReason,
   isAnonymousFallbackEnabled,
   notifySessionExpired,
 } from "./sessionExpiry";
@@ -35,7 +36,7 @@ async function doFetch(...args: Parameters<typeof fetch>) {
       // redirect (type "opaqueredirect", status 0) that we can detect, instead
       // of the browser following it and resolving to login-page HTML (or
       // failing CORS when the IdP is a different origin). See
-      // `isSessionExpiredResponse`.
+      // `getSessionExpiredReason`.
       redirect: "manual",
       // After falling back to anonymous browsing, omit the dead session cookie
       // so the gateway serves public content instead of redirecting to login.
@@ -54,33 +55,39 @@ async function doFetch(...args: Parameters<typeof fetch>) {
 /**
  * Detects whether a response indicates the user's (server-side) session is
  * gone — i.e. the gateway redirected the request to a login page, or rejected
- * it as unauthorized. This is kept intentionally conservative (auth-shaped
- * signals only): a generic network failure rejects `fetch` with a `TypeError`
- * and never reaches here, so a transient blip won't be treated as an expiry.
+ * it as unauthorized — and if so, which of those it was (see
+ * `SessionExpiryReason` for why the distinction matters). This is kept
+ * intentionally conservative (auth-shaped signals only): a generic network
+ * failure rejects `fetch` with a `TypeError` and never reaches here, so a
+ * transient blip won't be treated as an expiry.
  */
-export function isSessionExpiredResponse(res: Response | undefined) {
+export function getSessionExpiredReason(
+  res: Response | undefined
+): SessionExpiryReason | undefined {
   if (!res) {
-    return false;
+    return undefined;
   }
   // A redirect we asked the browser not to follow (see the "manual" redirect
-  // mode in `doFetch`). This is the primary signal for a gateway 302 -> login
-  // page, and works regardless of whether the login page is cross-origin.
-  if (res.type === "opaqueredirect" || res.redirected) {
-    return true;
+  // mode in `doFetch` — which also means `res.redirected` can never be true
+  // here). This is the primary signal for a gateway 302 -> login page, and
+  // works regardless of whether the login page is cross-origin.
+  if (res.type === "opaqueredirect") {
+    return "redirect";
   }
   // The server explicitly rejected the request as unauthorized.
   if (res.status === 401) {
-    return true;
+    return "unauthorized";
   }
-  // A login page returned directly as HTML where we expected JSON. (Note: the
-  // portal API base URL may legitimately be a different origin, so we do NOT
-  // treat a cross-origin response URL on its own as an expiry — that signal is
-  // already covered by the opaque redirect above.)
+  // A login page returned directly as HTML where we expected JSON — treated
+  // like a redirect, since it can only come from an auth layer swapping in a
+  // login page. (Note: the portal API base URL may legitimately be a different
+  // origin, so we do NOT treat a cross-origin response URL on its own as an
+  // expiry — that signal is already covered by the opaque redirect above.)
   const contentType = res.headers.get("content-type") ?? "";
   if (res.ok && contentType.includes("text/html")) {
-    return true;
+    return "redirect";
   }
-  return false;
+  return undefined;
 }
 
 /**
@@ -92,9 +99,11 @@ export async function fetchJSON(...args: Parameters<typeof fetch>) {
   const res = await doFetch(...args);
   // If the session has expired, the gateway redirects the request to a login
   // page (or rejects it as unauthorized). Surface this as a distinct error and
-  // notify subscribers (AuthContext) rather than returning unusable login HTML.
-  if (isSessionExpiredResponse(res)) {
-    notifySessionExpired();
+  // notify subscribers (SessionExpiryHandler) rather than returning unusable
+  // login HTML.
+  const expiryReason = getSessionExpiredReason(res);
+  if (expiryReason !== undefined) {
+    notifySessionExpired(expiryReason);
     throw new SessionExpiredError();
   }
   let errMessage = "";
@@ -129,6 +138,7 @@ export const useSwrWithAuth = <T>(
   config?: Parameters<typeof useSWR<T>>[2]
 ) => {
   const { latestAccessToken } = useContext(AuthContext);
+  const { onErrorRetry: defaultOnErrorRetry } = useSWRConfig();
 
   const authHeaders = {} as any;
   if (!!latestAccessToken) {
@@ -150,7 +160,18 @@ export const useSwrWithAuth = <T>(
         },
       });
     },
-    { ...(config ?? {}) }
+    {
+      // Retrying can't fix a dead session, and would re-fire the failing
+      // request on SWR's backoff forever; SessionExpiryHandler owns the
+      // recovery. Other errors keep SWR's default retry behavior.
+      onErrorRetry: (error, key, cfg, revalidate, revalidateOpts) => {
+        if (error instanceof SessionExpiredError) {
+          return;
+        }
+        defaultOnErrorRetry(error, key, cfg as any, revalidate, revalidateOpts);
+      },
+      ...(config ?? {}),
+    }
   );
 };
 
