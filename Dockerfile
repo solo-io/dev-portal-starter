@@ -30,64 +30,22 @@ RUN START_SERVER=false sh ./scripts/startup.sh
 #             #
 ###############
 
-FROM node:22.22.2-bookworm-slim AS serve_stage
+# Minimal serve base. Google distroless Node 22 has no shell and no package
+# manager, which shrinks the OS package surface to near-zero HIGH/CRITICAL CVEs
+# and lets CVE-gated pipelines promote the image. Because there is no npm here,
+# this stage also drops the `npm install -g npm@latest` self-update step the
+# slim base used (its runtime deps are already pinned via the build stage).
+FROM gcr.io/distroless/nodejs22-debian12:nonroot AS serve_stage
 
-# Remove npm/npx from the runtime image. The server is started with `node ./bin/www`,
-# so npm is never invoked at runtime; deleting it eliminates its bundled-dependency CVEs
-# (picomatch, brace-expansion, ip-address) entirely.
-# See docs/runtime-npm-removal.md for the full rationale.
-RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
-
-ENV VITE_PORTAL_SERVER_URL=$VITE_PORTAL_SERVER_URL \
-    VITE_CLIENT_ID=$VITE_CLIENT_ID \
-    VITE_TOKEN_ENDPOINT=$VITE_TOKEN_ENDPOINT \
-    VITE_AUTH_ENDPOINT=$VITE_AUTH_ENDPOINT \
-    VITE_LOGOUT_ENDPOINT=$VITE_LOGOUT_ENDPOINT \
-    VITE_APPLIED_OIDC_AUTH_CODE_CONFIG=$VITE_APPLIED_OIDC_AUTH_CODE_CONFIG \
-    VITE_OIDC_AUTH_CODE_CONFIG_CALLBACK_PATH=$VITE_OIDC_AUTH_CODE_CONFIG_CALLBACK_PATH \
-    VITE_OIDC_AUTH_CODE_CONFIG_LOGOUT_PATH=$VITE_OIDC_AUTH_CODE_CONFIG_LOGOUT_PATH \
-    VITE_SWAGGER_CONFIG_URL=$VITE_SWAGGER_CONFIG_URL \
-    VITE_AUDIENCE=$VITE_AUDIENCE \
-    VITE_HOME_IMAGE_URL=$VITE_HOME_IMAGE_URL \
-    VITE_BANNER_IMAGE_URL=$VITE_BANNER_IMAGE_URL \
-    VITE_LOGO_IMAGE_URL=$VITE_LOGO_IMAGE_URL \
-    VITE_COMPANY_NAME=$VITE_COMPANY_NAME \
-    VITE_CUSTOM_PAGES=$VITE_CUSTOM_PAGES \
-    VITE_SWAGGER_PREFILL_API_KEY=$VITE_SWAGGER_PREFILL_API_KEY \
-    VITE_SWAGGER_PREFILL_OAUTH=$VITE_SWAGGER_PREFILL_OAUTH \
-    VITE_SWAGGER_PREFILL_BASIC=$VITE_SWAGGER_PREFILL_BASIC \
-    VITE_DEFAULT_APP_AUTH=$VITE_DEFAULT_APP_AUTH \
-    VITE_API_PAGE_RELOAD=$VITE_API_PAGE_RELOAD \
-    VITE_SESSION_EXPIRED_BEHAVIOR=$VITE_SESSION_EXPIRED_BEHAVIOR
-
-# Copy the server files, (this includes the UI build).
+# Copy the server files (this includes the built UI).
 WORKDIR /app
 COPY --from=build_stage /app/projects/server .
 
-# Pass through the environment variables, and then start the server.
-# These variables will change when the image is deployed.
-# This needs to be `node ./bin/www` instead of `yarn start because
-# running yarn causes a yarn cache file to change, which doesn't work
-# in read-only environments.
-ENTRYPOINT VITE_PORTAL_SERVER_URL=$VITE_PORTAL_SERVER_URL \
-    VITE_CLIENT_ID=$VITE_CLIENT_ID \
-    VITE_TOKEN_ENDPOINT=$VITE_TOKEN_ENDPOINT \
-    VITE_AUTH_ENDPOINT=$VITE_AUTH_ENDPOINT \
-    VITE_LOGOUT_ENDPOINT=$VITE_LOGOUT_ENDPOINT \
-    VITE_APPLIED_OIDC_AUTH_CODE_CONFIG=$VITE_APPLIED_OIDC_AUTH_CODE_CONFIG \
-    VITE_OIDC_AUTH_CODE_CONFIG_CALLBACK_PATH=$VITE_OIDC_AUTH_CODE_CONFIG_CALLBACK_PATH \
-    VITE_OIDC_AUTH_CODE_CONFIG_LOGOUT_PATH=$VITE_OIDC_AUTH_CODE_CONFIG_LOGOUT_PATH \
-    VITE_SWAGGER_CONFIG_URL=$VITE_SWAGGER_CONFIG_URL \
-    VITE_AUDIENCE=$VITE_AUDIENCE \
-    VITE_HOME_IMAGE_URL=$VITE_HOME_IMAGE_URL \
-    VITE_BANNER_IMAGE_URL=$VITE_BANNER_IMAGE_URL \
-    VITE_LOGO_IMAGE_URL=$VITE_LOGO_IMAGE_URL \
-    VITE_COMPANY_NAME=$VITE_COMPANY_NAME \
-    VITE_CUSTOM_PAGES=$VITE_CUSTOM_PAGES \
-    VITE_SWAGGER_PREFILL_API_KEY=$VITE_SWAGGER_PREFILL_API_KEY \
-    VITE_SWAGGER_PREFILL_OAUTH=$VITE_SWAGGER_PREFILL_OAUTH \
-    VITE_SWAGGER_PREFILL_BASIC=$VITE_SWAGGER_PREFILL_BASIC \
-    VITE_DEFAULT_APP_AUTH=$VITE_DEFAULT_APP_AUTH \
-    VITE_API_PAGE_RELOAD=$VITE_API_PAGE_RELOAD \
-    VITE_SESSION_EXPIRED_BEHAVIOR=$VITE_SESSION_EXPIRED_BEHAVIOR \
-    node ./bin/www
+EXPOSE 4000
+
+# The distroless image's entrypoint is already `node`, so we exec the server
+# directly. The server reads its VITE_* configuration from process.env at
+# runtime (injected by your deployment), so no shell-form env re-export is
+# needed. We run `node ./bin/www` rather than `yarn start` because running yarn
+# mutates a cache file, which fails in read-only environments.
+CMD ["/app/bin/www"]
