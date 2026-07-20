@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR from "swr";
 import { AuthContext } from "../Context/AuthContext";
 import { ErrorMessageResponse } from "./api-types";
 import {
@@ -61,7 +61,7 @@ async function doFetch(...args: Parameters<typeof fetch>) {
  * failure rejects `fetch` with a `TypeError` and never reaches here, so a
  * transient blip won't be treated as an expiry.
  */
-export function getSessionExpiredReason(
+function getSessionExpiredReason(
   res: Response | undefined
 ): SessionExpiryReason | undefined {
   if (!res) {
@@ -138,7 +138,6 @@ export const useSwrWithAuth = <T>(
   config?: Parameters<typeof useSWR<T>>[2]
 ) => {
   const { latestAccessToken } = useContext(AuthContext);
-  const { onErrorRetry: defaultOnErrorRetry } = useSWRConfig();
 
   const authHeaders = {} as any;
   if (!!latestAccessToken) {
@@ -160,18 +159,7 @@ export const useSwrWithAuth = <T>(
         },
       });
     },
-    {
-      // Retrying can't fix a dead session, and would re-fire the failing
-      // request on SWR's backoff forever; SessionExpiryHandler owns the
-      // recovery. Other errors keep SWR's default retry behavior.
-      onErrorRetry: (error, key, cfg, revalidate, revalidateOpts) => {
-        if (error instanceof SessionExpiredError) {
-          return;
-        }
-        defaultOnErrorRetry(error, key, cfg as any, revalidate, revalidateOpts);
-      },
-      ...(config ?? {}),
-    }
+    { ...(config ?? {}) }
   );
 };
 

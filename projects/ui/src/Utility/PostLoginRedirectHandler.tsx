@@ -1,12 +1,16 @@
-import { useEffect, useRef } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { consumePostLoginLocation } from "./postLoginRedirect";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  consumePostLoginLocation,
+  isAuthCodeCallbackUrl,
+} from "./postLoginRedirect";
 
 /**
  * Restores the route the user was on before signing in (see
  * `postLoginRedirect.ts`). After a BFF login the gateway lands the browser back
  * on the app with a fresh session, so this runs on boot: if a location was
- * captured, navigate there once.
+ * captured, navigate there once. (Consuming is self-latching — the stored
+ * location is removed on first read — so a re-run is a no-op.)
  *
  * The PKCE auth-code callback (`?code=` in the URL) is skipped here — that flow
  * must exchange the code first, so it restores the location itself afterwards
@@ -15,15 +19,9 @@ import { consumePostLoginLocation } from "./postLoginRedirect";
  */
 const PostLoginRedirectHandler = () => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const handledRef = useRef(false);
 
   useEffect(() => {
-    if (handledRef.current) {
-      return;
-    }
-    handledRef.current = true;
-    if (searchParams.has("code")) {
+    if (isAuthCodeCallbackUrl()) {
       return;
     }
     const target = consumePostLoginLocation();

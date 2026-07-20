@@ -57,6 +57,15 @@ async function generateCodeChallengeFromVerifier(v: string) {
   return base64urlencode(hashed);
 }
 
+/**
+ * The PKCE `redirect_uri`. The value sent to the authorization endpoint here
+ * and the one sent in the token exchange (HeaderSectionLoggedOut) must be
+ * byte-identical, so both use this helper.
+ */
+export function getPkceRedirectUri() {
+  return window.location.origin + window.location.pathname;
+}
+
 /** Starts the PKCE authorization-code flow by redirecting to the IdP. */
 export async function redirectToPkceLogin() {
   // Remember where to return after the IdP round trip (see postLoginRedirect).
@@ -67,8 +76,7 @@ export async function redirectToPkceLogin() {
   localStorage.setItem(LOCAL_STORAGE_AUTH_VERIFIER, verifier);
   const codeChallenge = await generateCodeChallengeFromVerifier(verifier);
 
-  const redirectUri = window.location.origin + window.location.pathname;
-  let url = `${authEndpoint}?client_id=${clientId}&scope=openid email profile&response_type=code&state=${stateValue}&code_challenge=${codeChallenge}&code_challenge_method=S256&redirect_uri=${redirectUri}`;
+  let url = `${authEndpoint}?client_id=${clientId}&scope=openid email profile&response_type=code&state=${stateValue}&code_challenge=${codeChallenge}&code_challenge_method=S256&redirect_uri=${getPkceRedirectUri()}`;
   if (!!audience) {
     url += `&audience=${encodeURI(audience)}`;
   }

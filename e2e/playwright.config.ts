@@ -8,6 +8,10 @@ export default defineConfig({
   expect: {
     timeout: 30_000,
   },
+  // All specs share one mock portal API, and its test-only auth-mode toggle
+  // (see session-expiry.spec.ts) is global state — parallel workers would
+  // poison each other's requests.
+  workers: 1,
   retries: 0,
   reporter: [['html', { open: 'never' }]],
   use: {

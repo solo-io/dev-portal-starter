@@ -8,6 +8,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview --port 4000",
     "lint": "eslint . --ext .ts,.tsx",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -64,13 +66,16 @@
     "eslint": "^8.34.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-storybook": "^0.8.0",
+    "jsdom": "^26.1.0",
     "lint-staged": "^13.1.2",
     "typescript": "5.0.4",
     "vite": "^6.4.1",
     "vite-plugin-eslint": "^1.8.1",
-    "vite-plugin-svgr": "^4.3.0"
+    "vite-plugin-svgr": "^4.3.0",
+    "vitest": "^3.2.4"
   },
   "resolutions": {
+    "vite": "^6.4.1",
     "micromatch": "^4.0.8",
     "sha.js": "^2.4.12",
     "cookie": "^0.7.0",

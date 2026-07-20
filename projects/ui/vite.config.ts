@@ -1,7 +1,8 @@
 import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
 import eslint from "vite-plugin-eslint";
 import svgr from "vite-plugin-svgr";
+// "vitest/config" re-exports Vite's defineConfig with the `test` block typed.
+import { defineConfig } from "vitest/config";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,7 +12,9 @@ export default defineConfig({
         plugins: ["react-magnetic-di/babel-plugin"],
       },
     }),
-    eslint(),
+    // Linting is a separate concern (and a separate CI step); running it on
+    // every file the test runner transforms would just slow tests down.
+    ...(process.env.VITEST ? [] : [eslint()]),
     svgr({
       // - The named ReactComponent export comes from vite-plugin-svgr.
       //   See this comment for the config: https://github.com/nrwl/nx/issues/19282#issuecomment-1877617377
@@ -35,5 +38,11 @@ export default defineConfig({
     // This can be enabled for Google Lighthouse testing, but should be set
     // to false for actual builds since it adds a lot to the build size.
     sourcemap: false,
+  },
+  test: {
+    // Unit tests exercise browser-facing modules (window, sessionStorage, ...).
+    environment: "jsdom",
+    include: ["src/**/*.test.{ts,tsx}"],
+    setupFiles: ["./src/setupTests.ts"],
   },
 });

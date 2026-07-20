@@ -36,14 +36,24 @@ function isSafeInAppPath(path: string | null): path is string {
 }
 
 /**
+ * True when the current URL is an in-flight auth-code callback (it carries the
+ * `?code=` that the PKCE exchange in `HeaderSectionLoggedOut` consumes). Such a
+ * URL must be neither captured as a restore target nor navigated away from
+ * before the exchange has run.
+ */
+export function isAuthCodeCallbackUrl() {
+  return new URLSearchParams(window.location.search).has("code");
+}
+
+/**
  * Records the current in-app location to return to after login. Call this
  * immediately before redirecting to the IdP. The home page is skipped (the
- * post-login landing is already "/"), as is the in-flight auth-code callback URL
- * (which carries a `?code=` we must not restore over).
+ * post-login landing is already "/"), as is the in-flight auth-code callback
+ * URL.
  */
 export function capturePostLoginLocation() {
   const { pathname, search, hash } = window.location;
-  if (pathname === "/" || new URLSearchParams(search).has("code")) {
+  if (pathname === "/" || isAuthCodeCallbackUrl()) {
     sessionStorage.removeItem(STORAGE_KEY);
     return;
   }

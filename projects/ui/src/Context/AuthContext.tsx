@@ -1,4 +1,11 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { toast } from "react-hot-toast";
 import { di } from "react-magnetic-di";
 import { useNavigate } from "react-router-dom";
@@ -183,14 +190,22 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
 
   /**
    * Clears local tokens (PKCE) and evicts cached authed data so the app
-   * re-derives to anonymous. For OIDC-auth-code (BFF) deployments there are no
-   * local tokens, so `setTokensResponse(undefined)` is a no-op and the `mutate`
-   * is what drops the stale `/me` (and other) responses.
+   * re-derives to anonymous. Memoized so effect subscriptions keyed on it
+   * (SessionExpiryHandler) don't churn every render.
    */
-  const clearSession = () => {
-    setTokensResponse(undefined);
+  const clearSession = useCallback(() => {
+    if (tokensResponse !== undefined) {
+      // PKCE: dropping the tokens fires the [tokensResponse] effect, whose
+      // teardown already evicts the SWR cache — evicting here too would
+      // force-revalidate every key twice back to back.
+      setTokensResponse(undefined);
+      return;
+    }
+    // OIDC-auth-code (BFF): there are no local tokens, so no state change will
+    // fire the teardown effect; evict the cached authed data (e.g. the stale
+    // `/me`) directly.
     mutate(() => true, undefined, { revalidate: true });
-  };
+  }, [tokensResponse]);
 
   /**
    * Attempts a silent token refresh (PKCE deployments only — requires a
@@ -200,7 +215,7 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
    * the tab slept past the refresh timer) while the refresh token is still
    * valid, which shouldn't end the session.
    */
-  const tryRefreshTokens = async () => {
+  const tryRefreshTokens = useCallback(async () => {
     const refreshToken = tokensResponse?.refresh_token;
     if (!refreshToken) {
       return false;
@@ -221,7 +236,7 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
     } catch {
       return false;
     }
-  };
+  }, [tokensResponse]);
 
   /**  Saves access tokens on login. */
   const onLogin = (newTokensResponse: AccessTokensResponse) => {

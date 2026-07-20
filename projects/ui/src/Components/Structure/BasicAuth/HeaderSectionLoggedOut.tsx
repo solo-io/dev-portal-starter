@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
   AuthContext,
@@ -7,17 +7,11 @@ import {
   useIsLoggedIn,
 } from "../../../Context/AuthContext";
 import { doAccessTokenRequest } from "../../../Utility/accessTokenRequest";
-import { redirectToPkceLogin } from "../../../Utility/loginRedirect";
+import {
+  getPkceRedirectUri,
+  redirectToPkceLogin,
+} from "../../../Utility/loginRedirect";
 import { Button } from "../../Common/Button";
-
-const AuthFlowStarter = () => {
-  // Redirect to the IdP's authorization endpoint when this is mounted.
-  useEffect(() => {
-    redirectToPkceLogin();
-  }, []);
-
-  return null;
-};
 
 const HeaderSectionLoggedOut = () => {
   const { onLogin } = useContext(AuthContext);
@@ -63,7 +57,7 @@ const HeaderSectionLoggedOut = () => {
         {
           code,
           code_verifier: previousVerifier,
-          redirect_uri: window.location.origin + window.location.pathname,
+          redirect_uri: getPkceRedirectUri(),
         },
         "authorization_code"
       );
@@ -71,12 +65,9 @@ const HeaderSectionLoggedOut = () => {
     })();
   }, []);
 
-  const [showAuthFlowStarter, setShowAuthFlowStarter] = useState(false);
-
   return (
     <div className="userLoginArea loggedOut">
-      <Button onClick={() => setShowAuthFlowStarter(true)}>LOGIN</Button>
-      {showAuthFlowStarter && <AuthFlowStarter />}
+      <Button onClick={() => redirectToPkceLogin()}>LOGIN</Button>
     </div>
   );
 };

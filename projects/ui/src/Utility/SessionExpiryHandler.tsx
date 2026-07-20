@@ -69,13 +69,6 @@ const SessionExpiryHandler = () => {
   const isSessionVerified = useIsSessionVerified();
   const handledRef = useRef(false);
   const lastRefreshAttemptRef = useRef(0);
-  // The subscription callback runs outside the render cycle; a ref keeps the
-  // login state it reads current.
-  const isLoggedInRef = useRef(isLoggedIn);
-
-  useEffect(() => {
-    isLoggedInRef.current = isLoggedIn;
-  }, [isLoggedIn]);
 
   // A VERIFIED session (a `/me` that succeeded through the gateway) means any
   // earlier expiry-triggered login attempt worked; the next expiry is genuine
@@ -93,7 +86,7 @@ const SessionExpiryHandler = () => {
     return subscribeSessionExpired(async (reason) => {
       // See the component doc: a 401 with no established session is an
       // anonymous visitor hitting an auth-required endpoint, not an expiry.
-      if (reason === "unauthorized" && !isLoggedInRef.current) {
+      if (reason === "unauthorized" && !isLoggedIn) {
         return;
       }
       if (handledRef.current) {
@@ -160,7 +153,10 @@ const SessionExpiryHandler = () => {
       // anonymous.
       fallBackToAnonymous();
     });
-  }, [clearSession, tryRefreshTokens]);
+    // The subscription is cheap to re-establish, and `pendingReason` in
+    // sessionExpiry.ts latches any notification that fires between
+    // unsubscribe and resubscribe, so keying on these values is lossless.
+  }, [clearSession, tryRefreshTokens, isLoggedIn]);
 
   return null;
 };
