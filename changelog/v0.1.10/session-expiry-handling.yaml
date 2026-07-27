@@ -16,3 +16,4 @@ changelog:
       they were on beforehand (for both the LOGIN button and the prompt-login
       redirect, in both the PKCE and OIDC-auth-code flows), rather than always
       landing on the home page.
+    issueLink: https://github.com/solo-io/dev-portal-starter/issues/158
