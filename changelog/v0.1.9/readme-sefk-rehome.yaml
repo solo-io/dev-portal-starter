@@ -2,4 +2,5 @@ changelog:
   - type: NON_USER_FACING
     description: >
       Re-homes the README on Solo Enterprise for kgateway and removes the
-      deprecated Gloo Mesh Gateway / Gloo Gateway 1.x branding and wiring.
+      deprecated Gloo Mesh Gateway / Gloo Gateway 1.x branding and resource
+      references.

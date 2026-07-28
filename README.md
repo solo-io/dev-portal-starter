@@ -2,19 +2,19 @@
 
 ## Description
 
-This is an example Solo.io Developer Portal frontend app for [Solo Enterprise for kgateway](https://docs.solo.io/kgateway/2.2.x/), built with [Vite](https://vitejs.dev/) and configured to use React and TypeScript. It can be used to view information about your APIs and usage plans, add or delete API keys, and view your OpenAPI schemas using an embedded [Redoc UI](https://github.com/Redocly/redoc) or [Swagger UI](https://swagger.io/tools/swagger-ui/) view. It also can be personalized with images and colors to match your branding and preferences.
+This is an example Solo.io Developer Portal frontend app for [Solo Enterprise for kgateway](https://docs.solo.io/kgateway/latest/), built with [Vite](https://vitejs.dev/) and configured to use React and TypeScript. It can be used to view information about your APIs and usage plans, add or delete API keys, and view your OpenAPI schemas using an embedded [Redoc UI](https://github.com/Redocly/redoc) or [Swagger UI](https://swagger.io/tools/swagger-ui/) view. It also can be personalized with images and colors to match your branding and preferences.
 
 ![homepage](readme_assets/banner.png "The home page with the default images.")
 
 ## Setup
 
-**For the full setup instructions, including the required Kubernetes resources, follow the Solo Enterprise for kgateway 2.2.x Portal docs. The steps below assume those resources are already applied.**
+**For the full setup instructions, including the required Kubernetes resources, follow the Solo Enterprise for kgateway Portal docs. The steps below assume those resources are already applied.**
 
-- Build the frontend app: <https://docs.solo.io/kgateway/2.2.x/portal/frontend-setup/build-app/>
-- Get started with portal (deploy the portal and wire the routes): <https://docs.solo.io/kgateway/2.2.x/portal/setup/>
-- Secure the portal login with OIDC: <https://docs.solo.io/kgateway/2.2.x/portal/frontend-setup/login/>
+- Build the frontend app: <https://docs.solo.io/kgateway/latest/portal/frontend-setup/build-app/>
+- Get started with portal (deploy the portal and set up the routes): <https://docs.solo.io/kgateway/latest/portal/setup/>
+- Secure the portal login with OIDC: <https://docs.solo.io/kgateway/latest/portal/frontend-setup/login/>
 
-The portal is decoupled: the Solo-supported backend (`portal-web-server`, plus the `portal.solo.io` custom resources such as `Portal`, `ApiProduct`, and `ApiDoc`) serves the portal REST API, and this frontend is a separate application that you build, own, and route to through the gateway. Routing uses the Kubernetes Gateway API (`Gateway` + `HTTPRoute` with `gatewayClassName: enterprise-kgateway`); there are no `RouteTable` or `ExtAuthPolicy` resources on a Solo Enterprise for kgateway cluster.
+The Solo-supported backend (`portal-web-server` and the `portal.solo.io` custom resources) serves the portal REST API. This frontend is a separate application that you build and deploy yourself, and you expose it through the gateway with a Gateway API `HTTPRoute`.
 
 ## Building the Project
 
@@ -38,9 +38,9 @@ The portal is decoupled: the Solo-supported backend (`portal-web-server`, plus t
    docker push "your-image-name"
    ```
 
-4. Follow [Build the frontend app](https://docs.solo.io/kgateway/2.2.x/portal/frontend-setup/build-app/) and [Get started with portal](https://docs.solo.io/kgateway/2.2.x/portal/setup/) to deploy your image and wire the portal routes. Use the same image name that you built for the `portal-frontend` deployment's `spec.template.containers.image` field.
+4. Follow [Build the frontend app](https://docs.solo.io/kgateway/latest/portal/frontend-setup/build-app/) and [Get started with portal](https://docs.solo.io/kgateway/latest/portal/setup/) to deploy your image and set up the portal routes. Use the same image name that you built for the `portal-frontend` deployment's `spec.template.containers.image` field.
 
-- If you would like to run your image outside the mesh, you will need to:
+- If you would like to run your image outside the cluster, rather than behind the gateway, you will need to:
 
   - Update your auth provider to enable the PKCE auth flow.
   - Configure CORS on the portal backend route to include your portal frontend's domain, using the `HTTPRoute` CORS filter.
@@ -59,7 +59,7 @@ The portal is decoupled: the Solo-supported backend (`portal-web-server`, plus t
     "your-image-name"
     ```
 
-  - If you intend to run this app in the mesh behind an `oidcAuthorizationCode` config, you will need to update the image name and environment variables in your portal frontend deployment. See [Environment Variables if using an "oidcAuthorizationCode" AuthConfig](#environment-variables-if-using-an-oidcauthorizationcode-authconfig) below, and the [Secure login guide](https://docs.solo.io/kgateway/2.2.x/portal/frontend-setup/login/) for how the gateway wires it.
+  - If you intend to run this app in the cluster, behind a gateway route that uses an `oidcAuthorizationCode` config, you will need to update the image name and environment variables in your portal frontend deployment. See [Environment Variables if using an "oidcAuthorizationCode" AuthConfig](#environment-variables-if-using-an-oidcauthorizationcode-authconfig) below, and the [Secure login guide](https://docs.solo.io/kgateway/latest/portal/frontend-setup/login/) for the gateway-side resources.
 
 ### About the container image
 
@@ -167,7 +167,7 @@ You can add these environment variables to a `.env.local` file in the `projects/
 
 #### Environment Variables for PKCE Authorization Flow
 
-These variables are required if your authorization server is configured to use the PKCE auth flow. If this app is hosted outside the mesh, then the PKCE auth flow must be used.
+These variables are required if your authorization server is configured to use the PKCE auth flow. If this app is hosted outside the cluster, then the PKCE auth flow must be used.
 
 - `VITE_CLIENT_ID` - The oauth client id. In Keycloak, this is shown in the client settings of your keycloak instances UI: `<your-keycloak-url>/auth`.
 - `VITE_TOKEN_ENDPOINT` - This is the endpoint to get the oauth token. In Keycloak, this is the `token_endpoint` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`..
@@ -176,7 +176,7 @@ These variables are required if your authorization server is configured to use t
 
 #### Environment Variables if using an "oidcAuthorizationCode" `AuthConfig`
 
-These variables are required if this app is hosted in your mesh, behind a route that uses an `EnterpriseKgatewayTrafficPolicy` (`entExtAuth`) referencing an `AuthConfig` with an "oidcAuthorizationCode" config. In this configuration, your authorization server must be configured to use client id + secret authentication, and the gateway external-auth service handles user sessions with a browser cookie. See the [Secure login guide](https://docs.solo.io/kgateway/2.2.x/portal/frontend-setup/login/) for the gateway-side resources.
+These variables are required if this app is hosted in your cluster, behind a gateway route that uses an `EnterpriseKgatewayTrafficPolicy` (`entExtAuth`) referencing an `AuthConfig` with an "oidcAuthorizationCode" config. In this configuration, your authorization server must be configured to use client id + secret authentication, and the gateway external-auth service handles user sessions with a browser cookie. See the [Secure login guide](https://docs.solo.io/kgateway/latest/portal/frontend-setup/login/) for the gateway-side resources.
 
 - `VITE_APPLIED_OIDC_AUTH_CODE_CONFIG` - This must be set to "true" if using the "oidcAuthorizationCode" config.
 - `VITE_OIDC_AUTH_CODE_CONFIG_CALLBACK_PATH` - This is the "callbackPath" value of your "oidcAuthorizationCode" config.
