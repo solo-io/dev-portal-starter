@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { ComponentProps } from "react";
 import { injectable } from "react-magnetic-di";
-import { MemoryRouter, useParams } from "react-router-dom";
+import { MemoryRouter, useParams } from "react-router";
 import { App, Member, Team } from "../../../Apis/api-types";
 import {
   useGetTeamDetails,

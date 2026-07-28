@@ -1,7 +1,7 @@
 import { Box, Flex, Loader, Tooltip } from "@mantine/core";
 import { useMemo } from "react";
 import { di } from "react-magnetic-di";
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 import { App } from "../../../Apis/api-types";
 import {
   useListSubscriptionsForApp,

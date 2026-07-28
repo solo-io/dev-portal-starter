@@ -1,5 +1,5 @@
 import { Box, Input } from "@mantine/core";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
 import { Team } from "../../../../Apis/api-types";
@@ -68,7 +68,7 @@ const AddTeamUserSubSection = ({
             placeholder="Email Address"
             autoComplete="off"
             value={formEmail}
-            onChange={(e) => setFormEmail(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setFormEmail(e.target.value)}
           />
           <Button className={`small`} disabled={isFormDisabled} type={"submit"}>
             ADD USER

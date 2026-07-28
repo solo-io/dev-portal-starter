@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { Icon } from "../../Assets/Icons";
 import { AppContext } from "../../Context/AppContext";
 import { ContentWidthDiv } from "../../Styles/ContentWidthHelpers";

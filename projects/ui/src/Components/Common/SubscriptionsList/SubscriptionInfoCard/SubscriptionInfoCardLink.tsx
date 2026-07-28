@@ -1,5 +1,5 @@
 import { Box, Tooltip } from "@mantine/core";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router";
 import { useIsAdmin } from "../../../../Context/AuthContext";
 import { CardStyles } from "../../../../Styles/shared/Card.style";
 import { UtilityStyles } from "../../../../Styles/shared/Utility.style";

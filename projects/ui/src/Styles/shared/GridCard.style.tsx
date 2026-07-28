@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 import { mediaQueryWithScreenSize } from "../breakpoints";
 import { borderRadiusConstants } from "../constants";
 

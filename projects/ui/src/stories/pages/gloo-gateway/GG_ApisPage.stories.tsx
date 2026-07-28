@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { ComponentProps } from "react";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import { ApiProductSummary } from "../../../Apis/api-types";
 import { useListApiProducts } from "../../../Apis/gg_hooks";
 import { GG_ApisPage } from "../../../Components/Apis/gloo-gateway-components/GG_ApisPage";

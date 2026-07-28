@@ -1,6 +1,6 @@
 import { Box, Flex, Tooltip } from "@mantine/core";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 import { Icon } from "../../../../Assets/Icons";
 import { useIsAdmin } from "../../../../Context/AuthContext";
 import { CardStyles } from "../../../../Styles/shared/Card.style";

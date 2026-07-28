@@ -1,3 +1,4 @@
+import { JSX } from "react";
 import { StyledMantineModal } from "./NotificationModal.style";
 
 export function NotificationModal({

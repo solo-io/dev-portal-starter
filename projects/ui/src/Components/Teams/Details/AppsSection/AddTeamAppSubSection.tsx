@@ -1,5 +1,5 @@
 import { Box, Input } from "@mantine/core";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
 import { Team } from "../../../../Apis/api-types";
@@ -72,7 +72,7 @@ const AddTeamAppSubSection = ({
             disabled={!open}
             autoComplete="off"
             value={formAppName}
-            onChange={(e) => setFormAppName(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setFormAppName(e.target.value)}
           />
           <Input
             id="app-description-input"
@@ -82,7 +82,7 @@ const AddTeamAppSubSection = ({
             disabled={!open}
             autoComplete="off"
             value={formAppDescription}
-            onChange={(e) => setFormAppDescription(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setFormAppDescription(e.target.value)}
           />
           <Button disabled={isFormDisabled} type={"submit"}>
             ADD APP
