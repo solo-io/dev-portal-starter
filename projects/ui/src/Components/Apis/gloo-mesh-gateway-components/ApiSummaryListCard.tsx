@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 import { API } from "../../../Apis/api-types";
 import { ListCardStyles } from "../../../Styles/shared/ListCard.style";
 import { useGetImageURL } from "../../../Utility/custom-image-utility";

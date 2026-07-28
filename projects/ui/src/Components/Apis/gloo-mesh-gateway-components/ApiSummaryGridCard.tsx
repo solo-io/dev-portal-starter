@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 import { API } from "../../../Apis/api-types";
 import { useGetImageURL } from "../../../Utility/custom-image-utility";
 import { filterMetadataToDisplay } from "../../../Utility/utility";

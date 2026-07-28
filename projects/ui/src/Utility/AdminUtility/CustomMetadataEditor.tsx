@@ -1,5 +1,5 @@
 import { Box, Flex, Input, Text } from "@mantine/core";
-import { FormEvent, useMemo, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import {
   UpsertAppMetadataParams,
@@ -240,7 +240,7 @@ export const CustomMetadataEditor = ({
                     placeholder="Metadata Key"
                     autoComplete="off"
                     value={metaKey}
-                    onChange={(e) => setMetaKey(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setMetaKey(e.target.value)}
                   />
                 </Flex>
               </Flex>
@@ -256,7 +256,7 @@ export const CustomMetadataEditor = ({
                     placeholder="Metadata Value"
                     autoComplete="off"
                     value={metaValue}
-                    onChange={(e) => setMetaValue(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setMetaValue(e.target.value)}
                   />
                 </Flex>
               </Flex>

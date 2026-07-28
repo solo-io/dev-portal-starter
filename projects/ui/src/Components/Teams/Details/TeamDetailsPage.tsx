@@ -2,7 +2,7 @@ import { Box } from "@mantine/core";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router";
 import { useGetTeamDetails } from "../../../Apis/gg_hooks";
 import { Loading } from "../../Common/Loading";
 import TeamDetailsPageContent from "./TeamDetailsPageContent";

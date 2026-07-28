@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router";
 import {
   useGetApiProductVersions,
   useListApiProducts,

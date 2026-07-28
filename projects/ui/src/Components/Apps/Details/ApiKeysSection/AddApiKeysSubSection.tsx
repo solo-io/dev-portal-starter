@@ -1,5 +1,5 @@
 import { Box, Input } from "@mantine/core";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
 import { App } from "../../../../Apis/api-types";
@@ -71,7 +71,7 @@ const AddApiKeysSubSection = ({
               disabled={!open}
               autoComplete="off"
               value={formAppName}
-              onChange={(e) => setFormAppName(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setFormAppName(e.target.value)}
             />
             <Button disabled={isFormDisabled} type={"submit"}>
               ADD API Key

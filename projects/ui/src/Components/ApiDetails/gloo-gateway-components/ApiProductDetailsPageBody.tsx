@@ -1,6 +1,6 @@
 import { Code, Tabs } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router";
 import {
   ApiProductSummary,
   ApiVersion,

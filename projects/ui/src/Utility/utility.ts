@@ -3,7 +3,7 @@
 // navigator.clipboard.writeText doesn't always work.
 
 import { DependencyList, useEffect, useMemo } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 import {
   ErrorMessageResponse,
   isErrorMessageResponse,

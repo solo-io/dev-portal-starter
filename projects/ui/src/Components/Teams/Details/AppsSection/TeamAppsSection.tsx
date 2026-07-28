@@ -1,7 +1,7 @@
 import { Box, Flex } from "@mantine/core";
 import { useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 import { Team } from "../../../../Apis/api-types";
 import { useListAppsForTeam } from "../../../../Apis/gg_hooks";
 import { useIsAdmin } from "../../../../Context/AuthContext";

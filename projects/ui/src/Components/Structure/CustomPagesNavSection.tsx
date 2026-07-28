@@ -1,6 +1,6 @@
 import { Box, Popover } from "@mantine/core";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 import { Icon } from "../../Assets/Icons";
 import { colors } from "../../Styles";
 import { CustomPage, customPages } from "../../user_variables.tmplr";

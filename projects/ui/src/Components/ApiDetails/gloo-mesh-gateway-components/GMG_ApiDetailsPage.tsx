@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { di } from "react-magnetic-di";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { ApiVersionSchema } from "../../../Apis/api-types";
 import { useGetApiDetails } from "../../../Apis/gmg_hooks";
 import { Icon } from "../../../Assets/Icons";
