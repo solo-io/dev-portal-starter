@@ -3,14 +3,14 @@ import { toast } from "react-hot-toast";
 import {
   enableAnonymousFallback,
   subscribeSessionExpired,
-} from "../Apis/sessionExpiry";
+} from "../../Apis/sessionExpiry";
 import {
   AuthContext,
   LOCAL_STORAGE_TOKENS_KEY,
   useIsLoggedIn,
   useIsSessionVerified,
-} from "../Context/AuthContext";
-import { sessionExpiredBehavior } from "../user_variables.tmplr";
+} from "../../Context/AuthContext";
+import { sessionExpiredBehavior } from "../../user_variables.tmplr";
 import { startLogin } from "./loginRedirect";
 
 // Timestamp of the last expiry-triggered login redirect. If another expiry
@@ -24,7 +24,7 @@ const EXPIRY_LOGIN_LOOP_WINDOW_MS = 60_000;
 
 function recentlyAttemptedExpiryLogin() {
   const attemptedAt = Number(
-    sessionStorage.getItem(EXPIRY_LOGIN_ATTEMPT_KEY) ?? NaN
+    sessionStorage.getItem(EXPIRY_LOGIN_ATTEMPT_KEY) ?? NaN,
   );
   return (
     Number.isFinite(attemptedAt) &&
@@ -117,7 +117,7 @@ const SessionExpiryHandler = () => {
           // eslint-disable-next-line no-console
           console.warn(
             "The session expired again right after a re-login attempt; " +
-              "falling back to anonymous browsing instead of redirecting again."
+              "falling back to anonymous browsing instead of redirecting again.",
           );
           fallBackToAnonymous();
           return;
@@ -143,7 +143,7 @@ const SessionExpiryHandler = () => {
           // eslint-disable-next-line no-console
           console.error(
             "Redirecting to sign-in failed; falling back to anonymous browsing.",
-            e
+            e,
           );
         }
       }

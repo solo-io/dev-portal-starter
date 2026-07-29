@@ -9,7 +9,7 @@ import {
   oidcAuthCodeConfigCallbackPath,
   oidcAuthCodeConfigLogoutPath,
 } from "../../../user_variables.tmplr";
-import { startLogin } from "../../../Utility/loginRedirect";
+import { startLogin } from "../../../Utility/login/loginRedirect";
 import { useInArea } from "../../../Utility/utility";
 import { StyledUserDropdown } from "../BasicAuth/HeaderSectionLoggedIn";
 

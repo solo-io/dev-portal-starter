@@ -10,7 +10,7 @@ import { doAccessTokenRequest } from "../../../Utility/accessTokenRequest";
 import {
   getPkceRedirectUri,
   redirectToPkceLogin,
-} from "../../../Utility/loginRedirect";
+} from "../../../Utility/login/loginRedirect";
 import { Button } from "../../Common/Button";
 
 const HeaderSectionLoggedOut = () => {
@@ -39,12 +39,12 @@ const HeaderSectionLoggedOut = () => {
       if (!!state && state !== previousState) {
         // eslint-disable-next-line no-console
         console.warn(
-          "The 'state' returned from the login flow does not match the previously generated 'state' value."
+          "The 'state' returned from the login flow does not match the previously generated 'state' value.",
         );
         return;
       }
       const previousVerifier = localStorage.getItem(
-        LOCAL_STORAGE_AUTH_VERIFIER
+        LOCAL_STORAGE_AUTH_VERIFIER,
       );
       if (!previousVerifier) {
         // eslint-disable-next-line no-console
@@ -59,7 +59,7 @@ const HeaderSectionLoggedOut = () => {
           code_verifier: previousVerifier,
           redirect_uri: getPkceRedirectUri(),
         },
-        "authorization_code"
+        "authorization_code",
       );
       onLogin(res);
     })();

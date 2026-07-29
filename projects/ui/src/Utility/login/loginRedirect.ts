@@ -11,14 +11,14 @@
 import {
   LOCAL_STORAGE_AUTH_STATE,
   LOCAL_STORAGE_AUTH_VERIFIER,
-} from "../Context/AuthContext";
+} from "../../Context/AuthContext";
 import {
   appliedOidcAuthCodeConfig,
   audience,
   authEndpoint,
   clientId,
   oidcAuthCodeConfigCallbackPath,
-} from "../user_variables.tmplr";
+} from "../../user_variables.tmplr";
 import { capturePostLoginLocation } from "./postLoginRedirect";
 
 // From https://stackoverflow.com/a/63336562
@@ -76,11 +76,18 @@ export async function redirectToPkceLogin() {
   localStorage.setItem(LOCAL_STORAGE_AUTH_VERIFIER, verifier);
   const codeChallenge = await generateCodeChallengeFromVerifier(verifier);
 
-  let url = `${authEndpoint}?client_id=${clientId}&scope=openid email profile&response_type=code&state=${stateValue}&code_challenge=${codeChallenge}&code_challenge_method=S256&redirect_uri=${getPkceRedirectUri()}`;
+  const url = new URL(authEndpoint);
+  url.searchParams.set("client_id", clientId);
+  url.searchParams.set("scope", "openid email profile");
+  url.searchParams.set("response_type", "code");
+  url.searchParams.set("state", stateValue);
+  url.searchParams.set("code_challenge", codeChallenge);
+  url.searchParams.set("code_challenge_method", "S256");
+  url.searchParams.set("redirect_uri", getPkceRedirectUri());
   if (!!audience) {
-    url += `&audience=${encodeURI(audience)}`;
+    url.searchParams.set("audience", audience);
   }
-  window.location.href = url;
+  window.location.href = url.toString();
 }
 
 /** Starts sign-in using whichever auth flow this deployment is configured for. */
