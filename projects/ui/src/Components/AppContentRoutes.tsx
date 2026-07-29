@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { useContext } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router";
 import { AppContext } from "../Context/AppContext";
 import { useIsLoggedIn } from "../Context/AuthContext";
 import {

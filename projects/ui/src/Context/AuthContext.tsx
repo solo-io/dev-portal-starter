@@ -8,7 +8,7 @@ import {
 } from "react";
 import { toast } from "react-hot-toast";
 import { di } from "react-magnetic-di";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { mutate } from "swr";
 import { AccessTokensResponse } from "../Apis/api-types";
 import { useGetCurrentUser } from "../Apis/gg_hooks";

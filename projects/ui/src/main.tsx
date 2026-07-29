@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom/client";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router";
 import { SWRConfig } from "swr";
 import { SessionExpiredError } from "./Apis/sessionExpiry";
 import { App } from "./Components/App";

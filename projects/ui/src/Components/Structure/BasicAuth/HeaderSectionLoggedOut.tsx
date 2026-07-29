@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 import {
   AuthContext,
   LOCAL_STORAGE_AUTH_STATE,

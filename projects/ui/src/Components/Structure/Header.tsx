@@ -1,5 +1,5 @@
 import { MouseEventHandler, useContext } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router";
 import { ReactComponent as Logo } from "../../Assets/logo.svg?react";
 import { AppContext } from "../../Context/AppContext";
 import { useIsAdmin, useIsLoggedIn } from "../../Context/AuthContext";

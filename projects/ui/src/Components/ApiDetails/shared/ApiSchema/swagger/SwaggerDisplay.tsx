@@ -1,4 +1,5 @@
-import { useContext, useEffect, useState } from "react";
+import { createElement, useContext, useEffect, useState } from "react";
+import { createRoot } from "react-dom/client";
 import SwaggerUIConstructor from "swagger-ui";
 import "swagger-ui/dist/swagger-ui.css";
 import { ApiVersionSchema } from "../../../../../Apis/api-types";
@@ -12,6 +13,31 @@ import {
 import { SwaggerDisplayContainer } from "./SwaggerDisplay.style";
 
 const sanitize = (id: string) => id.replaceAll(".", "-");
+
+/**
+ * Swagger UI mounts itself with `const { createRoot } = reactDom`, but React 19
+ * moved `createRoot` from `react-dom` to `react-dom/client`. That destructure
+ * yields `undefined`, so Swagger UI throws "o is not a function" and renders
+ * nothing (still the case in swagger-ui 5.32.11, its latest release).
+ *
+ * `rootInjects` is Swagger UI's documented plugin hook for replacing system
+ * methods — they are merged over the built-ins — so we supply a `render` that
+ * mounts through `react-dom/client` instead. This keeps `swagger-ui` as a normal
+ * source dependency, so its transitive packages stay patchable via `resolutions`
+ * and visible to CVE scanners (the prebuilt `swagger-ui-dist` bundle would be
+ * neither).
+ */
+const reactDomClientRenderPlugin = (system: {
+  getComponent: (name: string, root: "root") => Parameters<typeof createElement>[0];
+}) => ({
+  rootInjects: {
+    render: (domNode: Element | DocumentFragment) => {
+      createRoot(domNode).render(
+        createElement(system.getComponent("App", "root"))
+      );
+    },
+  },
+});
 
 export function SwaggerDisplay({
   apiVersionSpec,
@@ -38,6 +64,7 @@ export function SwaggerDisplay({
     const swaggerInstance = SwaggerUIConstructor({
       spec: apiVersionSpec,
       dom_id: `#display-swagger-${sanitizedDomId}`,
+      plugins: [reactDomClientRenderPlugin],
       withCredentials: true,
       deepLinking: true,
       configUrl: swaggerConfigURL !== "" ? swaggerConfigURL : undefined,

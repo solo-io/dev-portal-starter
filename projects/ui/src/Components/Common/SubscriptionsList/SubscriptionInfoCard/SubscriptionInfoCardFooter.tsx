@@ -1,6 +1,6 @@
 import { Box, Flex } from "@mantine/core";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 import { Subscription } from "../../../../Apis/api-types";
 import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
 import {

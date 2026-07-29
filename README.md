@@ -1,14 +1,20 @@
-# Gloo Platform Portal UI
+# Solo Enterprise for kgateway Developer Portal UI
 
 ## Description
 
-This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vite](https://vitejs.dev/), and configured to use React and Typescript. It can be used to view information about your APIs and usage plans, add or delete API keys, and view your OpenAPI schemas using an embedded [Redoc UI](https://github.com/Redocly/redoc) or [Swagger UI](https://swagger.io/tools/swagger-ui/) view. It also can be personalized with images and colors to match your branding and preferences.
+This is an example Solo.io Developer Portal frontend app for [Solo Enterprise for kgateway](https://docs.solo.io/kgateway/latest/), built with [Vite](https://vitejs.dev/) and configured to use React and TypeScript. It can be used to view information about your APIs and usage plans, add or delete API keys, and view your OpenAPI schemas using an embedded [Redoc UI](https://github.com/Redocly/redoc) or [Swagger UI](https://swagger.io/tools/swagger-ui/) view. It also can be personalized with images and colors to match your branding and preferences.
 
 ![homepage](readme_assets/banner.png "The home page with the default images.")
 
 ## Setup
 
-**For the full setup instructions, including the required Gloo Gateway Kubernetes resources, please check the [solo.io docs site](https://docs.solo.io/gloo-gateway/main/portal/dev-portal/frontend/portal-frontend/). The following steps assume that these resources are already applied.**
+**For the full setup instructions, including the required Kubernetes resources, follow the Solo Enterprise for kgateway Portal docs. The steps below assume those resources are already applied.**
+
+- Build the frontend app: <https://docs.solo.io/kgateway/latest/portal/frontend-setup/build-app/>
+- Get started with portal (deploy the portal and set up the routes): <https://docs.solo.io/kgateway/latest/portal/setup/>
+- Secure the portal login with OIDC: <https://docs.solo.io/kgateway/latest/portal/frontend-setup/login/>
+
+The Solo-supported backend (`portal-web-server` and the `portal.solo.io` custom resources) serves the portal REST API. This frontend is a separate application that you build and deploy yourself, and you expose it through the gateway with a Gateway API `HTTPRoute`.
 
 ## Building the Project
 
@@ -32,13 +38,13 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
    docker push "your-image-name"
    ```
 
-4. Go through the steps on the [solo.io docs site](https://docs.solo.io/gloo-gateway/main/portal/dev-portal/frontend/portal-frontend/) to set up dev portal resources and deploy your image. Use the same image name that you used to build the image for the portal-frontend deployment's `spec.template.containers.image` field.
+4. Follow [Build the frontend app](https://docs.solo.io/kgateway/latest/portal/frontend-setup/build-app/) and [Get started with portal](https://docs.solo.io/kgateway/latest/portal/setup/) to deploy your image and set up the portal routes. Use the same image name that you built for the `portal-frontend` deployment's `spec.template.containers.image` field.
 
-- If you would like to run your image outside the mesh you will need to:
+- If you would like to run your image outside the cluster, rather than behind the gateway, you will need to:
 
   - Update your auth provider to enable the PKCE auth flow.
-  - Update your portal server's `CorsPolicy` to include your portal frontend's domain.
-  - Update your portal server's `ExtAuthPolicy` to include the inlineJWKs from your auth provider.
+  - Configure CORS on the portal backend route to include your portal frontend's domain, using the `HTTPRoute` CORS filter.
+  - Configure your gateway external auth to validate your auth provider's tokens (JWKS).
   - Run your portal frontend app with this command, replacing the variables to match your configuration:
 
     ```sh
@@ -53,7 +59,7 @@ This is an example Solo.io Gloo Platform Dev Portal frontend app, built with [Vi
     "your-image-name"
     ```
 
-  - If running this app in the mesh with an `ExtAuthPolicy` that has an "oidcAuthorizationCode" config, you will need to update the image name and environment variables in your portal frontend deployment. See the [Environment Variables if using an oidcAuthorizationCode ExtAuthPolicy](#environment-variables-if-using-an-oidcauthorizationcode-extauthpolicy) of this Readme for more details.
+  - If you intend to run this app in the cluster, behind a gateway route that uses an `oidcAuthorizationCode` config, you will need to update the image name and environment variables in your portal frontend deployment. See [Environment Variables if using an "oidcAuthorizationCode" AuthConfig](#environment-variables-if-using-an-oidcauthorizationcode-authconfig) below, and the [Secure login guide](https://docs.solo.io/kgateway/latest/portal/frontend-setup/login/) for the gateway-side resources.
 
 ### About the container image
 
@@ -67,7 +73,7 @@ If you need an even smaller CVE surface, a Chainguard `cgr.dev/chainguard/node` 
 
 1. Install the Node version in the .nvmrc file, and [yarn](https://yarnpkg.com/)
 
-2. Create a `.env.local` file in the `projects/ui` folder. Replace environment variable values to match your Gloo Platform Portal and oauth provider's installation. This file is ignored by git.
+2. Create a `.env.local` file in the `projects/ui` folder. Replace environment variable values to match your Solo Enterprise for kgateway Portal and OAuth provider's installation. This file is ignored by git.
 
    ```sh
    VITE_PORTAL_SERVER_URL="/v1"
@@ -97,7 +103,7 @@ make run-ui
 
 ## UI Iteration with Storybook and Mock Data
 
-UI iteration can also be done with [Storybook](https://storybook.js.org/). Storybook can run without any kubernetes resources set up. API responses are mocked using [react-magnetic-di](https://www.npmjs.com/package/react-magnetic-di) and [@faker-js/faker](https://fakerjs.dev/). The Storybook server can be run on [http:localhost:6006](http:localhost:6006) using the command:
+UI iteration can also be done with [Storybook](https://storybook.js.org/). Storybook can run without any Kubernetes resources set up. API responses are mocked using [react-magnetic-di](https://www.npmjs.com/package/react-magnetic-di) and [@faker-js/faker](https://fakerjs.dev/). The Storybook server can be run on [http:localhost:6006](http:localhost:6006) using the command:
 
 ```shell
 make run-storybook
@@ -132,8 +138,7 @@ All icons can be found, as the others, in the `/Assets` folder, inside `/Icons`.
 You can add these environment variables to a `.env.local` file in the `projects/ui` folder. All Vite environment variables need to start with `VITE_` in order for the app to be able to read them.
 
 - `VITE_COMPANY_NAME` - This is the company name that is used for your Portal.
-- `VITE_PORTAL_SERVER_URL` - This is the URL for the Gloo Platform Portal REST server. The default value is "/v1".
-  - Note: If using the example `RouteTable` for the "oidcAuthorizationCode" `ExtAuthPolicy` configuration, this should be set to "/portal-server/v1"
+- `VITE_PORTAL_SERVER_URL` - This is the URL for the Portal REST server (`portal-web-server`). The default value is "/v1".
 - `VITE_SWAGGER_CONFIG_URL` - This is an optional URL for your Swagger configuration file. The URL can be an absolute or relative path, and can be a JSON or YAML file. If you would like to configure the Swagger UI using the [Swagger UI configuration options](https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/), you can do this by:
   1. setting this variable, in your `.env.local` file, to `"/swagger-config.yaml"`,
   2. editing the `/projects/ui/public/swagger-config.yaml` file,
@@ -165,16 +170,16 @@ You can add these environment variables to a `.env.local` file in the `projects/
 
 #### Environment Variables for PKCE Authorization Flow
 
-These variables are required if your authorization server is configured to use the PKCE auth flow. If this app is hosted outside the mesh, then the PKCE auth flow must be used.
+These variables are required if your authorization server is configured to use the PKCE auth flow. If this app is hosted outside the cluster, then the PKCE auth flow must be used.
 
 - `VITE_CLIENT_ID` - The oauth client id. In Keycloak, this is shown in the client settings of your keycloak instances UI: `<your-keycloak-url>/auth`.
 - `VITE_TOKEN_ENDPOINT` - This is the endpoint to get the oauth token. In Keycloak, this is the `token_endpoint` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`..
 - `VITE_AUTH_ENDPOINT` - This is the endpoint to get the PKCE authorization code. In Keycloak, this is the `authorization_code` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`.
 - `VITE_LOGOUT_ENDPOINT` - This is the endpoint to end your session. In Keycloak, this is the `end_session_endpoint` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`.
 
-#### Environment Variables if using an "oidcAuthorizationCode" `ExtAuthPolicy`
+#### Environment Variables if using an "oidcAuthorizationCode" `AuthConfig`
 
-These variables are required if this app is hosted in your mesh, behind a Gloo Platform `RouteTable` that uses an `ExtAuthPolicy` with an "oidcAuthorizationCode" config. In this configuration, your authorization server must be configured to use client id + secret authentication. The `ExtAuthPolicy` in this configuration will handle user sessions with a browser cookie.
+These variables are required if this app is hosted in your cluster, behind a gateway route that uses an `EnterpriseKgatewayTrafficPolicy` (`entExtAuth`) referencing an `AuthConfig` with an "oidcAuthorizationCode" config. In this configuration, your authorization server must be configured to use client id + secret authentication, and the gateway external-auth service handles user sessions with a browser cookie. See the [Secure login guide](https://docs.solo.io/kgateway/latest/portal/frontend-setup/login/) for the gateway-side resources.
 
 - `VITE_APPLIED_OIDC_AUTH_CODE_CONFIG` - This must be set to "true" if using the "oidcAuthorizationCode" config.
 - `VITE_OIDC_AUTH_CODE_CONFIG_CALLBACK_PATH` - This is the "callbackPath" value of your "oidcAuthorizationCode" config.

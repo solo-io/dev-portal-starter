@@ -35,7 +35,12 @@ RUN START_SERVER=false sh ./scripts/startup.sh
 # and lets CVE-gated pipelines promote the image. Because there is no npm here,
 # this stage also drops the `npm install -g npm@latest` self-update step the
 # slim base used (its runtime deps are already pinned via the build stage).
-FROM gcr.io/distroless/nodejs22-debian12:nonroot AS serve_stage
+#
+# The debian13 (trixie) variant is used rather than debian12: bookworm is now
+# EOL for security data, and its libssl3/libc6/node were all carrying CVEs with
+# fixes we cannot apply here (distroless has no package manager, so bumping the
+# base tag is the only lever). debian13 also ships a newer Node 22 patch.
+FROM gcr.io/distroless/nodejs22-debian13:nonroot AS serve_stage
 
 # Copy the server files (this includes the built UI).
 WORKDIR /app

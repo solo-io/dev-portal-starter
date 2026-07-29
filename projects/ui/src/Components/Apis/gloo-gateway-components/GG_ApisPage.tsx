@@ -1,7 +1,7 @@
 import { Box, Flex, Loader, Tabs } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { di } from "react-magnetic-di";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router";
 import {
   isSubscriptionsListError,
   SubscriptionStatus,

@@ -1,6 +1,6 @@
 import { Popover } from "@mantine/core";
 import { useContext, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 import { useGetCurrentUser } from "../../../Apis/gg_hooks";
 import { Icon } from "../../../Assets/Icons";
 import { AppContext } from "../../../Context/AppContext";
