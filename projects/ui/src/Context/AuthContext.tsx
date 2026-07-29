@@ -13,7 +13,7 @@ import { mutate } from "swr";
 import { AccessTokensResponse } from "../Apis/api-types";
 import { useGetCurrentUser } from "../Apis/gg_hooks";
 import { doAccessTokenRequest } from "../Utility/accessTokenRequest";
-import { consumePostLoginLocation } from "../Utility/postLoginRedirect";
+import { consumePostLoginLocation } from "../Utility/login/postLoginRedirect";
 import { jwtDecode, parseJwt } from "../Utility/utility";
 
 //
@@ -87,7 +87,7 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
   };
 
   const [tokensResponse, setTokensResponse] = useState(
-    getTokensFromLocalStorageIfCurrentElseClear()
+    getTokensFromLocalStorageIfCurrentElseClear(),
   );
 
   useEffect(() => {
@@ -139,7 +139,7 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
         try {
           const res = await doAccessTokenRequest(
             { refresh_token: tokensJSON.refresh_token },
-            "refresh_token"
+            "refresh_token",
           );
           setTokensResponse(res);
         } catch (e) {
@@ -149,7 +149,7 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
       },
       // Don't make this request more than once a second,
       // and do the refresh 5 seconds early.
-      Math.max(1000, millisUntilExpires - 5000)
+      Math.max(1000, millisUntilExpires - 5000),
     );
     // Update the saved timeout
     if (refreshTokenTimeout !== undefined) {
@@ -170,7 +170,7 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
       const justLoggedIn = !localStorage.getItem(LOCAL_STORAGE_TOKENS_KEY);
       localStorage.setItem(
         LOCAL_STORAGE_TOKENS_KEY,
-        JSON.stringify(tokensResponse)
+        JSON.stringify(tokensResponse),
       );
       refreshTheToken(tokensResponse);
       // If we just logged in.
@@ -223,7 +223,7 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
     try {
       const res = await doAccessTokenRequest(
         { refresh_token: refreshToken },
-        "refresh_token"
+        "refresh_token",
       );
       if (!res?.access_token) {
         return false;
