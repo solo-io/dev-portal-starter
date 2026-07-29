@@ -4,6 +4,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { toast } from "react-hot-toast";
@@ -90,6 +91,19 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
     getTokensFromLocalStorageIfCurrentElseClear(),
   );
 
+  // What the [tokensResponse] effect should do about cached API data once the
+  // tokens it is reacting to have been committed — "reset" to discard and
+  // refetch (the session identity changed), "retry" to re-run the queries
+  // keeping their data in place (same user, fresher token).
+  //
+  // Refetching is deferred to that effect rather than done where the tokens are
+  // set, because SWR's fetchers capture the Bearer token as of the last render:
+  // a refetch fired alongside `setTokensResponse` still sends the token being
+  // replaced, and gets rejected all over again.
+  const pendingRevalidationRef = useRef<"reset" | "retry" | undefined>(
+    undefined,
+  );
+
   useEffect(() => {
     const onWindowFocus = () => {
       // If the localStorage tokens are valid, use them, else clear them.
@@ -103,10 +117,10 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
         return;
       }
       if (tokensResponse?.access_token === latestTokens.access_token) return;
-      // Set the tokens if they have not changed.
+      // Another tab changed the session, so adopt its tokens and drop the data
+      // fetched for the previous one.
+      pendingRevalidationRef.current = "reset";
       setTokensResponse(latestTokens);
-      // Mutate and match all swr keys to clear the cache.
-      mutate(() => true, undefined, { revalidate: true });
     };
     window.addEventListener("focus", onWindowFocus);
     return () => {
@@ -161,6 +175,10 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
   // This reacts to the access token changes,
   // either clearing or saving locally stored data.
   useEffect(() => {
+    // Read and reset on every run so a request can only apply to the tokens it
+    // was made for.
+    const pendingRevalidation = pendingRevalidationRef.current;
+    pendingRevalidationRef.current = undefined;
     if (!tokensResponse) {
       clearTokensApiCacheAndTimeout();
       return;
@@ -173,12 +191,15 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
         JSON.stringify(tokensResponse),
       );
       refreshTheToken(tokensResponse);
-      // If we just logged in.
-      if (justLoggedIn) {
+      if (justLoggedIn || pendingRevalidation === "reset") {
         // Mutate and match all swr keys to clear the cache.
         mutate(() => true, undefined, {
           revalidate: true,
         });
+      } else if (pendingRevalidation === "retry") {
+        // Re-run the queries with the new token, keeping any cached data in
+        // place while they revalidate.
+        mutate(() => true);
       }
     } catch (e) {
       // eslint-disable-next-line no-console
@@ -228,10 +249,10 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
       if (!res?.access_token) {
         return false;
       }
+      // The queries that failed with the lapsed token are re-run by the
+      // [tokensResponse] effect, once this token is the one they will send.
+      pendingRevalidationRef.current = "retry";
       setTokensResponse(res);
-      // Re-run the queries that failed with the lapsed token, keeping any
-      // cached data in place while they revalidate.
-      mutate(() => true);
       return true;
     } catch {
       return false;
