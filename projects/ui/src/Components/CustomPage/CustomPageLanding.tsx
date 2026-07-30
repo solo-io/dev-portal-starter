@@ -1,6 +1,6 @@
 import { Code } from "@mantine/core";
 import { useEffect, useMemo, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 import { customPages } from "../../user_variables.tmplr";
 import { getCustomPagePath } from "../../Utility/utility";
 import { EmptyData } from "../Common/EmptyData";

@@ -1,5 +1,5 @@
 import { CloseButton, Flex, Input } from "@mantine/core";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { Team } from "../../../../Apis/api-types";
 import { useUpdateTeamMutation } from "../../../../Apis/gg_hooks";
@@ -90,7 +90,7 @@ export const EditTeamModal = ({
                 placeholder="Team Name"
                 autoComplete="off"
                 value={teamName}
-                onChange={(e) => setTeamName(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setTeamName(e.target.value)}
               />
             </FormModalStyles.FormRow>
             <FormModalStyles.FormRow>
@@ -105,7 +105,7 @@ export const EditTeamModal = ({
                 placeholder="Team Description"
                 autoComplete="off"
                 value={teamDescription}
-                onChange={(e) => setTeamDescription(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setTeamDescription(e.target.value)}
               />
             </FormModalStyles.FormRow>
           </div>

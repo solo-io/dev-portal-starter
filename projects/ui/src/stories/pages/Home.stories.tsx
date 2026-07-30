@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import { HomePage } from "../../Components/Home/HomePage";
 
 // More on how to set up stories at: https://storybook.js.org/docs/8.0/react/writing-stories/introduction

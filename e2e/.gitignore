@@ -1,0 +1,9 @@
+node_modules/
+.yarn/*
+!.yarn/releases
+!.yarn/patches
+!.yarn/plugins
+.pnp.*
+.e2e-pids.json
+test-results/
+playwright-report/

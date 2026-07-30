@@ -1,5 +1,5 @@
 import { CloseButton, Flex, Input } from "@mantine/core";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { App } from "../../../../Apis/api-types";
 import { useUpdateAppMutation } from "../../../../Apis/gg_hooks";
@@ -91,7 +91,7 @@ export const EditAppModal = ({
                 placeholder="App Name"
                 autoComplete="off"
                 value={appName}
-                onChange={(e) => setAppName(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setAppName(e.target.value)}
               />
             </FormModalStyles.FormRow>
             <FormModalStyles.FormRow>
@@ -106,7 +106,7 @@ export const EditAppModal = ({
                 placeholder="App Description"
                 autoComplete="off"
                 value={appDescription}
-                onChange={(e) => setAppDescription(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setAppDescription(e.target.value)}
               />
             </FormModalStyles.FormRow>
           </div>

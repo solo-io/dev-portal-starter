@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { Button } from "@mantine/core";
 import { useContext, useState } from "react";
 import { di } from "react-magnetic-di";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { useGetApiDetails } from "../../../Apis/gmg_hooks";
 import { AppContext } from "../../../Context/AppContext";
 import { Loading } from "../../Common/Loading";

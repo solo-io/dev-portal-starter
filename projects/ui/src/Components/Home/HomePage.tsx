@@ -1,5 +1,5 @@
 import { Box } from "@mantine/core";
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 import { useIsAdmin } from "../../Context/AuthContext";
 import { companyName, homeImageURL } from "../../user_variables.tmplr";
 import { BannerHeading } from "../Common/Banner/BannerHeading";

@@ -1,6 +1,6 @@
 import { Box, Flex } from "@mantine/core";
 import { di } from "react-magnetic-di";
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 import { Team } from "../../../../Apis/api-types";
 import {
   useListAppsForTeam,

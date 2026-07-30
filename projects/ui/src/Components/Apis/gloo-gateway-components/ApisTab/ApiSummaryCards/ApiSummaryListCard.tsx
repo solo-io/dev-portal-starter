@@ -1,5 +1,5 @@
 import { Box, Flex, Text } from "@mantine/core";
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 import { ApiProductSummary } from "../../../../../Apis/api-types";
 import { CardStyles } from "../../../../../Styles/shared/Card.style";
 import { ListCardStyles } from "../../../../../Styles/shared/ListCard.style";

@@ -1,9 +1,10 @@
 import styled from "@emotion/styled";
 import { useContext } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router";
 import { AppContext } from "../Context/AppContext";
 import { useIsLoggedIn } from "../Context/AuthContext";
 import {
+  appliedOidcAuthCodeConfig,
   customPages,
   oidcAuthCodeConfigCallbackPath,
   oidcAuthCodeConfigLogoutPath,
@@ -56,14 +57,13 @@ function AppContentRoutes() {
       // region Shared
       */}
       <Routes>
-        <Route
-          path={oidcAuthCodeConfigCallbackPath}
-          element={<Navigate to="/" replace />}
-        />
-        <Route
-          path={oidcAuthCodeConfigLogoutPath}
-          element={<Navigate to="/" replace />}
-        />
+        {/*
+        This must stay ahead of the gateway paths below: those default to
+        "/login" and "/logout", and when two routes have the same path
+        react-router matches the one declared first — so a "/logout" gateway
+        route would shadow this handler, and clicking Logout would land back on
+        the home page with the session still in place.
+        */}
         <Route
           path={`/logout`}
           element={
@@ -72,6 +72,25 @@ function AppContentRoutes() {
             </ErrorBoundary>
           }
         />
+        {/*
+        In oidcAuthorizationCode (BFF) deployments the gateway owns these paths
+        and lands the browser back on them after signing in or out, so the app
+        just returns the user to where they were headed. They are unused in
+        PKCE deployments, which handle the auth-code callback on whatever route
+        login started from.
+        */}
+        {!!appliedOidcAuthCodeConfig && (
+          <>
+            <Route
+              path={oidcAuthCodeConfigCallbackPath}
+              element={<Navigate to="/" replace />}
+            />
+            <Route
+              path={oidcAuthCodeConfigLogoutPath}
+              element={<Navigate to="/" replace />}
+            />
+          </>
+        )}
         <Route
           path="/"
           element={

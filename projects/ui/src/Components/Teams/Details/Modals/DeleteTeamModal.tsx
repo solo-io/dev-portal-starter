@@ -2,7 +2,7 @@ import { Box, CloseButton, Flex } from "@mantine/core";
 import { FormEvent } from "react";
 import toast from "react-hot-toast";
 import { di } from "react-magnetic-di";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { Team } from "../../../../Apis/api-types";
 import { useDeleteTeamMutation } from "../../../../Apis/gg_hooks";
 import { FormModalStyles } from "../../../../Styles/shared/FormModalStyles";

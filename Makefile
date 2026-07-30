@@ -199,3 +199,7 @@ preview-ui: update-ui-deps
 .PHONY: lint-ui-code
 lint-ui-code: update-ui-deps
 	yarn tsc --cwd=$(UI_ROOT_DIR) && yarn --cwd=$(UI_ROOT_DIR) lint --max-warnings=0
+
+.PHONY: test-ui
+test-ui: update-ui-deps
+	yarn --cwd=$(UI_ROOT_DIR) test

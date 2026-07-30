@@ -1,5 +1,5 @@
 import { Input, Select } from "@mantine/core";
-import { useEffect } from "react";
+import { ChangeEvent, useEffect } from "react";
 import { Team } from "../../../Apis/api-types";
 import { FormModalStyles } from "../../../Styles/shared/FormModalStyles";
 import { Accordion } from "../../Common/Accordion";
@@ -80,7 +80,7 @@ const CreateNewAppFormContents = ({
             placeholder="App Name"
             autoComplete="off"
             value={appName}
-            onChange={(e) => setAppName(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setAppName(e.target.value)}
           />
         </FormModalStyles.FormRow>
         <FormModalStyles.FormRow>
@@ -96,7 +96,7 @@ const CreateNewAppFormContents = ({
             disabled={!appTeamId}
             autoComplete="off"
             value={appDescription}
-            onChange={(e) => setAppDescription(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setAppDescription(e.target.value)}
           />
         </FormModalStyles.FormRow>
       </Accordion>
