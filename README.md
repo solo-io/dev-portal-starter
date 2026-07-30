@@ -164,6 +164,9 @@ You can add these environment variables to a `.env.local` file in the `projects/
 - `VITE_SWAGGER_PREFILL_BASIC` - Prefills the Swagger UI authorization configuration for a Basic authorization scheme. This can be set using the following format: `'["authDefinitionKey", "username", "password"]'`.
 - `VITE_DEFAULT_APP_AUTH` - This controls whether the OAuth and/or API Key sections are shown on the App details page. Can be set to `"OAUTH"`, `"API_KEY"`, or `"ALL"`. Defaults to `"ALL"`.
 - `VITE_API_PAGE_RELOAD` - This is an optional parameter that ensures the API page reloads when navigating to it when set to `"true"`. This is useful when gating the API page behind an auth flow.
+- `VITE_SESSION_EXPIRED_BEHAVIOR` - This controls how the portal reacts when it detects that the user's session has expired (for example, when the gateway redirects a background data request to a login page, or returns a `401`). Can be set to `"anonymous"` (the default) or `"prompt-login"`.
+  - `"anonymous"` falls back to anonymous browsing: requests are re-issued without the (now invalid) session cookie so the gateway serves public content instead of redirecting to login. This is appropriate for mixed public/private portals. Note that for a fully-private portal, anonymous requests are also redirected, so there is no public content to show — use `"prompt-login"` there.
+  - `"prompt-login"` redirects the user to the identity provider to sign in again. This is appropriate for fully-private portals.
 
 #### Environment Variables for PKCE Authorization Flow
 

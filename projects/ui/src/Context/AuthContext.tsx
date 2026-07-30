@@ -1,4 +1,12 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { toast } from "react-hot-toast";
 import { di } from "react-magnetic-di";
 import { useNavigate } from "react-router";
@@ -6,6 +14,7 @@ import { mutate } from "swr";
 import { AccessTokensResponse } from "../Apis/api-types";
 import { useGetCurrentUser } from "../Apis/gg_hooks";
 import { doAccessTokenRequest } from "../Utility/accessTokenRequest";
+import { consumePostLoginLocation } from "../Utility/login/postLoginRedirect";
 import { jwtDecode, parseJwt } from "../Utility/utility";
 
 //
@@ -22,9 +31,16 @@ interface IAuthContext extends AuthProviderProps {
   tokensResponse: AccessTokensResponse | undefined;
   onLogin: (newTokensResponse: AccessTokensResponse) => void;
   onLogout: () => void;
+  // Clears local tokens (PKCE) and evicts cached authed data (e.g. the `/me`
+  // response) so `useIsLoggedIn` re-derives to anonymous. Used when an expired
+  // session is detected (see `SessionExpiryHandler`).
+  clearSession: () => void;
+  // Attempts a silent access-token refresh using the locally stored
+  // refresh_token (PKCE deployments only). Resolves true on success.
+  tryRefreshTokens: () => Promise<boolean>;
 }
 
-const LOCAL_STORAGE_TOKENS_KEY = "gloo-platform-portal-tokens";
+export const LOCAL_STORAGE_TOKENS_KEY = "gloo-platform-portal-tokens";
 export const LOCAL_STORAGE_AUTH_VERIFIER = "gloo-platform-portal-auth-verifier";
 export const LOCAL_STORAGE_AUTH_STATE = "gloo-platform-portal-auth-state";
 
@@ -72,7 +88,20 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
   };
 
   const [tokensResponse, setTokensResponse] = useState(
-    getTokensFromLocalStorageIfCurrentElseClear()
+    getTokensFromLocalStorageIfCurrentElseClear(),
+  );
+
+  // What the [tokensResponse] effect should do about cached API data once the
+  // tokens it is reacting to have been committed — "reset" to discard and
+  // refetch (the session identity changed), "retry" to re-run the queries
+  // keeping their data in place (same user, fresher token).
+  //
+  // Refetching is deferred to that effect rather than done where the tokens are
+  // set, because SWR's fetchers capture the Bearer token as of the last render:
+  // a refetch fired alongside `setTokensResponse` still sends the token being
+  // replaced, and gets rejected all over again.
+  const pendingRevalidationRef = useRef<"reset" | "retry" | undefined>(
+    undefined,
   );
 
   useEffect(() => {
@@ -88,10 +117,10 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
         return;
       }
       if (tokensResponse?.access_token === latestTokens.access_token) return;
-      // Set the tokens if they have not changed.
+      // Another tab changed the session, so adopt its tokens and drop the data
+      // fetched for the previous one.
+      pendingRevalidationRef.current = "reset";
       setTokensResponse(latestTokens);
-      // Mutate and match all swr keys to clear the cache.
-      mutate(() => true, undefined, { revalidate: true });
     };
     window.addEventListener("focus", onWindowFocus);
     return () => {
@@ -124,7 +153,7 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
         try {
           const res = await doAccessTokenRequest(
             { refresh_token: tokensJSON.refresh_token },
-            "refresh_token"
+            "refresh_token",
           );
           setTokensResponse(res);
         } catch (e) {
@@ -134,7 +163,7 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
       },
       // Don't make this request more than once a second,
       // and do the refresh 5 seconds early.
-      Math.max(1000, millisUntilExpires - 5000)
+      Math.max(1000, millisUntilExpires - 5000),
     );
     // Update the saved timeout
     if (refreshTokenTimeout !== undefined) {
@@ -146,6 +175,10 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
   // This reacts to the access token changes,
   // either clearing or saving locally stored data.
   useEffect(() => {
+    // Read and reset on every run so a request can only apply to the tokens it
+    // was made for.
+    const pendingRevalidation = pendingRevalidationRef.current;
+    pendingRevalidationRef.current = undefined;
     if (!tokensResponse) {
       clearTokensApiCacheAndTimeout();
       return;
@@ -155,15 +188,18 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
       const justLoggedIn = !localStorage.getItem(LOCAL_STORAGE_TOKENS_KEY);
       localStorage.setItem(
         LOCAL_STORAGE_TOKENS_KEY,
-        JSON.stringify(tokensResponse)
+        JSON.stringify(tokensResponse),
       );
       refreshTheToken(tokensResponse);
-      // If we just logged in.
-      if (justLoggedIn) {
+      if (justLoggedIn || pendingRevalidation === "reset") {
         // Mutate and match all swr keys to clear the cache.
         mutate(() => true, undefined, {
           revalidate: true,
         });
+      } else if (pendingRevalidation === "retry") {
+        // Re-run the queries with the new token, keeping any cached data in
+        // place while they revalidate.
+        mutate(() => true);
       }
     } catch (e) {
       // eslint-disable-next-line no-console
@@ -173,10 +209,63 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tokensResponse]);
 
+  /**
+   * Clears local tokens (PKCE) and evicts cached authed data so the app
+   * re-derives to anonymous. Memoized so effect subscriptions keyed on it
+   * (SessionExpiryHandler) don't churn every render.
+   */
+  const clearSession = useCallback(() => {
+    if (tokensResponse !== undefined) {
+      // PKCE: dropping the tokens fires the [tokensResponse] effect, whose
+      // teardown already evicts the SWR cache — evicting here too would
+      // force-revalidate every key twice back to back.
+      setTokensResponse(undefined);
+      return;
+    }
+    // OIDC-auth-code (BFF): there are no local tokens, so no state change will
+    // fire the teardown effect; evict the cached authed data (e.g. the stale
+    // `/me`) directly.
+    mutate(() => true, undefined, { revalidate: true });
+  }, [tokensResponse]);
+
+  /**
+   * Attempts a silent token refresh (PKCE deployments only — requires a
+   * locally stored refresh_token; in OIDC-auth-code/BFF deployments there are
+   * no local tokens and this resolves false immediately). Used when a request
+   * is rejected as unauthorized: the access token may simply have lapsed (e.g.
+   * the tab slept past the refresh timer) while the refresh token is still
+   * valid, which shouldn't end the session.
+   */
+  const tryRefreshTokens = useCallback(async () => {
+    const refreshToken = tokensResponse?.refresh_token;
+    if (!refreshToken) {
+      return false;
+    }
+    try {
+      const res = await doAccessTokenRequest(
+        { refresh_token: refreshToken },
+        "refresh_token",
+      );
+      if (!res?.access_token) {
+        return false;
+      }
+      // The queries that failed with the lapsed token are re-run by the
+      // [tokensResponse] effect, once this token is the one they will send.
+      pendingRevalidationRef.current = "retry";
+      setTokensResponse(res);
+      return true;
+    } catch {
+      return false;
+    }
+  }, [tokensResponse]);
+
   /**  Saves access tokens on login. */
   const onLogin = (newTokensResponse: AccessTokensResponse) => {
     setTokensResponse(newTokensResponse);
-    navigate("/");
+    // Return to the route the user started login from (PKCE lands back here with
+    // the auth code), falling back to home. `replace` drops the `?code=` URL
+    // from history. See postLoginRedirect.
+    navigate(consumePostLoginLocation() ?? "/", { replace: true });
   };
 
   /**  Removes access tokens on logout and clears swr cache. */
@@ -193,6 +282,8 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
         tokensResponse,
         onLogin,
         onLogout,
+        clearSession,
+        tryRefreshTokens,
       }}
     >
       {props.children}
@@ -200,11 +291,16 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
   );
 };
 
-function useIsOidcAuthLoggedIn() {
+/**
+ * True when the current identity request (`/me`) has succeeded — i.e. the
+ * session is verified end-to-end against the gateway, not just present
+ * client-side (contrast with `useIsLoggedIn`, which is also true on mere
+ * token presence before any request has been validated).
+ */
+export function useIsSessionVerified() {
   di(useGetCurrentUser);
   const { data: user } = useGetCurrentUser();
-  const isOidcAuthLoggedIn = !!user?.email || !!user?.username || !!user?.name;
-  return isOidcAuthLoggedIn;
+  return !!user?.email || !!user?.username || !!user?.name;
 }
 
 /**
@@ -213,7 +309,7 @@ function useIsOidcAuthLoggedIn() {
 export function useIsLoggedIn() {
   const { tokensResponse } = useContext(AuthContext);
   const isAccessTokenAuthLoggedIn = !!tokensResponse?.access_token;
-  const isOidcAuthLoggedIn = useIsOidcAuthLoggedIn();
+  const isOidcAuthLoggedIn = useIsSessionVerified();
   return isAccessTokenAuthLoggedIn || isOidcAuthLoggedIn;
 }
 

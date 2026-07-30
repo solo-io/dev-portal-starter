@@ -29,6 +29,41 @@ app.use((req, _res, next) => {
 });
 
 // ---------------------------------------------------------------------------
+// Test-only auth-mode control
+//
+// Lets e2e tests simulate what a gateway in front of the portal API does when
+// the caller's session is dead:
+//   - "ok"          (default) serve normally
+//   - "expired-401" reject every /v1 request as unauthorized
+//   - "expired-302" redirect every /v1 request to a (cross-origin) login page
+//
+// Only real /v1 API requests are affected: CORS preflights are answered by the
+// CORS middleware above (a browser fetch whose preflight fails surfaces as a
+// network TypeError, not as the redirect/401 the UI's expiry detection reads).
+// ---------------------------------------------------------------------------
+let authMode = 'ok';
+
+app.post('/__test/auth-mode', (req, res) => {
+  const mode = req.body?.mode;
+  if (!['ok', 'expired-401', 'expired-302'].includes(mode)) {
+    return res.status(400).json({ error: `unknown auth mode: ${mode}` });
+  }
+  authMode = mode;
+  console.log(`  Test auth mode set to: ${authMode}`);
+  res.json({ mode: authMode });
+});
+
+app.use('/v1', (_req, res, next) => {
+  if (authMode === 'expired-401') {
+    return res.status(401).json({ message: 'authentication required' });
+  }
+  if (authMode === 'expired-302') {
+    return res.redirect(302, 'http://mock-idp.invalid/auth/login');
+  }
+  next();
+});
+
+// ---------------------------------------------------------------------------
 // OAuth2 Token Endpoint
 // POST /auth/realms/master/protocol/openid-connect/token
 // ---------------------------------------------------------------------------
@@ -126,5 +161,6 @@ app.listen(PORT, () => {
   console.log(`  GET  /v1/api-products`);
   console.log(`  GET  /v1/api-products/:id/versions`);
   console.log(`  GET  /health`);
+  console.log(`  POST /__test/auth-mode  (test-only: ok | expired-401 | expired-302)`);
   console.log();
 });

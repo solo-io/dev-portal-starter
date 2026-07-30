@@ -9,6 +9,7 @@ import {
   oidcAuthCodeConfigCallbackPath,
   oidcAuthCodeConfigLogoutPath,
 } from "../../../user_variables.tmplr";
+import { startLogin } from "../../../Utility/login/loginRedirect";
 import { useInArea } from "../../../Utility/utility";
 import { StyledUserDropdown } from "../BasicAuth/HeaderSectionLoggedIn";
 
@@ -29,7 +30,16 @@ export function OidcAuthCodeHeaderSection() {
 
   return !isLoggedIn ? (
     <div className="userLoginArea loggedOut">
-      <a href={oidcAuthCodeConfigCallbackPath}>
+      {/* The href is kept for native anchor semantics (middle-click, copy
+          link); a normal click goes through the shared startLogin() so the
+          header and the session-expired re-login start sign-in the same way. */}
+      <a
+        href={oidcAuthCodeConfigCallbackPath}
+        onClick={(e) => {
+          e.preventDefault();
+          startLogin();
+        }}
+      >
         <div className="styledButton">LOGIN</div>
       </a>
     </div>
