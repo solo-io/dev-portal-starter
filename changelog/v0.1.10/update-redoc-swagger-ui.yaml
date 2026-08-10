@@ -9,6 +9,7 @@ changelog:
     dependencyTag: v5.32.12
   - type: NEW_FEATURE
     issueLink: https://github.com/solo-io/gloo-gateway/issues/1103
+    resolvesIssue: false
     description: >-
       The Redoc view now renders OpenAPI 3.2 specs as 3.1 instead of failing
       with an unsupported-version error, so 3.2-only constructs (e.g. QUERY
