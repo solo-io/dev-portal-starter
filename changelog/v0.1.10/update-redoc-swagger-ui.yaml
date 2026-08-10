@@ -1,0 +1,18 @@
+changelog:
+  - type: DEPENDENCY_BUMP
+    dependencyOwner: Redocly
+    dependencyRepo: redoc
+    dependencyTag: v2.5.3
+  - type: DEPENDENCY_BUMP
+    dependencyOwner: swagger-api
+    dependencyRepo: swagger-ui
+    dependencyTag: v5.32.12
+  - type: NEW_FEATURE
+    issueLink: https://github.com/solo-io/gloo-gateway/issues/1103
+    description: >-
+      The Redoc view now renders OpenAPI 3.2 specs as 3.1 instead of failing
+      with an unsupported-version error, so 3.2-only constructs (e.g. QUERY
+      operations) are omitted from that view. In the Swagger view, which
+      already accepted OpenAPI 3.2 specs, QUERY operations (which already
+      rendered) now get their own styled method badge. The spec download
+      always contains the full document.

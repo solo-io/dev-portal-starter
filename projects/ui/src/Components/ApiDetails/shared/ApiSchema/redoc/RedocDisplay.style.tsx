@@ -176,6 +176,11 @@ export const RedocDisplayContainer = styled.div(
             &.put {
               background-color: ${theme.putAction};
             }
+            // QUERY (OpenAPI 3.2). Redoc does not render QUERY operations
+            // yet; this covers the badge whenever it starts to.
+            &.query {
+              background-color: ${theme.queryAction};
+            }
 
             &.options,
             &.patch,
@@ -283,6 +288,9 @@ export const RedocDisplayContainer = styled.div(
           }
           &.put {
             background-color: ${theme.putAction};
+          }
+          &.query {
+            background-color: ${theme.queryAction};
           }
 
           &.options,

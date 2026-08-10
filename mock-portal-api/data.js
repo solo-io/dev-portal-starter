@@ -132,6 +132,95 @@ const petStoreSpec = {
   },
 };
 
+// An OpenAPI 3.2 document, for validating how far the renderers get with the
+// newer spec version:
+//   - the QUERY method operation renders in swagger-ui (>= 5.32) but is
+//     silently dropped by Redoc, which models 3.2 documents as 3.1
+//   - the SSE response's itemSchema is ignored by both renderers today
+//   - the hierarchical tags (parent/kind) are parsed by swagger-ui's ApiDOM
+//     layer but both renderers show them flat: "catalog" appears as an empty
+//     sibling section rather than a parent containing "search"
+const searchSpec = {
+  openapi: "3.2.0",
+  info: { title: "Search REST API", version: "1.0.0" },
+  servers: [{ url: "http://localhost:31080" }],
+  tags: [
+    { name: "catalog", summary: "Catalog", kind: "nav" },
+    {
+      name: "search",
+      summary: "Search",
+      description: "Catalog search operations",
+      parent: "catalog",
+      kind: "nav",
+    },
+  ],
+  paths: {
+    "/search": {
+      query: {
+        summary: "Search the catalog",
+        operationId: "searchCatalog",
+        tags: ["search"],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  term: { type: "string" },
+                  limit: { type: "integer" },
+                },
+              },
+            },
+          },
+        },
+        responses: { 200: { description: "Search results" } },
+      },
+      get: {
+        summary: "List saved searches",
+        operationId: "listSavedSearches",
+        tags: ["search"],
+        responses: { 200: { description: "A list of saved searches" } },
+      },
+    },
+    "/search/stream": {
+      get: {
+        summary: "Stream search results",
+        operationId: "streamSearchResults",
+        tags: ["search"],
+        responses: {
+          200: {
+            description: "Server-sent events stream of results",
+            content: {
+              "text/event-stream": {
+                itemSchema: {
+                  type: "object",
+                  properties: {
+                    id: { type: "string" },
+                    score: { type: "number" },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  components: {
+    schemas: {
+      SearchResult: {
+        type: "object",
+        properties: {
+          id: { type: "string" },
+          title: { type: "string" },
+          score: { type: "number" },
+        },
+      },
+    },
+  },
+};
+
 // ----- GMG (Gloo Mesh Gateway) format: flat API list -----
 
 const gmgApis = [
@@ -180,6 +269,21 @@ const gmgApis = [
     openapiSpec: ordersSpec,
     openapiSpecFetchErr: null,
   },
+  {
+    apiProductId: "search-api",
+    apiProductDisplayName: "Search API",
+    apiVersion: "v1",
+    apiId: "search-api-v1",
+    contact: "search-team@example.com",
+    customMetadata: { team: "search" },
+    description: "Search API described with OpenAPI 3.2",
+    license: "MIT",
+    termsOfService: "https://example.com/tos",
+    title: "Search REST API",
+    usagePlans: ["gold"],
+    openapiSpec: searchSpec,
+    openapiSpecFetchErr: null,
+  },
 ];
 
 // ----- GG (Gloo Gateway) format: API products + versions -----
@@ -207,6 +311,14 @@ const ggApiProducts = [
     id: "orders-api",
     name: "Orders API",
     updatedAt: "2024-06-10T08:00:00Z",
+    versionsCount: 1,
+  },
+  {
+    createdAt: "2024-07-01T10:00:00Z",
+    description: "Search API described with OpenAPI 3.2",
+    id: "search-api",
+    name: "Search API",
+    updatedAt: "2024-07-15T08:00:00Z",
     versionsCount: 1,
   },
 ];
@@ -251,6 +363,19 @@ const ggApiVersions = {
       updatedAt: "2024-06-10T08:00:00Z",
     },
   ],
+  "search-api": [
+    {
+      apiSpec: searchSpec,
+      createdAt: "2024-07-01T10:00:00Z",
+      documentation: "Full documentation for Search API v1",
+      id: "search-api-v1",
+      name: "v1",
+      publicVisible: true,
+      status: "APPROVED",
+      title: "Search API v1",
+      updatedAt: "2024-07-15T08:00:00Z",
+    },
+  ],
 };
 
 // Map apiId -> OpenAPI spec for the /apis/:apiId/schema endpoint
@@ -258,6 +383,7 @@ const apiSchemas = {
   "tracks-api-v1": openApiSpec,
   "petstore-api-v2": petStoreSpec,
   "orders-api-v1": ordersSpec,
+  "search-api-v1": searchSpec,
 };
 
 module.exports = {
