@@ -36,11 +36,11 @@
     "react-magnetic-di": "^3.2.5",
     "react-markdown": "^9.0.1",
     "react-router": "^8.3.0",
-    "redoc": "^2.5.2",
+    "redoc": "^2.5.3",
     "remark-gfm": "^4.0.0",
     "storybook": "^8.6.17",
     "styled-components": "^5.3.6",
-    "swagger-ui": "^5.30.2",
+    "swagger-ui": "^5.32.12",
     "swr": "^2.4.0",
     "yaml": "^2.8.3"
   },

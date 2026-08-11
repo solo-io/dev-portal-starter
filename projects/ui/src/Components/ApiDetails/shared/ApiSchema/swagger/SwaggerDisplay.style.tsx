@@ -164,6 +164,22 @@ export const SwaggerDisplayContainer = styled.div(
               }
             }
           }
+          // QUERY is an OpenAPI 3.2 method (swagger-ui >= 5.32 renders it).
+          // Other unbranded methods (patch/head/options/trace) fall back to
+          // the defaultAction styling on .opblock above.
+          &.opblock-query {
+            .opblock-summary {
+              border-color: ${theme.queryAction};
+              .opblock-summary-method {
+                background-color: ${theme.queryAction};
+              }
+            }
+            .opblock-body {
+              .tab-header .tab-item.active h4 span:after {
+                background-color: ${theme.queryAction};
+              }
+            }
+          }
 
           &.opblock-deprecated {
             border-color: ${theme.marchGrey};

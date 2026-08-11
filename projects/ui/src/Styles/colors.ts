@@ -106,6 +106,8 @@ const semanticColorMap = {
   getAction: colorMap.lakeBlue,
   postAction: colorMap.darkGreen,
   putAction: colorMap.pumpkinOrange,
+  // QUERY (OpenAPI 3.2): safe like GET, so a related-but-distinct blue.
+  queryAction: colorMap.pondBlue,
   apiDocumentationText: colorMap.neptuneBlue,
 } as const;
 
