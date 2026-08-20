@@ -1,0 +1,9 @@
+name: ZZ Probe
+on:
+  push:
+    branches: [Charlesthebird/nightlyCves]
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo ok
