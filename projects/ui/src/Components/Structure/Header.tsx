@@ -76,6 +76,11 @@ const Header = () => {
               <Logo />
             )}
           </Link>
+          {isLoggedIn && isAdmin && (
+            <HeaderStyles.StyledAdminBadge title="You are signed in as a portal administrator">
+              Admin
+            </HeaderStyles.StyledAdminBadge>
+          )}
         </div>
         <div className="siteNavigating">
           <NavLink to={"/"} className={"navLink"} end>

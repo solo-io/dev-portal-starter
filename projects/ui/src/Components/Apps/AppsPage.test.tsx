@@ -48,4 +48,34 @@ describe("AppsPage", () => {
 
     expect(screen.queryByText("CREATE NEW APP")).not.toBeNull();
   });
+
+  // The list is scoped to the caller on /apps and covers the whole
+  // portal on /admin/apps, so the wording has to distinguish them.
+  it("says the list covers the whole portal on the admin route", () => {
+    render(
+      <MemoryRouter initialEntries={["/admin/apps"]}>
+        <AppsPage />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.queryByText("Browse all Apps in this portal."),
+    ).not.toBeNull();
+    expect(
+      screen.queryByText("Browse the Apps of the teams you belong to."),
+    ).toBeNull();
+  });
+
+  it("says the list is the caller's own on the self-service route", () => {
+    render(
+      <MemoryRouter initialEntries={["/apps"]}>
+        <AppsPage />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.queryByText("Browse the Apps of the teams you belong to."),
+    ).not.toBeNull();
+    expect(screen.queryByText("Browse all Apps in this portal.")).toBeNull();
+  });
 });

@@ -10,4 +10,6 @@ changelog:
       app's details page from the Apps page, a team's app list and a
       subscription card, and can create teams, create apps and add API keys.
       The portal server already permitted all of these actions for admins;
-      only the UI withheld them.
+      only the UI withheld them. The admin view now also identifies itself:
+      an Admin badge in the header, and Teams and Apps state whether the
+      list covers the whole portal or only the teams you belong to.

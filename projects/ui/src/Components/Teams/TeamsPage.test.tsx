@@ -46,4 +46,32 @@ describe("TeamsPage", () => {
 
     expect(screen.queryByText("CREATE NEW TEAM")).not.toBeNull();
   });
+
+  // The list is scoped to the caller on /teams and covers the whole
+  // portal on /admin/teams, so the wording has to distinguish them.
+  it("says the list covers the whole portal on the admin route", () => {
+    render(
+      <MemoryRouter initialEntries={["/admin/teams"]}>
+        <TeamsPage />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.queryByText("Browse all teams in this portal."),
+    ).not.toBeNull();
+    expect(screen.queryByText("Browse the teams you belong to.")).toBeNull();
+  });
+
+  it("says the list is the caller's own on the self-service route", () => {
+    render(
+      <MemoryRouter initialEntries={["/teams"]}>
+        <TeamsPage />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.queryByText("Browse the teams you belong to."),
+    ).not.toBeNull();
+    expect(screen.queryByText("Browse all teams in this portal.")).toBeNull();
+  });
 });

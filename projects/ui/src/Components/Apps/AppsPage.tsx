@@ -5,11 +5,15 @@ import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
 import { Button } from "../Common/Button";
 import { PageContainer } from "../Common/PageContainer";
+import { useInArea } from "../../Utility/utility";
 import CreateNewAppModal from "./Modals/CreateNewAppModal";
 import { AppsPageContent } from "./PageContent/AppsPageContent";
 
 export function AppsPage() {
   const [modalOpen, setModalOpen] = useState(false);
+  // Served at both /apps and /admin/apps (AdminAppsPage re-exports it). See
+  // the note in TeamsPage: the wording follows the route, not the identity.
+  const inAdminArea = useInArea(["/admin/apps"]);
 
   return (
     <PageContainer>
@@ -17,7 +21,9 @@ export function AppsPage() {
         title={<BannerHeadingTitle text={"Apps"} logo={<Icon.AppIcon />} />}
         description={
           <>
-            Browse the list of Apps in this portal.
+            {inAdminArea
+              ? "Browse all Apps in this portal."
+              : "Browse the Apps of the teams you belong to."}
             <Box pt={"20px"}>
               <Button onClick={() => setModalOpen(true)}>CREATE NEW APP</Button>
             </Box>

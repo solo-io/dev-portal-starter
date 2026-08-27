@@ -89,6 +89,15 @@ describe("Header nav for admin users", () => {
     expect(navLink("Teams")?.className).toContain("active");
   });
 
+  // The admin and non-admin views render the same pages with the same nav
+  // labels, so this badge is the only always-visible marker of an admin
+  // session.
+  it("marks the session as an admin one", () => {
+    renderHeader("/admin/apps");
+
+    expect(screen.queryByText("Admin")).not.toBeNull();
+  });
+
   it("still marks Apps active on the admin apps list", () => {
     renderHeader("/admin/apps");
 
@@ -105,6 +114,13 @@ describe("Header nav for non-admin users", () => {
     expect(navLink("Teams")?.getAttribute("href")).toBe("/teams");
     expect(navLink("Apps")?.getAttribute("href")).toBe("/apps");
     expect(navLink("Subscriptions")).toBeUndefined();
+  });
+
+  it("does not mark the session as an admin one", () => {
+    auth.isAdmin = false;
+    renderHeader("/apis");
+
+    expect(screen.queryByText("Admin")).toBeNull();
   });
 });
 
