@@ -102,15 +102,31 @@ const Header = () => {
                   // region [GG] Logged-in, admin
                   //
                   <>
+                    {/*
+                    // Admins get the APIs catalog too. The portal server treats
+                    // an admin as a superset of a regular user, so the catalog,
+                    // API Product details and the flows reachable from them all
+                    // work for admins.
+                    */}
+                    <ApisPageNavLink />
+                    {/*
+                    // Team and app details live at /teams/:id and /apps/:id for
+                    // admins too, so the tab has to stay active for the plain
+                    // area as well as the /admin one.
+                    */}
                     <NavLink
                       to={"/admin/teams"}
-                      className={`navLink ${inAdminTeamsArea ? "active" : ""}`}
+                      className={`navLink ${
+                        inAdminTeamsArea || inTeamsArea ? "active" : ""
+                      }`}
                     >
                       Teams
                     </NavLink>
                     <NavLink
                       to={"/admin/apps"}
-                      className={`navLink ${inAdminAppsArea ? "active" : ""}`}
+                      className={`navLink ${
+                        inAdminAppsArea || inAppsArea ? "active" : ""
+                      }`}
                     >
                       Apps
                     </NavLink>
@@ -126,14 +142,6 @@ const Header = () => {
                   // region [GG] Logged-in, non-admin
                   //
                   <>
-                    {/*
-                    // If we allow admins to access the APIs page, things get a bit
-                    // more confusing, since we will have to consider the behavior
-                    // of the API details pages and pending subscriptions tabs.
-                    // For example, a user can create an App from the API details page,
-                    // so it would be strange for the admin not to have access to
-                    // the Apps page in that case.
-                    */}
                     <ApisPageNavLink />
                     <NavLink
                       to={"/teams"}

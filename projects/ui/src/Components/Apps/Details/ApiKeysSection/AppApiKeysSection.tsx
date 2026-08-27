@@ -3,7 +3,6 @@ import { useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
 import { APIKey, App } from "../../../../Apis/api-types";
 import { useListApiKeysForApp } from "../../../../Apis/gg_hooks";
-import { useIsAdmin } from "../../../../Context/AuthContext";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
@@ -21,8 +20,7 @@ import ConfirmDeleteApiKeyModal from "../Modals/ConfirmDeleteApiKeyModal";
 import AddApiKeysSubSection from "./AddApiKeysSubSection";
 
 const AppApiKeysSection = ({ app }: { app: App }) => {
-  di(useIsAdmin, useListApiKeysForApp);
-  const isAdmin = useIsAdmin();
+  di(useListApiKeysForApp);
   const { data: apiKeys } = useListApiKeysForApp(app.id);
   const [showAddApiKeySubSection, setShowAddApiKeySubSection] = useState(false);
 
@@ -66,15 +64,13 @@ const AppApiKeysSection = ({ app }: { app: App }) => {
     <DetailsPageStyles.Section>
       <Flex justify={"space-between"}>
         <DetailsPageStyles.Title>API Keys</DetailsPageStyles.Title>
-        {!isAdmin && (
-          <ToggleAddButton
-            topicUpperCase="API KEY"
-            isAdding={showAddApiKeySubSection}
-            toggleAdding={() =>
-              setShowAddApiKeySubSection(!showAddApiKeySubSection)
-            }
-          />
-        )}
+        <ToggleAddButton
+          topicUpperCase="API KEY"
+          isAdding={showAddApiKeySubSection}
+          toggleAdding={() =>
+            setShowAddApiKeySubSection(!showAddApiKeySubSection)
+          }
+        />
       </Flex>
       <AddApiKeysSubSection
         app={app}
