@@ -49,11 +49,24 @@ describe("AppsPage", () => {
     expect(screen.queryByText("CREATE NEW APP")).not.toBeNull();
   });
 
-  // The list is scoped to the caller on /apps and covers the whole
-  // portal on /admin/apps, so the wording has to distinguish them.
-  it("says the list covers the whole portal on the admin route", () => {
+  // Scope follows the caller's mode rather than the URL (see TeamsPage).
+  it("says the list covers the whole portal for admins", () => {
+    auth.isAdmin = true;
     render(
       <MemoryRouter initialEntries={["/admin/apps"]}>
+        <AppsPage />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.queryByText("Browse all Apps in this portal."),
+    ).not.toBeNull();
+  });
+
+  it("says the list covers the whole portal for admins on /apps too", () => {
+    auth.isAdmin = true;
+    render(
+      <MemoryRouter initialEntries={["/apps"]}>
         <AppsPage />
       </MemoryRouter>,
     );
@@ -66,7 +79,8 @@ describe("AppsPage", () => {
     ).toBeNull();
   });
 
-  it("says the list is the caller's own on the self-service route", () => {
+  it("says the list is membership-scoped for non-admins", () => {
+    auth.isAdmin = false;
     render(
       <MemoryRouter initialEntries={["/apps"]}>
         <AppsPage />
@@ -77,5 +91,19 @@ describe("AppsPage", () => {
       screen.queryByText("Browse the Apps of the teams you belong to."),
     ).not.toBeNull();
     expect(screen.queryByText("Browse all Apps in this portal.")).toBeNull();
+  });
+
+  // The route alone must not move the copy.
+  it("keeps the membership-scoped copy for a non-admin on the admin route", () => {
+    auth.isAdmin = false;
+    render(
+      <MemoryRouter initialEntries={["/admin/apps"]}>
+        <AppsPage />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.queryByText("Browse the Apps of the teams you belong to."),
+    ).not.toBeNull();
   });
 });

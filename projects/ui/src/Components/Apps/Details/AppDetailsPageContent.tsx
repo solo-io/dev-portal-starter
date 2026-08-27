@@ -8,6 +8,7 @@ import {
   useListTeams,
 } from "../../../Apis/gg_hooks";
 import { Icon } from "../../../Assets/Icons";
+import { useIsAdmin } from "../../../Context/AuthContext";
 import { UtilityStyles } from "../../../Styles/shared/Utility.style";
 import {
   AppAuthMethod,
@@ -25,6 +26,7 @@ import AppMetadataSection from "./MetadataSection/AppMetadataSection";
 
 export const AppDetailsPageContent = ({ app }: { app: App }) => {
   di(useListSubscriptionsForApp, useListTeams);
+  const isAdmin = useIsAdmin();
   const { isLoading: isLoadingSubscriptions, data: subscriptions } =
     useListSubscriptionsForApp(app.id);
 
@@ -75,7 +77,9 @@ export const AppDetailsPageContent = ({ app }: { app: App }) => {
         }
         breadcrumbItems={[
           { label: "Home", link: "/" },
-          { label: "Apps", link: "/apps" },
+          // See TeamDetailsPageContent: the crumb follows the caller's mode,
+          // not the current URL.
+          { label: "Apps", link: isAdmin ? "/admin/apps" : "/apps" },
           { label: app.name },
         ]}
       />
