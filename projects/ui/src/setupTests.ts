@@ -30,3 +30,26 @@ Object.defineProperty(window, "localStorage", {
     clear: () => storage.clear(),
   } satisfies Storage,
 });
+
+// jsdom does not implement `matchMedia`, and Mantine components that animate
+// (Transition, and anything built on it such as the header's auth dropdown)
+// call it during render. Without this, those subtrees throw and any
+// surrounding ErrorBoundary renders its fallback instead of the component.
+// Nothing under test depends on media queries actually matching, so this
+// reports "no match" and records no listeners.
+const noop = () => undefined;
+Object.defineProperty(window, "matchMedia", {
+  configurable: true,
+  writable: true,
+  value: (query: string): MediaQueryList => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addEventListener: noop,
+    removeEventListener: noop,
+    dispatchEvent: () => false,
+    // Deprecated, but Mantine 6 still calls these.
+    addListener: noop,
+    removeListener: noop,
+  }),
+});

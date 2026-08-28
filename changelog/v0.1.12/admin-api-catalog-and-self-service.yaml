@@ -1,0 +1,15 @@
+changelog:
+  - type: NEW_FEATURE
+    issueLink: https://github.com/solo-io/gloo-gateway/issues/2601
+    resolvesIssue: false
+    description: >-
+      Portal admin users can now reach the API Product catalog and the
+      self-service flows that were previously hidden from them. The admin
+      navigation gains an APIs entry, giving admins the catalog, API Product
+      details, the OpenAPI spec views and try-it-out. Admins can also open an
+      app's details page from the Apps page, a team's app list and a
+      subscription card, and can create teams, create apps and add API keys.
+      The portal server already permitted all of these actions for admins;
+      only the UI withheld them. The admin view now also identifies itself:
+      an Admin badge in the header, and Teams and Apps state whether the
+      list covers the whole portal or only the teams you belong to.

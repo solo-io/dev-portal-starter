@@ -4,7 +4,6 @@ import { di } from "react-magnetic-di";
 import { NavLink } from "react-router";
 import { Team } from "../../../../Apis/api-types";
 import { useListAppsForTeam } from "../../../../Apis/gg_hooks";
-import { useIsAdmin } from "../../../../Context/AuthContext";
 import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
@@ -22,7 +21,6 @@ import AddTeamAppSubSection from "./AddTeamAppSubSection";
 
 const TeamAppsSection = ({ team }: { team: Team }) => {
   di(useListAppsForTeam);
-  const isAdmin = useIsAdmin();
   const { isLoading, data: apps } = useListAppsForTeam(team);
   const [showAddTeamAppSubSection, setShowAddTeamAppSubSection] =
     useState(false);
@@ -44,17 +42,15 @@ const TeamAppsSection = ({ team }: { team: Team }) => {
             <td>
               {app.deletedAt && formatDateToMMDDYYYY(new Date(app.deletedAt))}
             </td>
-            {!isAdmin && (
-              <td>
-                <UtilityStyles.CenteredCellContent>
-                  <Box mr={"-5%"}>
-                    <UtilityStyles.NavLinkContainer>
-                      <NavLink to={getAppDetailsLink(app)}>DETAILS</NavLink>
-                    </UtilityStyles.NavLinkContainer>
-                  </Box>
-                </UtilityStyles.CenteredCellContent>
-              </td>
-            )}
+            <td>
+              <UtilityStyles.CenteredCellContent>
+                <Box mr={"-5%"}>
+                  <UtilityStyles.NavLinkContainer>
+                    <NavLink to={getAppDetailsLink(app)}>DETAILS</NavLink>
+                  </UtilityStyles.NavLinkContainer>
+                </Box>
+              </UtilityStyles.CenteredCellContent>
+            </td>
           </tr>
         ) ?? []
     );
@@ -67,23 +63,19 @@ const TeamAppsSection = ({ team }: { team: Team }) => {
     <DetailsPageStyles.Section>
       <Flex justify={"space-between"}>
         <DetailsPageStyles.Title>Apps</DetailsPageStyles.Title>
-        {!isAdmin && (
-          <ToggleAddButton
-            topicUpperCase="APP"
-            isAdding={showAddTeamAppSubSection}
-            toggleAdding={() =>
-              setShowAddTeamAppSubSection(!showAddTeamAppSubSection)
-            }
-          />
-        )}
-      </Flex>
-      {!isAdmin && (
-        <AddTeamAppSubSection
-          team={team}
-          open={showAddTeamAppSubSection}
-          onClose={() => setShowAddTeamAppSubSection(false)}
+        <ToggleAddButton
+          topicUpperCase="APP"
+          isAdding={showAddTeamAppSubSection}
+          toggleAdding={() =>
+            setShowAddTeamAppSubSection(!showAddTeamAppSubSection)
+          }
         />
-      )}
+      </Flex>
+      <AddTeamAppSubSection
+        team={team}
+        open={showAddTeamAppSubSection}
+        onClose={() => setShowAddTeamAppSubSection(false)}
+      />
       {!apps?.length ? (
         <Box mb={"-30px"} mt={"30px"}>
           <EmptyData title="No Apps were found." />
@@ -99,13 +91,11 @@ const TeamAppsSection = ({ team }: { team: Team }) => {
                     <th>Created</th>
                     <th>Updated</th>
                     <th>Deleted</th>
-                    {!isAdmin && (
-                      <th>
-                        <UtilityStyles.CenteredCellContent>
-                          Details
-                        </UtilityStyles.CenteredCellContent>
-                      </th>
-                    )}
+                    <th>
+                      <UtilityStyles.CenteredCellContent>
+                        Details
+                      </UtilityStyles.CenteredCellContent>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>{rows}</tbody>

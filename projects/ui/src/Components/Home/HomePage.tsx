@@ -1,6 +1,5 @@
 import { Box } from "@mantine/core";
 import { NavLink } from "react-router";
-import { useIsAdmin } from "../../Context/AuthContext";
 import { companyName, homeImageURL } from "../../user_variables.tmplr";
 import { BannerHeading } from "../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../Common/Banner/BannerHeadingTitle";
@@ -17,7 +16,6 @@ import CardImage2 from "../../Assets/card-option-2@2x.webp";
 import CardImage3 from "../../Assets/card-option-3@2x.webp";
 
 export function HomePage() {
-  const isAdmin = useIsAdmin();
   const { onApisPageClick } = useOnApisPageClick();
 
   return (
@@ -28,16 +26,14 @@ export function HomePage() {
           title={<BannerHeadingTitle text={"Developers Welcome!"} />}
           description={`Welcome to the ${companyName} Developer Portal. Connect, partner, and build with us to create the next generation of digital experiences.`}
           additionalContent={
-            !isAdmin && (
-              <NavLink to="/apis" onClick={onApisPageClick}>
-                <Button
-                  tabIndex={0}
-                  style={{ width: "150px", marginTop: "10px" }}
-                >
-                  VIEW APIS
-                </Button>
-              </NavLink>
-            )
+            <NavLink to="/apis" onClick={onApisPageClick}>
+              <Button
+                tabIndex={0}
+                style={{ width: "150px", marginTop: "10px" }}
+              >
+                VIEW APIS
+              </Button>
+            </NavLink>
           }
           tall={true}
         />

@@ -10,6 +10,34 @@ export namespace HeaderStyles {
     padding: 5px 0px;
   `;
 
+  /**
+   * Marks the session as an admin one. The admin and non-admin views render
+   * the same pages with the same navigation labels, and the admin view lists
+   * every team and app in the portal rather than the caller's own, so the
+   * distinction has to be visible on every page.
+   *
+   * Deliberately uses the theme's existing colours: the portal is rebranded
+   * per deployment (logo, banner, company name), so a fixed accent colour
+   * would clash with some customers' palettes.
+   */
+  export const StyledAdminBadge = styled.div(
+    ({ theme }) => css`
+      margin-left: 4px;
+      padding: 3px 9px;
+      border: 1px solid ${theme.splashBlueDark10};
+      border-radius: 10px;
+
+      background-color: ${theme.splashBlue};
+      color: ${theme.defaultText};
+
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    `
+  );
+
   export const StyledTopNavHeader = styled.header(
     ({ theme }) => css`
       grid-area: header;
