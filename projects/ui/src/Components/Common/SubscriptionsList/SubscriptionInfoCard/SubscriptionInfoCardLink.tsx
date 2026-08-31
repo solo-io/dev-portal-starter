@@ -1,6 +1,5 @@
 import { Box, Tooltip } from "@mantine/core";
 import { NavLink, useLocation } from "react-router";
-import { useIsAdmin } from "../../../../Context/AuthContext";
 import { CardStyles } from "../../../../Styles/shared/Card.style";
 import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
 
@@ -15,14 +14,13 @@ export const SubscriptionInfoCardLink = <T extends { name: string }>({
   ItemIcon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
   item: undefined | null | T;
 }) => {
-  const isAdmin = useIsAdmin();
   const location = useLocation();
   const onLinkedPage = location.pathname === link;
 
   return (
     <Tooltip label={itemTypeCapitalized} position="right">
       <Box w="fit-content" sx={{ userSelect: "none" }}>
-        {!isAdmin && !!item && !onLinkedPage ? (
+        {!!item && !onLinkedPage ? (
           <UtilityStyles.LinkContainer>
             <NavLink to={link}>
               <Box pt={"3px"} pos="absolute">

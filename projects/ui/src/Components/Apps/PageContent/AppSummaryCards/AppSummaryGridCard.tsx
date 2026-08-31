@@ -2,7 +2,6 @@ import { Box, Flex, Tooltip } from "@mantine/core";
 import { useState } from "react";
 import { NavLink } from "react-router";
 import { Icon } from "../../../../Assets/Icons";
-import { useIsAdmin } from "../../../../Context/AuthContext";
 import { CardStyles } from "../../../../Styles/shared/Card.style";
 import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
 import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
@@ -18,7 +17,6 @@ import { AppWithTeam } from "../AppsList";
  * MAIN COMPONENT
  **/
 export function AppSummaryGridCard({ app }: { app: AppWithTeam }) {
-  const isAdmin = useIsAdmin();
   const [isWide, setIsWide] = useState(false);
 
   return (
@@ -50,13 +48,11 @@ export function AppSummaryGridCard({ app }: { app: AppWithTeam }) {
           </Flex>
         </Box>
       </div>
-      {!isAdmin && (
-        <SubscriptionInfoCardStyles.Footer>
-          <UtilityStyles.NavLinkContainer>
-            <NavLink to={getAppDetailsLink(app)}>DETAILS</NavLink>
-          </UtilityStyles.NavLinkContainer>
-        </SubscriptionInfoCardStyles.Footer>
-      )}
+      <SubscriptionInfoCardStyles.Footer>
+        <UtilityStyles.NavLinkContainer>
+          <NavLink to={getAppDetailsLink(app)}>DETAILS</NavLink>
+        </UtilityStyles.NavLinkContainer>
+      </SubscriptionInfoCardStyles.Footer>
     </GridCardStyles.GridCard>
   );
 }

@@ -1,6 +1,7 @@
 import { Box, Flex } from "@mantine/core";
 import { Team } from "../../../Apis/api-types";
 import { Icon } from "../../../Assets/Icons";
+import { useIsAdmin } from "../../../Context/AuthContext";
 import { BannerHeading } from "../../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../../Common/Banner/BannerHeadingTitle";
 import { PageContainer } from "../../Common/PageContainer";
@@ -9,6 +10,8 @@ import EditTeamButtonWithModal from "./EditTeamButtonWithModal";
 import TeamUsersSection from "./UsersSection/TeamUsersSection";
 
 const TeamDetailsPageContent = ({ team }: { team: Team }) => {
+  const isAdmin = useIsAdmin();
+
   return (
     <PageContainer>
       <BannerHeading
@@ -26,7 +29,10 @@ const TeamDetailsPageContent = ({ team }: { team: Team }) => {
         description={team.description}
         breadcrumbItems={[
           { label: "Home", link: "/" },
-          { label: "Teams", link: "/teams" },
+          // Team details are shared between the admin and self-service
+          // views, so the crumb has to lead back to whichever list the
+          // caller's mode actually populates.
+          { label: "Teams", link: isAdmin ? "/admin/teams" : "/teams" },
           { label: team.name },
         ]}
       />
