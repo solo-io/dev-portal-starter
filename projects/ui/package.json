@@ -1,7 +1,7 @@
 {
   "name": "dev-portal-starter",
   "private": true,
-  "version": "0.1.12",
+  "version": "0.0.13",
   "type": "module",
   "scripts": {
     "start": "vite --port=4000",
@@ -82,6 +82,7 @@
     "sha.js": "^2.4.12",
     "cookie": "^0.7.0",
     "brace-expansion": ">=5.0.9",
+    "browserslist": ">=4.28.7",
     "form-data": ">=4.0.6",
     "send": "^0.19.0",
     "rollup": "^4.59.0",
