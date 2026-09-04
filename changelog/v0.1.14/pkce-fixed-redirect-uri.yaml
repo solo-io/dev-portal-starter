@@ -1,0 +1,16 @@
+changelog:
+  - type: FIX
+    issueLink: https://github.com/solo-io/gloo-gateway/issues/2657
+    resolvesIssue: false
+    description: >-
+      The PKCE sign-in flow now always uses a single fixed redirect URI,
+      <portal-url>/callback. It previously used the page the user happened to
+      click LOGIN from, so every such page needed its own sign-in redirect URI
+      registered on the identity provider client, and a page that was not
+      registered failed the sign-in. UPGRADE NOTE: deployments using the PKCE
+      flow must register <portal-url>/callback on their identity provider
+      client. Deployments that registered individual pages (or relied on a
+      wildcard covering them) can drop those entries. Deployments using the
+      gateway-hosted oidcAuthorizationCode flow are unaffected. Users are still
+      returned to the page they started from, which is tracked in the browser
+      and never formed part of the redirect URI.

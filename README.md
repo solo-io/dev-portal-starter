@@ -172,6 +172,8 @@ You can add these environment variables to a `.env.local` file in the `projects/
 
 These variables are required if your authorization server is configured to use the PKCE auth flow. If this app is hosted outside the cluster, then the PKCE auth flow must be used.
 
+In this flow the browser talks to your identity provider directly, so the portal's own callback route must be registered on your IdP client as a sign-in redirect URI: `<your-portal-url>/callback` (for example `https://developer.example.com/callback`). It is the only one you need to register, whichever page a user signs in from. If it is missing or does not match, the identity provider rejects the sign-in, typically with an `invalid_grant` error at the token endpoint.
+
 - `VITE_CLIENT_ID` - The oauth client id. In Keycloak, this is shown in the client settings of your keycloak instances UI: `<your-keycloak-url>/auth`.
 - `VITE_TOKEN_ENDPOINT` - This is the endpoint to get the oauth token. In Keycloak, this is the `token_endpoint` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`..
 - `VITE_AUTH_ENDPOINT` - This is the endpoint to get the PKCE authorization code. In Keycloak, this is the `authorization_code` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`.
