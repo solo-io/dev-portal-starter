@@ -30,6 +30,41 @@ function templateString(
   return templateString;
 }
 
+/**
+ * Misconfigurations found while reading the variables below, reported to the
+ * operator by the config error screen instead of being guessed past (see
+ * `main.tsx`). Collected rather than thrown, because this module is evaluated
+ * during import, before React mounts: a throw here is an uncatchable blank
+ * page, which hides the problem rather than surfacing it.
+ */
+export const configErrors: string[] = [];
+
+/**
+ * Parses an environment variable that selects an on/off behavior.
+ *
+ * Unset and empty both mean "off": a Kubernetes manifest or Docker `-e` easily
+ * yields an empty string for a variable the operator never meant to set, and an
+ * empty value has no plausible "I meant on" reading. Anything else that is not
+ * a boolean is a misconfiguration; the returned value is then never used,
+ * because a non-empty `configErrors` stops the app from rendering at all.
+ */
+function parseBoolEnv(name: string, rawValue: string | undefined) {
+  const value = (rawValue ?? "").trim().toLowerCase();
+  if (value === "") {
+    return false;
+  }
+  if (value === "true" || value === "1") {
+    return true;
+  }
+  if (value === "false" || value === "0") {
+    return false;
+  }
+  configErrors.push(
+    `${name} must be "true" or "false", but was "${rawValue}".`
+  );
+  return false;
+}
+
 //
 // Project Settings
 //
@@ -86,13 +121,20 @@ export const clientId = templateString(
 );
 
 /**
- * This is optional and only needed if this app is deployed in the mesh
- * and the ExtAuthPolicy uses an oidcAuthorizationCode config.
+ * Selects the portal's authentication flow:
+ * - `true`: the gateway-hosted (BFF) oidcAuthorizationCode flow, for when this
+ *   app is deployed in the mesh and the ExtAuthPolicy uses an
+ *   `oidcAuthorizationCode` config.
+ * - `false` (the default when unset): the browser-side authorization-code flow
+ *   with PKCE, driven by `clientId`/`authEndpoint`/`tokenEndpoint`.
  */
-export const appliedOidcAuthCodeConfig = templateString(
-  "{{ tmplr.appliedOidcAuthCodeConfig }}",
-  insertedEnvironmentVariables?.VITE_APPLIED_OIDC_AUTH_CODE_CONFIG,
-  import.meta.env.VITE_APPLIED_OIDC_AUTH_CODE_CONFIG
+export const appliedOidcAuthCodeConfig = parseBoolEnv(
+  "VITE_APPLIED_OIDC_AUTH_CODE_CONFIG",
+  templateString(
+    "{{ tmplr.appliedOidcAuthCodeConfig }}",
+    insertedEnvironmentVariables?.VITE_APPLIED_OIDC_AUTH_CODE_CONFIG,
+    import.meta.env.VITE_APPLIED_OIDC_AUTH_CODE_CONFIG
+  )
 );
 
 /**

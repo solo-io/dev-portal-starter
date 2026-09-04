@@ -1,0 +1,12 @@
+changelog:
+  - type: FIX
+    issueLink: https://github.com/solo-io/gloo-gateway/issues/2657
+    resolvesIssue: false
+    description: >-
+      VITE_APPLIED_OIDC_AUTH_CODE_CONFIG is now parsed as a boolean. It was
+      previously tested for truthiness as a raw string, so setting it to
+      "false" selected the gateway-hosted (BFF) login flow rather than
+      disabling it, and clicking LOGIN appeared to do nothing. "true"/"1" now
+      select the gateway-hosted flow, "false"/"0" and leaving it unset select
+      the browser-side PKCE flow, and any other value is reported as a
+      configuration error instead of being guessed past.

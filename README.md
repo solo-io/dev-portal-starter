@@ -172,6 +172,8 @@ You can add these environment variables to a `.env.local` file in the `projects/
 
 These variables are required if your authorization server is configured to use the PKCE auth flow. If this app is hosted outside the cluster, then the PKCE auth flow must be used.
 
+This is the flow you get when `VITE_APPLIED_OIDC_AUTH_CODE_CONFIG` is unset or `"false"`; see the section below.
+
 - `VITE_CLIENT_ID` - The oauth client id. In Keycloak, this is shown in the client settings of your keycloak instances UI: `<your-keycloak-url>/auth`.
 - `VITE_TOKEN_ENDPOINT` - This is the endpoint to get the oauth token. In Keycloak, this is the `token_endpoint` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`..
 - `VITE_AUTH_ENDPOINT` - This is the endpoint to get the PKCE authorization code. In Keycloak, this is the `authorization_code` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`.
@@ -181,7 +183,7 @@ These variables are required if your authorization server is configured to use t
 
 These variables are required if this app is hosted in your cluster, behind a gateway route that uses an `EnterpriseKgatewayTrafficPolicy` (`entExtAuth`) referencing an `AuthConfig` with an "oidcAuthorizationCode" config. In this configuration, your authorization server must be configured to use client id + secret authentication, and the gateway external-auth service handles user sessions with a browser cookie. See the [Secure login guide](https://docs.solo.io/kgateway/latest/portal/frontend-setup/login/) for the gateway-side resources.
 
-- `VITE_APPLIED_OIDC_AUTH_CODE_CONFIG` - This must be set to "true" if using the "oidcAuthorizationCode" config.
+- `VITE_APPLIED_OIDC_AUTH_CODE_CONFIG` - This must be set to `"true"` if using the "oidcAuthorizationCode" config. It selects between the two auth flows: `"true"` (or `"1"`) uses the gateway-hosted flow described in this section, while `"false"` (or `"0"`, or leaving it unset) uses the PKCE flow described above. Any other value is a configuration error, and the portal reports it instead of starting.
 - `VITE_OIDC_AUTH_CODE_CONFIG_CALLBACK_PATH` - This is the "callbackPath" value of your "oidcAuthorizationCode" config.
 - `VITE_OIDC_AUTH_CODE_CONFIG_LOGOUT_PATH` - This is the "logoutPath" value of your "oidcAuthorizationCode" config.
 

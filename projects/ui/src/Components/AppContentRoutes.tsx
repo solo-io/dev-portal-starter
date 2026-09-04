@@ -79,7 +79,7 @@ function AppContentRoutes() {
         PKCE deployments, which handle the auth-code callback on whatever route
         login started from.
         */}
-        {!!appliedOidcAuthCodeConfig && (
+        {appliedOidcAuthCodeConfig && (
           <>
             <Route
               path={oidcAuthCodeConfigCallbackPath}

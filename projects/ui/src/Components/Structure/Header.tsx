@@ -176,7 +176,7 @@ const Header = () => {
           // region Auth Dropdown
           */}
           <ErrorBoundary fallback="Access issues" class="horizontalError">
-            {!!appliedOidcAuthCodeConfig ? (
+            {appliedOidcAuthCodeConfig ? (
               <OidcAuthCodeHeaderSection />
             ) : (
               <BasicAuthHeaderSection />
