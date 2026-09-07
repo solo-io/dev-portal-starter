@@ -15,4 +15,6 @@ changelog:
       and the value, instead of being guessed past. An invalid
       VITE_DEFAULT_APP_AUTH previously rendered an App details page with
       neither authentication section, and an invalid
-      VITE_SESSION_EXPIRED_BEHAVIOR silently became "anonymous".
+      VITE_SESSION_EXPIRED_BEHAVIOR silently became "anonymous". The Makefile
+      also passes VITE_SESSION_EXPIRED_BEHAVIOR through to the UI, which it did
+      not, so the variable can be set when running the app locally.

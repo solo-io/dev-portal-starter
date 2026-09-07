@@ -139,7 +139,7 @@ You can add these environment variables to a `.env.local` file in the `projects/
 
 Some variables are validated at startup. If one of those is set to a value the app cannot interpret, the portal does not start: it renders a configuration error page that names every variable that is wrong and the value it was given. This is deliberate — a value the app cannot read leaves it unable to tell which behavior was asked for, so it reports the problem instead of picking one and appearing healthy.
 
-The validated variables are `VITE_APPLIED_OIDC_AUTH_CODE_CONFIG`, `VITE_API_PAGE_RELOAD`, `VITE_DEFAULT_APP_AUTH`, and `VITE_SESSION_EXPIRED_BEHAVIOR`. The two boolean variables accept `"true"`, `"1"`, `"false"`, and `"0"`. The two choice variables accept the values listed with them. All four ignore case and surrounding whitespace, and treat an unset or empty value as their default.
+The validated variables are `VITE_API_PAGE_RELOAD`, `VITE_DEFAULT_APP_AUTH`, and `VITE_SESSION_EXPIRED_BEHAVIOR` in the list that follows, plus [`VITE_APPLIED_OIDC_AUTH_CODE_CONFIG`](#environment-variables-if-using-an-oidcauthorizationcode-authconfig), which selects the authentication flow. The two boolean variables accept `"true"`, `"1"`, `"false"`, and `"0"`. The two choice variables accept the values listed with them. All four ignore case and surrounding whitespace, and treat an unset or empty value as their default.
 
 - `VITE_COMPANY_NAME` - This is the company name that is used for your Portal.
 - `VITE_PORTAL_SERVER_URL` - This is the URL for the Portal REST server (`portal-web-server`). The default value is "/v1".
