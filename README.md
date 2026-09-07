@@ -137,6 +137,8 @@ All icons can be found, as the others, in the `/Assets` folder, inside `/Icons`.
 
 You can add these environment variables to a `.env.local` file in the `projects/ui` folder. All Vite environment variables need to start with `VITE_` in order for the app to be able to read them.
 
+Some variables are validated at startup. If one of those is set to a value the app cannot interpret, the portal does not start: it renders a configuration error page that names the variable and the value it was given. This is deliberate — a value the app cannot read leaves it unable to tell which behavior was asked for, so it reports the problem instead of picking one and appearing healthy. `VITE_APPLIED_OIDC_AUTH_CODE_CONFIG` is validated this way.
+
 - `VITE_COMPANY_NAME` - This is the company name that is used for your Portal.
 - `VITE_PORTAL_SERVER_URL` - This is the URL for the Portal REST server (`portal-web-server`). The default value is "/v1".
 - `VITE_SWAGGER_CONFIG_URL` - This is an optional URL for your Swagger configuration file. The URL can be an absolute or relative path, and can be a JSON or YAML file. If you would like to configure the Swagger UI using the [Swagger UI configuration options](https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/), you can do this by:
