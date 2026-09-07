@@ -7,6 +7,12 @@ changelog:
       previously tested for truthiness as a raw string, so setting it to
       "false" selected the gateway-hosted (BFF) login flow rather than
       disabling it, and clicking LOGIN appeared to do nothing. "true"/"1" now
-      select the gateway-hosted flow, "false"/"0" and leaving it unset select
-      the browser-side PKCE flow, and any other value is reported as a
-      configuration error instead of being guessed past.
+      select the gateway-hosted flow, and "false"/"0" or leaving it unset
+      select the browser-side PKCE flow. VITE_API_PAGE_RELOAD,
+      VITE_DEFAULT_APP_AUTH and VITE_SESSION_EXPIRED_BEHAVIOR are validated the
+      same way, so that all four behave alike: a value the portal cannot
+      interpret is reported on a configuration error page naming the variable
+      and the value, instead of being guessed past. An invalid
+      VITE_DEFAULT_APP_AUTH previously rendered an App details page with
+      neither authentication section, and an invalid
+      VITE_SESSION_EXPIRED_BEHAVIOR silently became "anonymous".

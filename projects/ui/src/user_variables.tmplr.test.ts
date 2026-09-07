@@ -5,11 +5,16 @@ import { afterEach, describe, expect, it, vi } from "vitest";
  * the `insertedEnvironmentVariables` global that the server injects into the
  * built UI. So each case sets that global and re-imports the module.
  */
-async function loadWithAppliedOidcAuthCodeConfig(value: string | undefined) {
-  (window as any).insertedEnvironmentVariables =
-    value === undefined ? {} : { VITE_APPLIED_OIDC_AUTH_CODE_CONFIG: value };
+async function loadWithEnv(env: Record<string, string | undefined>) {
+  (window as any).insertedEnvironmentVariables = Object.fromEntries(
+    Object.entries(env).filter(([, value]) => value !== undefined),
+  );
   vi.resetModules();
   return await import("./user_variables.tmplr");
+}
+
+async function loadWithAppliedOidcAuthCodeConfig(value: string | undefined) {
+  return await loadWithEnv({ VITE_APPLIED_OIDC_AUTH_CODE_CONFIG: value });
 }
 
 afterEach(() => {
@@ -60,5 +65,101 @@ describe("configErrors", () => {
   it("stays empty for a valid value", async () => {
     const { configErrors } = await loadWithAppliedOidcAuthCodeConfig("true");
     expect(configErrors).toEqual([]);
+  });
+});
+
+describe("apiPageReload", () => {
+  it.each([
+    ["true", true],
+    ["false", false],
+    ["1", true],
+    ["0", false],
+    ["TRUE", true],
+  ])("reads %o as %o", async (rawValue, expected) => {
+    const { apiPageReload } = await loadWithEnv({
+      VITE_API_PAGE_RELOAD: rawValue,
+    });
+    expect(apiPageReload).toBe(expected);
+  });
+
+  it("is off when unset", async () => {
+    const { apiPageReload } = await loadWithEnv({});
+    expect(apiPageReload).toBe(false);
+  });
+
+  it("records a config error for a value that is not a boolean", async () => {
+    const { configErrors } = await loadWithEnv({
+      VITE_API_PAGE_RELOAD: "yes",
+    });
+    expect(configErrors).toEqual([
+      'VITE_API_PAGE_RELOAD must be "true" or "false", but was "yes".',
+    ]);
+  });
+});
+
+describe("defaultAppAuthMethod", () => {
+  it.each([
+    ["OAUTH", "OAUTH"],
+    ["API_KEY", "API_KEY"],
+    ["ALL", "ALL"],
+    // Case is normalized, as it was before this was validated.
+    ["oauth", "OAUTH"],
+  ])("reads %o as %o", async (rawValue, expected) => {
+    const { defaultAppAuthMethod } = await loadWithEnv({
+      VITE_DEFAULT_APP_AUTH: rawValue,
+    });
+    expect(defaultAppAuthMethod).toBe(expected);
+  });
+
+  it("defaults to ALL when unset", async () => {
+    const { defaultAppAuthMethod } = await loadWithEnv({});
+    expect(defaultAppAuthMethod).toBe("ALL");
+  });
+
+  it("records a config error for an unknown method", async () => {
+    const { configErrors } = await loadWithEnv({
+      VITE_DEFAULT_APP_AUTH: "PASSWORD",
+    });
+    expect(configErrors).toEqual([
+      'VITE_DEFAULT_APP_AUTH must be one of "ALL", "OAUTH", "API_KEY", but was "PASSWORD".',
+    ]);
+  });
+});
+
+describe("sessionExpiredBehavior", () => {
+  it.each([
+    ["anonymous", "anonymous"],
+    ["prompt-login", "prompt-login"],
+    ["PROMPT-LOGIN", "prompt-login"],
+  ])("reads %o as %o", async (rawValue, expected) => {
+    const { sessionExpiredBehavior } = await loadWithEnv({
+      VITE_SESSION_EXPIRED_BEHAVIOR: rawValue,
+    });
+    expect(sessionExpiredBehavior).toBe(expected);
+  });
+
+  it("defaults to anonymous when unset", async () => {
+    const { sessionExpiredBehavior } = await loadWithEnv({});
+    expect(sessionExpiredBehavior).toBe("anonymous");
+  });
+
+  it("records a config error for an unknown behavior", async () => {
+    const { configErrors } = await loadWithEnv({
+      VITE_SESSION_EXPIRED_BEHAVIOR: "logout",
+    });
+    expect(configErrors).toEqual([
+      'VITE_SESSION_EXPIRED_BEHAVIOR must be one of "anonymous", "prompt-login", but was "logout".',
+    ]);
+  });
+});
+
+describe("configErrors", () => {
+  it("collects every misconfigured variable, not just the first", async () => {
+    const { configErrors } = await loadWithEnv({
+      VITE_APPLIED_OIDC_AUTH_CODE_CONFIG: "ture",
+      VITE_API_PAGE_RELOAD: "yes",
+      VITE_SESSION_EXPIRED_BEHAVIOR: "logout",
+    });
+    expect(configErrors).toHaveLength(3);
   });
 });

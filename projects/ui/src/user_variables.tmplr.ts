@@ -65,6 +65,37 @@ function parseBoolEnv(name: string, rawValue: string | undefined) {
   return false;
 }
 
+/**
+ * Parses an environment variable that selects one of a fixed set of values.
+ *
+ * Matching ignores case, because these values were normalized with
+ * `toUpperCase` and `toLowerCase` before they were validated. As with
+ * `parseBoolEnv`, an unrecognized value is a misconfiguration rather than a
+ * silent fallback to the default.
+ */
+function parseEnumEnv<T extends string>(
+  name: string,
+  rawValue: string | undefined,
+  allowedValues: readonly T[],
+  defaultValue: T
+) {
+  const value = (rawValue ?? "").trim();
+  if (value === "") {
+    return defaultValue;
+  }
+  const match = allowedValues.find(
+    (allowedValue) => allowedValue.toLowerCase() === value.toLowerCase()
+  );
+  if (match !== undefined) {
+    return match;
+  }
+  const allowed = allowedValues.map((v) => `"${v}"`).join(", ");
+  configErrors.push(
+    `${name} must be one of ${allowed}, but was "${rawValue}".`
+  );
+  return defaultValue;
+}
+
 //
 // Project Settings
 //
@@ -297,27 +328,29 @@ export enum AppAuthMethod {
   OAUTH,
   API_KEY,
 }
-export const defaultAppAuthMethod = templateString(
-  "{{ tmplr.defaultAppAuthMethod }}",
-  insertedEnvironmentVariables?.VITE_DEFAULT_APP_AUTH,
-  import.meta.env.VITE_DEFAULT_APP_AUTH,
+const appAuthMethods = ["ALL", "OAUTH", "API_KEY"] as const satisfies
+  readonly (keyof typeof AppAuthMethod)[];
+export const defaultAppAuthMethod = parseEnumEnv(
+  "VITE_DEFAULT_APP_AUTH",
+  templateString(
+    "{{ tmplr.defaultAppAuthMethod }}",
+    insertedEnvironmentVariables?.VITE_DEFAULT_APP_AUTH,
+    import.meta.env.VITE_DEFAULT_APP_AUTH
+  ),
+  appAuthMethods,
   "ALL"
-).toUpperCase() as keyof typeof AppAuthMethod;
-if (AppAuthMethod[defaultAppAuthMethod] === undefined) {
-  // eslint-disable-next-line no-console
-  console.error(
-    'The value for `VITE_DEFAULT_APP_AUTH` must be: "OAUTH", "ALL", or "API_KEY".'
-  );
-}
+);
 
 /**
  * This is optional.
  */
-export const apiPageReload = templateString(
-  "{{ tmplr.apiPageReload }}",
-  insertedEnvironmentVariables?.VITE_API_PAGE_RELOAD,
-  import.meta.env.VITE_API_PAGE_RELOAD,
-  "false"
+export const apiPageReload = parseBoolEnv(
+  "VITE_API_PAGE_RELOAD",
+  templateString(
+    "{{ tmplr.apiPageReload }}",
+    insertedEnvironmentVariables?.VITE_API_PAGE_RELOAD,
+    import.meta.env.VITE_API_PAGE_RELOAD
+  )
 );
 
 /**
@@ -331,9 +364,14 @@ export const apiPageReload = templateString(
  *   again. For fully-private portals, where there is no public content to show.
  */
 export type SessionExpiredBehavior = "anonymous" | "prompt-login";
-export const sessionExpiredBehavior = templateString(
-  "{{ tmplr.sessionExpiredBehavior }}",
-  insertedEnvironmentVariables?.VITE_SESSION_EXPIRED_BEHAVIOR,
-  import.meta.env.VITE_SESSION_EXPIRED_BEHAVIOR,
+const sessionExpiredBehaviors = ["anonymous", "prompt-login"] as const;
+export const sessionExpiredBehavior = parseEnumEnv(
+  "VITE_SESSION_EXPIRED_BEHAVIOR",
+  templateString(
+    "{{ tmplr.sessionExpiredBehavior }}",
+    insertedEnvironmentVariables?.VITE_SESSION_EXPIRED_BEHAVIOR,
+    import.meta.env.VITE_SESSION_EXPIRED_BEHAVIOR
+  ),
+  sessionExpiredBehaviors,
   "anonymous"
-).toLowerCase() as SessionExpiredBehavior;
+);
