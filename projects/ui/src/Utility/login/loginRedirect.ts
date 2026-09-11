@@ -101,7 +101,7 @@ export async function redirectToPkceLogin() {
 
 /** Starts sign-in using whichever auth flow this deployment is configured for. */
 export async function startLogin() {
-  if (!!appliedOidcAuthCodeConfig) {
+  if (appliedOidcAuthCodeConfig) {
     // Remember where to return; the gateway lands us back on "/" after auth, and
     // `PostLoginRedirectHandler` restores this on boot.
     capturePostLoginLocation();

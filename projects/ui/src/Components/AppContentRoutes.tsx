@@ -92,7 +92,7 @@ function AppContentRoutes() {
         just returns the user to where they were headed. They are unused in
         PKCE deployments, which use the callback route above.
         */}
-        {!!appliedOidcAuthCodeConfig && (
+        {appliedOidcAuthCodeConfig && (
           <>
             <Route
               path={oidcAuthCodeConfigCallbackPath}

@@ -26,7 +26,7 @@ export const useOnApisPageClick = () => {
     // If using gloo-gateway and logged in, we should be able to use normal react-router routing.
     // This is because the auth is already done.
     (portalServerType === "gloo-gateway" && isLoggedIn) ||
-    apiPageReload !== "true"
+    !apiPageReload
   ) {
     return { onApisPageClick: undefined };
   }
@@ -176,7 +176,7 @@ const Header = () => {
           // region Auth Dropdown
           */}
           <ErrorBoundary fallback="Access issues" class="horizontalError">
-            {!!appliedOidcAuthCodeConfig ? (
+            {appliedOidcAuthCodeConfig ? (
               <OidcAuthCodeHeaderSection />
             ) : (
               <BasicAuthHeaderSection />
