@@ -137,6 +137,10 @@ All icons can be found, as the others, in the `/Assets` folder, inside `/Icons`.
 
 You can add these environment variables to a `.env.local` file in the `projects/ui` folder. All Vite environment variables need to start with `VITE_` in order for the app to be able to read them.
 
+Some variables are validated at startup. If one of those is set to a value the app cannot interpret, the portal does not start: it renders a configuration error page that names every variable that is wrong and the value it was given. This is deliberate — a value the app cannot read leaves it unable to tell which behavior was asked for, so it reports the problem instead of picking one and appearing healthy.
+
+The validated variables are `VITE_API_PAGE_RELOAD`, `VITE_DEFAULT_APP_AUTH`, and `VITE_SESSION_EXPIRED_BEHAVIOR` in the list that follows, plus [`VITE_APPLIED_OIDC_AUTH_CODE_CONFIG`](#environment-variables-if-using-an-oidcauthorizationcode-authconfig), which selects the authentication flow. The two boolean variables accept `"true"`, `"1"`, `"false"`, and `"0"`. The two choice variables accept the values listed with them. All four ignore case and surrounding whitespace, and treat an unset or empty value as their default.
+
 - `VITE_COMPANY_NAME` - This is the company name that is used for your Portal.
 - `VITE_PORTAL_SERVER_URL` - This is the URL for the Portal REST server (`portal-web-server`). The default value is "/v1".
 - `VITE_SWAGGER_CONFIG_URL` - This is an optional URL for your Swagger configuration file. The URL can be an absolute or relative path, and can be a JSON or YAML file. If you would like to configure the Swagger UI using the [Swagger UI configuration options](https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/), you can do this by:
@@ -162,15 +166,17 @@ You can add these environment variables to a `.env.local` file in the `projects/
   VITE_SWAGGER_PREFILL_OAUTH='{"clientId": "your-client-id","clientSecret": "your-client-secret-if-required","realm": "your-realms","appName": "your-app-name","scopeSeparator": " ","scopes": "openid profile","additionalQueryStringParams": {"test": "hello"},"useBasicAuthenticationWithAccessCodeGrant": true,"usePkceWithAuthorizationCodeGrant": true}'
   ```
 - `VITE_SWAGGER_PREFILL_BASIC` - Prefills the Swagger UI authorization configuration for a Basic authorization scheme. This can be set using the following format: `'["authDefinitionKey", "username", "password"]'`.
-- `VITE_DEFAULT_APP_AUTH` - This controls whether the OAuth and/or API Key sections are shown on the App details page. Can be set to `"OAUTH"`, `"API_KEY"`, or `"ALL"`. Defaults to `"ALL"`.
-- `VITE_API_PAGE_RELOAD` - This is an optional parameter that ensures the API page reloads when navigating to it when set to `"true"`. This is useful when gating the API page behind an auth flow.
-- `VITE_SESSION_EXPIRED_BEHAVIOR` - This controls how the portal reacts when it detects that the user's session has expired (for example, when the gateway redirects a background data request to a login page, or returns a `401`). Can be set to `"anonymous"` (the default) or `"prompt-login"`.
+- `VITE_DEFAULT_APP_AUTH` - This controls whether the OAuth and/or API Key sections are shown on the App details page. Can be set to `"OAUTH"`, `"API_KEY"`, or `"ALL"`. Defaults to `"ALL"`. Any other value is a configuration error.
+- `VITE_API_PAGE_RELOAD` - This is an optional parameter that ensures the API page reloads when navigating to it when set to `"true"`. This is useful when gating the API page behind an auth flow. Defaults to `"false"`. Any value that is not a boolean is a configuration error.
+- `VITE_SESSION_EXPIRED_BEHAVIOR` - This controls how the portal reacts when it detects that the user's session has expired (for example, when the gateway redirects a background data request to a login page, or returns a `401`). Can be set to `"anonymous"` (the default) or `"prompt-login"`. Any other value is a configuration error.
   - `"anonymous"` falls back to anonymous browsing: requests are re-issued without the (now invalid) session cookie so the gateway serves public content instead of redirecting to login. This is appropriate for mixed public/private portals. Note that for a fully-private portal, anonymous requests are also redirected, so there is no public content to show — use `"prompt-login"` there.
   - `"prompt-login"` redirects the user to the identity provider to sign in again. This is appropriate for fully-private portals.
 
 #### Environment Variables for PKCE Authorization Flow
 
 These variables are required if your authorization server is configured to use the PKCE auth flow. If this app is hosted outside the cluster, then the PKCE auth flow must be used.
+
+This is the flow you get when `VITE_APPLIED_OIDC_AUTH_CODE_CONFIG` is unset or `"false"`; see the section below.
 
 - `VITE_CLIENT_ID` - The oauth client id. In Keycloak, this is shown in the client settings of your keycloak instances UI: `<your-keycloak-url>/auth`.
 - `VITE_TOKEN_ENDPOINT` - This is the endpoint to get the oauth token. In Keycloak, this is the `token_endpoint` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`..
@@ -181,7 +187,7 @@ These variables are required if your authorization server is configured to use t
 
 These variables are required if this app is hosted in your cluster, behind a gateway route that uses an `EnterpriseKgatewayTrafficPolicy` (`entExtAuth`) referencing an `AuthConfig` with an "oidcAuthorizationCode" config. In this configuration, your authorization server must be configured to use client id + secret authentication, and the gateway external-auth service handles user sessions with a browser cookie. See the [Secure login guide](https://docs.solo.io/kgateway/latest/portal/frontend-setup/login/) for the gateway-side resources.
 
-- `VITE_APPLIED_OIDC_AUTH_CODE_CONFIG` - This must be set to "true" if using the "oidcAuthorizationCode" config.
+- `VITE_APPLIED_OIDC_AUTH_CODE_CONFIG` - This must be set to `"true"` if using the "oidcAuthorizationCode" config. It selects between the two auth flows: `"true"` (or `"1"`) uses the gateway-hosted flow described in this section, while `"false"` (or `"0"`, or leaving it unset) uses the PKCE flow described above. Any other value is a configuration error, and the portal reports it instead of starting.
 - `VITE_OIDC_AUTH_CODE_CONFIG_CALLBACK_PATH` - This is the "callbackPath" value of your "oidcAuthorizationCode" config.
 - `VITE_OIDC_AUTH_CODE_CONFIG_LOGOUT_PATH` - This is the "logoutPath" value of your "oidcAuthorizationCode" config.
 

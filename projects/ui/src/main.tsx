@@ -3,10 +3,12 @@ import { RouterProvider, createBrowserRouter } from "react-router";
 import { SWRConfig } from "swr";
 import { SessionExpiredError } from "./Apis/sessionExpiry";
 import { App } from "./Components/App";
+import { ConfigErrorPage } from "./Components/Common/ConfigErrorPage";
 import { ToasterWithOptions } from "./Components/Common/ToasterWithOptions";
 import { AuthContextProvider } from "./Context/AuthContext";
+import { configErrors } from "./user_variables.tmplr";
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+const renderApp = () => (
   <SWRConfig
     value={{
       // Retrying can't fix a dead session, and would re-fire the failing
@@ -29,4 +31,15 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       ])}
     />
   </SWRConfig>
+);
+
+// A variable the app cannot interpret leaves it unable to say which behavior
+// was asked for -- notably which authentication flow -- so it reports that
+// instead of picking one and looking healthy while behaving unexpectedly.
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  configErrors.length > 0 ? (
+    <ConfigErrorPage errors={configErrors} />
+  ) : (
+    renderApp()
+  )
 );
