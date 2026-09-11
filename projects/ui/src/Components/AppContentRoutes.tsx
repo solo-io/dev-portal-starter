@@ -9,6 +9,7 @@ import {
   oidcAuthCodeConfigCallbackPath,
   oidcAuthCodeConfigLogoutPath,
 } from "../user_variables.tmplr";
+import { PKCE_CALLBACK_PATH } from "../Utility/login/loginRedirect";
 import { getCustomPagePath } from "../Utility/utility";
 import AdminAppsPage from "./AdminApps/AdminAppsPage";
 import AdminSubscriptionsPage from "./AdminSubscriptions/AdminSubscriptionsPage";
@@ -18,6 +19,7 @@ import { ApisPage } from "./Apis/ApisPage";
 import { AppsPage } from "./Apps/AppsPage";
 import AppDetailsPage from "./Apps/Details/AppDetailsPage";
 import { ErrorBoundary } from "./Common/ErrorBoundary";
+import { Loading } from "./Common/Loading";
 import LoggedOut from "./Common/LoggedOut";
 import CustomPageLanding from "./CustomPage/CustomPageLanding";
 import { HomePage } from "./Home/HomePage";
@@ -73,11 +75,22 @@ function AppContentRoutes() {
           }
         />
         {/*
+        Where the identity provider lands the browser after a PKCE sign-in.
+        The code exchange itself runs in the header, which is on every route;
+        this only gives the user something to look at while it does, since
+        `onLogin` navigates away as soon as it completes.
+        */}
+        {!appliedOidcAuthCodeConfig && (
+          <Route
+            path={PKCE_CALLBACK_PATH}
+            element={<Loading message="Signing in..." />}
+          />
+        )}
+        {/*
         In oidcAuthorizationCode (BFF) deployments the gateway owns these paths
         and lands the browser back on them after signing in or out, so the app
         just returns the user to where they were headed. They are unused in
-        PKCE deployments, which handle the auth-code callback on whatever route
-        login started from.
+        PKCE deployments, which use the callback route above.
         */}
         {appliedOidcAuthCodeConfig && (
           <>

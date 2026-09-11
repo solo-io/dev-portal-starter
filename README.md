@@ -176,7 +176,14 @@ The validated variables are `VITE_API_PAGE_RELOAD`, `VITE_DEFAULT_APP_AUTH`, and
 
 These variables are required if your authorization server is configured to use the PKCE auth flow. If this app is hosted outside the cluster, then the PKCE auth flow must be used.
 
+In this flow the browser talks to your identity provider directly, so two of the portal's own routes have to be registered on your IdP client:
+
+- **Sign-in redirect URI**: `<your-portal-url>/callback`, for example `https://developer.example.com/callback`. This is the only sign-in redirect URI you need, whichever page a user starts the login from. If it is missing or does not match, the identity provider rejects the request at its authorization endpoint before the user can log in — Keycloak reports `Invalid parameter: redirect_uri`.
+- **Post-logout redirect URI**: `<your-portal-url>/logout`, which the frontend sends as `post_logout_redirect_uri`. Register it if your identity provider validates post-logout redirects.
+
 This is the flow you get when `VITE_APPLIED_OIDC_AUTH_CODE_CONFIG` is unset or `"false"`; see the section below.
+
+The portal returns the user to the page they started from after signing in. That is tracked in the browser and is not part of the redirect URI, so it needs no extra registration.
 
 - `VITE_CLIENT_ID` - The oauth client id. In Keycloak, this is shown in the client settings of your keycloak instances UI: `<your-keycloak-url>/auth`.
 - `VITE_TOKEN_ENDPOINT` - This is the endpoint to get the oauth token. In Keycloak, this is the `token_endpoint` property from: `<your-keycloak-url>/realms/<your-realm>/.well-known/openid-configuration`..

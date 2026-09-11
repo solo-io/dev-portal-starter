@@ -58,12 +58,21 @@ async function generateCodeChallengeFromVerifier(v: string) {
 }
 
 /**
+ * The route the identity provider sends the browser back to after a PKCE
+ * sign-in. Identity providers only redirect to URIs registered on the client,
+ * so this is a single fixed path: one entry to register, whatever page the
+ * user started login from. (Returning them to that page is handled separately,
+ * by `postLoginRedirect`, which never leaves the browser.)
+ */
+export const PKCE_CALLBACK_PATH = "/callback";
+
+/**
  * The PKCE `redirect_uri`. The value sent to the authorization endpoint here
  * and the one sent in the token exchange (HeaderSectionLoggedOut) must be
  * byte-identical, so both use this helper.
  */
 export function getPkceRedirectUri() {
-  return window.location.origin + window.location.pathname;
+  return window.location.origin + PKCE_CALLBACK_PATH;
 }
 
 /** Starts the PKCE authorization-code flow by redirecting to the IdP. */
