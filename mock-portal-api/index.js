@@ -66,18 +66,29 @@ app.use('/v1', (_req, res, next) => {
 // ---------------------------------------------------------------------------
 // Test-only portal-mode control
 //
-// Lets e2e tests pin which portal server flavor the UI sniffs, and how the
-// legacy schema endpoint delivers its OpenAPI document:
+// Lets e2e tests pin which portal server flavor the UI sniffs, and how that
+// flavor's endpoint delivers its OpenAPI document. The schema mode applies to
+// both the legacy /v1/apis/:id/schema endpoint and the gloo-gateway
+// /v1/api-products/:id/versions endpoint, which carries the spec inline:
 //   flavor "gloo-gateway"      (default) both endpoint families answer
 //   flavor "gloo-mesh-gateway" /v1/api-products 404s, as it does on portal v1,
 //                              so the UI settles on /v1/apis + /apis/:id/schema
 //   schema "object"            (default) the spec as a JSON object
 //   schema "string"            the spec as a JSON string, as portal v1 sends it
-//   schema "missing"           the schema endpoint 404s
+//   schema "malformed"         a string that is not valid JSON
+//   schema "missing"           no spec at all (legacy endpoint 404s)
 // ---------------------------------------------------------------------------
 const PORTAL_FLAVORS = ['gloo-gateway', 'gloo-mesh-gateway'];
-const SCHEMA_MODES = ['object', 'string', 'missing'];
+const SCHEMA_MODES = ['object', 'string', 'malformed', 'missing'];
+const MALFORMED_SPEC = '{"openapi":"3.0.0","paths":{';
 let portalMode = { flavor: 'gloo-gateway', schema: 'object' };
+
+// Shape a spec the way the current schema mode asks for.
+function specForMode(spec) {
+  if (portalMode.schema === 'string') return JSON.stringify(spec);
+  if (portalMode.schema === 'malformed') return MALFORMED_SPEC;
+  return spec;
+}
 
 app.post('/__test/portal-mode', (req, res) => {
   const { flavor = 'gloo-gateway', schema = 'object' } = req.body ?? {};
@@ -156,7 +167,7 @@ app.get('/v1/apis/:apiId/schema', optionalAuth, (req, res) => {
   if (!spec || portalMode.schema === 'missing') {
     return res.status(404).json({ error: 'API not found' });
   }
-  res.json(portalMode.schema === 'string' ? JSON.stringify(spec) : spec);
+  res.json(specForMode(spec));
 });
 
 // ---------------------------------------------------------------------------
@@ -174,7 +185,17 @@ app.get('/v1/api-products/:id/versions', optionalAuth, (req, res) => {
   if (!versions) {
     return res.status(404).json({ error: 'API product not found' });
   }
-  res.json(versions);
+  if (portalMode.schema === 'object') {
+    return res.json(versions);
+  }
+  // Each version carries its spec inline, so the schema mode is applied here.
+  res.json(
+    versions.map(({ apiSpec, ...rest }) =>
+      portalMode.schema === 'missing'
+        ? rest
+        : { ...rest, apiSpec: specForMode(apiSpec) },
+    ),
+  );
 });
 
 // ---------------------------------------------------------------------------

@@ -1,4 +1,5 @@
-import { test, expect, APIRequestContext } from '@playwright/test';
+import { test, expect } from '@playwright/test';
+import { DEFAULT_PORTAL_MODE, setPortalMode } from '../portal-mode';
 
 // Covers the API detail page on the legacy ("gloo-mesh-gateway") portal flavor,
 // which serves its OpenAPI document from /v1/apis/:apiId/schema. Portal v1
@@ -6,25 +7,12 @@ import { test, expect, APIRequestContext } from '@playwright/test';
 // solo-io/solo-projects#9218. The mock's /__test/portal-mode control selects
 // the flavor and how the schema is delivered (mock-portal-api/index.js).
 
-const MOCK_API_URL = `http://localhost:${process.env.E2E_MOCK_API_PORT || '31080'}`;
 const TRACKS_DETAIL_LINK = 'a[href="/apis/tracks-api-v1"]';
-
-type PortalMode = {
-  flavor: 'gloo-gateway' | 'gloo-mesh-gateway';
-  schema: 'object' | 'string' | 'missing';
-};
-
-async function setPortalMode(request: APIRequestContext, mode: PortalMode) {
-  const res = await request.post(`${MOCK_API_URL}/__test/portal-mode`, {
-    data: mode,
-  });
-  expect(res.ok()).toBeTruthy();
-}
 
 // The portal mode is global state in the mock server; always restore it so a
 // failure here can't poison other specs.
 test.afterEach(async ({ request }) => {
-  await setPortalMode(request, { flavor: 'gloo-gateway', schema: 'object' });
+  await setPortalMode(request, DEFAULT_PORTAL_MODE);
 });
 
 // Opens the Tracks API from the legacy catalog. Reaching the detail page via
