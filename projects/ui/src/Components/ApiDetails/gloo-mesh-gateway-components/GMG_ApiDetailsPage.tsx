@@ -46,7 +46,7 @@ function HeaderSummary({ apiSchema }: { apiSchema: ApiVersionSchema }) {
   return (
     <ApiDetailsHeaderAddition>
       <ApiDetailsExtraInfo>
-        <Icon.HtmlTag /> {Object.keys(apiSchema.paths).length} Operations
+        <Icon.HtmlTag /> {Object.keys(apiSchema.paths ?? {}).length} Operations
       </ApiDetailsExtraInfo>
       {/* <ApiDetailsExtraInfo>
         <Icon.OpenApiIcon /> OpenAPI
