@@ -1,8 +1,13 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
 import { AuthContext } from "../Context/AuthContext";
-import { APIKey, ApiVersionSchema, UsagePlan } from "./api-types";
+import {
+  APIKey,
+  ApiVersionSchema,
+  UsagePlan,
+  normalizeApiVersionSchema,
+} from "./api-types";
 import { fetchJSON, portalServerURL, useSwrWithAuth } from "./utility";
 
 //
@@ -10,7 +15,12 @@ import { fetchJSON, portalServerURL, useSwrWithAuth } from "./utility";
 //
 
 export function useGetApiDetails(id?: string) {
-  return useSwrWithAuth<ApiVersionSchema>(`/apis/${id}/schema`);
+  // Portal v1 sends the OpenAPI document as a JSON string and newer servers
+  // send an object, so normalize here rather than in each consumer. Memoized so
+  // a re-render (the Redoc/Swagger toggle) doesn't re-parse the whole document.
+  const res = useSwrWithAuth<string | ApiVersionSchema>(`/apis/${id}/schema`);
+  const data = useMemo(() => normalizeApiVersionSchema(res.data), [res.data]);
+  return { ...res, data };
 }
 
 export function useListUsagePlans() {

@@ -64,6 +64,53 @@ app.use('/v1', (_req, res, next) => {
 });
 
 // ---------------------------------------------------------------------------
+// Test-only portal-mode control
+//
+// Lets e2e tests pin which portal server flavor the UI sniffs, and how that
+// flavor's endpoint delivers its OpenAPI document. The schema mode applies to
+// both the legacy /v1/apis/:id/schema endpoint and the gloo-gateway
+// /v1/api-products/:id/versions endpoint, which carries the spec inline:
+//   flavor "gloo-gateway"      (default) both endpoint families answer
+//   flavor "gloo-mesh-gateway" /v1/api-products 404s, as it does on portal v1,
+//                              so the UI settles on /v1/apis + /apis/:id/schema
+//   schema "object"            (default) the spec as a JSON object
+//   schema "string"            the spec as a JSON string, as portal v1 sends it
+//   schema "malformed"         a string that is not valid JSON
+//   schema "missing"           no spec at all (legacy endpoint 404s)
+// ---------------------------------------------------------------------------
+const PORTAL_FLAVORS = ['gloo-gateway', 'gloo-mesh-gateway'];
+const SCHEMA_MODES = ['object', 'string', 'malformed', 'missing'];
+const MALFORMED_SPEC = '{"openapi":"3.0.0","paths":{';
+let portalMode = { flavor: 'gloo-gateway', schema: 'object' };
+
+// Shape a spec the way the current schema mode asks for.
+function specForMode(spec) {
+  if (portalMode.schema === 'string') return JSON.stringify(spec);
+  if (portalMode.schema === 'malformed') return MALFORMED_SPEC;
+  return spec;
+}
+
+app.post('/__test/portal-mode', (req, res) => {
+  const { flavor = 'gloo-gateway', schema = 'object' } = req.body ?? {};
+  if (!PORTAL_FLAVORS.includes(flavor) || !SCHEMA_MODES.includes(schema)) {
+    return res
+      .status(400)
+      .json({ error: `unknown portal mode: ${flavor} / ${schema}` });
+  }
+  portalMode = { flavor, schema };
+  console.log(`  Test portal mode set to: ${flavor}, schema=${schema}`);
+  res.json(portalMode);
+});
+
+// Portal v1 has no /api-products routes at all.
+app.use('/v1/api-products', (_req, res, next) => {
+  if (portalMode.flavor === 'gloo-mesh-gateway') {
+    return res.status(404).json({ error: 'not found' });
+  }
+  next();
+});
+
+// ---------------------------------------------------------------------------
 // OAuth2 Token Endpoint
 // POST /auth/realms/master/protocol/openid-connect/token
 // ---------------------------------------------------------------------------
@@ -117,10 +164,10 @@ app.get('/v1/apis', optionalAuth, (_req, res) => {
 // ---------------------------------------------------------------------------
 app.get('/v1/apis/:apiId/schema', optionalAuth, (req, res) => {
   const spec = apiSchemas[req.params.apiId];
-  if (!spec) {
+  if (!spec || portalMode.schema === 'missing') {
     return res.status(404).json({ error: 'API not found' });
   }
-  res.json(spec);
+  res.json(specForMode(spec));
 });
 
 // ---------------------------------------------------------------------------
@@ -138,7 +185,17 @@ app.get('/v1/api-products/:id/versions', optionalAuth, (req, res) => {
   if (!versions) {
     return res.status(404).json({ error: 'API product not found' });
   }
-  res.json(versions);
+  if (portalMode.schema === 'object') {
+    return res.json(versions);
+  }
+  // Each version carries its spec inline, so the schema mode is applied here.
+  res.json(
+    versions.map(({ apiSpec, ...rest }) =>
+      portalMode.schema === 'missing'
+        ? rest
+        : { ...rest, apiSpec: specForMode(apiSpec) },
+    ),
+  );
 });
 
 // ---------------------------------------------------------------------------
@@ -162,5 +219,6 @@ app.listen(PORT, () => {
   console.log(`  GET  /v1/api-products/:id/versions`);
   console.log(`  GET  /health`);
   console.log(`  POST /__test/auth-mode  (test-only: ok | expired-401 | expired-302)`);
+  console.log(`  POST /__test/portal-mode  (test-only: {flavor, schema})`);
   console.log();
 });

@@ -1,0 +1,16 @@
+changelog:
+  - type: FIX
+    issueLink: https://github.com/solo-io/solo-projects/issues/9218
+    resolvesIssue: false
+    description: >-
+      API product operations render again on the API detail page when the
+      portal server is detected as "gloo-mesh-gateway". That page fetches its
+      OpenAPI document from /apis/:apiId/schema and passed the response
+      straight to the renderer, so a document delivered as a JSON string threw
+      during render and the error boundary replaced the whole page, while a
+      document that could not be fetched left the operations area on a loading
+      placeholder that never resolved. Both are now normalized through one
+      helper, which also replaces the unguarded JSON.parse on the
+      "gloo-gateway" path, where a malformed document failed the same way. When
+      no usable document can be resolved the page now says so instead of
+      rendering nothing.
