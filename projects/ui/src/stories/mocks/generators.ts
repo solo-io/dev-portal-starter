@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 
-const { number: numgen } = faker.datatype;
+const numgen = (opts?: number | { min?: number; max?: number }) =>
+  typeof opts === "number" ? opts : faker.number.int(opts);
 
 export const arrGen = <T = any>(
   length: number | { min?: number; max?: number } = 3
