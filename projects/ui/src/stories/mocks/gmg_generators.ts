@@ -7,9 +7,9 @@ export namespace gmg_generators {
     return arrGen(23).map((_, i) => ({
       license: "some-license",
       termsOfService: "some-terms-of-service",
-      description: faker.random.words(10),
-      apiId: faker.random.words(3).toLocaleLowerCase().replaceAll(" ", "-"),
-      contact: faker.name.firstName(),
+      description: faker.lorem.words(10),
+      apiId: faker.lorem.words(3).toLocaleLowerCase().replaceAll(" ", "-"),
+      contact: faker.person.firstName(),
       usagePlans: [],
       // apiProductDisplayName: `(${i.toString()}) ` + faker.animal.bear(),
       title: `(${i.toString()}) ` + faker.animal.bear(),

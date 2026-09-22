@@ -4,14 +4,14 @@ import { arrGen, getFakeImageURL } from "./generators";
 
 export namespace gg_generators {
   export function createListApiProductsResponse(): ApiProductSummary[] {
-    const createdAt = faker.datatype.number();
+    const createdAt = faker.number.int();
     return arrGen(23).map((_, i) => ({
       createdAt: createdAt.toString(),
-      updatedAt: (createdAt + faker.datatype.number()).toString(),
-      description: faker.random.words(10),
-      id: faker.random.words(3).toLocaleLowerCase().replaceAll(" ", "-"),
+      updatedAt: (createdAt + faker.number.int()).toString(),
+      description: faker.lorem.words(10),
+      id: faker.lorem.words(3).toLocaleLowerCase().replaceAll(" ", "-"),
       name: `(${i.toString()}) ` + faker.animal.bear(),
-      versionsCount: faker.datatype.number({ min: 1, max: 20 }),
+      versionsCount: faker.number.int({ min: 1, max: 20 }),
       apiProductMetadata: {
         imageURL: getFakeImageURL(i),
         [faker.animal.crocodilia()]: faker.word.adjective(),
@@ -32,33 +32,33 @@ export namespace gg_generators {
   }
 
   export function createListAppsForTeamResponse(): App[] {
-    const createdAt = faker.datatype.number();
+    const createdAt = faker.number.int();
     return arrGen(23).map((_, i) => ({
       createdAt: createdAt.toString(),
-      updatedAt: (createdAt + faker.datatype.number()).toString(),
-      deletedAt: (createdAt + faker.datatype.number()).toString(),
-      description: faker.random.words(10),
-      id: faker.random.words(3).toLocaleLowerCase().replaceAll(" ", "-"),
+      updatedAt: (createdAt + faker.number.int()).toString(),
+      deletedAt: (createdAt + faker.number.int()).toString(),
+      description: faker.lorem.words(10),
+      id: faker.lorem.words(3).toLocaleLowerCase().replaceAll(" ", "-"),
       name: `(${i.toString()}) ` + faker.animal.bear(),
-      idpClientId: faker.random
+      idpClientId: faker.lorem
         .words(3)
         .toLocaleLowerCase()
         .replaceAll(" ", "-"),
       idpClientName: `(${i.toString()}) ` + faker.animal.bear(),
-      idpClientSecret: faker.random
+      idpClientSecret: faker.lorem
         .words(3)
         .toLocaleLowerCase()
         .replaceAll(" ", "-"),
-      teamId: faker.random.words(3).toLocaleLowerCase().replaceAll(" ", "-"),
+      teamId: faker.lorem.words(3).toLocaleLowerCase().replaceAll(" ", "-"),
     }));
   }
 
   export function createListMembersForTeamResponse(): Member[] {
-    const createdAt = faker.datatype.number();
+    const createdAt = faker.number.int();
     return arrGen(23).map((_, i) => ({
       createdAt: createdAt.toString(),
-      updatedAt: (createdAt + faker.datatype.number()).toString(),
-      id: faker.random.words(3).toLocaleLowerCase().replaceAll(" ", "-"),
+      updatedAt: (createdAt + faker.number.int()).toString(),
+      id: faker.lorem.words(3).toLocaleLowerCase().replaceAll(" ", "-"),
       name: `(${i.toString()}) ` + faker.animal.bear(),
       username: `(${i.toString()}) ` + faker.animal.bear(),
       email: `fake-member-${i.toString()}@test.com`,
