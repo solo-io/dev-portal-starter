@@ -91,6 +91,25 @@ function getSessionExpiredReason(
 }
 
 /**
+ * A request the server answered with a status outside the 200-299 range.
+ *
+ * Unlike `SessionExpiredError`, this keeps the default `name`: toasts render
+ * errors with string concatenation, which prints the name, and a failed request
+ * reads to the user as "Error: <message>".
+ */
+export class HttpError extends Error {
+  constructor(
+    message: string,
+    readonly status: number
+  ) {
+    super(message);
+  }
+}
+
+export const isNotFoundError = (error: unknown) =>
+  error instanceof HttpError && error.status === 404;
+
+/**
  * This fetches and tries to parse the response into JSON.
  * It returns successfully if the response is in the 200-299 status code range
  * (even if there is no JSON in the response body).
@@ -121,7 +140,7 @@ export async function fetchJSON(...args: Parameters<typeof fetch>) {
     errMessage = `There was an error making the request to ${args[0]}`;
   }
   if (!!errMessage) {
-    throw new Error(errMessage);
+    throw res ? new HttpError(errMessage, res.status) : new Error(errMessage);
   }
   return resJSON ?? res;
 }

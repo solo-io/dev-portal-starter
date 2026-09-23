@@ -9,6 +9,8 @@ import {
   ApiProductSummary,
   ApiVersion,
   App,
+  ClientCredential,
+  ClientCredentialWithSecret,
   Member,
   OauthCredential,
   RateLimit,
@@ -19,7 +21,13 @@ import {
   User,
   isSubscriptionsListError,
 } from "./api-types";
-import { fetchJSON, useMultiSwrWithAuth, useSwrWithAuth } from "./utility";
+import { SessionExpiredError } from "./sessionExpiry";
+import {
+  fetchJSON,
+  isNotFoundError,
+  useMultiSwrWithAuth,
+  useSwrWithAuth,
+} from "./utility";
 
 //
 // region Queries
@@ -63,6 +71,18 @@ export function useListApiKeysForApp(appId: string) {
 }
 export function useGetOauthCredentialsForApp(appId: string) {
   return useSwrWithAuth<OauthCredential>(`/apps/${appId}/oauth-credentials`);
+}
+export function useListClientCredentialsForApp(appId: string) {
+  return useSwrWithAuth<ClientCredential[]>(
+    `/apps/${appId}/client-credentials`,
+    undefined,
+    {
+      // A 404 means the portal server has no client credentials to offer, which
+      // asking again will not change.
+      shouldRetryOnError: (error) =>
+        !(error instanceof SessionExpiredError) && !isNotFoundError(error),
+    }
+  );
 }
 
 // region Teams
@@ -478,6 +498,55 @@ export function useDeleteApiKeyMutation(appId: string) {
     });
   };
   return useSWRMutation(`/apps/${appId}/api-keys`, deleteApiKey);
+}
+
+// -------------------------------- //
+// region Create Client Credential
+
+type CreateClientCredentialParams = MutationWithArgs<{ name: string }>;
+
+export function useCreateClientCredentialMutation(appId: string) {
+  const { latestAccessToken } = useContext(AuthContext);
+  const createClientCredential = async (
+    _: string,
+    { arg }: CreateClientCredentialParams
+  ) => {
+    return await fetchJSON(`/apps/${appId}/client-credentials`, {
+      method: "POST",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify(arg),
+    });
+  };
+  return useSWRMutation<
+    ClientCredentialWithSecret,
+    any,
+    string,
+    CreateClientCredentialParams["arg"]
+  >(`/apps/${appId}/client-credentials`, createClientCredential);
+}
+
+// -------------------------------- //
+// region Delete Client Credential
+
+type DeleteClientCredentialParams = MutationWithArgs<{
+  clientCredentialId: string;
+}>;
+
+export function useDeleteClientCredentialMutation(appId: string) {
+  const { latestAccessToken } = useContext(AuthContext);
+  const deleteClientCredential = async (
+    _: string,
+    { arg }: DeleteClientCredentialParams
+  ) => {
+    await fetchJSON(`/client-credentials/${arg.clientCredentialId}`, {
+      method: "DELETE",
+      headers: getLatestAuthHeaders(latestAccessToken),
+    });
+  };
+  return useSWRMutation(
+    `/apps/${appId}/client-credentials`,
+    deleteClientCredential
+  );
 }
 
 // -------------------------------- //

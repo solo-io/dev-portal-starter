@@ -10,10 +10,7 @@ import {
 import { Icon } from "../../../Assets/Icons";
 import { useIsAdmin } from "../../../Context/AuthContext";
 import { UtilityStyles } from "../../../Styles/shared/Utility.style";
-import {
-  AppAuthMethod,
-  defaultAppAuthMethod,
-} from "../../../user_variables.tmplr";
+import { enabledAppAuthMethods } from "../../../user_variables.tmplr";
 import { getTeamDetailsLink } from "../../../Utility/link-builders";
 import { BannerHeading } from "../../Common/Banner/BannerHeading";
 import { BannerHeadingTitle } from "../../Common/Banner/BannerHeadingTitle";
@@ -21,6 +18,7 @@ import { PageContainer } from "../../Common/PageContainer";
 import AppApiKeysSection from "./ApiKeysSection/AppApiKeysSection";
 import AppApiSubscriptionsSection from "./ApiSubscriptionsSection/AppApiSubscriptionsSection";
 import AppAuthenticationSection from "./AuthenticationSection/AppAuthenticationSection";
+import AppClientCredentialsSection from "./ClientCredentialsSection/AppClientCredentialsSection";
 import EditAppButtonWithModal from "./EditAppButtonWithModal";
 import AppMetadataSection from "./MetadataSection/AppMetadataSection";
 
@@ -85,16 +83,18 @@ export const AppDetailsPageContent = ({ app }: { app: App }) => {
       />
       <Box px={"30px"}>
         <Flex gap={"30px"} direction={"column"}>
-          {(defaultAppAuthMethod === AppAuthMethod[AppAuthMethod.ALL] ||
-            defaultAppAuthMethod === AppAuthMethod[AppAuthMethod.OAUTH]) && (
+          {enabledAppAuthMethods.has("OAUTH") && (
             <AppAuthenticationSection app={app} />
           )}
 
           <AppMetadataSection app={app} />
 
-          {(defaultAppAuthMethod === AppAuthMethod[AppAuthMethod.ALL] ||
-            defaultAppAuthMethod === AppAuthMethod[AppAuthMethod.API_KEY]) && (
+          {enabledAppAuthMethods.has("API_KEY") && (
             <AppApiKeysSection app={app} />
+          )}
+
+          {enabledAppAuthMethods.has("CLIENT_CREDENTIALS") && (
+            <AppClientCredentialsSection app={app} />
           )}
 
           {isLoadingSubscriptions || subscriptions === undefined ? (
