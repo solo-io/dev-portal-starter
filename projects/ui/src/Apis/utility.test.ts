@@ -113,7 +113,21 @@ describe("fetchJSON session-expiry detection", () => {
     expect(error).toBeInstanceOf(Error);
     expect(error).not.toBeInstanceOf(sessionExpiry.SessionExpiredError);
     expect(error.message).toBe("boom");
+    expect(error).toBeInstanceOf(utility.HttpError);
+    expect(error.status).toBe(500);
+    expect(utility.isNotFoundError(error)).toBe(false);
     expect(reasons).toEqual([]);
+  });
+
+  // A route the portal server does not have, which callers tell apart from a
+  // request that failed.
+  it("surfaces a 404 as a not-found error", async () => {
+    const { utility } = await freshModules();
+    stubFetch(fakeResponse({ status: 404, body: { message: "not found" } }));
+    const error = await utility
+      .fetchJSON("http://api.test/apps/a/client-credentials")
+      .catch((e) => e);
+    expect(utility.isNotFoundError(error)).toBe(true);
   });
 });
 

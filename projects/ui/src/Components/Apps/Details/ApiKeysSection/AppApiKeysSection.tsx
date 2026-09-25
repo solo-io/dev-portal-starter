@@ -1,126 +1,27 @@
-import { Box, Flex } from "@mantine/core";
-import { useMemo, useState } from "react";
 import { di } from "react-magnetic-di";
-import { APIKey, App } from "../../../../Apis/api-types";
-import { useListApiKeysForApp } from "../../../../Apis/gg_hooks";
-import { DetailsPageStyles } from "../../../../Styles/shared/DetailsPageStyles";
-import { GridCardStyles } from "../../../../Styles/shared/GridCard.style";
-import { UtilityStyles } from "../../../../Styles/shared/Utility.style";
-import { formatDateToMMDDYYYY } from "../../../../Utility/utility";
-import { Button } from "../../../Common/Button";
-import CustomPagination, {
-  pageOptions,
-  useCustomPagination,
-} from "../../../Common/CustomPagination";
-import { EmptyData } from "../../../Common/EmptyData";
-import { Loading } from "../../../Common/Loading";
-import Table from "../../../Common/Table";
-import ToggleAddButton from "../../../Common/ToggleAddButton";
-import ConfirmDeleteApiKeyModal from "../Modals/ConfirmDeleteApiKeyModal";
+import { App } from "../../../../Apis/api-types";
+import {
+  useDeleteApiKeyMutation,
+  useListApiKeysForApp,
+} from "../../../../Apis/gg_hooks";
+import CredentialsSection from "../CredentialsSection/CredentialsSection";
 import AddApiKeysSubSection from "./AddApiKeysSubSection";
 
 const AppApiKeysSection = ({ app }: { app: App }) => {
-  di(useListApiKeysForApp);
-  const { data: apiKeys } = useListApiKeysForApp(app.id);
-  const [showAddApiKeySubSection, setShowAddApiKeySubSection] = useState(false);
+  di(useListApiKeysForApp, useDeleteApiKeyMutation);
+  const { data: apiKeys, error } = useListApiKeysForApp(app.id);
+  const { trigger: deleteApiKey } = useDeleteApiKeyMutation(app.id);
 
-  const customPaginationData = useCustomPagination(
-    apiKeys ?? [],
-    pageOptions.table
-  );
-  const { paginatedData } = customPaginationData;
-
-  const [confirmDeleteApiKey, setConfirmDeleteApiKey] = useState<APIKey>();
-
-  const rows = useMemo(() => {
-    return paginatedData?.map((apiKey) => {
-      return (
-        (
-          <tr key={apiKey.id}>
-            <td>{apiKey.name}</td>
-            <td>{formatDateToMMDDYYYY(new Date(apiKey.createdAt))}</td>
-            <td>
-              <UtilityStyles.CenteredCellContent>
-                <Button
-                  size="xs"
-                  variant="light"
-                  color="danger"
-                  onClick={() => setConfirmDeleteApiKey(apiKey)}
-                >
-                  Delete
-                </Button>
-              </UtilityStyles.CenteredCellContent>
-            </td>
-          </tr>
-        ) ?? []
-      );
-    });
-  }, [paginatedData]);
-
-  if (apiKeys === undefined) {
-    return <Loading />;
-  }
   return (
-    <DetailsPageStyles.Section>
-      <Flex justify={"space-between"}>
-        <DetailsPageStyles.Title>API Keys</DetailsPageStyles.Title>
-        <ToggleAddButton
-          topicUpperCase="API KEY"
-          isAdding={showAddApiKeySubSection}
-          toggleAdding={() =>
-            setShowAddApiKeySubSection(!showAddApiKeySubSection)
-          }
-        />
-      </Flex>
-      <AddApiKeysSubSection
-        app={app}
-        open={showAddApiKeySubSection}
-        onClose={() => setShowAddApiKeySubSection(false)}
-      />
-      {!apiKeys?.length ? (
-        <Box mb={"-30px"} mt={"10px"}>
-          <EmptyData title="No API Keys were found." />
-        </Box>
-      ) : (
-        <Box pt={"5px"}>
-          <GridCardStyles.GridCard whiteBg wide>
-            <Box p={"20px"}>
-              <Table>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Created</th>
-                    <th>
-                      <UtilityStyles.CenteredCellContent>
-                        Delete
-                      </UtilityStyles.CenteredCellContent>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>{rows}</tbody>
-                <tfoot>
-                  <tr>
-                    <td colSpan={7}>
-                      <Box p=".6rem">
-                        <CustomPagination
-                          customPaginationData={customPaginationData}
-                        />
-                      </Box>
-                    </td>
-                  </tr>
-                </tfoot>
-              </Table>
-            </Box>
-          </GridCardStyles.GridCard>
-        </Box>
+    <CredentialsSection
+      kind="API Key"
+      credentials={apiKeys}
+      error={error}
+      deleteCredential={(apiKey) => deleteApiKey({ apiKeyId: apiKey.id })}
+      renderAddSubSection={(open, onClose) => (
+        <AddApiKeysSubSection app={app} open={open} onClose={onClose} />
       )}
-      <ConfirmDeleteApiKeyModal
-        open={!!confirmDeleteApiKey}
-        apiKeyId={confirmDeleteApiKey?.id ?? ""}
-        appId={app.id}
-        onClose={() => setConfirmDeleteApiKey(undefined)}
-      />
-    </DetailsPageStyles.Section>
+    />
   );
 };
 

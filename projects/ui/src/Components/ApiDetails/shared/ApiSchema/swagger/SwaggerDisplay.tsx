@@ -10,6 +10,7 @@ import {
   swaggerPrefillBasic,
   swaggerPrefillOauth,
 } from "../../../../../user_variables.tmplr";
+import { pairedApiKeyAuthPlugin } from "./pairedApiKeyAuthPlugin";
 import { SwaggerDisplayContainer } from "./SwaggerDisplay.style";
 
 const sanitize = (id: string) => id.replaceAll(".", "-");
@@ -64,7 +65,7 @@ export function SwaggerDisplay({
     const swaggerInstance = SwaggerUIConstructor({
       spec: apiVersionSpec,
       dom_id: `#display-swagger-${sanitizedDomId}`,
-      plugins: [reactDomClientRenderPlugin],
+      plugins: [reactDomClientRenderPlugin, pairedApiKeyAuthPlugin],
       withCredentials: true,
       deepLinking: true,
       configUrl: swaggerConfigURL !== "" ? swaggerConfigURL : undefined,
