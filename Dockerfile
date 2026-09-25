@@ -30,17 +30,10 @@ RUN START_SERVER=false sh ./scripts/startup.sh
 #             #
 ###############
 
-# Minimal serve base. Google distroless Node 22 has no shell and no package
-# manager, which shrinks the OS package surface to near-zero HIGH/CRITICAL CVEs
-# and lets CVE-gated pipelines promote the image. Because there is no npm here,
-# this stage also drops the `npm install -g npm@latest` self-update step the
-# slim base used (its runtime deps are already pinned via the build stage).
-#
-# The debian13 (trixie) variant is used rather than debian12: bookworm is now
-# EOL for security data, and its libssl3/libc6/node were all carrying CVEs with
-# fixes we cannot apply here (distroless has no package manager, so bumping the
-# base tag is the only lever). debian13 also ships a newer Node 22 patch.
-FROM gcr.io/distroless/nodejs22-debian13:nonroot AS serve_stage
+# Wolfi base with only Node 22 added, to keep the OS CVE count low.
+FROM cgr.dev/chainguard/wolfi-base:latest@sha256:08df5982c3d27e70a4ce1607e3bb9af09d746f8722cf135a7694afef879fc5a2 AS serve_stage
+
+RUN apk add --no-cache nodejs-22
 
 # Copy the server files (this includes the built UI).
 WORKDIR /app
@@ -48,9 +41,7 @@ COPY --from=build_stage /app/projects/server .
 
 EXPOSE 4000
 
-# The distroless image's entrypoint is already `node`, so we exec the server
-# directly. The server reads its VITE_* configuration from process.env at
-# runtime (injected by your deployment), so no shell-form env re-export is
-# needed. We run `node ./bin/www` rather than `yarn start` because running yarn
-# mutates a cache file, which fails in read-only environments.
+# Run as the same nonroot UID as before. Run node directly, since yarn writes a cache file.
+USER 65532
+ENTRYPOINT ["/usr/bin/node"]
 CMD ["/app/bin/www"]
