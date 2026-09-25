@@ -33,7 +33,15 @@ RUN START_SERVER=false sh ./scripts/startup.sh
 # Wolfi base with only Node 22 added, to keep the OS CVE count low.
 FROM cgr.dev/chainguard/wolfi-base:latest@sha256:08df5982c3d27e70a4ce1607e3bb9af09d746f8722cf135a7694afef879fc5a2 AS serve_stage
 
-RUN apk add --no-cache nodejs-22
+# Exact versions, so a rebuild of the same commit gets the same packages.
+RUN apk add --no-cache \
+    nodejs-22=22.23.2-r1 \
+    c-ares=1.34.8-r2 \
+    icu78-data-full=78.3-r3 \
+    libicu78=78.3-r3 \
+    libnghttp2-14=1.70.0-r4 \
+    libstdc++=16.2.0-r1 \
+    libuv=1.53.0-r0
 
 # Copy the server files (this includes the built UI).
 WORKDIR /app
