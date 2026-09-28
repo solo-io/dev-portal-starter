@@ -1,4 +1,4 @@
-import { createElement, useContext, useEffect, useState } from "react";
+import { createElement, useContext, useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import SwaggerUIConstructor from "swagger-ui";
 import "swagger-ui/dist/swagger-ui.css";
@@ -61,6 +61,14 @@ export function SwaggerDisplay({
     }
   }, [apiVersionId, sanitizedDomId]);
 
+  // Rebuilding Swagger UI discards its state, including an open Authorize
+  // dialog. SWR refetches on window focus and can hand back an equal spec as a
+  // new object, so rebuild only when the spec's contents change.
+  const specKey = useMemo(
+    () => JSON.stringify(apiVersionSpec ?? null),
+    [apiVersionSpec]
+  );
+
   useEffect(() => {
     const swaggerInstance = SwaggerUIConstructor({
       spec: apiVersionSpec,
@@ -104,7 +112,7 @@ export function SwaggerDisplay({
         swaggerPrefillBasic.password
       );
     }
-  }, [sanitizedDomId, apiVersionSpec]);
+  }, [sanitizedDomId, specKey]);
 
   return (
     <SwaggerDisplayContainer>

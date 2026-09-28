@@ -36,6 +36,24 @@ afterEach(() => {
 });
 
 describe("SwaggerDisplay", () => {
+  // Rebuilding would close an open Authorize dialog, and a refetch can hand
+  // back an unchanged spec as a new object.
+  it("does not rebuild when an equal spec arrives as a new object", () => {
+    const { rerender } = render(
+      <SwaggerDisplay apiVersionSpec={spec} apiVersionId="v1" />
+    );
+    expect(globalThis.__swaggerConstructorCalls).toHaveLength(1);
+
+    rerender(
+      <SwaggerDisplay
+        apiVersionSpec={JSON.parse(JSON.stringify(spec))}
+        apiVersionId="v1"
+      />
+    );
+
+    expect(globalThis.__swaggerConstructorCalls).toHaveLength(1);
+  });
+
   it("rebuilds when the spec actually changes", () => {
     const { rerender } = render(
       <SwaggerDisplay apiVersionSpec={spec} apiVersionId="v1" />

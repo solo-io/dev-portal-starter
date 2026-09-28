@@ -112,7 +112,7 @@ const getComponent = (name: string) => {
   }
 };
 
-function renderAuthField(spec: any, name: string) {
+function renderAuthField(spec: any, name: string, authorizedValue?: string) {
   const system = systemFor(spec);
   const ApiKeyAuth = pairedApiKeyAuthPlugin(system).components.apiKeyAuth;
   render(
@@ -122,7 +122,11 @@ function renderAuthField(spec: any, name: string) {
       getComponent={getComponent}
       errSelectors={{ allErrors: () => List() }}
       authSelectors={{ selectAuthPath: () => List() }}
-      authorized={Map()}
+      authorized={
+        authorizedValue === undefined
+          ? Map()
+          : fromJS({ [name]: { value: authorizedValue } })
+      }
       onChange={() => undefined}
     />
   );
@@ -142,5 +146,29 @@ describe("apiKeyAuth heading", () => {
     renderAuthField(eitherOrSpec, "clientId");
 
     expect(screen.getByText(/\(apiKey\)/)).toBeTruthy();
+  });
+});
+
+describe("apiKeyAuth authorized value", () => {
+  // The client ID identifies the client rather than proving it, so showing it
+  // lets the user see which credential they authorized with.
+  it("shows the client ID of a grouped pair", () => {
+    renderAuthField(pairedSpec, "clientId", "my-client");
+
+    expect(screen.getByText("my-client")).toBeTruthy();
+  });
+
+  it("masks the client secret of a grouped pair", () => {
+    renderAuthField(pairedSpec, "clientSecret", "shh");
+
+    expect(screen.queryByText("shh")).toBeNull();
+    expect(screen.getByText("******")).toBeTruthy();
+  });
+
+  // Standing alone, the scheme is the whole credential.
+  it("masks a client ID that stands alone", () => {
+    renderAuthField(eitherOrSpec, "clientId", "my-client");
+
+    expect(screen.queryByText("my-client")).toBeNull();
   });
 });

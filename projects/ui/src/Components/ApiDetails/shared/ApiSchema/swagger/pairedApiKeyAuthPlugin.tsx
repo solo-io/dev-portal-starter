@@ -132,9 +132,25 @@ const wrapDefinitionsToAuthorize =
   };
 
 /**
- * Swagger UI's `apiKeyAuth`, with the type suffix dropped for a grouped scheme
- * and an input id per scheme — the original hardcodes `api_key_value`, so with
- * two fields in one form both labels would point at the first input.
+ * A client ID identifies the client rather than proving it, so there is no
+ * reason to hide it once authorized. OpenAPI has no way to mark a scheme as the
+ * client ID, so it is recognized by its scheme or header name; anything else is
+ * treated as a secret.
+ */
+const clientIdPattern = /client[-_ ]?id$/i;
+
+function isClientId(name: string, schema: any): boolean {
+  return (
+    clientIdPattern.test(name ?? "") ||
+    clientIdPattern.test(schema?.get?.("name") ?? "")
+  );
+}
+
+/**
+ * Swagger UI's `apiKeyAuth`, with the type suffix dropped for a grouped scheme,
+ * the authorized value shown for a grouped client ID, and an input id per
+ * scheme — the original hardcodes `api_key_value`, so with two fields in one
+ * form both labels would point at the first input.
  */
 const makeApiKeyAuth = (system: any) => {
   const ApiKeyAuth = ({
@@ -184,7 +200,7 @@ const makeApiKeyAuth = (system: any) => {
         <Row>
           <label htmlFor={inputId}>Value:</label>
           {value ? (
-            <code> ****** </code>
+            <code> {group && isClientId(name, schema) ? value : "******"} </code>
           ) : (
             <Col>
               <Input
