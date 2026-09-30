@@ -12,9 +12,9 @@
     "@types/node": "^22"
   },
   "resolutions": {
-    "brace-expansion": ">=5.0.9",
+    "brace-expansion": ">=5.0.12",
     "tar": ">=7.5.22",
-    "ip-address": ">=10.7.0"
+    "ip-address": ">=10.7.2"
   },
   "packageManager": "yarn@4.13.0"
 }

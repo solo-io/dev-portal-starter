@@ -82,7 +82,7 @@
     "micromatch": "^4.0.8",
     "sha.js": "^2.4.12",
     "cookie": "^0.7.0",
-    "brace-expansion": ">=5.0.9",
+    "brace-expansion": ">=5.0.12",
     "browserslist": ">=4.28.7",
     "form-data": ">=4.0.6",
     "send": "^0.19.0",

@@ -30,27 +30,31 @@ RUN START_SERVER=false sh ./scripts/startup.sh
 #             #
 ###############
 
-# Minimal serve base. Google distroless Node 22 has no shell and no package
-# manager, which shrinks the OS package surface to near-zero HIGH/CRITICAL CVEs
-# and lets CVE-gated pipelines promote the image. Because there is no npm here,
-# this stage also drops the `npm install -g npm@latest` self-update step the
-# slim base used (its runtime deps are already pinned via the build stage).
-#
-# The debian13 (trixie) variant is used rather than debian12: bookworm is now
-# EOL for security data, and its libssl3/libc6/node were all carrying CVEs with
-# fixes we cannot apply here (distroless has no package manager, so bumping the
-# base tag is the only lever). debian13 also ships a newer Node 22 patch.
-FROM gcr.io/distroless/nodejs22-debian13:nonroot AS serve_stage
+# Minimal serve base using node:22-slim with security updates applied.
+# We use the slim variant rather than distroless to allow apt-get upgrade,
+# which fixes libssl3t64 CVEs that cannot be patched in distroless (no package
+# manager). The runtime stage runs apt-get upgrade to apply all available
+# security patches before copying in the application.
+FROM node:22-slim AS serve_stage
+
+# Apply all available security updates to fix libssl3t64 and other OS package CVEs.
+# Run as root to perform the upgrade, then switch to node user for runtime.
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copy the server files (this includes the built UI).
 WORKDIR /app
 COPY --from=build_stage /app/projects/server .
 
+# Switch to non-root node user for runtime security
+USER node
+
 EXPOSE 4000
 
-# The distroless image's entrypoint is already `node`, so we exec the server
-# directly. The server reads its VITE_* configuration from process.env at
-# runtime (injected by your deployment), so no shell-form env re-export is
-# needed. We run `node ./bin/www` rather than `yarn start` because running yarn
+# The server reads its VITE_* configuration from process.env at runtime
+# (injected by your deployment), so no shell-form env re-export is needed.
+# We run `node ./bin/www` rather than `yarn start` because running yarn
 # mutates a cache file, which fails in read-only environments.
-CMD ["/app/bin/www"]
+CMD ["node", "/app/bin/www"]
