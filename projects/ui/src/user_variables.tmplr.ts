@@ -83,17 +83,82 @@ function parseEnumEnv<T extends string>(
   if (value === "") {
     return defaultValue;
   }
-  const match = allowedValues.find(
-    (allowedValue) => allowedValue.toLowerCase() === value.toLowerCase()
-  );
+  const match = matchEnumValue(value, allowedValues);
   if (match !== undefined) {
     return match;
   }
-  const allowed = allowedValues.map((v) => `"${v}"`).join(", ");
   configErrors.push(
-    `${name} must be one of ${allowed}, but was "${rawValue}".`
+    `${name} must be one of ${quoteList(allowedValues)}, but was "${rawValue}".`
   );
   return defaultValue;
+}
+
+/** The allowed value `value` names, ignoring case. */
+function matchEnumValue<T extends string>(
+  value: string,
+  allowedValues: readonly T[]
+): T | undefined {
+  return allowedValues.find(
+    (allowedValue) => allowedValue.toLowerCase() === value.toLowerCase()
+  );
+}
+
+function quoteList(values: readonly string[]) {
+  return values.map((v) => `"${v}"`).join(", ");
+}
+
+/**
+ * Parses an environment variable that selects any combination of a fixed set of
+ * values, written as a comma-separated list. "ALL" names every value and is
+ * what an unset or empty variable means.
+ *
+ * A comma rather than a "|" because these values are written in shells,
+ * Makefiles and `docker run -e` arguments, where an unquoted "|" is a pipe.
+ */
+function parseEnumSetEnv<T extends string>(
+  name: string,
+  rawValue: string | undefined,
+  allowedValues: readonly T[]
+): ReadonlySet<T> {
+  const everything = new Set(allowedValues);
+  const value = (rawValue ?? "").trim();
+  if (value === "") {
+    return everything;
+  }
+  const selected = new Set<T>();
+  const unrecognized: string[] = [];
+  for (const entry of value.split(",")) {
+    const trimmed = entry.trim();
+    if (trimmed === "") {
+      continue;
+    }
+    if (trimmed.toLowerCase() === "all") {
+      allowedValues.forEach((allowedValue) => selected.add(allowedValue));
+      continue;
+    }
+    const match = matchEnumValue(trimmed, allowedValues);
+    if (match === undefined) {
+      unrecognized.push(trimmed);
+    } else {
+      selected.add(match);
+    }
+  }
+  const allowed = quoteList(["ALL", ...allowedValues]);
+  if (unrecognized.length > 0) {
+    configErrors.push(
+      `${name} must be a comma-separated list of ${allowed}, but had ` +
+        `${quoteList(unrecognized)}.`
+    );
+    return everything;
+  }
+  // Separators with nothing between them: the operator meant to name something.
+  if (selected.size === 0) {
+    configErrors.push(
+      `${name} must name at least one of ${allowed}, but was "${rawValue}".`
+    );
+    return everything;
+  }
+  return selected;
 }
 
 //
@@ -323,22 +388,20 @@ export const swaggerPrefillBasic = (() => {
 /**
  * This is optional.
  */
-export enum AppAuthMethod {
-  ALL,
-  OAUTH,
-  API_KEY,
-}
-const appAuthMethods = ["ALL", "OAUTH", "API_KEY"] as const satisfies
-  readonly (keyof typeof AppAuthMethod)[];
-export const defaultAppAuthMethod = parseEnumEnv(
+const appAuthMethods = ["OAUTH", "API_KEY", "CLIENT_CREDENTIALS"] as const;
+
+/**
+ * The credential types whose sections the App details page shows. A set rather
+ * than one choice, so any combination can be named without a value per pairing.
+ */
+export const enabledAppAuthMethods = parseEnumSetEnv(
   "VITE_DEFAULT_APP_AUTH",
   templateString(
     "{{ tmplr.defaultAppAuthMethod }}",
     insertedEnvironmentVariables?.VITE_DEFAULT_APP_AUTH,
     import.meta.env.VITE_DEFAULT_APP_AUTH
   ),
-  appAuthMethods,
-  "ALL"
+  appAuthMethods
 );
 
 /**

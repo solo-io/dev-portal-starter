@@ -97,31 +97,47 @@ describe("apiPageReload", () => {
   });
 });
 
-describe("defaultAppAuthMethod", () => {
+describe("enabledAppAuthMethods", () => {
+  const everything = ["OAUTH", "API_KEY", "CLIENT_CREDENTIALS"];
+
   it.each([
-    ["OAUTH", "OAUTH"],
-    ["API_KEY", "API_KEY"],
-    ["ALL", "ALL"],
-    // Case is normalized, as it was before this was validated.
-    ["oauth", "OAUTH"],
+    ["OAUTH", ["OAUTH"]],
+    ["API_KEY", ["API_KEY"]],
+    ["CLIENT_CREDENTIALS", ["CLIENT_CREDENTIALS"]],
+    // Methods combine freely.
+    ["API_KEY,CLIENT_CREDENTIALS", ["API_KEY", "CLIENT_CREDENTIALS"]],
+    ["ALL", everything],
+    // A named method alongside ALL is redundant rather than wrong.
+    ["ALL,OAUTH", everything],
+    // Case and the spacing around each name are ignored.
+    [" oauth , api_key ", ["OAUTH", "API_KEY"]],
   ])("reads %o as %o", async (rawValue, expected) => {
-    const { defaultAppAuthMethod } = await loadWithEnv({
+    const { enabledAppAuthMethods } = await loadWithEnv({
       VITE_DEFAULT_APP_AUTH: rawValue,
     });
-    expect(defaultAppAuthMethod).toBe(expected);
+    expect([...enabledAppAuthMethods]).toEqual(expected);
   });
 
-  it("defaults to ALL when unset", async () => {
-    const { defaultAppAuthMethod } = await loadWithEnv({});
-    expect(defaultAppAuthMethod).toBe("ALL");
+  it("enables every method when unset", async () => {
+    const { enabledAppAuthMethods } = await loadWithEnv({});
+    expect([...enabledAppAuthMethods]).toEqual(everything);
   });
 
   it("records a config error for an unknown method", async () => {
     const { configErrors } = await loadWithEnv({
-      VITE_DEFAULT_APP_AUTH: "PASSWORD",
+      VITE_DEFAULT_APP_AUTH: "API_KEY,PASSWORD",
     });
     expect(configErrors).toEqual([
-      'VITE_DEFAULT_APP_AUTH must be one of "ALL", "OAUTH", "API_KEY", but was "PASSWORD".',
+      'VITE_DEFAULT_APP_AUTH must be a comma-separated list of "ALL", "OAUTH", "API_KEY", "CLIENT_CREDENTIALS", but had "PASSWORD".',
+    ]);
+  });
+
+  it("records a config error when the list names nothing", async () => {
+    const { configErrors } = await loadWithEnv({
+      VITE_DEFAULT_APP_AUTH: " , ",
+    });
+    expect(configErrors).toEqual([
+      'VITE_DEFAULT_APP_AUTH must name at least one of "ALL", "OAUTH", "API_KEY", "CLIENT_CREDENTIALS", but was " , ".',
     ]);
   });
 });

@@ -13,6 +13,7 @@ vi.mock("../../../Apis/gg_hooks", async (importOriginal) => ({
   useListTeams: () => ({ isLoading: false, data: [] }),
   useListApiKeysForApp: () => ({ isLoading: false, data: [] }),
   useGetOAuthCredentialForApp: () => ({ isLoading: false, data: undefined }),
+  useListClientCredentialsForApp: () => ({ isLoading: false, data: [] }),
   useListApiProducts: () => ({ isLoading: false, data: [] }),
 }));
 

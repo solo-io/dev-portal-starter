@@ -121,6 +121,31 @@ export type ApiKey = {
   metadata: Record<string, string>;
 };
 
+/**
+ * A client ID / client secret pair held by an app. The secret itself is never
+ * returned by a read; only the digest of it is stored server-side.
+ */
+export type ClientCredential = {
+  id: string;
+  appId: string;
+  clientId: string;
+  name: string;
+  /** "portal-issued" when minted here, "imported" when loaded from an export. */
+  source: string;
+  createdAt: string;
+  expiresAt?: string;
+  metadata?: Record<string, string>;
+};
+
+/**
+ * The response to creating a client credential. This is the only place the raw
+ * `clientSecret` appears, so it has to be shown to the user once and then
+ * dropped.
+ */
+export type ClientCredentialWithSecret = ClientCredential & {
+  clientSecret: string;
+};
+
 export type Team = {
   createdAt: string;
   description: string;
