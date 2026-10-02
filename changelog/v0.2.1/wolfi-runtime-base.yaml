@@ -1,0 +1,5 @@
+changelog:
+  - type: NON_USER_FACING
+    description: >-
+      Serve the portal from a pinned Wolfi base with Node 22 instead of
+      distroless, which clears the image's OS CVEs.
