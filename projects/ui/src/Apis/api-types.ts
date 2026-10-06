@@ -272,12 +272,48 @@ export type ApiVersionSchema = {
     title: string;
     version: string;
   };
-  paths: {
+  // Both optional: paths is required in OpenAPI 3.0, but a 3.1 document may
+  // carry only webhooks or components.
+  paths?: {
+    [key: string]: unknown;
+  };
+  webhooks?: {
     [key: string]: unknown;
   };
   servers?: {
     url: string;
   }[];
+};
+
+// A document is renderable if it declares a spec version or carries any
+// top-level section. `paths` alone is too strict: it is required in OpenAPI 3.0
+// but optional in 3.1, where a document may hold only webhooks or components.
+const SPEC_KEYS = ["openapi", "swagger", "paths", "webhooks", "components"];
+
+/**
+ * The OpenAPI document reaches us as an object from newer portal servers and as
+ * a JSON string from portal v1. Anything we can't parse, or that isn't a spec
+ * at all (an error body, say), comes back undefined so callers can show an
+ * empty state instead of handing a renderer something it will choke on.
+ */
+export const normalizeApiVersionSchema = (
+  spec: string | ApiVersionSchema | undefined
+): ApiVersionSchema | undefined => {
+  let parsed: unknown = spec;
+  if (typeof spec === "string") {
+    try {
+      parsed = JSON.parse(spec);
+    } catch {
+      return undefined;
+    }
+  }
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+    return undefined;
+  }
+  const doc = parsed as Record<string, unknown>;
+  return SPEC_KEYS.some((k) => k in doc)
+    ? (parsed as ApiVersionSchema)
+    : undefined;
 };
 
 //

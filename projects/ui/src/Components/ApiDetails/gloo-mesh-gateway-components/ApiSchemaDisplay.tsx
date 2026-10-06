@@ -1,11 +1,12 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Button } from "@mantine/core";
+import { Box, Button } from "@mantine/core";
 import { useContext, useState } from "react";
 import { di } from "react-magnetic-di";
 import { useParams } from "react-router";
 import { useGetApiDetails } from "../../../Apis/gmg_hooks";
 import { AppContext } from "../../../Context/AppContext";
+import { EmptyData } from "../../Common/EmptyData";
 import { Loading } from "../../Common/Loading";
 import { PageContainerWrapper } from "../../Common/PageContainer";
 import { RedocDisplay } from "../shared/ApiSchema/redoc/RedocDisplay";
@@ -40,6 +41,18 @@ export function ApiSchemaDisplay() {
 
   if (isLoading) {
     return <Loading message={`Retrieving schema for ${apiId}...`} />;
+  }
+  // The request finished without a spec we can render. Say so, rather than
+  // handing Redoc an undefined spec and leaving it on "Loading ..." forever.
+  if (!apiSchema) {
+    return (
+      <Box m="60px">
+        <EmptyData title="No schema found.">
+          The portal server returned no usable OpenAPI spec for this API. Check
+          that it generated correctly.
+        </EmptyData>
+      </Box>
+    );
   }
 
   return (

@@ -221,6 +221,44 @@ const searchSpec = {
   },
 };
 
+// An OpenAPI 3.1 document with no `paths` at all — only webhooks. `paths` is
+// required in 3.0 but optional in 3.1, so this must reach the renderers rather
+// than be rejected as "not a spec". See webhooks-only-spec.spec.ts for what the
+// renderers actually do with it.
+const webhooksSpec = {
+  openapi: "3.1.0",
+  info: { title: "Webhooks REST API", version: "1.0.0" },
+  servers: [{ url: "http://localhost:31080" }],
+  webhooks: {
+    trackPublished: {
+      post: {
+        summary: "Track published event",
+        operationId: "trackPublished",
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/TrackPublishedEvent" },
+            },
+          },
+        },
+        responses: { 200: { description: "Event acknowledged" } },
+      },
+    },
+  },
+  components: {
+    schemas: {
+      TrackPublishedEvent: {
+        type: "object",
+        properties: {
+          trackId: { type: "string" },
+          publishedAt: { type: "string" },
+        },
+      },
+    },
+  },
+};
+
 // ----- GMG (Gloo Mesh Gateway) format: flat API list -----
 
 const gmgApis = [
@@ -284,6 +322,21 @@ const gmgApis = [
     openapiSpec: searchSpec,
     openapiSpecFetchErr: null,
   },
+  {
+    apiProductId: "webhooks-api",
+    apiProductDisplayName: "Webhooks API",
+    apiVersion: "v1",
+    apiId: "webhooks-api-v1",
+    contact: "events-team@example.com",
+    customMetadata: { team: "events" },
+    description: "Webhooks-only OpenAPI 3.1 document, with no paths",
+    license: "MIT",
+    termsOfService: "https://example.com/tos",
+    title: "Webhooks REST API",
+    usagePlans: ["gold"],
+    openapiSpec: webhooksSpec,
+    openapiSpecFetchErr: null,
+  },
 ];
 
 // ----- GG (Gloo Gateway) format: API products + versions -----
@@ -319,6 +372,14 @@ const ggApiProducts = [
     id: "search-api",
     name: "Search API",
     updatedAt: "2024-07-15T08:00:00Z",
+    versionsCount: 1,
+  },
+  {
+    createdAt: "2024-08-01T10:00:00Z",
+    description: "Webhooks-only OpenAPI 3.1 document, with no paths",
+    id: "webhooks-api",
+    name: "Webhooks API",
+    updatedAt: "2024-08-15T08:00:00Z",
     versionsCount: 1,
   },
 ];
@@ -376,6 +437,19 @@ const ggApiVersions = {
       updatedAt: "2024-07-15T08:00:00Z",
     },
   ],
+  "webhooks-api": [
+    {
+      apiSpec: webhooksSpec,
+      createdAt: "2024-08-01T10:00:00Z",
+      documentation: "Full documentation for Webhooks API v1",
+      id: "webhooks-api-v1",
+      name: "v1",
+      publicVisible: true,
+      status: "APPROVED",
+      title: "Webhooks API v1",
+      updatedAt: "2024-08-15T08:00:00Z",
+    },
+  ],
 };
 
 // Map apiId -> OpenAPI spec for the /apis/:apiId/schema endpoint
@@ -384,6 +458,7 @@ const apiSchemas = {
   "petstore-api-v2": petStoreSpec,
   "orders-api-v1": ordersSpec,
   "search-api-v1": searchSpec,
+  "webhooks-api-v1": webhooksSpec,
 };
 
 module.exports = {

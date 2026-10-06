@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import {
   ApiProductSummary,
   ApiVersion,
-  ApiVersionSchema,
+  normalizeApiVersionSchema,
 } from "../../../Apis/api-types";
 import { ApiProductDetailsPageBody } from "./ApiProductDetailsPageBody";
 import ApiProductDetailsPageHeading from "./ApiProductDetailsPageHeading";
@@ -18,13 +18,10 @@ export function ApiProductDetailsPageContent({
   selectedApiVersion: ApiVersion | null;
   onSelectedApiVersionChange: (newVersionId: string | null) => void;
 }) {
-  const apiVersionSpec = useMemo<ApiVersionSchema | undefined>(() => {
-    const apiSpec = selectedApiVersion?.apiSpec;
-    if (typeof apiSpec === "string") {
-      return JSON.parse(apiSpec);
-    }
-    return apiSpec;
-  }, [selectedApiVersion]);
+  const apiVersionSpec = useMemo(
+    () => normalizeApiVersionSchema(selectedApiVersion?.apiSpec),
+    [selectedApiVersion]
+  );
 
   //
   // Render
