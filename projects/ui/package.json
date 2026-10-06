@@ -79,6 +79,7 @@
   },
   "resolutions": {
     "vite": "^6.4.1",
+    "source-map-js": "^1.2.2",
     "micromatch": "^4.0.8",
     "sha.js": "^2.4.12",
     "cookie": "^0.7.0",
@@ -93,6 +94,7 @@
     "body-parser": ">=1.20.6 <2",
     "dompurify": ">=3.4.16",
     "express": "^4.19.2",
+    "proxy-addr": "^2.0.8",
     "react-inspector": "^6.0.1",
     "react-copy-to-clipboard": "^5.1.0",
     "tar": ">=7.5.21",
