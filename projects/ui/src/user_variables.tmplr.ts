@@ -111,9 +111,6 @@ function quoteList(values: readonly string[]) {
  * Parses an environment variable that selects any combination of a fixed set of
  * values, written as a comma-separated list. "ALL" names every value and is
  * what an unset or empty variable means.
- *
- * A comma rather than a "|" because these values are written in shells,
- * Makefiles and `docker run -e` arguments, where an unquoted "|" is a pipe.
  */
 function parseEnumSetEnv<T extends string>(
   name: string,
@@ -390,10 +387,7 @@ export const swaggerPrefillBasic = (() => {
  */
 const appAuthMethods = ["OAUTH", "API_KEY", "API_KEY_CLIENT_ID"] as const;
 
-/**
- * The credential types whose sections the App details page shows. A set rather
- * than one choice, so any combination can be named without a value per pairing.
- */
+/** The credential types whose sections the App details page shows. */
 export const enabledAppAuthMethods = parseEnumSetEnv(
   "VITE_DEFAULT_APP_AUTH",
   templateString(

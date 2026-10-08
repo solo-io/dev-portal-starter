@@ -28,10 +28,7 @@ function AddCredentialSubSection<T>({
   open: boolean;
   onClose: () => void;
   create: (name: string) => Promise<T>;
-  /**
-   * Shows the created credential. Its secret comes back only from the create
-   * call, so this is the one chance the user has to copy it; `onDone` drops it.
-   */
+  /** Shows the created credential; `onDone` drops it. */
   renderCreated: (created: T | undefined, onDone: () => void) => ReactNode;
 }) {
   //

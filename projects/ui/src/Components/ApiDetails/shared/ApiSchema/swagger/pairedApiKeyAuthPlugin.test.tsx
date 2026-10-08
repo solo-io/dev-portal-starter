@@ -22,7 +22,7 @@ const pairedSpec = fromJS({
   },
 });
 
-/** The same two schemes as alternatives (an OR), which must stay separate. */
+/** The same two schemes as alternatives (an OR). */
 const eitherOrSpec = fromJS({
   openapi: "3.0.0",
   paths: {
@@ -44,57 +44,58 @@ function systemFor(spec: unknown) {
   return { specSelectors: { specJson: () => spec } };
 }
 
-/** What Swagger UI's own selector returns: one scheme per entry. */
-function stockDefinitions(spec: any) {
+/**
+ * The entries Swagger UI stores for the Authorize dialog: one scheme each, in
+ * spec order, limited to `names` when an operation's lock icon opened it.
+ */
+function stockDefinitions(spec: any, names?: string[]) {
   const schemes = spec.getIn(["components", "securitySchemes"]);
   return schemes
     .entrySeq()
+    .filter(([name]: [string, unknown]) => !names || names.includes(name))
     .map(([name, schema]: [string, unknown]) => Map({ [name]: schema }))
     .toList();
 }
 
-function regroup(spec: any, onOriCall?: (args: unknown[]) => void) {
+function shownDefinitions(spec: any, names?: string[]) {
   const system = systemFor(spec);
   const wrap =
-    pairedApiKeyAuthPlugin(system).statePlugins.auth.wrapSelectors
-      .definitionsToAuthorize;
-  const ori = (...args: unknown[]) => {
-    onOriCall?.(args);
-    return stockDefinitions(spec);
-  };
+    pairedApiKeyAuthPlugin().statePlugins.auth.wrapSelectors.shownDefinitions;
   // Swagger UI hands the wrapper the auth substate ahead of the selector's own
   // arguments.
-  return wrap(ori, system)(Map());
+  return wrap(() => stockDefinitions(spec, names), system)(Map());
 }
 
 afterEach(() => {
   cleanup();
 });
 
-describe("definitionsToAuthorize grouping", () => {
+describe("shownDefinitions grouping", () => {
   it("merges schemes named together into one entry, so they share a button", () => {
-    const result = regroup(pairedSpec);
+    const result = shownDefinitions(pairedSpec);
 
     expect(result.size).toBe(1);
-    expect(result.first().keySeq().toArray()).toEqual([
-      "clientId",
-      "apiKey",
-    ]);
+    expect(result.first().keySeq().toArray()).toEqual(["clientId", "apiKey"]);
   });
 
   it("leaves alternative schemes in their own entries", () => {
-    const result = regroup(eitherOrSpec);
+    const result = shownDefinitions(eitherOrSpec);
 
     expect(result.size).toBe(2);
   });
 
-  // `ori` is already bound to the auth state, so passing the state through
-  // would shift every argument by one.
-  it("calls the wrapped selector without the state it was handed", () => {
-    const calls: unknown[][] = [];
-    regroup(pairedSpec, (args) => calls.push(args));
+  it("leaves a scheme alone when the dialog shows it without its partner", () => {
+    const result = shownDefinitions(pairedSpec, ["clientId"]);
 
-    expect(calls).toEqual([[]]);
+    expect(result.size).toBe(1);
+    expect(result.first().keySeq().toArray()).toEqual(["clientId"]);
+  });
+
+  it("passes a closed dialog through", () => {
+    const wrap =
+      pairedApiKeyAuthPlugin().statePlugins.auth.wrapSelectors.shownDefinitions;
+
+    expect(wrap(() => false, systemFor(pairedSpec))(Map())).toBe(false);
   });
 });
 
@@ -112,16 +113,24 @@ const getComponent = (name: string) => {
   }
 };
 
-function renderAuthField(spec: any, name: string, authorizedValue?: string) {
-  const system = systemFor(spec);
-  const ApiKeyAuth = pairedApiKeyAuthPlugin(system).components.apiKeyAuth;
+/** Renders the field for `name` in a dialog showing the schemes in `shown`. */
+function renderAuthField(
+  spec: any,
+  name: string,
+  shown: string[],
+  authorizedValue?: string
+) {
+  const ApiKeyAuth = pairedApiKeyAuthPlugin().components.apiKeyAuth;
   render(
     <ApiKeyAuth
       schema={spec.getIn(["components", "securitySchemes", name])}
       name={name}
       getComponent={getComponent}
       errSelectors={{ allErrors: () => List() }}
-      authSelectors={{ selectAuthPath: () => List() }}
+      authSelectors={{
+        selectAuthPath: () => List(),
+        shownDefinitions: () => shownDefinitions(spec, shown),
+      }}
       authorized={
         authorizedValue === undefined
           ? Map()
@@ -132,62 +141,36 @@ function renderAuthField(spec: any, name: string, authorizedValue?: string) {
   );
 }
 
-describe("apiKeyAuth heading", () => {
-  // "(apiKey)" describes how the value travels. On the client ID half of an API
-  // key with a client ID, it reads as though the field were a standalone key.
-  it("omits the type suffix for a grouped scheme", () => {
-    renderAuthField(pairedSpec, "clientId");
+describe("apiKeyAuth", () => {
+  it("omits the type suffix for a scheme in a shared form", () => {
+    renderAuthField(pairedSpec, "clientId", ["clientId", "apiKey"]);
 
     expect(screen.queryByText(/\(apiKey\)/)).toBeNull();
     expect(screen.getByText("clientId")).toBeTruthy();
   });
 
-  it("keeps the type suffix for a scheme that stands alone", () => {
-    renderAuthField(eitherOrSpec, "clientId");
-
-    expect(screen.getByText(/\(apiKey\)/)).toBeTruthy();
-  });
-});
-
-describe("apiKeyAuth authorized value", () => {
-  // The client ID identifies the client rather than proving it, so showing it
-  // lets the user see which credential they authorized with.
-  it("shows the client ID of a grouped pair", () => {
-    renderAuthField(pairedSpec, "clientId", "my-client");
+  it("shows the client ID of a shared form once authorized", () => {
+    renderAuthField(
+      pairedSpec,
+      "clientId",
+      ["clientId", "apiKey"],
+      "my-client"
+    );
 
     expect(screen.getByText("my-client")).toBeTruthy();
   });
 
-  it("masks the API key of a grouped pair", () => {
-    renderAuthField(pairedSpec, "apiKey", "shh");
+  it("masks the API key of a shared form once authorized", () => {
+    renderAuthField(pairedSpec, "apiKey", ["clientId", "apiKey"], "shh");
 
     expect(screen.queryByText("shh")).toBeNull();
     expect(screen.getByText("******")).toBeTruthy();
   });
 
-  // Standing alone, the scheme is the whole credential.
-  it("masks a client ID that stands alone", () => {
-    renderAuthField(eitherOrSpec, "clientId", "my-client");
+  it("keeps Swagger UI's own rendering for a scheme shown on its own", () => {
+    renderAuthField(pairedSpec, "clientId", ["clientId"], "my-client");
 
-    expect(screen.queryByText("my-client")).toBeNull();
-  });
-
-  // The header name is the user's choice, so it says nothing about the value.
-  it("masks a grouped scheme whose header only looks like a client ID", () => {
-    const spec = fromJS({
-      openapi: "3.0.0",
-      paths: {
-        "/pets": { get: { security: [{ appKey: [], appSecret: [] }] } },
-      },
-      components: {
-        securitySchemes: {
-          appKey: { type: "apiKey", name: "x-client-id", in: "header" },
-          appSecret: { type: "apiKey", name: "x-client-secret", in: "header" },
-        },
-      },
-    });
-    renderAuthField(spec, "appKey", "my-client");
-
+    expect(screen.getByText(/\(apiKey\)/)).toBeTruthy();
     expect(screen.queryByText("my-client")).toBeNull();
     expect(screen.getByText("******")).toBeTruthy();
   });

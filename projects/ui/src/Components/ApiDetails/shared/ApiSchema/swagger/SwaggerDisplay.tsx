@@ -62,8 +62,9 @@ export function SwaggerDisplay({
   }, [apiVersionId, sanitizedDomId]);
 
   // Rebuilding Swagger UI discards its state, including an open Authorize
-  // dialog. SWR refetches on window focus and can hand back an equal spec as a
-  // new object, so rebuild only when the spec's contents change.
+  // dialog. The spec is parsed out of a larger response, so a refetch that
+  // changes anything else in that response hands this component an equal spec
+  // as a new object. Rebuild only when the spec's contents change.
   const specKey = useMemo(
     () => JSON.stringify(apiVersionSpec ?? null),
     [apiVersionSpec]

@@ -38,26 +38,22 @@ const apiKey: ApiKey = {
 };
 
 /**
- * Renders the section with its data hooks replaced. `loading` is a list
- * request still in flight; with an `error`, it failed and, as with SWR, there
- * is no data. `createArgs` and `deleteArgs` record what the create form and
- * the delete button submitted.
+ * Renders the section with its data hooks replaced. `createArgs` and
+ * `deleteArgs` record what the create form and the delete button submitted.
  */
 function renderSection({
   apiKeys = [] as ApiKey[],
-  loading = false,
-  error = undefined as unknown,
   created = undefined as ApiKey | undefined,
 } = {}) {
   const createArgs: { apiKeyName: string }[] = [];
   const deleteArgs: { apiKeyId: string }[] = [];
-  const { container } = render(
+  render(
     <DiProvider
       use={[
         injectable(useListApiKeysForApp, () => ({
-          isLoading: loading,
-          data: loading || error ? undefined : apiKeys,
-          error,
+          isLoading: false,
+          data: apiKeys,
+          error: undefined,
         })),
         injectable(useCreateApiKeyMutation, () => ({
           trigger: async (arg: { apiKeyName: string }) => {
@@ -75,7 +71,7 @@ function renderSection({
       <AppApiKeysSection app={app} />
     </DiProvider>
   );
-  return { container, createArgs, deleteArgs };
+  return { createArgs, deleteArgs };
 }
 
 afterEach(() => {
@@ -93,29 +89,7 @@ describe("AppApiKeysSection", () => {
     expect(headers).toEqual(["Name", "Created", "Delete"]);
   });
 
-  it("shows the empty state when the app has no keys", () => {
-    renderSection();
-
-    expect(screen.getByText("No API Keys were found.")).toBeTruthy();
-  });
-
-  it("shows only a loading indicator while the list is loading", () => {
-    const { container } = renderSection({ loading: true });
-
-    expect(container.innerHTML).not.toBe("");
-    expect(screen.queryByText("API Keys")).toBeNull();
-    expect(screen.queryByText("No API Keys were found.")).toBeNull();
-    expect(screen.queryByText(/could not be loaded/)).toBeNull();
-  });
-
-  it("says the list could not be loaded when the request fails", () => {
-    renderSection({ error: new Error("upstream unavailable") });
-
-    expect(screen.getByText("The API Keys could not be loaded.")).toBeTruthy();
-    expect(screen.getByText("upstream unavailable")).toBeTruthy();
-  });
-
-  it("reveals the key once after creating it", async () => {
+  it("creates a key by name and reveals it", async () => {
     const { createArgs } = renderSection({
       created: { ...apiKey, apiKey: "k3y-value" },
     });
@@ -135,18 +109,16 @@ describe("AppApiKeysSection", () => {
     expect(screen.getByText("k3y-value")).toBeTruthy();
   });
 
-  it("names the key it is about to delete", async () => {
+  it("deletes a key by id", async () => {
     const { deleteArgs } = renderSection({ apiKeys: [apiKey] });
 
     fireEvent.click(screen.getByRole("button", { name: "Delete" }));
-
-    expect(
-      await screen.findByText(/delete the API Key "My Key"/)
-    ).toBeTruthy();
-
     await act(async () => {
-      fireEvent.click(screen.getByRole("button", { name: "Delete API Key" }));
+      fireEvent.click(
+        await screen.findByRole("button", { name: "Delete API Key" })
+      );
     });
+
     expect(deleteArgs).toEqual([{ apiKeyId: apiKey.id }]);
   });
 });

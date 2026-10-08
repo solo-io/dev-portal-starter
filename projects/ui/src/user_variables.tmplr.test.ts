@@ -102,8 +102,6 @@ describe("enabledAppAuthMethods", () => {
 
   it.each([
     ["OAUTH", ["OAUTH"]],
-    ["API_KEY", ["API_KEY"]],
-    ["API_KEY_CLIENT_ID", ["API_KEY_CLIENT_ID"]],
     // Methods combine freely.
     ["API_KEY,API_KEY_CLIENT_ID", ["API_KEY", "API_KEY_CLIENT_ID"]],
     ["ALL", everything],

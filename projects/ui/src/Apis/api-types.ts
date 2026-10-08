@@ -122,20 +122,9 @@ export type ApiKey = {
 };
 
 /**
- * One API key belonging to a client ID. The key value itself is never returned
- * by a read; only the digest of it is stored server-side.
- */
-export type ClientIdKey = {
-  id: string;
-  /** "portal_issued" when minted here, "imported" when loaded from an export. */
-  source: string;
-  createdAt: string;
-  expiresAt?: string;
-};
-
-/**
  * An API key with a client ID, held by an app: the client ID names the
- * credential at request time, and its API key is checked against it.
+ * credential at request time, and its API key is checked against it. The
+ * client ID is not a secret; the API key is, and is returned only on creation.
  */
 export type ClientId = {
   id: string;
@@ -144,14 +133,9 @@ export type ClientId = {
   name: string;
   createdAt: string;
   updatedAt?: string;
-  keys?: ClientIdKey[];
 };
 
-/**
- * The response to creating an API key with a client ID. This is the only place
- * the raw `apiKey` appears, so it has to be shown to the user once and then
- * dropped.
- */
+/** The response to creating an API key with a client ID. */
 export type ClientIdWithKey = ClientId & {
   apiKey: string;
 };
