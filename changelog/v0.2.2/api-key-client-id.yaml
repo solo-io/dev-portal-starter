@@ -1,0 +1,12 @@
+changelog:
+  - type: NEW_FEATURE
+    issueLink: https://github.com/solo-io/gloo-gateway/issues/2747
+    resolvesIssue: false
+    description: |-
+      Support for API keys with a client ID.
+      - The App details page has a new API Keys with Client ID section for creating, listing and deleting API keys that are sent together with a client ID. Each key is listed with its client ID; the API key itself is shown only once, when it is created.
+      - The section requires a portal server that serves the client IDs API (Solo Enterprise for kgateway 2.4.0 or later). Against an older portal server it reports that its list could not be loaded, so set VITE_DEFAULT_APP_AUTH to a list without "API_KEY_CLIENT_ID" there, such as "OAUTH,API_KEY".
+      - VITE_DEFAULT_APP_AUTH now takes a comma-separated list of "OAUTH", "API_KEY" and "API_KEY_CLIENT_ID", so any combination of App details sections can be shown. The existing values "OAUTH", "API_KEY" and "ALL" keep their meaning, and "ALL", the default, now includes the new section.
+      - In the Swagger view, API key schemes that one security requirement lists together, such as a client ID and an API key, now share one form and one Authorize button in the Authorize dialog. Once authorized, the client ID is shown rather than masked.
+      - Fixed: the Swagger view's Authorize dialog no longer closes when the user switches to another window and back, for example to copy an API key. This is more relevant with API keys that include a client ID, as users may need to copy both values.
+      - Fixed: the API Keys section now says when its list cannot be loaded, instead of showing a loading indicator indefinitely, and its delete confirmation names the key being deleted.
