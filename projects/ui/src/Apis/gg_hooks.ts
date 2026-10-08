@@ -9,6 +9,8 @@ import {
   ApiProductSummary,
   ApiVersion,
   App,
+  ClientId,
+  ClientIdWithKey,
   Member,
   OauthCredential,
   RateLimit,
@@ -63,6 +65,9 @@ export function useListApiKeysForApp(appId: string) {
 }
 export function useGetOauthCredentialsForApp(appId: string) {
   return useSwrWithAuth<OauthCredential>(`/apps/${appId}/oauth-credentials`);
+}
+export function useListClientIdsForApp(appId: string) {
+  return useSwrWithAuth<ClientId[]>(`/apps/${appId}/client-ids`);
 }
 
 // region Teams
@@ -478,6 +483,45 @@ export function useDeleteApiKeyMutation(appId: string) {
     });
   };
   return useSWRMutation(`/apps/${appId}/api-keys`, deleteApiKey);
+}
+
+// -------------------------------- //
+// region Create API Key with Client ID
+
+type CreateClientIdParams = MutationWithArgs<{ name: string }>;
+
+export function useCreateClientIdMutation(appId: string) {
+  const { latestAccessToken } = useContext(AuthContext);
+  const createClientId = async (_: string, { arg }: CreateClientIdParams) => {
+    return await fetchJSON(`/apps/${appId}/client-ids`, {
+      method: "POST",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify(arg),
+    });
+  };
+  return useSWRMutation<
+    ClientIdWithKey,
+    any,
+    string,
+    CreateClientIdParams["arg"]
+  >(`/apps/${appId}/client-ids`, createClientId);
+}
+
+// -------------------------------- //
+// region Delete API Key with Client ID
+
+type DeleteClientIdParams = MutationWithArgs<{ clientIdId: string }>;
+
+/** Deletes the client ID and every API key it holds. */
+export function useDeleteClientIdMutation(appId: string) {
+  const { latestAccessToken } = useContext(AuthContext);
+  const deleteClientId = async (_: string, { arg }: DeleteClientIdParams) => {
+    await fetchJSON(`/client-ids/${arg.clientIdId}`, {
+      method: "DELETE",
+      headers: getLatestAuthHeaders(latestAccessToken),
+    });
+  };
+  return useSWRMutation(`/apps/${appId}/client-ids`, deleteClientId);
 }
 
 // -------------------------------- //

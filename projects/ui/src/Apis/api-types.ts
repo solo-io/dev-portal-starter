@@ -121,6 +121,25 @@ export type ApiKey = {
   metadata: Record<string, string>;
 };
 
+/**
+ * An API key with a client ID, held by an app: the client ID names the
+ * credential at request time, and its API key is checked against it. The
+ * client ID is not a secret; the API key is, and is returned only on creation.
+ */
+export type ClientId = {
+  id: string;
+  appId: string;
+  clientId: string;
+  name: string;
+  createdAt: string;
+  updatedAt?: string;
+};
+
+/** The response to creating an API key with a client ID. */
+export type ClientIdWithKey = ClientId & {
+  apiKey: string;
+};
+
 export type Team = {
   createdAt: string;
   description: string;
