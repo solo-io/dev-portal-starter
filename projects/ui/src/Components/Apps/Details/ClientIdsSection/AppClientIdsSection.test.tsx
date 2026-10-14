@@ -85,6 +85,12 @@ describe("AppClientIdsSection", () => {
     expect(screen.getByText("portal-abc123")).toBeTruthy();
   });
 
+  it("names an unnamed key by its client ID", () => {
+    renderSection({ clientIds: [{ ...clientId, name: undefined }] });
+
+    expect(screen.getAllByText("portal-abc123")).toHaveLength(2);
+  });
+
   it("creates a key by name and reveals it with its client ID", async () => {
     const { createArgs } = renderSection({
       created: { ...clientId, apiKey: "portal_cid_s3cret" },

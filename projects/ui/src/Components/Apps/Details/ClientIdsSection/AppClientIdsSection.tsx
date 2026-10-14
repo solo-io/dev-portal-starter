@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { di } from "react-magnetic-di";
 import { App } from "../../../../Apis/api-types";
 import {
@@ -12,12 +13,17 @@ const AppClientIdsSection = ({ app }: { app: App }) => {
   di(useListClientIdsForApp, useDeleteClientIdMutation);
   const { data: clientIds, error } = useListClientIdsForApp(app.id);
   const { trigger: deleteClientId } = useDeleteClientIdMutation(app.id);
+  // An imported client ID may have no name.
+  const namedClientIds = useMemo(
+    () => clientIds?.map((c) => ({ ...c, name: c.name || c.clientId })),
+    [clientIds]
+  );
 
   return (
     <CredentialsSection
       kind="API Key with Client ID"
       kindPlural="API Keys with Client ID"
-      credentials={clientIds}
+      credentials={namedClientIds}
       error={error}
       columns={[{ header: "Client ID", cell: (c) => c.clientId }]}
       deleteCredential={(clientId) =>

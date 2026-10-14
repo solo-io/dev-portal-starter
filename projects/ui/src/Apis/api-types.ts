@@ -130,7 +130,7 @@ export type ClientId = {
   id: string;
   appId: string;
   clientId: string;
-  name: string;
+  name?: string;
   createdAt: string;
   updatedAt?: string;
 };

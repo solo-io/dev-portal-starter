@@ -111,7 +111,7 @@ export function SwaggerDisplay({
         swaggerPrefillBasic.password
       );
     }
-  }, [sanitizedDomId, specKey]);
+  }, [sanitizedDomId, specKey, tokensResponse?.access_token]);
 
   return (
     <SwaggerDisplayContainer>
