@@ -2,6 +2,7 @@ import { cleanup, render } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { ApiVersionSchema } from "../../../../../Apis/api-types";
+import { AuthContext } from "../../../../../Context/AuthContext";
 import { SwaggerDisplay } from "./SwaggerDisplay";
 
 // The constructor records its calls on `globalThis` because a `vi.mock` factory
@@ -65,5 +66,18 @@ describe("SwaggerDisplay", () => {
     );
 
     expect(globalThis.__swaggerConstructorCalls).toHaveLength(2);
+  });
+
+  it("does not rebuild when the access token refreshes", () => {
+    const withToken = (access_token: string) => (
+      <AuthContext.Provider value={{ tokensResponse: { access_token } } as any}>
+        <SwaggerDisplay apiVersionSpec={spec} apiVersionId="v1" />
+      </AuthContext.Provider>
+    );
+    const { rerender } = render(withToken("first"));
+
+    rerender(withToken("refreshed"));
+
+    expect(globalThis.__swaggerConstructorCalls).toHaveLength(1);
   });
 });
