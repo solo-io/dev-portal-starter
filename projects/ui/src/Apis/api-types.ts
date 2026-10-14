@@ -304,6 +304,32 @@ export type ApiVersionSchema = {
   }[];
 };
 
+const HTTP_METHODS = [
+  "get",
+  "put",
+  "post",
+  "delete",
+  "options",
+  "head",
+  "patch",
+  "trace",
+];
+
+/**
+ * Counts operations (path + method pairs), not paths: `/items` with GET and
+ * POST is two operations.
+ */
+export const countApiOperations = (spec: ApiVersionSchema) =>
+  Object.values(spec.paths ?? {}).reduce<number>((count, pathItem) => {
+    if (!pathItem || typeof pathItem !== "object") {
+      return count;
+    }
+    const methods = Object.keys(pathItem).filter((k) =>
+      HTTP_METHODS.includes(k)
+    );
+    return count + methods.length;
+  }, 0);
+
 // A document is renderable if it declares a spec version or carries any
 // top-level section. `paths` alone is too strict: it is required in OpenAPI 3.0
 // but optional in 3.1, where a document may hold only webhooks or components.
