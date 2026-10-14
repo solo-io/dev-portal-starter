@@ -54,7 +54,9 @@ function CredentialsSection<T extends NamedCredential>({
   );
   const { paginatedData } = customPaginationData;
 
+  // Kept after close, so the modal's text holds while it fades out.
   const [confirmDeleteCredential, setConfirmDeleteCredential] = useState<T>();
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
 
   if (credentials === undefined) {
     if (!error) {
@@ -123,9 +125,10 @@ function CredentialsSection<T extends NamedCredential>({
                             size="xs"
                             variant="light"
                             color="danger"
-                            onClick={() =>
-                              setConfirmDeleteCredential(credential)
-                            }
+                            onClick={() => {
+                              setConfirmDeleteCredential(credential);
+                              setIsConfirmDeleteOpen(true);
+                            }}
                           >
                             Delete
                           </Button>
@@ -152,7 +155,7 @@ function CredentialsSection<T extends NamedCredential>({
       )}
       <ConfirmDeleteCredentialModal
         kind={kind}
-        open={!!confirmDeleteCredential}
+        open={isConfirmDeleteOpen}
         credentialName={confirmDeleteCredential?.name ?? ""}
         details={
           confirmDeleteCredential &&
@@ -164,7 +167,7 @@ function CredentialsSection<T extends NamedCredential>({
           ))
         }
         onConfirm={() => deleteCredential(confirmDeleteCredential!)}
-        onClose={() => setConfirmDeleteCredential(undefined)}
+        onClose={() => setIsConfirmDeleteOpen(false)}
       />
     </DetailsPageStyles.Section>
   );

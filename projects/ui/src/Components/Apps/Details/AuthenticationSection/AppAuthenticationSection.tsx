@@ -8,6 +8,7 @@ import { Button } from "../../../Common/Button";
 import { DataPairPill } from "../../../Common/DataPairPill";
 import { Loading } from "../../../Common/Loading";
 import ConfirmCreateOAuthModal from "../Modals/ConfirmCreateOAuthModal";
+import ClientIdDisplay from "../Modals/ClientIdDisplay";
 import ConfirmDeleteOAuthModal from "../Modals/ConfirmDeleteOAuthModal";
 import ViewCreatedItemModal from "../Modals/ViewCreatedItemModal";
 
@@ -111,24 +112,7 @@ const AppAuthenticationSection = ({ app }: { app: App }) => {
           }
         }}
         additionalContentTop={
-          <>
-            <Flex
-              w="100%"
-              justify={"center"}
-              mb="15px"
-              sx={{ fontSize: "1.25rem" }}
-            >
-              Client ID
-            </Flex>
-            <Flex
-              w="100%"
-              justify={"center"}
-              mb="30px"
-              sx={{ fontSize: "1.25rem" }}
-            >
-              {credentialsToShow?.idpClientId ?? ""}
-            </Flex>
-          </>
+          <ClientIdDisplay clientId={credentialsToShow?.idpClientId ?? ""} />
         }
       />
     </DetailsPageStyles.Section>

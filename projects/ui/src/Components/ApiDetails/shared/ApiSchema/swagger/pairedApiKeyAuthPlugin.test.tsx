@@ -91,6 +91,26 @@ describe("shownDefinitions grouping", () => {
     expect(result.first().keySeq().toArray()).toEqual(["clientId"]);
   });
 
+  it("pairs a scheme with the partner shown when it appears in several groups", () => {
+    const spec = fromJS({
+      openapi: "3.0.0",
+      security: [{ clientId: [], apiKey: [] }],
+      paths: { "/pets": { get: { security: [{ clientId: [], otherKey: [] }] } } },
+      components: {
+        securitySchemes: {
+          clientId: { type: "apiKey", name: "x-client-id", in: "header" },
+          apiKey: { type: "apiKey", name: "x-api-key", in: "header" },
+          otherKey: { type: "apiKey", name: "x-other-key", in: "header" },
+        },
+      },
+    });
+
+    const result = shownDefinitions(spec, ["clientId", "otherKey"]);
+
+    expect(result.size).toBe(1);
+    expect(result.first().keySeq().toArray()).toEqual(["clientId", "otherKey"]);
+  });
+
   it("passes a closed dialog through", () => {
     const wrap =
       pairedApiKeyAuthPlugin().statePlugins.auth.wrapSelectors.shownDefinitions;

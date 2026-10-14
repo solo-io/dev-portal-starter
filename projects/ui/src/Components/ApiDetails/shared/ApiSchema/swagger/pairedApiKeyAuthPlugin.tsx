@@ -2,20 +2,9 @@
 import { ReactNode } from "react";
 
 /**
- * Swagger UI gives every security scheme its own form and its own Authorize
- * button, and labels each one "(apiKey)". A credential made of two headers — an
- * API key with a client ID, which OpenAPI can only express as two `apiKey`
- * schemes named together in one security requirement — therefore shows up as
- * two unrelated API keys to be authorized one at a time.
- *
- * This plugin puts schemes that a security requirement names together into one
- * form, so they share a single Authorize button, and drops the "(apiKey)"
- * suffix from the schemes in a shared form, since it describes how the value
- * travels rather than what the credential is. A scheme shown on its own keeps
- * Swagger UI's own rendering.
- *
- * Swagger UI's own components are at `swagger-ui/dist/swagger-ui.js.map`
- * (`src/core/components/auth/`), which is where the markup below comes from.
+ * Puts `apiKey` schemes that one security requirement names together (a client
+ * ID and an API key) into one Authorize form. Markup follows Swagger UI's
+ * `src/core/components/auth/`.
  */
 
 /** The scheme names each requirement in `security` lists together, pairs and up. */
@@ -76,11 +65,8 @@ function schemeGroups(system: any): string[][] {
 }
 
 /**
- * Merges the entries of each group that `definitions` holds in full into one
- * entry. Swagger UI hands each entry to its own form, so this is all it takes
- * for the group's schemes to share one. A scheme whose partners are absent
- * stays in its own entry. OAuth2 schemes are left alone: Swagger UI renders
- * those with their own button.
+ * Merges each group that `definitions` holds in full into one entry, which
+ * Swagger UI renders as one form. OAuth2 schemes keep their own button.
  */
 function regroup(definitions: any, groups: string[][]): any {
   if (
@@ -104,7 +90,11 @@ function regroup(definitions: any, groups: string[][]): any {
     merged.add(name);
     const group = isOauth2(entry, name)
       ? undefined
-      : groups.find((g) => g.includes(name));
+      : groups.find(
+          (g) =>
+            g.includes(name) &&
+            g.every((member) => definitions.some((d: any) => d.has(member)))
+        );
     if (!group) {
       regrouped = regrouped.push(entry);
       return;
@@ -127,13 +117,8 @@ function regroup(definitions: any, groups: string[][]): any {
 }
 
 /**
- * Regroups the entries the Authorize dialog is showing. Both the global
- * Authorize button and an operation's lock icon store the entries to show
- * through this selector: every scheme for the former, and for the latter the
- * schemes the operation requires, which Swagger UI selects by matching each
- * entry's first scheme against the requirement. Regrouping here, after that
- * selection, keeps the match exact and leaves a scheme that an operation
- * requires without its partner on its own.
+ * Regroups after Swagger UI picks the schemes an operation requires, so its
+ * match on each entry's first scheme stays exact.
  */
 const wrapShownDefinitions =
   (ori: any, system: any) =>
@@ -143,19 +128,13 @@ const wrapShownDefinitions =
     return regroup(ori(...args), schemeGroups(system));
   };
 
-/**
- * The portal names the scheme that carries the client ID "clientId"; the
- * header it travels in is whatever the user configured, so only the scheme
- * name identifies it. A client ID is not a secret, so it is shown once
- * authorized rather than masked.
- */
+// The client ID scheme's key (its header name is user-configured). A client ID
+// is not secret, so it is shown once authorized.
 const clientIdSchemeName = "clientId";
 
 /**
- * Swagger UI's `apiKeyAuth`, with the type suffix dropped for a scheme in a
- * shared form, the authorized value shown for a client ID in one, and an input
- * id per scheme — the original hardcodes `api_key_value`, so with two fields
- * in one form both labels would point at the first input.
+ * Swagger UI's `apiKeyAuth` without the "(apiKey)" suffix in a shared form, and
+ * with an input id per scheme (the original reuses `api_key_value`).
  */
 const ApiKeyAuth = ({
   schema,

@@ -1,8 +1,8 @@
-import { Flex } from "@mantine/core";
 import { di } from "react-magnetic-di";
 import { App } from "../../../../Apis/api-types";
 import { useCreateClientIdMutation } from "../../../../Apis/gg_hooks";
 import AddCredentialSubSection from "../CredentialsSection/AddCredentialSubSection";
+import ClientIdDisplay from "../Modals/ClientIdDisplay";
 import ViewCreatedItemModal from "../Modals/ViewCreatedItemModal";
 
 const AddClientIdSubSection = ({
@@ -31,24 +31,7 @@ const AddClientIdSubSection = ({
           open={!!created?.apiKey}
           onCloseModal={onDone}
           additionalContentTop={
-            <>
-              <Flex
-                w="100%"
-                justify={"center"}
-                mb="15px"
-                sx={{ fontSize: "1.25rem" }}
-              >
-                Client ID
-              </Flex>
-              <Flex
-                w="100%"
-                justify={"center"}
-                mb="30px"
-                sx={{ fontSize: "1.25rem" }}
-              >
-                {created?.clientId ?? ""}
-              </Flex>
-            </>
+            <ClientIdDisplay clientId={created?.clientId ?? ""} />
           }
         />
       )}
