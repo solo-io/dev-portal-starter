@@ -106,23 +106,22 @@ export function SwaggerDisplay({
     }
   }, [sanitizedDomId, specKey]);
 
-  // API KEY AUTH, reapplied on a token refresh without rebuilding Swagger UI.
+  // API KEY AUTH, reapplied when its value changes without rebuilding Swagger UI.
+  // "{{USER_TOKEN}}" is replaced with this user's access token, as the README documents.
   const accessToken = tokensResponse?.access_token;
+  const prefillApiKeyValue =
+    swaggerPrefillApiKey && accessToken
+      ? swaggerPrefillApiKey.apiKeyValue.replace("{{USER_TOKEN}}", accessToken)
+      : swaggerPrefillApiKey?.apiKeyValue;
   useEffect(() => {
-    if (swaggerPrefillApiKey === undefined) {
+    if (swaggerPrefillApiKey === undefined || prefillApiKeyValue === undefined) {
       return;
-    }
-    let apiKeyValue = swaggerPrefillApiKey.apiKeyValue;
-    if (!!accessToken) {
-      // Try to find & replace the "{{USER_TOKEN}}" string with this user's access token.
-      // This is documented in the README.md.
-      apiKeyValue = apiKeyValue.replace("{{USER_TOKEN}}", accessToken);
     }
     swaggerRef.current?.preauthorizeApiKey(
       swaggerPrefillApiKey.authDefinitionKey,
-      apiKeyValue
+      prefillApiKeyValue
     );
-  }, [sanitizedDomId, specKey, accessToken]);
+  }, [sanitizedDomId, specKey, prefillApiKeyValue]);
 
   return (
     <SwaggerDisplayContainer>

@@ -111,6 +111,27 @@ describe("shownDefinitions grouping", () => {
     expect(result.first().keySeq().toArray()).toEqual(["clientId", "otherKey"]);
   });
 
+  it("pairs API keys even when one is also grouped with OAuth2", () => {
+    const spec = fromJS({
+      openapi: "3.0.0",
+      security: [{ oauth: [], apiKey: [] }],
+      paths: { "/pets": { get: { security: [{ clientId: [], apiKey: [] }] } } },
+      components: {
+        securitySchemes: {
+          oauth: { type: "oauth2", flows: {} },
+          apiKey: { type: "apiKey", name: "x-api-key", in: "header" },
+          clientId: { type: "apiKey", name: "x-client-id", in: "header" },
+        },
+      },
+    });
+
+    const result = shownDefinitions(spec);
+
+    expect(
+      result.map((e: any) => e.keySeq().toArray().join("+")).toArray()
+    ).toEqual(["oauth", "apiKey+clientId"]);
+  });
+
   it("keeps every OAuth2 flow, which Swagger UI lists under one name", () => {
     const wrap =
       pairedApiKeyAuthPlugin().statePlugins.auth.wrapSelectors.shownDefinitions;

@@ -96,7 +96,9 @@ function regroup(definitions: any, groups: string[][]): any {
     const group = groups.find(
       (g) =>
         g.includes(name) &&
-        g.every((member) => definitions.some((d: any) => d.has(member)))
+        g.every((member) =>
+          definitions.some((d: any) => d.has(member) && isApiKey(d, member))
+        )
     );
     if (!group) {
       regrouped = regrouped.push(entry);

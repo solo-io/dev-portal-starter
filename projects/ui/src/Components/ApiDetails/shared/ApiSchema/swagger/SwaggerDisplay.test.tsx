@@ -10,16 +10,27 @@ import { SwaggerDisplay } from "./SwaggerDisplay";
 declare global {
   // eslint-disable-next-line no-var
   var __swaggerConstructorCalls: unknown[][];
+  // eslint-disable-next-line no-var
+  var __preauthorizeApiKeyCalls: unknown[][];
 }
 
 vi.mock("swagger-ui", () => ({
   default: (...args: unknown[]) => {
     globalThis.__swaggerConstructorCalls.push(args);
     return {
-      preauthorizeApiKey: () => undefined,
+      preauthorizeApiKey: (...args: unknown[]) =>
+        globalThis.__preauthorizeApiKeyCalls.push(args),
       initOAuth: () => undefined,
       preauthorizeBasic: () => undefined,
     };
+  },
+}));
+
+vi.mock("../../../../../user_variables.tmplr", async (importOriginal) => ({
+  ...(await importOriginal<object>()),
+  swaggerPrefillApiKey: {
+    authDefinitionKey: "bearer",
+    apiKeyValue: "Bearer {{USER_TOKEN}}",
   },
 }));
 
@@ -30,6 +41,7 @@ const spec: ApiVersionSchema = {
 
 beforeEach(() => {
   globalThis.__swaggerConstructorCalls = [];
+  globalThis.__preauthorizeApiKeyCalls = [];
 });
 
 afterEach(() => {
@@ -68,7 +80,7 @@ describe("SwaggerDisplay", () => {
     expect(globalThis.__swaggerConstructorCalls).toHaveLength(2);
   });
 
-  it("does not rebuild when the access token refreshes", () => {
+  it("reapplies the API key prefill without rebuilding when the token refreshes", () => {
     const withToken = (access_token: string) => (
       <AuthContext.Provider value={{ tokensResponse: { access_token } } as any}>
         <SwaggerDisplay apiVersionSpec={spec} apiVersionId="v1" />
@@ -79,5 +91,9 @@ describe("SwaggerDisplay", () => {
     rerender(withToken("refreshed"));
 
     expect(globalThis.__swaggerConstructorCalls).toHaveLength(1);
+    expect(globalThis.__preauthorizeApiKeyCalls).toEqual([
+      ["bearer", "Bearer first"],
+      ["bearer", "Bearer refreshed"],
+    ]);
   });
 });
