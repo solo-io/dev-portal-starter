@@ -61,10 +61,8 @@ export function SwaggerDisplay({
     }
   }, [apiVersionId, sanitizedDomId]);
 
-  // Rebuilding Swagger UI discards its state, including an open Authorize
-  // dialog. The spec is parsed out of a larger response, so a refetch that
-  // changes anything else in that response hands this component an equal spec
-  // as a new object. Rebuild only when the spec's contents change.
+  // A refetch can return an equal spec as a new object; rebuilding would close
+  // an open Authorize dialog, so rebuild only when the contents change.
   const specKey = useMemo(
     () => JSON.stringify(apiVersionSpec ?? null),
     [apiVersionSpec]

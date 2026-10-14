@@ -111,6 +111,23 @@ describe("shownDefinitions grouping", () => {
     expect(result.first().keySeq().toArray()).toEqual(["clientId", "otherKey"]);
   });
 
+  it("keeps every OAuth2 flow, which Swagger UI lists under one name", () => {
+    const wrap =
+      pairedApiKeyAuthPlugin().statePlugins.auth.wrapSelectors.shownDefinitions;
+    const flow = (name: string) =>
+      Map({ oauth: fromJS({ type: "oauth2", flow: name }) });
+    const definitions = stockDefinitions(pairedSpec).push(
+      flow("authorizationCode"),
+      flow("clientCredentials")
+    );
+
+    const result = wrap(() => definitions, systemFor(pairedSpec))(Map());
+
+    expect(
+      result.map((e: any) => e.keySeq().toArray().join("+")).toArray()
+    ).toEqual(["clientId+apiKey", "oauth", "oauth"]);
+  });
+
   it("passes a closed dialog through", () => {
     const wrap =
       pairedApiKeyAuthPlugin().statePlugins.auth.wrapSelectors.shownDefinitions;

@@ -66,7 +66,7 @@ function schemeGroups(system: any): string[][] {
 
 /**
  * Merges each group that `definitions` holds in full into one entry, which
- * Swagger UI renders as one form. OAuth2 schemes keep their own button.
+ * Swagger UI renders as one form. Only `apiKey` schemes are merged.
  */
 function regroup(definitions: any, groups: string[][]): any {
   if (
@@ -77,24 +77,27 @@ function regroup(definitions: any, groups: string[][]): any {
     return definitions;
   }
 
-  const isOauth2 = (entry: any, name: string) =>
-    entry.get(name)?.get?.("type") === "oauth2";
+  const isApiKey = (entry: any, name: string) =>
+    entry.get(name)?.get?.("type") === "apiKey";
 
   const merged = new Set<string>();
   let regrouped = definitions.clear();
   definitions.forEach((entry: any) => {
     const name: string = entry.keySeq().first();
+    // OAuth2 and OIDC repeat the scheme name once per flow; pass them through.
+    if (!isApiKey(entry, name)) {
+      regrouped = regrouped.push(entry);
+      return;
+    }
     if (merged.has(name)) {
       return;
     }
     merged.add(name);
-    const group = isOauth2(entry, name)
-      ? undefined
-      : groups.find(
-          (g) =>
-            g.includes(name) &&
-            g.every((member) => definitions.some((d: any) => d.has(member)))
-        );
+    const group = groups.find(
+      (g) =>
+        g.includes(name) &&
+        g.every((member) => definitions.some((d: any) => d.has(member)))
+    );
     if (!group) {
       regrouped = regrouped.push(entry);
       return;
@@ -105,7 +108,7 @@ function regroup(definitions: any, groups: string[][]): any {
         return;
       }
       const other = definitions.find((d: any) => d.has(member));
-      if (!other || isOauth2(other, member)) {
+      if (!other || !isApiKey(other, member)) {
         return;
       }
       combined = combined.merge(other);
