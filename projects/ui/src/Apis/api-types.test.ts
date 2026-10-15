@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { normalizeApiVersionSchema } from "./api-types";
+import { countApiOperations, normalizeApiVersionSchema } from "./api-types";
 
 const spec = { openapi: "3.0.0", paths: { "/tracks": { get: {} } } };
 
@@ -40,5 +40,23 @@ describe("normalizeApiVersionSchema", () => {
     expect(
       normalizeApiVersionSchema({ components: { schemas: {} } })
     ).toBeDefined();
+  });
+});
+
+describe("countApiOperations", () => {
+  it("counts each method on a path, ignoring path-level fields", () => {
+    expect(
+      countApiOperations({
+        paths: {
+          "/health": { get: {} },
+          "/items": { get: {}, post: {}, parameters: [], summary: "Items" },
+          "/items/{id}": { delete: {} },
+        },
+      })
+    ).toBe(4);
+  });
+
+  it("returns 0 when there are no paths", () => {
+    expect(countApiOperations({ webhooks: { newPet: { post: {} } } })).toBe(0);
   });
 });

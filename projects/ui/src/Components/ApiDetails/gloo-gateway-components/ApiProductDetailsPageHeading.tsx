@@ -5,8 +5,8 @@ import {
   ApiProductSummary,
   ApiVersion,
   ApiVersionSchema,
+  countApiOperations,
 } from "../../../Apis/api-types";
-import { Icon } from "../../../Assets/Icons";
 import { useIsLoggedIn } from "../../../Context/AuthContext";
 import { FormModalStyles } from "../../../Styles/shared/FormModalStyles";
 import { useGetImageURL } from "../../../Utility/custom-image-utility";
@@ -80,8 +80,7 @@ const ApiProductDetailsPageHeading = ({
             <Flex gap={"10px"}>
               {!!apiVersionSpec?.paths && (
                 <Styles.ApiDetailsExtraInfo>
-                  <Icon.HtmlTag /> {Object.keys(apiVersionSpec.paths).length}{" "}
-                  Operations
+                  {countApiOperations(apiVersionSpec)} Operations
                 </Styles.ApiDetailsExtraInfo>
               )}
               {/* <Styles.ApiDetailsExtraInfo>
