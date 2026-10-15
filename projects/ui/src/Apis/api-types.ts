@@ -121,6 +121,25 @@ export type ApiKey = {
   metadata: Record<string, string>;
 };
 
+/**
+ * An API key with a client ID, held by an app: the client ID names the
+ * credential at request time, and its API key is checked against it. The
+ * client ID is not a secret; the API key is, and is returned only on creation.
+ */
+export type ClientId = {
+  id: string;
+  appId: string;
+  clientId: string;
+  name?: string;
+  createdAt: string;
+  updatedAt?: string;
+};
+
+/** The response to creating an API key with a client ID. */
+export type ClientIdWithKey = ClientId & {
+  apiKey: string;
+};
+
 export type Team = {
   createdAt: string;
   description: string;
@@ -284,6 +303,32 @@ export type ApiVersionSchema = {
     url: string;
   }[];
 };
+
+const HTTP_METHODS = [
+  "get",
+  "put",
+  "post",
+  "delete",
+  "options",
+  "head",
+  "patch",
+  "trace",
+];
+
+/**
+ * Counts operations (path + method pairs), not paths: `/items` with GET and
+ * POST is two operations.
+ */
+export const countApiOperations = (spec: ApiVersionSchema) =>
+  Object.values(spec.paths ?? {}).reduce<number>((count, pathItem) => {
+    if (!pathItem || typeof pathItem !== "object") {
+      return count;
+    }
+    const methods = Object.keys(pathItem).filter((k) =>
+      HTTP_METHODS.includes(k)
+    );
+    return count + methods.length;
+  }, 0);
 
 // A document is renderable if it declares a spec version or carries any
 // top-level section. `paths` alone is too strict: it is required in OpenAPI 3.0

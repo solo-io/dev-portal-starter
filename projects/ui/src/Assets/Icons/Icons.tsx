@@ -12,7 +12,6 @@ export { ReactComponent as DireX } from "./dire-x.svg?react";
 export { ReactComponent as DownArrow } from "./down-arrow.svg?react";
 export { ReactComponent as Eye } from "./eye.svg?react";
 export { ReactComponent as FilledGrayXIcon } from "./filled-gray-x-icon.svg?react";
-export { ReactComponent as HtmlTag } from "./html-tag.svg?react";
 export { ReactComponent as InfoExclamation } from "./info-exclamation.svg?react";
 export { ReactComponent as Key } from "./key.svg?react";
 export { ReactComponent as ListViewIcon } from "./list-view.svg?react";

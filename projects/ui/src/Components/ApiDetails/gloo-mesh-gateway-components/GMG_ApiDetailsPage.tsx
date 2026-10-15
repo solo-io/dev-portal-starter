@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { di } from "react-magnetic-di";
 import { useParams } from "react-router";
-import { ApiVersionSchema } from "../../../Apis/api-types";
+import { ApiVersionSchema, countApiOperations } from "../../../Apis/api-types";
 import { useGetApiDetails } from "../../../Apis/gmg_hooks";
 import { Icon } from "../../../Assets/Icons";
 import { BannerHeading } from "../../Common/Banner/BannerHeading";
@@ -46,7 +46,7 @@ function HeaderSummary({ apiSchema }: { apiSchema: ApiVersionSchema }) {
   return (
     <ApiDetailsHeaderAddition>
       <ApiDetailsExtraInfo>
-        <Icon.HtmlTag /> {Object.keys(apiSchema.paths ?? {}).length} Operations
+        {countApiOperations(apiSchema)} Operations
       </ApiDetailsExtraInfo>
       {/* <ApiDetailsExtraInfo>
         <Icon.OpenApiIcon /> OpenAPI
