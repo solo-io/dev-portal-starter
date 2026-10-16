@@ -66,6 +66,13 @@ describe("Header nav for admin users", () => {
     expect(navLink("Teams")).toBeDefined();
     expect(navLink("Apps")).toBeDefined();
     expect(navLink("Subscriptions")).toBeDefined();
+    expect(navLink("Webhooks")?.getAttribute("href")).toBe("/admin/webhooks");
+  });
+
+  it("marks Webhooks active on the admin webhooks page", () => {
+    renderHeader("/admin/webhooks");
+
+    expect(navLink("Webhooks")?.className).toContain("active");
   });
 
   it("points Teams and Apps at the admin routes", () => {
@@ -114,6 +121,7 @@ describe("Header nav for non-admin users", () => {
     expect(navLink("Teams")?.getAttribute("href")).toBe("/teams");
     expect(navLink("Apps")?.getAttribute("href")).toBe("/apps");
     expect(navLink("Subscriptions")).toBeUndefined();
+    expect(navLink("Webhooks")).toBeUndefined();
   });
 
   it("does not mark the session as an admin one", () => {

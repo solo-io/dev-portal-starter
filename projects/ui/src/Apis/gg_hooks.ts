@@ -19,9 +19,17 @@ import {
   SubscriptionsListError,
   Team,
   User,
+  WebhookEndpoint,
+  WebhookTestResult,
   isSubscriptionsListError,
 } from "./api-types";
-import { fetchJSON, useMultiSwrWithAuth, useSwrWithAuth } from "./utility";
+import { SessionExpiredError } from "./sessionExpiry";
+import {
+  fetchJSON,
+  isNotFoundError,
+  useMultiSwrWithAuth,
+  useSwrWithAuth,
+} from "./utility";
 
 //
 // region Queries
@@ -127,6 +135,18 @@ export function useListSubscriptionsForApps(apps: App[]) {
     apps.map((app) => `/apps/${app.id}/subscriptions`),
     skipFetching ? null : APP_SUBS_SWR_KEY
   );
+}
+
+// region Webhooks
+// this is an admin endpoint
+const WEBHOOKS_PATH = "/webhooks";
+export function useListWebhookEndpoints() {
+  return useSwrWithAuth<WebhookEndpoint[]>(WEBHOOKS_PATH, undefined, {
+    // A 404 means the portal server has no webhooks to offer, which asking
+    // again will not change.
+    shouldRetryOnError: (error) =>
+      !(error instanceof SessionExpiredError) && !isNotFoundError(error),
+  });
 }
 
 //
@@ -635,4 +655,113 @@ export function useUpsertSubscriptionMetadataMutation() {
     mutate(APP_SUBS_SWR_KEY);
   };
   return useSWRMutation(`upsert-subscription-metadata`, fetcher);
+}
+
+// -------------------------------- //
+// region (Admin) Create Webhook Endpoint
+
+type CreateWebhookEndpointParams = MutationWithArgs<{
+  url: string;
+  enabled: boolean;
+}>;
+
+export function useCreateWebhookEndpointMutation() {
+  const { latestAccessToken } = useContext(AuthContext);
+  const { mutate } = useSWRConfig();
+  const createWebhookEndpoint = async (
+    _: string,
+    { arg }: CreateWebhookEndpointParams
+  ) => {
+    const res = await fetchJSON(WEBHOOKS_PATH, {
+      method: "POST",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify(arg),
+    });
+    mutate(WEBHOOKS_PATH);
+    return res as WebhookEndpoint;
+  };
+  return useSWRMutation(`create-webhook-endpoint`, createWebhookEndpoint);
+}
+
+// -------------------------------- //
+// region (Admin) Update Webhook Endpoint
+
+// The update replaces the endpoint, and the server enables it when `enabled` is
+// omitted, so `enabled` is always sent.
+type UpdateWebhookEndpointParams = MutationWithArgs<{
+  webhookId: string;
+  url: string;
+  enabled: boolean;
+}>;
+
+export function useUpdateWebhookEndpointMutation() {
+  const { latestAccessToken } = useContext(AuthContext);
+  const { mutate } = useSWRConfig();
+  const updateWebhookEndpoint = async (
+    _: string,
+    { arg }: UpdateWebhookEndpointParams
+  ) => {
+    const { webhookId, ...body } = arg;
+    const res = await fetchJSON(`${WEBHOOKS_PATH}/${webhookId}`, {
+      method: "PUT",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: JSON.stringify(body),
+    });
+    mutate(WEBHOOKS_PATH);
+    return res as WebhookEndpoint;
+  };
+  return useSWRMutation(`update-webhook-endpoint`, updateWebhookEndpoint);
+}
+
+// -------------------------------- //
+// region (Admin) Delete Webhook Endpoint
+
+type DeleteWebhookEndpointParams = MutationWithArgs<{ webhookId: string }>;
+
+export function useDeleteWebhookEndpointMutation() {
+  const { latestAccessToken } = useContext(AuthContext);
+  const { mutate } = useSWRConfig();
+  const deleteWebhookEndpoint = async (
+    _: string,
+    { arg }: DeleteWebhookEndpointParams
+  ) => {
+    await fetchJSON(`${WEBHOOKS_PATH}/${arg.webhookId}`, {
+      method: "DELETE",
+      headers: getLatestAuthHeaders(latestAccessToken),
+    });
+    mutate(WEBHOOKS_PATH);
+  };
+  return useSWRMutation(`delete-webhook-endpoint`, deleteWebhookEndpoint);
+}
+
+// -------------------------------- //
+// region (Admin) Test Webhook Endpoint
+
+type TestWebhookEndpointParams = MutationWithArgs<{
+  webhookId: string;
+  /** The JSON request body, sent as given, such as `{"type": "..."}`. */
+  body: string;
+}>;
+
+/**
+ * Sends an example event of the type the request body names to one webhook
+ * endpoint and resolves with how the receiver responded. A receiver failure
+ * resolves with `success: false`; only a failed request to the portal server
+ * rejects.
+ */
+export function useTestWebhookEndpointMutation() {
+  const { latestAccessToken } = useContext(AuthContext);
+  // The test never changes the endpoint, so the list is not revalidated.
+  const testWebhookEndpoint = async (
+    _: string,
+    { arg }: TestWebhookEndpointParams
+  ) => {
+    const res = await fetchJSON(`${WEBHOOKS_PATH}/${arg.webhookId}/test`, {
+      method: "POST",
+      headers: getLatestAuthHeaders(latestAccessToken),
+      body: arg.body,
+    });
+    return res as WebhookTestResult;
+  };
+  return useSWRMutation(`test-webhook-endpoint`, testWebhookEndpoint);
 }

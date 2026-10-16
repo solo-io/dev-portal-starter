@@ -14,6 +14,7 @@ import { getCustomPagePath } from "../Utility/utility";
 import AdminAppsPage from "./AdminApps/AdminAppsPage";
 import AdminSubscriptionsPage from "./AdminSubscriptions/AdminSubscriptionsPage";
 import AdminTeamsPage from "./AdminTeams/AdminTeamsPage";
+import AdminWebhooksPage from "./AdminWebhooks/AdminWebhooksPage";
 import { ApiDetailsPage } from "./ApiDetails/ApiDetailsPage";
 import { ApisPage } from "./Apis/ApisPage";
 import { AppsPage } from "./Apps/AppsPage";
@@ -190,6 +191,14 @@ function AppContentRoutes() {
               element={
                 <ErrorBoundary fallback="There was an issue displaying the Admin Subscriptions page">
                   <AdminTeamsPage />
+                </ErrorBoundary>
+              }
+            />
+            <Route
+              path="/admin/webhooks"
+              element={
+                <ErrorBoundary fallback="There was an issue displaying the Admin Webhooks page">
+                  <AdminWebhooksPage />
                 </ErrorBoundary>
               }
             />

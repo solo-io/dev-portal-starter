@@ -1,0 +1,8 @@
+changelog:
+  - type: NEW_FEATURE
+    issueLink: https://github.com/solo-io/gloo-gateway/issues/2455
+    resolvesIssue: false
+    description: >-
+      Admins get a Webhooks page, at /admin/webhooks, for adding, editing,
+      enabling, disabling, testing, and deleting the endpoints the portal
+      notifies of portal events.

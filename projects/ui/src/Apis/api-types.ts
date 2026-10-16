@@ -232,6 +232,34 @@ export type AppMetadata = {
   updatedAt: string;
 };
 
+/**
+ * An admin-configured URL that the portal server POSTs an event to whenever a
+ * portal event occurs, such as a subscription being requested. Every enabled
+ * endpoint receives every event.
+ */
+export type WebhookEndpoint = {
+  id: string;
+  /** An absolute http or https URL. */
+  url: string;
+  /** Whether the endpoint receives events. A disabled one can still be tested. */
+  enabled: boolean;
+  createdAt: string;
+  updatedAt?: string;
+};
+
+/**
+ * The outcome of sending a test event to one webhook endpoint. A receiver
+ * failure is reported here rather than as an error response.
+ */
+export type WebhookTestResult = {
+  /** Whether the receiver answered with a 2xx status. */
+  success: boolean;
+  /** The receiver's response status, absent if no response was received. */
+  statusCode?: number;
+  /** Why the delivery failed. The server redacts the URL in it. */
+  error?: string;
+};
+
 //
 // Shared Types
 //
