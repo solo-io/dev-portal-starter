@@ -4,7 +4,7 @@
 #             #
 ###############
 
-FROM node:24 AS build_stage
+FROM node:24.22.1 AS build_stage
 
 # Install global dependencies.
 RUN apt-get update && apt-get install -y build-essential
@@ -28,7 +28,7 @@ RUN START_SERVER=false sh ./scripts/startup.sh
 ################
 
 # A small static file server written in Go, with no dependencies.
-FROM --platform=$BUILDPLATFORM golang:1-alpine AS server_stage
+FROM --platform=$BUILDPLATFORM golang:1.26.10-alpine AS server_stage
 ARG TARGETOS TARGETARCH
 WORKDIR /src
 COPY ./projects/server/go.mod ./projects/server/*.go ./
@@ -41,7 +41,7 @@ RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -trimpath -ldflags=
 ###############
 
 # Distroless static base: no shell or package manager, just the server and the UI build.
-FROM cgr.dev/chainguard/static:latest AS serve_stage
+FROM cgr.dev/chainguard/static:latest@sha256:17367e4d3ae2b46c3290858e483fac09be085c92b372360fe3bf6a6150848fde AS serve_stage
 
 WORKDIR /app
 COPY --from=server_stage /server /app/server
