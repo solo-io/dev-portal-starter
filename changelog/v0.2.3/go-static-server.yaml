@@ -1,0 +1,7 @@
+changelog:
+  - type: NEW_FEATURE
+    resolvesIssue: false
+    description: >-
+      The image serves the portal from a small Go server on a distroless base,
+      in place of Express and Node. It is about 14MB, and VITE_* runtime config
+      works as before. The build now uses Node 24.
