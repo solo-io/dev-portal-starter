@@ -4,7 +4,7 @@
 #             #
 ###############
 
-FROM node:22.22.2 AS build_stage
+FROM node:24.22.1 AS build_stage
 
 # Install global dependencies.
 RUN apt-get update && apt-get install -y build-essential
@@ -19,10 +19,20 @@ COPY ./scripts scripts
 #  - Installs dependencies.
 #  - Builds the UI.
 #  - Moves the UI build folder to the server project.
-#  - Inserts an EJS view engine variable into the UI build,
-#    so that the server can send the live environment variables
-#    along with the UI when the build is served.
 RUN START_SERVER=false sh ./scripts/startup.sh
+
+################
+#              #
+# Server Stage #
+#              #
+################
+
+# A small static file server written in Go, with no dependencies.
+FROM --platform=$BUILDPLATFORM golang:1.26.10-alpine AS server_stage
+ARG TARGETOS TARGETARCH
+WORKDIR /src
+COPY ./projects/server/go.mod ./projects/server/*.go ./
+RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -trimpath -ldflags="-s -w" -o /server .
 
 ###############
 #             #
@@ -30,19 +40,15 @@ RUN START_SERVER=false sh ./scripts/startup.sh
 #             #
 ###############
 
-# Wolfi base with only Node 22 added, to keep the OS CVE count low.
-FROM cgr.dev/chainguard/wolfi-base:latest@sha256:256c88bb066424045021090932d50be93c8e3f2ce3586707702a401b146f3e43 AS serve_stage
+# Distroless static base: no shell or package manager, just the server and the UI build.
+FROM cgr.dev/chainguard/static:latest@sha256:17367e4d3ae2b46c3290858e483fac09be085c92b372360fe3bf6a6150848fde AS serve_stage
 
-# nodejs-22 holds the major version; no exact revision, so security fixes land on rebuild.
-RUN apk add --no-cache nodejs-22
-
-# Copy the server files (this includes the built UI).
 WORKDIR /app
-COPY --from=build_stage /app/projects/server .
+COPY --from=server_stage /server /app/server
+COPY --from=build_stage /app/projects/server/public/dist /app/public/dist
 
 EXPOSE 4000
 
-# Run as the same nonroot UID as before. Run node directly, since yarn writes a cache file.
+# Run as the same nonroot UID as before.
 USER 65532
-ENTRYPOINT ["/usr/bin/node"]
-CMD ["/app/bin/www"]
+ENTRYPOINT ["/app/server"]

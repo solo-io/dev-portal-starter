@@ -1,0 +1,6 @@
+changelog:
+  - type: NON_USER_FACING
+    resolvesIssue: false
+    description: >-
+      The image serves the portal from a small Go server on a distroless base
+      instead of Express and Node. VITE_* runtime config works as before.
