@@ -1,0 +1,4 @@
+changelog:
+  - type: NON_USER_FACING
+    description: >-
+      Bump storybook, vite and vitest, raise the follow-redirects floor, and refresh the wolfi-base digest
