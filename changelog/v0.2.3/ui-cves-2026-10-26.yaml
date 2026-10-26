@@ -1,0 +1,5 @@
+changelog:
+  - type: NON_USER_FACING
+    resolvesIssue: false
+    description: >-
+      Bump storybook, vite, vitest, dompurify, follow-redirects, body-parser, and ip-address to address security vulnerabilities
