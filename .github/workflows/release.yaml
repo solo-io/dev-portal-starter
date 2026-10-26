@@ -39,11 +39,9 @@ jobs:
             git checkout -b $RELEASE_BRANCH
             git push --set-upstream origin $RELEASE_BRANCH 
           else
-            # Else, we need to update it.
-            echo "Branch $RELEASE_BRANCH exists, so it will be updated."
+            # Else, release the branch as-is.
+            echo "Branch $RELEASE_BRANCH exists, so it will be released as-is."
             git checkout $RELEASE_BRANCH
-            git pull origin main -X theirs --allow-unrelated-histories
-            git push origin $RELEASE_BRANCH 
           fi
 
       - name: Update version in package.json
