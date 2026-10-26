@@ -63,9 +63,9 @@ The Solo-supported backend (`portal-web-server` and the `portal.solo.io` custom 
 
 ### About the container image
 
-The `Dockerfile` builds the serve stage on a [Google distroless](https://github.com/GoogleContainerTools/distroless) Node base. This keeps the OS package surface small (near-zero HIGH/CRITICAL OS CVEs), which matters for CVE-gated image pipelines — registries that reject images with HIGH/CRITICAL findings. The image is functionally identical to a slim-based build; the trade-off is that the running container has no shell, so you cannot `docker exec` into it with a shell to debug.
+The `Dockerfile` builds the UI with Node, then serves it from a small Go server (`projects/server`) on the distroless [`cgr.dev/chainguard/static`](https://images.chainguard.dev/directory/image/static/overview) base. The running image has no Node, shell or package manager, which keeps its CVE count near zero. The trade-off is that you cannot `docker exec` into it with a shell to debug.
 
-If you need an even smaller CVE surface, a Chainguard `cgr.dev/chainguard/node` serve base reaches zero OS CVEs; note that pinning a Chainguard tag requires a Chainguard subscription.
+The server reads every `VITE_*` environment variable at startup and injects them into `index.html`. It listens on `PORT` (default `4000`).
 
 ## UI Development
 
