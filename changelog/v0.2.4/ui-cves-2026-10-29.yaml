@@ -1,0 +1,4 @@
+changelog:
+  - type: NON_USER_FACING
+    description: >-
+      Bump qs resolution floor to 6.16.1 in projects/ui and mock-portal-api
