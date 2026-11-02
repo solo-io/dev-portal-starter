@@ -1,0 +1,6 @@
+changelog:
+  - type: NON_USER_FACING
+    resolvesIssue: false
+    description: >-
+      Turn on reduced motion in the unit test matchMedia stub so Mantine skips
+      transition timers that fired after jsdom teardown.
