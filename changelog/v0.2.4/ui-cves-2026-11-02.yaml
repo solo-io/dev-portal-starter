@@ -1,0 +1,4 @@
+changelog:
+  - type: NON_USER_FACING
+    description: >-
+      Bump qs to 6.17.1 in the UI and mock portal API lockfiles
