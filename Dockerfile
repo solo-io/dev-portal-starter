@@ -28,7 +28,7 @@ RUN START_SERVER=false sh ./scripts/startup.sh
 ################
 
 # A small static file server written in Go, with no dependencies.
-FROM --platform=$BUILDPLATFORM golang:1.26.10-alpine AS server_stage
+FROM --platform=$BUILDPLATFORM golang:1.26.11-alpine AS server_stage
 ARG TARGETOS TARGETARCH
 WORKDIR /src
 COPY ./projects/server/go.mod ./projects/server/*.go ./
