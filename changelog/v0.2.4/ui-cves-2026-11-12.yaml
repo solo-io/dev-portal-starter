@@ -1,0 +1,4 @@
+changelog:
+  - type: NON_USER_FACING
+    description: >-
+      Bump fast-xml-parser, the Go builder image, and the e2e node-gyp resolution
